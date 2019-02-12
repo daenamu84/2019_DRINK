@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+     <settings>
+          <!-- 세팅영역 -->
+          <setting name="cacheEnabled" value="false"/>
+          <setting name="lazyLoadingEnabled" value="false" />
+          <setting name="logPrefix" value="myBatisSql."/>
+          <setting name="logImpl" value="LOG4J2"/>
+          <setting name="callSettersOnNulls" value="true"/>  <!-- 결과 데이터가 Null , '' 일 경우  라도 key 생성한다. -->
+          <setting name="jdbcTypeForNull" value="VARCHAR" /> <!-- param이  Null 일경우 varchar 타입으로 처리 -->
+          
+     </settings>
+ 
+     <typeAliases>
+          <!-- 과거 query.xml 에서 했던 alias 를 여기서 하도록 변경되었다. -->
+          <typeAlias type= "com.drink.dto.table.user.Cmuser" alias="cmuser" />  
+          <typeAlias type= "com.drink.dto.model.user.loginDto" alias="loginDto" />  
+          <typeAlias type= "java.util.HashMap" alias="HashMap" />  
+          <typeAlias type= "com.drink.commonHandler.util.DataMap" alias="DataMap" />  
+     </typeAliases>
+ 
+     <mappers>
+          <!-- 사용할 query.xml 을 등록 -->
+          <mapper resource= "sqlMapper/Mapper-common.xml" />
+          <mapper resource= "sqlMapper/Mapper-user.xml" />
+     </mappers>
+</configuration>
+

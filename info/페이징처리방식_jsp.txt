@@ -1,0 +1,18 @@
+<%-- 
+	페이징 리스트 생성 방식   paging:paging currentPageNo:현재페이지 recordsPerPage:리스트갯수 numberOfRecords: 전체카운트수 urlArg:호출 URL
+	페이징 print  var.printPaging()
+	
+	페이징처리후 action  :   /resources/js/common/common.js
+	function goPage(url, pages, pageLine)  호출
+	
+--%>
+<html>
+<head>
+</head>
+<body>
+
+	<paging:paging var="skw3" currentPageNo="${param.page}" recordsPerPage="${param.pageLine}" numberOfRecords="${param.totalCnt}" urlArg="http://localhost:8080/mainPaging" />
+	${skw3.printPaging()}<br>
+
+</body>
+</html>

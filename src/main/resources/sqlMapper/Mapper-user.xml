@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+      
+    <select id="getUser" parameterType="loginDto" resultType="cmuser">
+    	<![CDATA[
+       	SELECT /*+  use_nl(a,b) index(a cmsuer_ind1 index(b cmuser_ind1) */                     
+		   A.USER_ID userId
+		   ,A.LOGIN_ID loginId
+		   ,A.USER_NM userNm
+		   ,A.PASSWD passwd
+		   ,B.PIN_ID pinId
+		   ,A.VENDOR_ID vendorId
+		   ,B.VD_NM vdNm
+		   ,A.USER_GB userGb
+		   ,A.STATUS_CD statusCd
+		   ,A.PIN_ROLE_ID pinRoleId
+		   ,B.VD_SHOP_NM vdShopNm
+		   ,B.VD_TYPE_CD vdTypeCd
+		   ,CASE WHEN A.UPD_DT < TO_CHAR(SYSDATE-30, 'YYYYMMDDHH24MISS') 
+		        THEN 'Y'                                             
+		        ELSE 'N'                                             
+		   END infoUpdateYn
+		   ,CASE WHEN A.UPD_DT < TO_CHAR(SYSDATE-90, 'YYYYMMDDHH24MISS') 
+		        THEN 'Y'                                             
+		        ELSE 'N'                                             
+		   END infoUpdateYnNew
+		   ,HAUOLIN_MD_YN hauolinMdYn
+		   ,SUBSTR(B.REG_DT, 1, 8) regDt              
+		FROM CMUSER A, CMVDMR B                                       
+		WHERE A.LOGIN_ID = #{loginId}                                           
+		AND A.USER_GB IN ('01','02','04','99')                       
+		AND A.VENDOR_ID = B.VENDOR_ID                                
+		AND B.CANCEL_GB = '02'                                
+		AND B.CANCEL_DT = '99991231'                                
+		AND B.EFF_END_DT = '99991231'                                
+       	]]>
+    </select>
+    
+    
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	
+	<definition name="errorLayout" template="/WEB-INF/views/layout/error_layout.jsp">
+		<put-attribute name="metaTag" value="/WEB-INF/views/layout/metaTag.jsp"/>
+		<put-attribute name="headerScript" value="/WEB-INF/views/layout/headerScript.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/layout/empty.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp"/>
+		<put-attribute name="footerScript" value="/WEB-INF/views/layout/footerScript.jsp"/>
+	</definition>	
+	
+	<definition name="common/error" extends="errorLayout">
+		<put-attribute name="body" value="/WEB-INF/views/common/error.jsp"/>
+	</definition>
+
+	<definition name="emptyLayout" template="/WEB-INF/views/layout/empty_layout.jsp">
+		<put-attribute name="body" value="/WEB-INF/views/layout/empty.jsp"/>
+	</definition>	
+	<definition name="redirectPage" extends="emptyLayout">
+		<put-attribute name="body" value="/WEB-INF/views/common/redirectPage.jsp"/>
+	</definition>
+	<definition name="common/errorJson" extends="emptyLayout">
+		<put-attribute name="body" value="/WEB-INF/views/common/errorJson.jsp"/>
+	</definition>
+	
+	<definition name="defualt" template="/WEB-INF/views/layout/default_layout.jsp">
+		<put-attribute name="metaTag" value="/WEB-INF/views/layout/metaTag.jsp"/>
+		<put-attribute name="headerScript" value="/WEB-INF/views/layout/headerScript.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/layout/empty.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp"/>
+		<put-attribute name="footerScript" value="/WEB-INF/views/layout/footerScript.jsp"/>
+	</definition>	
+	
+	<definition name="mesageLayout" template="/WEB-INF/views/layout/message_layout.jsp">
+		<put-attribute name="metaTag" value="/WEB-INF/views/layout/metaTag.jsp"/>
+		<put-attribute name="headerScript" value="/WEB-INF/views/layout/headerScript.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/layout/empty.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp"/>
+		<put-attribute name="footerScript" value="/WEB-INF/views/layout/footerScript.jsp"/>
+	</definition>	
+	
+	<definition name="home" extends="defualt">
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp"/>
+	</definition>
+	
+	<definition name="messageError" extends="mesageLayout">
+		<put-attribute name="body" value="/WEB-INF/views/common/messageError.jsp"/>
+	</definition>
+	
+	<definition name="user/login" extends="defualt">
+		<put-attribute name="header" value="/WEB-INF/views/layout/empty.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/user/login.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/layout/empty.jsp"/> 
+	</definition>
+	
+	<definition name="*/*" extends="defualt">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
+	</definition>
+	
+</tiles-definitions>

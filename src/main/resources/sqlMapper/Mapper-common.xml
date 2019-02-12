@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Common">
+	
+	<sql id="pagingHeaderSql">
+	SELECT   T.*
+	  FROM   (SELECT   ROWNUM AS RNUM, COUNT(1) OVER() AS TOTCNT, CEIL((COUNT(1) OVER())/#{recordsPerPage}) AS TOTPAGE, XtP.*
+	            FROM   (
+	</sql>
+	<sql id="pagingFooterSql">
+	) XtP) T
+	 WHERE   T.RNUM BETWEEN ( #{recordsPerPage} * #{currentPageNo} ) - ( #{recordsPerPage}-1 ) AND (#{recordsPerPage} * #{currentPageNo})
+	</sql>   
+	
+	<select id="getSysDate" resultType="DataMap">
+	<![CDATA[
+		SELECT                         
+            TO_CHAR(SYSDATE + 0.00001,'YYYYMMDDHH24MISS') NEXT_DATETIME, 
+            TO_CHAR(SYSDATE          ,'YYYYMMDDHH24MISS') NOW_DATETIME  
+            FROM DUAL 
+	]]>
+	</select>
+	
+	<select id="deliCompany" resultType="DataMap">
+	<![CDATA[
+		SELECT CD_MINOR, nvl(CD_REF2,'') AS CD_REF2	, CD_FNAME						
+			FROM CMCODE       						 	
+			WHERE CD_MAJOR ='0098' 					 	
+			AND CD_END_DT ='99991231235959' 			
+			AND CD_MINOR = #{deliCompanyId}
+	]]>
+	</select>
+	<select id="deliCompanyAll" resultType="DataMap">
+	<![CDATA[
+		 SELECT   
+	        CD_MINOR,CD_FNAME,CD_SNAME              
+	  		FROM CMCODE       							 
+			WHERE CD_MAJOR ='0098' 						 
+			AND CD_MINOR 								 
+			NOT IN 'ZZ' 								 
+			AND CD_END_DT ='99991231235959' 			 
+		  AND CD_REF3 = '01'					
+	]]>
+	</select>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+	
+	<bean id="CotrollerAdvice" class="com.drink.commonHandler.aop.AopAspect" />
+    
+    <aop:config>
+        <aop:pointcut id="controllerPC" expression="execution(* com.drink.controller..*(..))" />
+        <aop:aspect ref="CotrollerAdvice">
+            <aop:before method="someBeforeAdviceMethod" pointcut-ref="controllerPC"/>
+            <aop:around method="someAroundAdviceMethod" pointcut-ref="controllerPC"/>
+            <aop:after method="someAfterAdviceMethod" pointcut-ref="controllerPC"/>
+        </aop:aspect>            
+    </aop:config>
+    
+</beans>

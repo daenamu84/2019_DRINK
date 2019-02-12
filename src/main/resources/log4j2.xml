@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration shutdownHook="disable">
+
+	<Properties>
+	    <Property name="LOG_DIR">/logs/file</Property>
+	</Properties>
+	
+	<!-- Appender, Layout 설정 -->
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss} [%t] %-5level %logger{36}::%M - %msg%n" />
+		</Console>
+		<RollingFile name="RollingFile" fileName="${LOG_DIR}/log.log"
+			filePattern="${LOG_DIR}/log-%d{yyyy-MM-dd-HH}-%i.log">
+			<PatternLayout charset="EUC-KR" pattern="%d %5p [%c]::%M - %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="12" modulate="true" />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="RollingRequestFile" fileName="${LOG_DIR}/request.log"
+			filePattern="${LOG_DIR}/request-%d{yyyy-MM-dd-HH}-%i.log">
+			<PatternLayout charset="EUC-KR" pattern="%d %5p [%c]::%M - %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="12" modulate="true" />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		
+	</Appenders>
+
+
+
+	<!-- Logger 설정 -->
+	<Loggers>
+		<Root level="ERROR">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
+		
+		<Logger name="com.drink" level="TRACE" additivity="false">
+	      <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+		
+		<Logger name="org.apache.catalina.core.ContainerBase.[Catalina].[localhost]" level="INFO" additivity="false">
+	      <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+    
+		<Logger name="REQUEST" level="TRACE" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingRequestFile" />
+	    </Logger>
+	    
+		<Logger name="org.apache.commons" level="INFO" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+
+		<Logger name="org.springframework" level="INFO" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+		
+		<Logger name="org.mybatis" level="TRACE" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+		
+		<Logger name="java.sql" level="TRACE" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+	    
+	    <Logger name="myBatisSql" level="TRACE" additivity="false">
+	        <AppenderRef ref="console" />
+	        <AppenderRef ref="RollingFile" />
+	    </Logger>
+	    
+	</Loggers>
+
+</configuration>

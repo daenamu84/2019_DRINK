@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2eeweb-jsptaglibrary_2_0.xsd" version="2.0">
+  <tlib-version>1.1</tlib-version>
+  <jsp-version>2.1</jsp-version>
+  <short-name>Custom Tag Library</short-name>
+  <description>paging list tag</description>
+  
+  <tag>
+    <name>paging</name>
+    <tag-class>com.drink.commonHandler.util.PagingTag</tag-class>
+    <body-content>EMPTY</body-content>
+     <attribute>
+        <name>currentPageNo</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <type>java.lang.int</type>
+    </attribute>
+     <attribute>
+        <name>recordsPerPage</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <type>java.lang.int</type>
+    </attribute>
+     <attribute>
+        <name>numberOfRecords</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <type>java.lang.int</type>
+    </attribute>
+     <attribute>
+        <name>sizeOfPage</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <type>java.lang.int</type>
+    </attribute>
+    <attribute>
+        <name>jsFunc</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+        <type>java.lang.String</type>
+    </attribute>
+    <attribute>
+    	<name>var</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+        <type>java.lang.String</type>
+    </attribute>
+    <variable>
+    	<name-from-attribute>var</name-from-attribute>
+    	<variable-class>com.drink.commonHandler.util.Paging</variable-class>
+    	<scope>AT_END</scope>
+    </variable>
+  </tag>
+</taglib>
