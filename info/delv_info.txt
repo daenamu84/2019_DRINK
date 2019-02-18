@@ -48,26 +48,6 @@ myBatis : (\QmyBatisSql\E)
 exception Handler : (\Qcom.wizwid.commonHandler.Exception.ExceptionHandlingController\E)
 
 
-/*
-
-DB 정보
-
-DB -oracle ( server.xml ) 추가
-  <GlobalNamingResources>
-		<Resource auth="Container" defaultAutoCommit="false" driverClassName="oracle.jdbc.driver.OracleDriver" 
-				factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
-				initialSize="10" maxActive="500" maxIdle="100" maxWait="-1" minEvictableIdleTimeMillis="3600000" 
-				name="jdbc/WIZWIDTest" password="" testWhileIdle="true" timeBetweenEvictionRunsMillis="60000" 
-				type="javax.sql.DataSource" url="jdbc:oracle:thin:@211.48.20.70:1521:wizibs" username="" 
-				validationQuery="SELECT 1 FROM DUAL"/>		 
-  </GlobalNamingResources>		 
-  
-  -context.xml 추가  : <WatchedResource>  태그 위에다 추가 합니다.
-  <ResourceLink auth="Container" global="jdbc/WIZWIDTest" name="jdbc/WIZWIDTest" type="javax.sql.DataSource"/>			
-  
-*/
-
-
 ======================================================================================
 스프링 트랜잭션은  한 service 에서  같은 클래스 내에  다른 메소드를 호출시  Propagation.REQUIRES_NEW 를 사용 한다 하더라고  트랜잭션은 new 가 되지 않고  전부다 동일 트랜잭션으로 인식한다.
 새로운 트랜잭션을 사용 할 경우는 다른 클래스service의 메소드에  Propagation.REQUIRES_NEW를 선언하고  호출 하면    기존에 service와 새로운 srvice의  메소드들은  서로 다른 트랜잭션이 된다.
