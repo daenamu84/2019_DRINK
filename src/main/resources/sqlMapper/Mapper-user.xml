@@ -38,5 +38,11 @@
        	]]>
     </select>
     
+    <select id="test"  resultType="DataMap">
+    	<![CDATA[
+	       	select "1" as param1 , #{param2}  as param2  from dual                             
+       	]]>
+    </select>
+    
     
 </mapper>

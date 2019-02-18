@@ -8,7 +8,7 @@
 </head>
 <body>
 <%
-String DB_URL = "jdbc:mysql://183.111.199.155:3306/transbev1?autoReconnect=true";
+String DB_URL = "jdbc:mysql://183.111.199.155:3306/transbev1?characterEncoding=UTF-8&serverTimezone=UTC";
 String DB_USER = "transbev1";
 String DB_PASSWORD= "trans-2018";
 
