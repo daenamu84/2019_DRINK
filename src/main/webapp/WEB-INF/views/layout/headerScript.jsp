@@ -10,8 +10,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/common/dateUtil.js?${globalTimeStamp}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/default.css?${globalTimeStamp}">
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-reboot.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-theme.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/daterangepicker.css">
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-datetimepicker.css"> -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.2.1.min.js"></script>
