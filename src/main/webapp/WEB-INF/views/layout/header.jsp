@@ -14,15 +14,41 @@
 	SessionDto loginSession = (SessionDto)sessionUtils.getLoginSession(request);
 	request.setAttribute("loginSession", loginSession);
 %>
-<div>
-	 <nav class="navbar navbar-inverse navbar-fixed-top">
-	        <div class="container-fluid">
-	            <div class="navbar-header">             
-	            	<!-- 거래처명 노출  -->  
-	                <a class="navbar-brand" style="color:#ffffff" href="/main"><c:choose><c:when test="${null eq loginSession.vdNm || empty loginSession.vdNm}">DRINK</c:when> <c:otherwise>${loginSession.vdNm}</c:otherwise></c:choose></a> 
-	            </div>
-	        </div>
+
+	 <nav class="navbar navbar-expand-md navbar-dark  bg-dark" style="margin-bottom:20px">
+		<a class="navbar-brand" href="#">Navbar</a>
+     
+      	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        	<span class="navbar-toggler-icon"></span>
+      	</button>
+
+     	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	     	<ul class="navbar-nav mr-auto">
+	        	<li class="nav-item active">
+	            	<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	          	</li>
+	          	<li class="nav-item">
+	            	<a class="nav-link" href="#">Link</a>
+	          	</li>
+	          	<li class="nav-item">
+	            	<a class="nav-link " href="#">Disabled</a>
+	          	</li>
+	          	<li class="nav-item dropdown">
+	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리</a>
+	            	<div class="dropdown-menu" aria-labelledby="dropdown01">
+						<a class="dropdown-item" href="/teamList">팀관리</a>
+		              	<a class="dropdown-item" href="#">사원관리</a>
+		              	<a class="dropdown-item" href="#">제품관리</a>
+		              	<a class="dropdown-item" href="#">코드마스터</a>
+		              	<a class="dropdown-item" href="/brandList">브랜드코드마스터</a>
+	            	</div>
+	          	</li>
+	        </ul>
+	        <form class="form-inline my-2 my-lg-0">
+				<font color="#ffffff"> login</font>
+	        </form>
+      	</div>
 	</nav>
-</div>
+
 
 
