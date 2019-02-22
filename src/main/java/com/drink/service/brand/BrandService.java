@@ -8,10 +8,15 @@
 */ 
 package com.drink.service.brand;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
@@ -31,13 +36,30 @@ public class BrandService {
 	@Autowired
 	GenericMapperImpl<Object, Object> gdi;
 
-	public DataMap test(RequestMap map) throws DrinkException{
-		logger.debug("main 서비스 :: ");
-		DataMap param = new DataMap();
-		param.put("param2", "drink");
-		param = (DataMap) gdi.selectOne("User.test",param);
-		 logger.debug("query  end ");
+	public List BrandList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Brand.getBrandList",param);
 		
 		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void BrandInsert(RequestMap map) throws DrinkException{
+		
+		if(map.getSession("brandNm").equals("")){
+			 throw new DrinkException(new String[]{"messageError","브랜드명은 필수 값 입니다."});
+		}
+		
+		logger.debug("service :: " + map.toString());
+		if(!map.getSession("brandId").equals("")){
+			int rtCnt = gdi.update("Brand.masterUpdate", map);
+			if(rtCnt < 1){
+				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+			}
+		}else{
+			gdi.update("Brand.masterInsert", map);
+		}
+		
 	}
 }

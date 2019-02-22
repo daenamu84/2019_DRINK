@@ -19,5 +19,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/moment-width-locales.js"></script> 
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 <!-- <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap-datetimepicker.js"></script>  --> 
 <script src="${pageContext.request.contextPath}/resources/js/common/daterangepicker.js"></script>  
