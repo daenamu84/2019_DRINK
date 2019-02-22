@@ -58,6 +58,15 @@ var ajaxFlag = false;
 			});
 		});
 		
+		$("#brandClean").click(function(){
+			$("#brandID").val("");
+			$("#brandNM").val("");
+			$("#useYn option:eq(0)").prop("selected", true);
+			$("#orcoBrandYn option:eq(0)").prop("selected", true);
+			$("#sortOrd").val("");
+			
+		});
+		
 	});
 	
 	$(document).on("change","input:radio[name='brandMrd']", _.debounce( function(){
@@ -102,7 +111,10 @@ var ajaxFlag = false;
 					<div class="row">
 						<div class="col-sm-2">순위</div>
 						<div class="col-sm-2"><input type="text" id="sortOrd" class="form-control" /></div>
-						<div class="col-sm-3"><input class="btn btn-primary" type="button" id="brandInsert" value="등록"></div>
+						<div class="col-sm-4">
+							<input class="btn btn-primary" type="button" id="brandInsert" value="등록/수정">
+							<input class="btn btn-primary" type="button" id="brandClean" value="초기화">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -123,8 +135,8 @@ var ajaxFlag = false;
 			  	 <c:forEach items="${brandList}" var="i" varStatus="status">
 						<tr>
 							<th scope="row"><input type="radio" name="brandMrd" data-brandid="${i.BRAND_ID}"></th>
-							<td>${i.BRAND_ID}</td>
-							<td>${i.BRAND_NM}</td>
+							<td><span>${i.BRAND_ID}</span></td>
+							<td><span>${i.BRAND_NM}</span></td>
 							<td>${i.ORCO_BRAND_NM}</td>
 							<td>${i.SORT_ORD}</td>
 							<td>${i.USE_YN}</td>
@@ -142,7 +154,7 @@ var ajaxFlag = false;
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalLabel">서브 브랜드</h5>
 		        	<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">

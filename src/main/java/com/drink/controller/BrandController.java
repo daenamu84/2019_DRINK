@@ -82,6 +82,8 @@ public class BrandController {
 		dt.put("orcoBrandYn", vts.get("orcoBrandYn"));
 		dt.put("sortOrd", vts.get("sortOrd"));
 		
+		
+		logger.debug(" ★★★★★★★★★★★★★★" );
 		brandService.BrandInsert(dt);
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();

@@ -20,7 +20,7 @@
     				  USE_YN = #{useYn},
     				  DATA_UPD_DTM = NOW(),
     				  DATA_UPD_ID = '1'
-    	    WHERE BRAND_ID = ${brandId}
+    	    WHERE BRAND_ID = #{brandId}
     	]]>
     </update>
     
@@ -28,7 +28,7 @@
     	<![CDATA[
     	INSERT INTO T_BRAND_M
 			(BRAND_ID, BRAND_NM, ORCO_BRAND_YN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES (#{brandId}, #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), '0', now(), '0');
+			VALUES ( (select COALESCE(count(brand_id),0)+1 from T_BRAND_M a), #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), '0', now(), '0')
     	]]>
     </update>
     

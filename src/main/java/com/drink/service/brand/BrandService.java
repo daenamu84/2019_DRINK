@@ -46,19 +46,20 @@ public class BrandService {
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void BrandInsert(RequestMap map) throws DrinkException{
+		logger.debug("service 111111111 :: " + map.toString());
 		
-		if(map.getSession("brandNm").equals("")){
+		if(map.getString("brandNm").equals("")){
 			 throw new DrinkException(new String[]{"messageError","브랜드명은 필수 값 입니다."});
 		}
 		
 		logger.debug("service :: " + map.toString());
-		if(!map.getSession("brandId").equals("")){
-			int rtCnt = gdi.update("Brand.masterUpdate", map);
+		if(!map.getString("brandId").equals("")){
+			int rtCnt = gdi.update("Brand.masterUpdate", map.getMap());
 			if(rtCnt < 1){
 				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
 			}
 		}else{
-			gdi.update("Brand.masterInsert", map);
+			gdi.update("Brand.masterInsert", map.getMap());
 		}
 		
 	}
