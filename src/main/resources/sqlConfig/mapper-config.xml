@@ -26,6 +26,7 @@
           <mapper resource= "sqlMapper/Mapper-common.xml" />
           <mapper resource= "sqlMapper/Mapper-user.xml" />
           <mapper resource= "sqlMapper/Mapper-brand.xml" />
+          <mapper resource= "sqlMapper/Mapper-team.xml" />
      </mappers>
 </configuration>
 

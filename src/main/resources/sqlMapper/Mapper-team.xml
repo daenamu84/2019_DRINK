@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Team">
+    
+    <select id="getDeptList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+			DEPT_NO, TEAMNM, IF(USE_YN = 'Y', "사용","사용안함")USE_YN_NM, SORT_ORD, USE_YN
+			FROM T_DEPT_M
+			ORDER BY SORT_ORD       
+       	]]>
+    </select>
+      
+    <select id="checkTeam" resultType="DataMap">
+    	<![CDATA[
+    	SELECT COUNT(DEPT_NO) AS CNT
+		FROM T_DEPT_M
+		WHERE TEAMNM =#{teamnm}   
+       	]]>
+    </select>
+    
+    <select id="getT_DEPT_M_Cnt" resultType="DataMap">
+    	<![CDATA[
+    	SELECT COUNT(DEPT_NO) AS CNT
+		FROM T_DEPT_M
+       	]]>
+    </select>
+    
+    <update id="masterInsert">
+    	<![CDATA[
+    	INSERT INTO T_DEPT_M
+			(TEAMNM ,SORT_ORD ,UP_DEPT_NO ,USE_YN ,DATA_REG_DTM ,DATA_REG_ID ,DATA_UPD_DTM ,DATA_UPD_ID) 
+			VALUES (#{teamnm}, #{sort_ord}, 9999, #{use_yn}, now(),'hoyairis', now(), 'hoyaiirs')
+    	]]>
+    </update>
+    
+    <update id="masterUpdate">
+    	<![CDATA[
+    		UPDATE T_DEPT_M
+    			SET TEAMNM =   #{teamnm},
+    				  USE_YN = #{use_yn},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = '1'
+    	    WHERE DEPT_NO = #{deptno}
+    	]]>
+    </update>
+    
+    <select id="test"  resultType="DataMap">
+    	<![CDATA[
+	       	select "1" as param1 , #{param2}  as param2  from dual                             
+       	]]>
+    </select>
+    
+    
+</mapper>
