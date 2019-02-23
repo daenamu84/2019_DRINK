@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonUtil {
 
-	String[] loginUrl = {};
+	String[] loginUrl = {"/main"};
 	
 	/** 
 	* @ Title: getParameter 
