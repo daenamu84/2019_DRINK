@@ -37,7 +37,7 @@
 	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리</a>
 	            	<div class="dropdown-menu" aria-labelledby="dropdown01">
 						<a class="dropdown-item" href="/teamList">팀관리</a>
-		              	<a class="dropdown-item" href="#">사원관리</a>
+		              	<a class="dropdown-item" href="/memberList">사원관리</a>
 		              	<a class="dropdown-item" href="#">제품관리</a>
 		              	<a class="dropdown-item" href="#">코드마스터</a>
 		              	<a class="dropdown-item" href="/brandList">브랜드코드마스터</a>
