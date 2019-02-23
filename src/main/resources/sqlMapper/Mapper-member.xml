@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+    
+    
+     <select id="getDeptList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT DEPT_NO, TEAMNM
+			FROM T_DEPT_M
+			WHERE USE_YN ='Y'
+       	]]>
+    </select>
+    
+    <select id="getEmpMList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				(SELECT c.TEAMNM FROM T_DEPT_M c WHERE c.DEPT_NO = a.DEPT_NO) AS TEAMNM,
+				a.EMP_NO,a.EMP_NM,a.LOGIN_ID,a.EMP_GRD_CD, IF(a.USE_YN = 'Y', "재직자","퇴사자")USE_YN_NM, a.USE_YN
+			FROM T_EMP_M a
+       	]]>
+    </select>
+    
+    <select id="duplicateIDCheck" resultType="DataMap">
+    	<![CDATA[
+		  	SELECT COUNT(LOGIN_ID) CNT
+			FROM T_EMP_M 
+			WHERE LOGIN_ID =#{login_id} 
+				AND USE_YN ='Y'
+       	]]>
+    </select>
+    
+    <update id="empInsert">
+    	<![CDATA[
+    	INSERT INTO T_EMP_M
+			( EMP_NM, EMP_HP_NO, LOGIN_ID, LOGIN_PWD, ENTCO_DT, ZIP_CD, EMP_ADDR, EMP_BIRTH, USE_YN, EMP_GRD_CD, DEPT_NO, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{emp_nm}, #{emp_hp_no}, #{login_id}, #{login_pwd}, #{entco_dt}, #{zip_cd}, #{emp_addr}, #{emp_birth}, #{use_yn}, #{emp_grd_cd}, #{deptno}, now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    <select id="getEmpNo" resultType="DataMap">
+    	<![CDATA[
+		  	SELECT EMP_NO
+			FROM T_EMP_M 
+			WHERE LOGIN_ID =#{login_id} 
+				AND USE_YN ='Y'
+       	]]>
+    </select>
+    
+    <update id="empteam_dept_relInsert">
+    	<![CDATA[
+    	INSERT INTO T_DEPT_EMP_REL_D
+			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( 'E001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    <update id="empteam_mng_dept_relInsert">
+    	<![CDATA[
+    	INSERT INTO T_DEPT_EMP_REL_D
+			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( 'M001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    
+  
+    <select id="checkTeam" resultType="DataMap">
+    	<![CDATA[
+    	SELECT COUNT(DEPT_NO) AS CNT
+		FROM T_DEPT_M
+		WHERE TEAMNM =#{teamnm}   
+       	]]>
+    </select>
+    
+    <select id="getT_DEPT_M_Cnt" resultType="DataMap">
+    	<![CDATA[
+    	SELECT COUNT(DEPT_NO) AS CNT
+		FROM T_DEPT_M
+       	]]>
+    </select>
+    
+    <update id="masterInsert">
+    	<![CDATA[
+    	INSERT INTO T_DEPT_M
+			(TEAMNM ,SORT_ORD ,UP_DEPT_NO ,USE_YN ,DATA_REG_DTM ,DATA_REG_ID ,DATA_UPD_DTM ,DATA_UPD_ID) 
+			VALUES (#{teamnm}, #{sort_ord}, 9999, #{use_yn}, now(),'hoyairis', now(), 'hoyaiirs')
+    	]]>
+    </update>
+    
+    <update id="masterUpdate">
+    	<![CDATA[
+    		UPDATE T_DEPT_M
+    			SET TEAMNM =   #{teamnm},
+    				  USE_YN = #{use_yn},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = '1'
+    	    WHERE DEPT_NO = #{deptno}
+    	]]>
+    </update>
+    
+    <select id="test"  resultType="DataMap">
+    	<![CDATA[
+	       	select "1" as param1 , #{param2}  as param2  from dual                             
+       	]]>
+    </select>
+    
+    
+</mapper>

@@ -13,7 +13,7 @@
 	
 	$(document).ready(function(){
 		
-		$("#deptInsert").click(function(){
+		$("#memberSearch").click(function(){
 			if(ajaxFlag)return;
 			
 			var deptno = $("#deptno").val();
@@ -28,7 +28,7 @@
 			
 			$.ajax({      
 			    type:"POST",  
-			    url:"/teamWork",      
+			    url:"/",      
 			    data: JSON.stringify({"deptno":deptno,"teamnm":teamnm,"use_yn":use_yn}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
@@ -57,15 +57,13 @@
 			});
 		});
 		
+		$("#memberForm").click(function(){
+			location.replace("/memberForm");
+		});
+		
 	});
-	
-	function fnCopy(deptno,teamnm,use_yn){
-		$("#deptno").val(deptno);
-		$("#teamnm").val(teamnm);
-		$("#use_yn").val(use_yn).prop("selected", true);
-	}
 	</script>
-	<div class="title"> ◈  팀관리</div>
+	<div class="title"> ◈  사원관리</div>
 	<div class="container" style="max-width:100%;">
 		<div class="row">
 			<div class="col">
@@ -78,16 +76,18 @@
 									<table class="table-borderless ">
 										<thead>
 											<tr>
-												<td>팀명</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="teamnm" id="teamnm"></td>
-												<td style="padding-left:20px;">사용여부</td>
-												<td style="padding-left:20px;"><select name="use_yn" class="form-control" id="use_yn">
-													<option value="Y">사용</option>
-													<option value="N">사용안함</option>
+												<td>팀</td>
+												<td style="padding-left:20px;"><select name="deptno" class="form-control" id="deptno">
+													<c:forEach items="${deptMMList}" var="i">
+														<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
+													</c:forEach>
 												</select></td>
+												<td style="padding-left:20px;">사원</td>
+												<td style="padding-left:20px;"><input type="text" class="form-control" name="empnm" id="empnm"></td>
 												<td>
 													<input type="hidden" name="deptno" id="deptno"/>
-													<input class="btn btn-dark" type="button" value="등록" id="deptInsert"/>
+													<input class="btn btn-dark" type="button" value="검색" id="memberSearch"/>
+													<input class="btn btn-dark" type="button" value="등록" id="memberForm"/>
 												</td>
 											</tr>
 										</thead>
@@ -101,16 +101,20 @@
 						<table class="table">
 						  <thead>
 						    <tr>
-						      <th scope="col">팀 ID</th>
-						      <th scope="col">팀명</th>
-						      <th scope="col">사용여부</th>
+						      <th scope="col">팀</th>
+						      <th scope="col">사원명</th>
+						      <th scope="col">ID</th>
+						      <th scope="col">권한</th>
+						      <th scope="col">근무여부</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <c:forEach items="${deptList}" var="i" varStatus="status">
+						    <c:forEach items="${empMList}" var="i" varStatus="status">
 								<tr>
-									<td><a href="javascript:fnCopy('${i.DEPT_NO}','${i.TEAMNM}','${i.USE_YN}')">${i.DEPT_NO}</a></td>
-									<td><a href="javascript:fnCopy('${i.DEPT_NO}','${i.TEAMNM}','${i.USE_YN}')">${i.TEAMNM}</a></td>
+									<td>${i.TEAMNM}</td>
+									<td>${i.EMP_NM}</td>
+									<td>${i.LOGIN_ID}</td>
+									<td>${i.EMP_GRD_CD}</td>
 									<td>${i.USE_YN_NM}</td>
 								</tr>
 							</c:forEach>
@@ -119,9 +123,10 @@
 					</div>
 				</div>
 			</div>
+			
 		</div>
 	</div>
-
+</div>
 
 
    
