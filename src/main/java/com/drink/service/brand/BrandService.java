@@ -43,6 +43,14 @@ public class BrandService {
 		
 		return param;
 	}
+
+	public List BrandSubList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Brand.getBrandSubList",map.getMap());
+		
+		return param;
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void BrandInsert(RequestMap map) throws DrinkException{
@@ -51,16 +59,56 @@ public class BrandService {
 		if(map.getString("brandNm").equals("")){
 			 throw new DrinkException(new String[]{"messageError","브랜드명은 필수 값 입니다."});
 		}
+		map.put("brandId", map.getString("brandId").replaceAll(" ","").toUpperCase());
+		map.put("brandNm", map.getString("brandNm").trim());
+		map.put("sortOrd", map.getInt("sortOrd"));
 		
 		logger.debug("service :: " + map.toString());
-		if(!map.getString("brandId").equals("")){
+		DataMap countMap = (DataMap) gdi.selectOne("Brand.getBrandCnt",  map.getMap()); 
+		if(countMap != null && countMap.getInt("CNT") == 0 ){
+			gdi.update("Brand.masterInsert", map.getMap());
+		}else{
 			int rtCnt = gdi.update("Brand.masterUpdate", map.getMap());
 			if(rtCnt < 1){
 				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
 			}
-		}else{
-			gdi.update("Brand.masterInsert", map.getMap());
 		}
+	}
+	
+	public DataMap BrandView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
 		
+		param = (DataMap) gdi.selectOne("Brand.getBrandView",map.getMap());
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void BrandSubInsert(RequestMap map) throws DrinkException{
+		
+		if(map.getString("subBrandNm").equals("")){
+			 throw new DrinkException(new String[]{"messageError","서브 브랜드명은 필수 값 입니다."});
+		}
+		map.put("subBrandId", map.getString("subBrandId").replaceAll(" ","").toUpperCase());
+		map.put("subBrandNm", map.getString("subBrandNm").trim());
+		map.put("subSortOrd", map.getInt("subSortOrd"));
+		
+		DataMap countMap = (DataMap) gdi.selectOne("Brand.getBrandSubCnt",  map.getMap()); 
+		if(countMap != null && countMap.getInt("CNT") == 0 ){
+			gdi.update("Brand.subInsert", map.getMap());
+		}else{
+			int rtCnt = gdi.update("Brand.subUpdate", map.getMap());
+			if(rtCnt < 1){
+				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+			}
+		}
+	}
+	
+	public DataMap BrandSubView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		
+		param = (DataMap) gdi.selectOne("Brand.getBrandSubView",map.getMap());
+		
+		return param;
 	}
 }

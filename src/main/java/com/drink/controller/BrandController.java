@@ -54,7 +54,6 @@ public class BrandController {
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
-		logger.debug("메인 contriller " );
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
 		
@@ -83,12 +82,100 @@ public class BrandController {
 		dt.put("sortOrd", vts.get("sortOrd"));
 		
 		
-		logger.debug(" ★★★★★★★★★★★★★★" );
 		brandService.BrandInsert(dt);
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+	}
+	@RequestMapping(value = "/brandView", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> BrandView(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		RequestMap dt = new RequestMap();
+		dt.put("brandId", vts.get("brandId"));
+		
+		logger.debug(" ★★★★★★★★★★★★★★" );
+		DataMap brandView =  brandService.BrandView(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "조회 성공 하였습니다.");
+		rtnMap.put("data", brandView);
+		
+		
+		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/brandSubList")
+	public ModelAndView Submain(Locale locale, Model model, RequestMap param) throws DrinkException {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		List<DataMap> rtnMap = brandService.BrandSubList(param);
+		
+		logger.debug("rtnMap :: " + rtnMap);
+		
+		mav.addObject("masterBrandId", param.getString("masterBrandId"));
+		mav.addObject("brandSubList", rtnMap);
+		
+		mav.setViewName("nobody/brand/subMain");
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/brandSubInsert", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> BrandSubInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		RequestMap dt = new RequestMap();
+		dt.put("masterBrandId", vts.get("masterBrandId"));
+		dt.put("subBrandId", vts.get("subBrandId"));
+		dt.put("subBrandNm", vts.get("subBrandNm"));
+		dt.put("subUseYn", vts.get("subUseYn"));
+		dt.put("liqKdCd", vts.get("liqKdCd"));
+		dt.put("stcaseCd", vts.get("stcaseCd"));
+		dt.put("subSortOrd", vts.get("subSortOrd"));
+		
+		
+		brandService.BrandSubInsert(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/brandSubView", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> BrandSubView(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		RequestMap dt = new RequestMap();
+		dt.put("masterBrandId", vts.get("masterBrandId"));
+		dt.put("brandId", vts.get("brandId"));
+		
+		logger.debug(" ★★★★★★★★★★★★★★" );
+		DataMap brandView =  brandService.BrandSubView(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "조회 성공 하였습니다.");
+		rtnMap.put("data", brandView);
+		
 		
 		return rtnMap;
 	}

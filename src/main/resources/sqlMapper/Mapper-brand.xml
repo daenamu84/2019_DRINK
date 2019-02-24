@@ -10,10 +10,37 @@
 			 FROM T_BRAND_M
        	]]>
     </select>
+
+    <select id="getBrandSubList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				BRAND_ID, SUB_BRAND_ID, SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN
+			 FROM T_SUB_BRAND_M
+			 WHERE BRAND_ID = #{masterBrandId}
+       	]]>
+    </select>
+    
+    <select id="getBrandCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COALESCE(count(brand_id),0) CNT
+			 FROM T_BRAND_M
+			 WHERE BRAND_ID = #{brandId}
+       	]]>
+    </select>
+
+    <select id="getBrandView" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				BRAND_ID, BRAND_NM, ORCO_BRAND_YN, IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
+			 FROM T_BRAND_M
+			 WHERE BRAND_ID = #{brandId}
+       	]]>
+    </select>
     
     <update id="masterUpdate">
     	<![CDATA[
-    		UPDATE FROM  T_BRAND_M
+    		UPDATE T_BRAND_M
     			SET BRAND_NM =   #{brandNm},
     				  ORCO_BRAND_YN = #{orcoBrandYn},
     				  SORT_ORD = #{sortOrd},
@@ -28,8 +55,51 @@
     	<![CDATA[
     	INSERT INTO T_BRAND_M
 			(BRAND_ID, BRAND_NM, ORCO_BRAND_YN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( (select COALESCE(count(brand_id),0)+1 from T_BRAND_M a), #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), '0', now(), '0')
+			VALUES ( #{brandId}, #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), '0', now(), '0')
     	]]>
     </update>
+    
+    <select id="getBrandSubCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COALESCE(count(brand_id),0) CNT
+			 FROM T_SUB_BRAND_M
+			 WHERE BRAND_ID = #{masterBrandId}
+			 AND SUB_BRAND_ID = #{subBrandId}
+       	]]>
+    </select>
+    
+     <update id="subUpdate">
+    	<![CDATA[
+    		UPDATE T_SUB_BRAND_M
+    			SET SUB_BRAND_NM =   #{subBrandNm},
+    				  LIQ_KD_CD = #{liqKdCd},
+    				  STCASE_CD = #{stcaseCd},
+    				  SORT_ORD = #{subSortOrd},
+    				  USE_YN = #{subUseYn},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = '1'
+    	    WHERE BRAND_ID = #{masterBrandId}
+    	    AND SUB_BRAND_ID = #{subBrandId}
+    	]]>
+    </update>
+    
+    <update id="subInsert">
+    	<![CDATA[
+    	INSERT INTO T_SUB_BRAND_M
+			(BRAND_ID, SUB_BRAND_ID,SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{masterBrandId},#{subBrandId}, #{subBrandNm}, #{liqKdCd}, #{stcaseCd}, #{subSortOrd},  #{subUseYn}, now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    <select id="getBrandSubView" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				BRAND_ID, SUB_BRAND_ID, SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN
+			 FROM T_SUB_BRAND_M
+			 WHERE BRAND_ID = #{masterBrandId}
+			 AND SUB_BRAND_ID = #{brandId}
+       	]]>
+    </select>
     
 </mapper>
