@@ -111,4 +111,16 @@ public class BrandService {
 		
 		return param;
 	}
+	
+	public List BrandMCdList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Brand.getBrandMCd",param);
+		return param;
+	}
+	public List BrandSCdList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Brand.getBrandSCd",map.getMap());
+		return param;
+	}
+	
 }
