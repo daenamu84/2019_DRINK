@@ -150,6 +150,74 @@ public class MemberController {
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "insert");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+	}
+	
+	
+	@RequestMapping(value = "/memberView", method = RequestMethod.POST)
+	
+	public ModelAndView memberView(Locale locale, ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		ModelAndView mav = new ModelAndView();
+		
+		logger.debug("map :: " + rtMap.toString());
+		RequestMap paramMap = new RequestMap();
+		List<DataMap> rtnMpa0 = memberService.getDeptList(paramMap);
+		
+		
+		
+		RequestMap dt = new RequestMap();
+		dt.put("emp_no", rtMap.get("emp_no"));
+		dt.put("gubun", rtMap.get("gubun"));
+		
+		DataMap memberView =  memberService.memberView(dt);
+		List<DataMap> memberDeptList = memberService.getMngDeptEmplList(dt);
+		
+//		HashMap<String, Object> rtnMap = new HashMap<>();
+//		rtnMap.put("data", memberView);
+//		rtnMap.put("memberDeptList", memberDeptList);
+//		rtnMap.put("gubun",rtMap.get("gubun"));
+		mav.addObject("deptMMList", rtnMpa0);
+		mav.addObject("data",memberView);
+		mav.addObject("memberDeptList",memberDeptList);
+		mav.addObject("gubun",rtMap.get("gubun"));
+		
+		mav.setViewName("member/memberfrom");
+		return mav;
+		
+	}
+	
+	
+	@RequestMapping(value = "/memberUpdate", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> memberUpdate(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		RequestMap dt = new RequestMap();
+		dt.put("emp_nm", vts.get("emp_nm"));
+		dt.put("emp_no", vts.get("emp_no"));
+		dt.put("emp_hp_no", vts.get("emp_hp_no"));
+		dt.put("login_id", vts.get("login_id"));
+		dt.put("login_pwd", vts.get("login_pwd"));
+		dt.put("entco_dt", vts.get("entco_dt"));
+		dt.put("zip_cd", vts.get("zip_cd"));
+		dt.put("emp_addr", vts.get("emp_addr"));
+		dt.put("emp_birth", vts.get("emp_birth"));
+		dt.put("use_yn", vts.get("use_yn"));
+		dt.put("emp_grd_cd", vts.get("emp_grd_cd"));
+		dt.put("deptno", vts.get("deptno"));
+		dt.put("ex_dept_no", vts.get("ex_dept_no"));
+		dt.put("mng_dept_no", vts.get("mng_dept_no"));
+		
+		memberService.memberupdate(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "update");
 		rtnMap.put("message", "저장 하였습니다.");
 		
 		return rtnMap;

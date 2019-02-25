@@ -60,8 +60,16 @@
 		$("#memberForm").click(function(){
 			location.replace("/memberForm");
 		});
-		
 	});
+	
+	function memberView(emp_no, gubun){
+		document.viewForm.emp_no.value=emp_no;
+		document.viewForm.gubun.value=gubun;
+		
+		document.viewForm.action="/memberView";
+		document.viewForm.submit();
+	}
+	
 	</script>
 	<div class="title"> ◈  사원관리</div>
 	<div class="container" style="max-width:100%;">
@@ -112,7 +120,7 @@
 						    <c:forEach items="${empMList}" var="i" varStatus="status">
 								<tr>
 									<td>${i.TEAMNM}</td>
-									<td>${i.EMP_NM}</td>
+									<td><a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a></td>
 									<td>${i.LOGIN_ID}</td>
 									<td>${i.EMP_GRD_CD}</td>
 									<td>${i.USE_YN_NM}</td>
@@ -123,10 +131,12 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 	</div>
-</div>
+	<form name="viewForm" method="post">
+		<input type="hidden" name="emp_no"/>
+		<input type="hidden" name="gubun"/> 
+	</form>
 
 
    
