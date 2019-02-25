@@ -57,8 +57,6 @@ public class BrandController {
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
 		
-		logger.debug("rtnMap :: " + rtnMap);
-		
 		mav.addObject("brandList", rtnMap);
 
 		mav.setViewName("brand/main");
@@ -115,6 +113,8 @@ public class BrandController {
 	@RequestMapping(value = "/brandSubList")
 	public ModelAndView Submain(Locale locale, Model model, RequestMap param) throws DrinkException {
 		
+		try {
+			
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
@@ -126,9 +126,12 @@ public class BrandController {
 		mav.addObject("brandSubList", rtnMap);
 		
 		mav.setViewName("nobody/brand/subMain");
-		
-		
 		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","서브 브랜드 조회중 에러가 발생 하였습니다."});
+		}
 	}
 	
 	@RequestMapping(value = "/brandSubInsert", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -175,8 +178,28 @@ public class BrandController {
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("message", "조회 성공 하였습니다.");
 		rtnMap.put("data", brandView);
-		
-		
 		return rtnMap;
 	}
+	
+	@RequestMapping(value = "/brandSCd")
+	public ModelAndView brandSCd(Locale locale, Model model, RequestMap param) throws DrinkException {
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			RequestMap paramMap = new RequestMap();
+			List<DataMap> rtnMap = brandService.BrandSCdList(param);
+			
+			logger.debug("rtnMap :: " + rtnMap);
+			
+			mav.addObject("brandSCd", rtnMap);
+			
+			mav.setViewName("nobody/brand/brandSCd");
+			return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","서브 브랜드 조회중 에러가 발생 하였습니다."});
+		}
+	}
+	
 }

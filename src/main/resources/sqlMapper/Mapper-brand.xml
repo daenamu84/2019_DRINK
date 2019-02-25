@@ -6,8 +6,9 @@
     <select id="getBrandList" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				BRAND_ID, BRAND_NM, ORCO_BRAND_YN, IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
+				BRAND_ID, BRAND_NM, ORCO_BRAND_YN, ORCO_BRAND_YN, IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
 			 FROM T_BRAND_M
+			 ORDER BY SORT_ORD
        	]]>
     </select>
 
@@ -17,6 +18,7 @@
 				BRAND_ID, SUB_BRAND_ID, SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN
 			 FROM T_SUB_BRAND_M
 			 WHERE BRAND_ID = #{masterBrandId}
+			 ORDER BY SORT_ORD
        	]]>
     </select>
     
@@ -99,6 +101,24 @@
 			 FROM T_SUB_BRAND_M
 			 WHERE BRAND_ID = #{masterBrandId}
 			 AND SUB_BRAND_ID = #{brandId}
+			 ORDER BY SORT_ORD
+       	]]>
+    </select>
+    <select id="getBrandMCd" resultType="DataMap">
+    	<![CDATA[
+    		SELECT BRAND_ID, BRAND_NM FROM T_BRAND_M
+			WHERE ORCO_BRAND_YN ='Y'
+			AND USE_YN = 'Y'
+       	]]>
+    </select>
+     
+    <select id="getBrandSCd" resultType="DataMap">
+    	<![CDATA[
+    		SELECT S.SUB_BRAND_ID, S.SUB_BRAND_NM FROM T_BRAND_M M, T_SUB_BRAND_M S
+			WHERE M.BRAND_ID = S.BRAND_ID
+			AND M.ORCO_BRAND_YN ='Y'
+			AND M.USE_YN = 'Y'
+			AND M.BRAND_ID = #{BrandId}
        	]]>
     </select>
     
