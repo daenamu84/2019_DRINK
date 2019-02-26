@@ -15,7 +15,7 @@ var ajaxFlag = false;
 		
 		$("#brandInsert").click(function(){
 			if(ajaxFlag)return;
-			
+			ajaxFlag=true;
 			var blank_pattern = /[\s]/g;
 
 			var _brandId = $("#brandID").val();
@@ -39,6 +39,11 @@ var ajaxFlag = false;
 		      }
 			
 			var _brandNm = $("#brandNM").val();
+			if(_brandNm.length > 50){
+				alert('브랜드명은 50글자를 넘을수 없습니다.');
+			    ajaxFlag=false;
+			    return;
+			}
 			var _useYn = $("#useYn option:selected").val();
 			var _orcoBrandYn = $("#orcoBrandYn option:selected").val();
 			var _sortOrd = $("#sortOrd").val();
@@ -48,7 +53,6 @@ var ajaxFlag = false;
 				ajaxFlag=false;
 				return;
 			}
-			ajaxFlag=true;
 			$.ajax({      
 			    type:"POST",  
 			    url:"/brandInsert",      
@@ -103,15 +107,15 @@ var ajaxFlag = false;
 
 	$(document).on("click","#brandSInsert", function(){
 		if(ajaxFlag)return;
-		console.log("서브브랜드 등록수정");
+		ajaxFlag=true;
 		
 		var masterBrandId = $("#masterBrandId").val();
 		if($("#masterBrandId").val() ==""){
 			alert("마스터브랜드ID가 없습니다. \n  다시 시도해주세요.");
 			location.reload();
+			return;
 		}
 		
-		ajaxFlag=true;
 		//ajax
 		var _subBrandId = $("#subBrandId").val();
 		if(_subBrandId.length > 10){
@@ -128,6 +132,11 @@ var ajaxFlag = false;
 	      }
 		
 		var _subBrandNm = $("#subBrandNm").val();
+		if(_subBrandNm.length > 50){
+			alert('서브 브랜드명은 50글자를 넘을수 없습니다.');
+		    ajaxFlag=false;
+		    return;
+		}
 		var _subUseYn = $("#subUseYn option:selected").val();
 		var _liqKdCd = $("#liqKdCd option:selected").val();
 		var _stcaseCd = $("#stcaseCd option:selected").val();
@@ -138,7 +147,6 @@ var ajaxFlag = false;
 			ajaxFlag=false;
 			return;
 		}
-		ajaxFlag=true;
 		$.ajax({      
 		    type:"POST",  
 		    url:"/brandSubInsert",      
@@ -150,7 +158,7 @@ var ajaxFlag = false;
 		        if(args.returnCode == "0000"){
 		        	alert(args.message.replace(/<br>/gi,"\n"));
 		        	//location.reload();
-		        	$("input:radio[name='brandMrd']").trigger("change");
+		        	$("input:radio[name='brandMrd']:checked").trigger("change");
 		        }else{
 		        	alert(args.message.replace(/<br>/gi,"\n"));
 		        	location.reload();
@@ -318,7 +326,7 @@ var ajaxFlag = false;
 			  <tbody>
 			  	 <c:forEach items="${brandList}" var="i" varStatus="status">
 						<tr>
-							<th scope="row"><input type="radio" name="brandMrd" data-brandid="${i.BRAND_ID}"></th>
+							<th scope="row"><input type="radio" name="brandMrd" data-brandid="${i.BRAND_ID}" value="${i.BRAND_ID}"></th>
 							<td><a href="javascript:listView('${i.BRAND_ID}');" class="text-decoration-none">${i.BRAND_ID}</a></td>
 							<td><a href="javascript:listView('${i.BRAND_ID}');" class="text-decoration-none">${i.BRAND_NM}</a></td>
 							<td>${i.ORCO_BRAND_NM}</td>

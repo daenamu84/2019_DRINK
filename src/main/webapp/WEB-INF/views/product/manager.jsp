@@ -19,27 +19,78 @@ var ajaxFlag = false;
 		});
 		
 		$("#ProductInsert").click(function(){
-			alert("저장");
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			var _iBrandId = $("#iBrandId option:selected").val();
+			var _iSubBrandId = $("#iSubBrandId option:selected").val();
+			var _iProdMlCd = $("#iProdMlCd option:selected").val();
+			var _iUseYn = $("#iUseYn option:selected").val();
+
+			if(_iBrandId =="" || _iBrandId == undefined){
+				alert("브랜드를 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			
+			if(_iSubBrandId =="" || _iSubBrandId == undefined){
+				alert("서브브랜드를 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			if(_iProdMlCd =="" || _iProdMlCd == undefined){
+				alert("용량을 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			
+			$.ajax({      
+			    type:"POST",  
+			    url:"/productInsert",      
+			    data: JSON.stringify({"brandId":_iBrandId,"subBrandId":_iSubBrandId,"prodMlCd":_iProdMlCd ,"useYn":_iUseYn}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.reload();
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }  
+			});
+			
 		});
 		
 	});
 	
 	
 	$(document).on("click","#productSearch", function(){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
 		var brandChk =$("input:checkbox[name='brandChk']:checked");
 		var brandList = [];
 		brandChk.each(function() {
-			var test = $(this).val();
-			
 			brandList.push($(this).val()); 
 		});
-		console.log(brandList);
 		if(brandChk.length < 1){
 			alert("브랜드를 선택 하세요.");
 			 ajaxFlag=false;
+			 return;
 		}
 			
-		ajaxFlag=true;
 		$.ajax({      
 		    type:"POST",  
 		    url:"/productBrandSearch",      
@@ -177,8 +228,8 @@ var ajaxFlag = false;
 							<div class="col-sm-3">용량</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iProdMlCd">
-								    <option value="100ML" selected>100ML</option>
-								    <option value="150ML">150ML</option>
+								    <option value="1000" selected>1000</option>
+								    <option value="1500">1500</option>
 							  </select>
 						  </div>
 						</div>

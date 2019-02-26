@@ -9,7 +9,6 @@
 package com.drink.commonHandler;
 
 import java.net.URLEncoder;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +61,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		logger.info("request header Aceept:: {} ", request.getHeader("Accept"));
 		logger.info("request method:: {} ", request.getMethod());
 		logger.info("request param:: {} ", request.getParameterMap());
-		 
+		
 		MetaTagDto metaDto = new MetaTagDto();
 		metaDto.setHeadTitle("DRINK MOBILE ");
 		

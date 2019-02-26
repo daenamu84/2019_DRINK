@@ -8,22 +8,32 @@
 */ 
 package com.drink.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.service.brand.BrandService;
+import com.drink.service.product.ProductService;
 
 /** 
 * @ ClassName: ProductController 
@@ -38,6 +48,9 @@ public class ProductController {
 	
 	@Autowired 
 	private BrandService brandService;
+
+	@Autowired 
+	private ProductService productService;
 	
 	@RequestMapping(value = "/productManager")
 	public ModelAndView productManager(Locale locale, Model model) throws DrinkException {
@@ -66,18 +79,36 @@ public class ProductController {
 		
 		try{
 		ModelAndView mav = new ModelAndView();
-		
 		RequestMap paramMap = new RequestMap();
-
 		logger.debug("rtMap :: " + rtMap);
-		
+		mav.addObject("productList", paramMap);
 		mav.setViewName("nobody/product/managerSearch");
 		return mav;
 		}catch (Exception e) {
 			logger.debug("err :: " + e);
 			throw new DrinkException(new String[]{"nobody/common/error","제품 검색중 에러가 발생 하였습니다."});
 		}
-		
 	}
-
+	
+	@RequestMapping(value = "/productInsert", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> productInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		RequestMap dt = new RequestMap();
+		dt.put("brandId", vts.get("brandId"));
+		dt.put("subBrandId", vts.get("subBrandId"));
+		dt.put("prodMlCd", vts.get("prodMlCd"));
+		dt.put("useYn", vts.get("useYn"));
+		
+		productService.productInsert(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		return rtnMap;
+	}
+	
 }
