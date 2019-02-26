@@ -38,7 +38,7 @@
 	            	<div class="dropdown-menu" aria-labelledby="dropdown01">
 						<a class="dropdown-item" href="/teamList">팀관리</a>
 		              	<a class="dropdown-item" href="/memberList">사원관리</a>
-		              	<a class="dropdown-item" href="javascript:alert('작업중입니다.')">제품관리</a>
+		              	<a class="dropdown-item" href="/productManager">제품관리</a>
 		              	<a class="dropdown-item" href="/codeList">코드마스터</a>
 		              	<a class="dropdown-item" href="/brandList">브랜드코드마스터</a>
 	            	</div>
