@@ -80,8 +80,9 @@ public class MemberService {
 		if(empNo==0) {
 			throw new DrinkException(new String[]{"messageError","팀원입력에 실패했습니다."});
 		}
-			map.put("emp_no", empNo);
-			gdi.update("Member.empteam_dept_relInsert", map.getMap());
+		
+		map.put("emp_no", empNo);
+		gdi.update("Member.empteam_dept_relInsert", map.getMap());
 				
 		
 		List<DataMap> tempList = (List)map.get("mng_dept_no");
@@ -95,5 +96,65 @@ public class MemberService {
 		}
 	}
 	
+	public DataMap memberView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		
+		param = (DataMap) gdi.selectOne("Member.getmemberMView",map.getMap());
+		
+		return param;
+	}
+	
+	
+	public List getMngDeptEmplList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Member.getMngDeptEmplList",map.getMap());
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void memberupdate(RequestMap map) throws DrinkException{
+		
+		logger.debug("map==="+ map.toString());
+		
+		DataMap param = new DataMap();
+		String pwd = "";
+		param = (DataMap) gdi.selectOne("Member.getEmPassWD",map.getMap());
+		
+		if(param.getString("LOGIN_PWD")!= ""){
+			pwd = param.getString("LOGIN_PWD");
+			
+			if(!map.get("login_pwd").equals(pwd)) {
+				throw new DrinkException(new String[]{"messageError","비밀번호가 상이합니다."});
+			}
+		}else {
+			throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.1"});
+		}
+		
+		int rtCnt = gdi.update("Member.empUpdate", map.getMap());
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.2"});
+		}
+		
+		if(map.get("deptno")!=map.get("ex_dept_no")) {
+			int rtCnt0 = gdi.update("Member.empteam_dept_relUpdate", map.getMap());
+			if(rtCnt0 < 1){
+				throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.2"});
+			}
+			
+			gdi.update("Member.empteam_dept_relInsert", map.getMap());
+		}
+		
+		List<DataMap> tempList = (List)map.get("mng_dept_no");
+		
+		if(tempList.size()>0) {
+			gdi.update("Member.empteam_mng_dept_relUpdate", map.getMap());
+			for (int i=0;i<tempList.size();i++) {
+				map.put("deptno",tempList.get(i));
+				gdi.update("Member.empteam_mng_dept_relInsert", map.getMap());
+			}	
+		}
+	}
 	
 }
