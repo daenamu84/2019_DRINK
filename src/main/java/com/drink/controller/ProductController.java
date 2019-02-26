@@ -79,9 +79,10 @@ public class ProductController {
 		
 		try{
 		ModelAndView mav = new ModelAndView();
-		RequestMap paramMap = new RequestMap();
 		logger.debug("rtMap :: " + rtMap);
-		mav.addObject("productList", paramMap);
+		List<DataMap> rtnMap = productService.productList(rtMap);
+
+		mav.addObject("productList", rtnMap);
 		mav.setViewName("nobody/product/managerSearch");
 		return mav;
 		}catch (Exception e) {
@@ -109,6 +110,23 @@ public class ProductController {
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("message", "저장 하였습니다.");
 		return rtnMap;
+	}
+	
+	
+	@RequestMapping(value = "/productDetailView")
+	public ModelAndView productDetailView(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		try{
+		ModelAndView mav = new ModelAndView();
+		DataMap detail = productService.productDetail(rtMap);
+
+		mav.addObject("productList", detail);
+		mav.setViewName("nobody/product/managerUpdate");
+		return mav;
+		}catch (Exception e) {
+			logger.debug("err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","제품상세 검색중 에러가 발생 하였습니다."});
+		}
 	}
 	
 }
