@@ -149,23 +149,13 @@ var ajaxFlag = false;
 			<div class="col">
 				<div class="container border" style="padding: 5px;">
 					<div class="row">
-						<table class="table table-borderless" style="margin: 0 20px;">
-							<tbody>
 								<c:forEach items="${brandList}" var="i" varStatus="status">
 									<c:if test="${status.index eq 0 || (status.index%5) eq 0}">
-										<tr>
 									</c:if>
-										<td>
-											<label>
-											<input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if>
-											</label>
-										</td>
+											<div class="col-sm"><label><input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if></label></div>
 									<c:if test="${status.last || (status.index%5) eq 4}">
-										</tr>
 									</c:if>
 								</c:forEach>
-							</tbody>
-						</table>
 					</div>
 				</div>
 			</div>
