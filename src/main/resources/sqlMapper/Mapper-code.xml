@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Code">
+      
+    <select id="getCodeList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				CMM_CD_GRP_ID , CMM_CD_GRP_NM, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
+			 FROM T_CMM_CD_GRP_M
+			 
+       	]]>
+    </select>
+	
+	<select id="getMasterCodeCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COALESCE(count(CMM_CD_GRP_ID),0) CNT
+			 FROM T_CMM_CD_GRP_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+       	]]>
+    </select>
+    
+    <update id="masterInsert">
+    	<![CDATA[
+    	INSERT INTO T_CMM_CD_GRP_M
+			(CMM_CD_GRP_ID, CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{cmm_cd_grp_id}, #{cmm_cd_grp_nm}, '', #{use_yn}, now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    <select id="getMasterCodeView" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				CMM_CD_GRP_ID, CMM_CD_GRP_NM,  USE_YN
+			 FROM T_CMM_CD_GRP_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+       	]]>
+    </select>
+    
+    <update id="masterUpdate">
+    	<![CDATA[
+    		UPDATE T_CMM_CD_GRP_M
+    			SET CMM_CD_GRP_NM =   #{cmm_cd_grp_nm},
+    				  USE_YN = #{use_yn},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = 'hoyairis'
+    	    WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+    	]]>
+    </update>
+    
+    <select id="getCodeSubList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				 CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 ORDER BY SORT_ORD
+       	]]>
+    </select>
+    
+    <select id="getCodeSubCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COALESCE(count(cmm_cd_grp_id),0) CNT
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 AND CMM_CD = #{cmm_cd}
+       	]]>
+    </select>
+    
+    <select id="getCodeSubToalCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COALESCE(count(cmm_cd_grp_id),0) CNT
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+       	]]>
+    </select>
+    
+    <update id="subInsert">
+    	<![CDATA[
+    	INSERT INTO T_CMM_CD_M
+			(CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, CMM_CD_CNTN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{cmm_cd_grp_id},#{cmm_cd}, #{cmm_cd_nm}, '', #{sort_ord}, #{sub_use_yn}, now(), '0', now(), '0')
+    	]]>
+    </update>
+    
+    <select id="getCodeSubView" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, USE_YN
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 AND CMM_CD = #{cmm_cd}
+       	]]>
+    </select>
+    
+    <update id="subUpdate">
+    	<![CDATA[
+    		UPDATE T_CMM_CD_M
+    			SET   CMM_CD_NM = #{cmm_cd_nm},
+    				  USE_YN = #{sub_use_yn},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = 'hoyairis'
+    	    WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 AND CMM_CD = #{cmm_cd}
+    	]]>
+    </update>
+    
+</mapper>

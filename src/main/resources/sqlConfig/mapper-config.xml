@@ -29,7 +29,7 @@
           <mapper resource= "sqlMapper/Mapper-team.xml" />
           <mapper resource= "sqlMapper/Mapper-member.xml" />
           <mapper resource= "sqlMapper/Mapper-product.xml" />
-          
+          <mapper resource= "sqlMapper/Mapper-code.xml" />
      </mappers>
 </configuration>
 
