@@ -129,4 +129,23 @@ public class ProductController {
 		}
 	}
 	
+	@RequestMapping(value = "/productUpdate", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> productUpdate(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		RequestMap dt = new RequestMap();
+		dt.put("prodNo", vts.get("prodNo"));
+		dt.put("prodMlCd", vts.get("prodMlCd"));
+		dt.put("useYn", vts.get("useYn"));
+		
+		productService.productUpdate(dt);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "수정 하였습니다.");
+		return rtnMap;
+	}
+	
 }

@@ -36,4 +36,15 @@
 			LIMIT 1
        	]]>
     </select>
+    
+    <update id="productUpdate">
+    	<![CDATA[
+		UPDATE T_PROD_M
+			SET PROD_ML_CD = #{prodMlCd},
+				  USE_YN = #{useYn},
+				  DATA_UPD_DTM = NOW(),
+    			  DATA_UPD_ID = '1'
+		   WHERE PROD_NO = #{prodNo}
+    	]]>
+    </update>
 </mapper>

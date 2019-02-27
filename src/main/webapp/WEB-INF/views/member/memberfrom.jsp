@@ -288,7 +288,7 @@
 
 								<div class="text-md-right">
 										<input type="hidden" name="gubun" value="${gubun}">
-										<button type="submit" class="btn btn-dark"  id="memberWork">등록</button>
+										<input class="btn btn-dark" type="button" value="등록" id="memberWork">
                                 </div>
 								</form>
                              </div>

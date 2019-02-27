@@ -14,7 +14,6 @@ var ajaxFlag = false;
 	$(document).ready(function(){
 		
 		$("#productInsertLayer").click(function(){
-			console.log("클릭");
 			$("#popLayer").modal("show");
 		});
 
@@ -116,6 +115,60 @@ var ajaxFlag = false;
 	});
 	$(document).on("click","#ProductUpdate", function(){
 		alert("작업중 입니다.");
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		var _uProdNo = $("#uProdNo").val();
+		var _uProdMlCd = $("#uProdMlCd option:selected").val();
+		var _uUseYn = $("#uUseYn option:selected").val();
+		
+		if(_uProdNo=="" || _uProdNo== undefined){
+			alert("제품번호가 없습니다.  다시 시도해주세요.");
+			 ajaxFlag=false;
+			 location.reload();
+			 return;
+		}
+		if(_uProdMlCd=="" || _uProdMlCd== undefined){
+			alert("용량을 선택해주세요.");
+			 ajaxFlag=false;
+			 return;
+		}
+		if(_uUseYn=="" || _uUseYn== undefined){
+			alert("활성화를 선택해주세요.");
+			 ajaxFlag=false;
+			 return;
+		}
+		
+		
+		
+		$.ajax({      
+		    type:"POST",  
+		    url:"/productUpdate",      
+		    data: JSON.stringify({"prodNo":_uProdNo,"prodMlCd":_uProdMlCd ,"useYn":_uUseYn}),
+		    dataType:"json",
+		    contentType:"application/json;charset=UTF-8",
+		    traditional:true,
+		    success:function(args){   
+		        if(args.returnCode == "0000"){
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	$("#productSearch").trigger("click");
+		        }else{
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
 	});
 
 	
@@ -289,7 +342,7 @@ var ajaxFlag = false;
 
 				</div>
 				<div class="modal-footer">
-					<input class="btn btn-success float-right" type="button" id="ProductUpdate" value="등록">
+					<input class="btn btn-success float-right" type="button" id="ProductUpdate" value="수정">
 					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
 				</div>
 			</div>

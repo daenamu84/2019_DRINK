@@ -69,4 +69,24 @@ public class ProductService {
 		
 		return param;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void productUpdate(RequestMap map) throws DrinkException{
+		
+		if(map.getString("prodNo").equals("")){
+			 throw new DrinkException(new String[]{"messageError","제품No는 필수 값 입니다."});
+		}
+		if(map.getString("prodMlCd").equals("")){
+			throw new DrinkException(new String[]{"messageError","용량은 필수 값 입니다."});
+		}
+		if(map.getString("useYn").equals("")){
+			throw new DrinkException(new String[]{"messageError","활성화는 필수 값 입니다."});
+		}
+		
+		logger.debug("service :: " + map.toString());
+		int rtCnt = gdi.update("Product.productUpdate", map.getMap());
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","수정된 데이터가 없습니다."});
+		}
+	}
 }
