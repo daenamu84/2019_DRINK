@@ -114,7 +114,6 @@ var ajaxFlag = false;
 		});
 	});
 	$(document).on("click","#ProductUpdate", function(){
-		alert("작업중 입니다.");
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		
@@ -151,12 +150,14 @@ var ajaxFlag = false;
 		    success:function(args){   
 		        if(args.returnCode == "0000"){
 		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	ajaxFlag=false;
+		        	$("#prodDetailLayer").modal("hide");
 		        	$("#productSearch").trigger("click");
 		        }else{
 		        	alert(args.message.replace(/<br>/gi,"\n"));
 		        	location.reload();
+		        	ajaxFlag=false;
 		        }
-		        ajaxFlag=false;
 		    },   
 		    error:function(xhr, status, e){  
 		        if(xhr.status == 403){
