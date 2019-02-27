@@ -303,7 +303,7 @@ var ajaxFlag = false;
 					<div class="row">
 						<div class="col-sm-2">순위</div>
 						<div class="col-sm-2"><input type="text" id="sortOrd" class="form-control" /></div>
-						<div class="col-sm-4">
+						<div class="col-sm-5">
 							<input class="btn btn-primary" type="button" id="brandInsert" value="등록/수정">
 							<input class="btn btn-primary" type="button" id="brandClean" value="초기화">
 						</div>

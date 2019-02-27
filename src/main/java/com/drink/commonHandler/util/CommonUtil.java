@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonUtil {
 
-	String[] loginUrl = {"/teamList"};
+	String[] loginUrl = {"/logIn","/logInProcess"};
 	
 	/** 
 	* @ Title: getParameter 
@@ -70,6 +70,6 @@ public class CommonUtil {
 		if(Arrays.asList(loginUrl).indexOf(request.getRequestURI()) >= 0){
 			isLoginUrl = true;
 		}
-		return isLoginUrl;
+		return !isLoginUrl;
 	}
 }
