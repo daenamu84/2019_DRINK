@@ -16,7 +16,7 @@
 %>
 
 	 <nav class="navbar navbar-expand-md navbar-dark  bg-dark" style="margin-bottom:20px">
-		<a class="navbar-brand" href="#">Navbar</a>
+		<a class="navbar-brand" href="#">TB_SMS</a>
      
       	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         	<span class="navbar-toggler-icon"></span>
@@ -24,17 +24,20 @@
 
      	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 	     	<ul class="navbar-nav mr-auto">
-	        	<li class="nav-item active">
-	            	<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	        	<li class="nav-item ">
+	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">프로모션 관리 </a>
 	          	</li>
 	          	<li class="nav-item">
-	            	<a class="nav-link" href="#">Link</a>
+	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">업무조회</a>
 	          	</li>
 	          	<li class="nav-item">
-	            	<a class="nav-link " href="#">Disabled</a>
+	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">업소관리</a>
 	          	</li>
-	          	<li class="nav-item dropdown">
-	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리</a>
+	          	<li class="nav-item">
+	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">리포트</a>
+	          	</li>
+	          	<li class="nav-item active dropdown">
+	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리 <span class="sr-only">(current)</span></a>
 	            	<div class="dropdown-menu" aria-labelledby="dropdown01">
 						<a class="dropdown-item" href="/teamList">팀관리</a>
 		              	<a class="dropdown-item" href="/memberList">사원관리</a>
