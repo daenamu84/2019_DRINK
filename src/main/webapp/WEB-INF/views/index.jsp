@@ -10,7 +10,7 @@
 	<link rel="apple-touch-icon-precomposed" href="http://static.drink.com/DRINK/RAW-DOC/pc/expression/img/favicon.ico">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script>
-		location.replace("/main");
+		location.replace("/teamList");
 	</script>
 </head>
 <body>

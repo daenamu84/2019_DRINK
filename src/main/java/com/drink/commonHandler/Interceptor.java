@@ -72,7 +72,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		Boolean loginYn  = false;
 		
 		SessionDto sessionDto = sessionUtils.getLoginSession(request);
-		
+		logger.debug("sessionDto="+sessionDto);
 		if(sessionDto != null)
 			loginYn = true;
 		else

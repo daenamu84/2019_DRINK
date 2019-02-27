@@ -46,7 +46,7 @@ public class SessionUtils {
 	
 	public SessionDto isLogin(HttpServletRequest req) throws DrinkException{
 		SessionDto loginSession = getLoginSession(req);
-		if(loginSession == null || (loginSession.getVendorId() == null || "".equals(loginSession.getVendorId()))){
+		if(loginSession == null || (loginSession.getLgin_id() == null || "".equals(loginSession.getLgin_id()))){
 			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
 		return loginSession;

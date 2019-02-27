@@ -125,10 +125,15 @@
 					
 				}
 			});
-		
+			
+		    var url = "/memberWork";
+			if(emp_no!=""){
+				url = "/memberUpdate";
+			}
+			
 			$.ajax({      
 			    type:"POST",  
-			    url:"/memberUpdate",      
+			    url:url,      
 			    data: JSON.stringify({"deptno":deptno,"emp_no":emp_no,"ex_dept_no":ex_dept_no,"emp_nm":emp_nm,"login_id":login_id,"login_pwd":login_pwd,"emp_hp_no":emp_hp_no,"zip_cd":zip_cd,"emp_addr":emp_addr,"emp_birth":emp_birth,"entco_dt":entco_dt,"emp_grd_cd":emp_grd_cd,"use_yn":use_yn,"mng_dept_no":checkArr }),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",

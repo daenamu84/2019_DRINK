@@ -1,6 +1,6 @@
 /** 
 * @ Title: MetaTagVo.java 
-* @ Package: com.drink.vo.model.meta 
+* @ Package: com.wizwid.vo.model.meta 
 * @ Description: 
 * @ Author: Daenamu
 * @ Date: 2016. 12. 6. 오후 5:25:53 
@@ -25,9 +25,10 @@ public class SessionDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	String sessionId;
-	String vdNm;
-	String vendorId;
-	String userId;
+	String lgin_id;
+	String log_nm;
+	String emp_grd_cd;
+	String emp_no; 
 	
 	/**
 	 * @return the headTitle
@@ -41,37 +42,38 @@ public class SessionDto implements Serializable{
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	public String getLgin_id() {
+		return lgin_id;
+	}
+	public void setLgin_id(String lgin_id) {
+		this.lgin_id = lgin_id;
+	}
+	public String getLog_nm() {
+		return log_nm;
+	}
+	public void setLog_nm(String log_nm) {
+		this.log_nm = log_nm;
+	}
+	public String getEmp_grd_cd() {
+		return emp_grd_cd;
+	}
+	public void setEmp_grd_cd(String emp_grd_cd) {
+		this.emp_grd_cd = emp_grd_cd;
+	}
+	public String getEmp_no() {
+		return emp_no;
+	}
+	public void setEmp_no(String emp_no) {
+		this.emp_no = emp_no;
+	}
+	@Override
+	public String toString() {
+		return "SessionDto [sessionId=" + sessionId + ", lgin_id=" + lgin_id + ", log_nm=" + log_nm + ", emp_grd_cd="
+				+ emp_grd_cd + ", emp_no=" + emp_no + "]";
+	}
 	
 	
-	public String getUserId() {
-		return userId;
-	}
-	/**
-	 * @param headTitle the headTitle to set
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
-	public String getVdNm() {
-		return vdNm;
-	}
-	/**
-	 * @param headTitle the headTitle to set
-	 */
-	public void setVdNm(String vdNm) {
-		this.vdNm = vdNm;
-	}
-	
-	public String getVendorId() {
-		return vendorId;
-	}
-	/**
-	 * @param headTitle the headTitle to set
-	 */
-	public void setVendorId(String vendorId) {
-		this.vendorId = vendorId;
-	}
+
 	/** 
 	* @ Title: toString 
 	* @ Description: 
@@ -85,9 +87,5 @@ public class SessionDto implements Serializable{
 	*   ------			------			--------------------------------
 	*
 	*/ 
-	
-	@Override
-	public String toString() {
-		return "SessionDto [sessionId=" + sessionId + ", userId=" + userId + ", vdNm=" + vdNm + ", vendorId=" + vendorId + "]";
-	}
+
 }

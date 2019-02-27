@@ -19,17 +19,17 @@
 </c:if>
 <div class="container">
 	<c:if test="${configProp['sever.statement'] eq 'DEV'}">
-   		<div style="float:right;color:yellow;background-color:black;">개발</div>
+   		<div style="float:right;color:#ffffff;">개발</div>
    	</c:if> 
     <div class="row">
-    	<div class="col-md-4 col-md-offset-4 new-wrap">
+    	<div class="col-md-4 offset-4 new-wrap">
     		<div class="panel panel-default">
-			  	<div class="panel-heading">해당 서비스는 판매자만<span class="br-block"></span> 이용 하실 수 있습니다.</div>
+			  	<div class="panel-heading">해당 서비스는 이용자만<span class="br-block"></span> 가능합니다.</div>
 			  	<div class="panel-body">
 			    	<form name="loginForm" method="post"  action="/logInProcess">
                     <fieldset>
 			    	  	<div class="form-group">
-			    		    <input class="form-control" placeholder="PIN UserID" name="loginId" id="loginId"  type="text">
+			    		    <input class="form-control" placeholder="UserID" name="loginId" id="loginId"  type="text">
 							<%-- 
 							<%
 								if( notNullId != null && "".equals(notNullId) ){

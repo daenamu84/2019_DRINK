@@ -114,7 +114,10 @@ public class LoginController {
 	*
 	*/ 
 	@RequestMapping(value = "/logInProcess")
-	public String logInProcess(Locale locale,  ModelMap model,  @ModelAttribute loginDto param, HttpServletRequest req, HttpServletResponse res, BindingResult bindingResult) throws DrinkException{
+	public String logInProcess(Locale locale,  ModelMap model,  @ModelAttribute loginDto param, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res, BindingResult bindingResult) throws DrinkException{
+		
+		logger.debug("rtMap :: " + rtMap.toString());
+		
 		SessionDto xt = sessionUtils.getLoginSession(req);
 		if(xt != null){
 			return "redirect:/main";
@@ -134,13 +137,14 @@ public class LoginController {
 			model.addAttribute("errorResult", resultMap.getMap());
 			return "user/login";
 		}
-				
-		resultMap.setRequest(req);
-		resultMap.put("param", param);
-		loginService.setLogIn(resultMap);   // login 프로세스 
 		
-		String flag = resultMap.getString("isLogin");
-
+		resultMap.setRequest(req);
+		resultMap.put("login_id", rtMap.get("loginId"));
+		resultMap.put("login_pwd",rtMap.get("passwd"));
+		
+		String flag  = loginService.setLogIn(resultMap);   // login 프로세스 
+		
+		logger.debug("flag=="+flag);
 		
 		if(flag.equals("1")){
 			resultMap.put("notEqualId", "notEqual.loginId");
@@ -153,11 +157,12 @@ public class LoginController {
 		}
 		model.clear(); 
 		String  returnURL = req.getParameter("returnURL") ;
+		logger.debug("returnURL=="+returnURL);
 		if(returnURL != null && !"".equals(returnURL.trim())){
 			model.addAttribute("returnURL",returnURL);
 			return "redirectPage";
 		}else{
-			return "redirect:/main";
+			return "redirect:/teamList";
 		}
 	}
 	
