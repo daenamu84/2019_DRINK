@@ -48,7 +48,9 @@
 	          	</li>
 	        </ul>
 	        <form class="form-inline my-2 my-lg-0">
-				<font color="#ffffff"> login</font>
+				<c:if test="${nul ne loginSession}">
+				<a href="/logOut" class="btn btn-default center-block"><font color="#ffffff"> logout</font></a>
+			</c:if>
 	        </form>
       	</div>
 	</nav>
