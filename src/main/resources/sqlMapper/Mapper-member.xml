@@ -35,7 +35,7 @@
     	<![CDATA[
     	INSERT INTO T_EMP_M
 			( EMP_NM, EMP_HP_NO, LOGIN_ID, LOGIN_PWD, ENTCO_DT, ZIP_CD, EMP_ADDR, EMP_BIRTH, USE_YN, EMP_GRD_CD, DEPT_NO, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{emp_nm}, #{emp_hp_no}, #{login_id}, #{login_pwd}, #{entco_dt}, #{zip_cd}, #{emp_addr}, #{emp_birth}, #{use_yn}, #{emp_grd_cd}, #{deptno}, now(), '0', now(), '0')
+			VALUES ( #{emp_nm}, #{emp_hp_no}, #{login_id}, (HEX(AES_ENCRYPT(#{login_pwd}, 'tb_sms'))), #{entco_dt}, #{zip_cd}, #{emp_addr}, #{emp_birth}, #{use_yn}, #{emp_grd_cd}, #{deptno}, now(), '0', now(), '0')
     	]]>
     </update>
     
@@ -120,7 +120,7 @@
     
    <select id="getEmPassWD" resultType="DataMap">
     	<![CDATA[
-		  	SELECT LOGIN_PWD
+		  	SELECT CAST(AES_DECRYPT(UNHEX(LOGIN_PWD), 'tb_sms')  as char(100))  LOGIN_PWD
 			FROM T_EMP_M 
 			WHERE EMP_NO =#{emp_no} 
 				AND USE_YN ='Y'
