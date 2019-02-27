@@ -6,12 +6,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
+
+
+<c:forEach items="${productList}" var="i" varStatus="status">
 	<tr>
-		<td><a href="javascript:subListView('1');"class="text-decoration-none">1</a></td>
-		<td>브랜드명</td>
-		<td>서브브랜드명</td>
-		<td><a href="javascript:subListView('2');"class="text-decoration-none">용량</a></td>
-		<td>주류유형</td>
-		<td>당사/타사</td>
-		<td>활성화</td>
+		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_NO}</a></td>
+		<td>${i.BRAND_NM}</td>
+		<td>${i.SUB_BRAND_NM}</td>
+		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_ML_CD}</a></td>
+		<td>${i.LIQ_KD_CD}</td>
+		<td>${i.ORCO_BRAND_YN}</td>
+		<td>${i.USE_YN}</td>
 	</tr>
+</c:forEach>

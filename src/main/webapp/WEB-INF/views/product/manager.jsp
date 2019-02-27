@@ -17,7 +17,7 @@ var ajaxFlag = false;
 			console.log("클릭");
 			$("#popLayer").modal("show");
 		});
-		
+
 		$("#ProductInsert").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
@@ -113,8 +113,9 @@ var ajaxFlag = false;
 		        ajaxFlag=false;
 		    }  
 		});
-		
-
+	});
+	$(document).on("click","#ProductUpdate", function(){
+		alert("작업중 입니다.");
 	});
 
 	
@@ -137,6 +138,37 @@ var ajaxFlag = false;
 		    }  
 		});
 	},0));
+	
+	
+	function productDetail(prod_no){
+		
+		$("#prodDetailView").empty();
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		$.ajax({      
+		    type:"POST",  
+		    url:"/productDetailView",      
+		    data: {"prodNo":prod_no},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+				$("#prodDetailLayer").modal("show");
+		        $("#prodDetailView").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	}
+	
 		
 	
 
@@ -149,23 +181,13 @@ var ajaxFlag = false;
 			<div class="col">
 				<div class="container border" style="padding: 5px;">
 					<div class="row">
-						<table class="table table-borderless" style="margin: 0 20px;">
-							<tbody>
 								<c:forEach items="${brandList}" var="i" varStatus="status">
 									<c:if test="${status.index eq 0 || (status.index%5) eq 0}">
-										<tr>
 									</c:if>
-										<td>
-											<label>
-											<input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if>
-											</label>
-										</td>
+											<div class="col-sm"><label><input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if></label></div>
 									<c:if test="${status.last || (status.index%5) eq 4}">
-										</tr>
 									</c:if>
 								</c:forEach>
-							</tbody>
-						</table>
 					</div>
 				</div>
 			</div>
@@ -205,7 +227,7 @@ var ajaxFlag = false;
 					<h5 class="modal-title" id="exampleModalLabel">제품 등록</h5>
 		        	<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
-				<div class="modal-body" id="subLayer">
+				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row">			
 							<div class="col-sm-3">브랜드</div>
@@ -252,4 +274,26 @@ var ajaxFlag = false;
 		</div>
 	</div>
 <!-- modal  end  -->
+
+<!-- modal detail start  -->	
+	<div id="prodDetailLayer" class="modal fade" role="dialog">
+		<div class="modal-dialog ">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">제품 수정</h5>
+		        	<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+				</div>
+				<div class="modal-body" id="prodDetailView">
+
+
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-success float-right" type="button" id="ProductUpdate" value="등록">
+					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- modal detail end  -->
 </div>
