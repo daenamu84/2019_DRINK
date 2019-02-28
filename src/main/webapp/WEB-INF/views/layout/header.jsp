@@ -31,7 +31,7 @@
 	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">업무조회</a>
 	          	</li>
 	          	<li class="nav-item">
-	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">업소관리</a>
+	            	<a class="nav-link " href="/vendorList">업소관리</a>
 	          	</li>
 	          	<li class="nav-item">
 	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">리포트</a>
@@ -49,6 +49,7 @@
 	        </ul>
 	        <form class="form-inline my-2 my-lg-0">
 				<c:if test="${nul ne loginSession}">
+				<font color="#ffffff">${loginSession.log_nm}님 안녕하세요</font>
 				<a href="/logOut" class="btn btn-default center-block"><font color="#ffffff"> logout</font></a>
 			</c:if>
 	        </form>

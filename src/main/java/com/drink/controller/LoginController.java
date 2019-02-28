@@ -144,7 +144,6 @@ public class LoginController {
 		
 		String flag  = loginService.setLogIn(resultMap);   // login 프로세스 
 		
-		logger.debug("flag=="+flag);
 		
 		if(flag.equals("1")){
 			resultMap.put("notEqualId", "notEqual.loginId");
@@ -157,7 +156,7 @@ public class LoginController {
 		}
 		model.clear(); 
 		String  returnURL = req.getParameter("returnURL") ;
-		logger.debug("returnURL=="+returnURL);
+		
 		if(returnURL != null && !"".equals(returnURL.trim())){
 			model.addAttribute("returnURL",returnURL);
 			return "redirectPage";

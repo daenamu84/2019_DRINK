@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Vendor">
+    
+    
+     <select id="getTeamList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT DEPT_NO, TEAMNM, USE_YN
+			FROM T_DEPT_M
+			WHERE USE_YN = 'Y'
+			ORDER BY SORT_ORD  
+       	]]>
+    </select>
+        
+</mapper>

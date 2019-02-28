@@ -108,4 +108,16 @@
     	]]>
     </update>
     
+    
+     <select id="getCommonCodeList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				 CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM 
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 AND USE_YN = 'Y'
+			 ORDER BY SORT_ORD
+       	]]>
+    </select>
+    
 </mapper>

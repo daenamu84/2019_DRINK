@@ -30,6 +30,7 @@
           <mapper resource= "sqlMapper/Mapper-member.xml" />
           <mapper resource= "sqlMapper/Mapper-product.xml" />
           <mapper resource= "sqlMapper/Mapper-code.xml" />
+          <mapper resource= "sqlMapper/Mapper-vendor.xml" />
      </mappers>
 </configuration>
 
