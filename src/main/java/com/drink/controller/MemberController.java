@@ -37,6 +37,7 @@ import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.service.login.LoginService;
 import com.drink.service.member.MemberService;
+import com.drink.service.vendor.VendorService;
 
 
 /** 
@@ -60,6 +61,7 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
 	
 	@RequestMapping(value = "/memberList")
 	public ModelAndView main(Locale locale, Model model) throws DrinkException {
@@ -93,8 +95,13 @@ public class MemberController {
 		
 		List<DataMap> rtnMpa0 = memberService.getDeptList(paramMap);
 		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00002"); // 사원등급 
+		
+		List<DataMap> commonMap = memberService.getCommonCode(map);
 		logger.debug("rtnMap :: " + rtnMpa0);
 		mav.addObject("deptMMList", rtnMpa0);
+		mav.addObject("commonList", commonMap);
 		
 		mav.setViewName("member/memberfrom");
 		return mav;
@@ -167,6 +174,10 @@ public class MemberController {
 		RequestMap paramMap = new RequestMap();
 		List<DataMap> rtnMpa0 = memberService.getDeptList(paramMap);
 		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00002"); // 사원등급 
+		
+		List<DataMap> commonMap = memberService.getCommonCode(map);
 		
 		
 		RequestMap dt = new RequestMap();
@@ -184,6 +195,7 @@ public class MemberController {
 		mav.addObject("data",memberView);
 		mav.addObject("memberDeptList",memberDeptList);
 		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.addObject("commonList", commonMap);	
 		
 		mav.setViewName("member/memberfrom");
 		return mav;

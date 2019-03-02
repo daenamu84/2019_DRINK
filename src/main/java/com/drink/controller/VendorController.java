@@ -35,12 +35,15 @@ import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.login.LoginService;
 import com.drink.service.vendor.VendorService;
+import com.drink.commonHandler.Exception.DrinkException;
 
 
 /** 
-* @ ClassName: BrandController 
+* @ ClassName: VendorController 
 * @ Description: 
 * @ Author: Daenamu
 * @ Date: 2019. 2. 19. 오후 6:16:59 
@@ -61,8 +64,19 @@ public class VendorController {
 	@Autowired
 	private VendorService vendorService;
 	
+	@Autowired
+	private SessionUtils sessionUtils;
+	
 	@RequestMapping(value = "/vendorList")
-	public ModelAndView main(Locale locale, Model model) throws DrinkException {
+	public ModelAndView main(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+		
+		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -75,14 +89,23 @@ public class VendorController {
 		
 		List<DataMap> commonMap = vendorService.getCommonCode(map);
 		
+		map.clear();
+		map.put("cmm_cd_grp_id", "00005"); // 마켓코드
+		List<DataMap> marketMap = vendorService.getCommonCode(map);
+		
+		map.clear();
+		map.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
+		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
 //		
-//		List<DataMap> rtnMap = memberService.getEmpMList(paramMap);
+//		List<DataMap> rtnMap = vendorService.getEmpMList(paramMap);
 //		
 //		logger.debug("rtnMap :: " + rtnMpa0);
 //		logger.debug("rtnMap :: " + rtnMap);
 //		
 		mav.addObject("deptMMList", rtnMap);
 		mav.addObject("commonList", commonMap);		
+		mav.addObject("marketMap", marketMap);
+		mav.addObject("sgmtMap", sgmtMap);
 //		mav.addObject("empMList", rtnMap);
 		
 		mav.setViewName("vendor/vendorlist");
@@ -92,17 +115,66 @@ public class VendorController {
 	@RequestMapping(value = "/vendorForm")
 	public ModelAndView memberForm(Locale locale, Model model) throws DrinkException {
 		
+	
+		
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00005"); // 마켓코드
+		List<DataMap> marketMap = vendorService.getCommonCode(paramMap);
 		
-		List<DataMap> rtnMap = vendorService.getTeamList(paramMap);
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
+		List<DataMap> sgmtMap = vendorService.getCommonCode(paramMap);
 		
-		mav.addObject("deptMMList", rtnMap);
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00008"); // 관계자 구분코드
+		List<DataMap> relrdivscdMap = vendorService.getCommonCode(paramMap);
+		
+		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		
+		mav.addObject("marketMap", marketMap);
+		mav.addObject("sgmtMap", sgmtMap);
+		mav.addObject("relrdivscdMap", relrdivscdMap);
+		mav.addObject("deptMngList", rtnMngMap);
 		
 		mav.setViewName("vendor/vendorfrom");
 		return mav;
 	}
 	
+	@RequestMapping(value = "/Dept_EmpList")
+	public ModelAndView DeptEmpList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		try{
+		ModelAndView mav = new ModelAndView();
+		logger.debug("rtMap :: " + rtMap);
+		List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
+
+		mav.addObject("EmpList", rtnMap);
+		mav.setViewName("nobody/vendor/vendorTeamList");
+		return mav;
+		}catch (Exception e) {
+			logger.debug("err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","제품 검색중 에러가 발생 하였습니다."});
+		}
+	}
+
+	@RequestMapping(value = "/vendorInsert")
 	
+	public String VendorInsert(Locale locale,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		
+		rtMap.put("login_id", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		vendorService.VendorInsert(rtMap);
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return "redirect:/vendorList";
+		//return rtnMap;
+	}
 }

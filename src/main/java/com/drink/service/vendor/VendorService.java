@@ -45,6 +45,14 @@ public class VendorService {
 		return param;
 	}
 	
+	public List getMngTeamList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Vendor.getMngTeamList",param);
+		
+		return param;
+	}
+	
 	public List getCommonCode(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
@@ -53,5 +61,52 @@ public class VendorService {
 		return param;
 	}
 	
+	public List getDeptEmpList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		logger.debug("map=="+ map.toString());
+		logger.debug("map=="+ map.get("deptno"));
+		
+		map.put("deptno", map.get("deptno").toString());
+		
+		param = gdi.selectList("Vendor.getDeptEmpList",map.getMap());
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void VendorInsert(RequestMap map) throws DrinkException{
+		logger.debug("service 111111111 :: " + map.toString());
+		
+		DataMap countMap = (DataMap) gdi.selectOne("Vendor.getVendorCnt",  map.getMap()); 
+		if(countMap != null && countMap.getInt("CNT") == 0 ){
+			gdi.update("Vendor.masterInsert", map.getMap());
+			
+			DataMap param = new DataMap();
+			
+			int vendor_no = 0;
+			
+			param = (DataMap) gdi.selectOne("Vendor.getVendorNo",map.getMap());
+			
+			if(param.getString("VENDOR_NO")!= ""){
+				vendor_no = param.getInt("VENDOR_NO");
+			}
+			
+			if(vendor_no==0) {
+				throw new DrinkException(new String[]{"messageError","거래처 입력에 실패했습니다."});
+			}
+			
+			map.put("vendor_no", vendor_no);
+			
+			gdi.update("Vendor.detailInsert", map.getMap());
+			gdi.update("Vendor.vendor_userInsert", map.getMap());
+			
+		}else{
+			int rtCnt = gdi.update("Vendor.masterUpdate", map.getMap());
+			if(rtCnt < 1){
+				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+			}
+		}
+		
+	}
 	
 }

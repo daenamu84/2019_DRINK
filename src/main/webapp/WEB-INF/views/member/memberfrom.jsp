@@ -264,12 +264,12 @@
                                 <div class="form-group row">
                                     <label for="emp_grd_cd" class="col-md-2 col-form-label text-md-left">사원등급</label>
                                     <div class="col-md-6">
-                                        <select name="emp_grd_cd" class="form-control" id="emp_grd_cd">
-											<option value="0001" <c:if test="${i.DEPT_NO eq data.EMP_GRD_CD}">selected</c:if>>ADMIN</option>
-											<option value="0002" <c:if test="${i.DEPT_NO eq data.EMP_GRD_CD}">selected</c:if>>슈퍼관리자</option>
-											<option value="0003" <c:if test="${i.DEPT_NO eq data.EMP_GRD_CD}">selected</c:if>>부서관리자</option>
-											<option value="0004" <c:if test="${i.DEPT_NO eq data.EMP_GRD_CD}">selected</c:if>>일반</option>
-										</select>
+                                    	<select name="emp_grd_cd" class="form-control" id="emp_grd_cd">
+													<c:forEach items="${commonList}" var="j">
+														<option value="${j.CMM_CD}" <c:if test="${j.CMM_CD eq data.EMP_GRD_CD}">selected</c:if>>${j.CMM_CD_NM} </option>
+													</c:forEach>
+												</select>
+                                        
                                     </div>
                                 </div>
                                  <div class="form-group row">

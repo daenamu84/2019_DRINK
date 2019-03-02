@@ -117,31 +117,14 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						  <c:set var="emp_grd_cd" value="${loginSession.emp_grd_cd}" />
 						    <c:forEach items="${empMList}" var="i" varStatus="status">
-						    	<c:choose>
-						    		<c:when test="${loginSession.lgin_id eq i.LOGIN_ID and (emp_grd_cd ne '0001' and emp_grd_cd ne '0002')}">
-								    	<tr>
-											<td>0${i.TEAMNM}</td>
-											<td><a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a>		
-											</td>
-											<td>${i.LOGIN_ID}</td>
-											<td>${i.EMP_GRD_CD}</td>
-											<td>${i.USE_YN_NM}</td>
-										</tr>
-						    		</c:when>
-						    		<c:when test="${emp_grd_cd eq '0001' or emp_grd_cd eq '0002'}">
-						    			<tr>
-											<td>${i.TEAMNM}</td>
-											<td>
-													<a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a>
-											</td>
-											<td>${i.LOGIN_ID}</td>
-											<td>${i.EMP_GRD_CD}</td>
-											<td>${i.USE_YN_NM}</td>
-										</tr>
-						    		</c:when>
-						    	</c:choose>
+								<tr>
+									<td>${i.TEAMNM}</td>
+									<td><a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a></td>
+									<td>${i.LOGIN_ID}</td>
+									<td>${i.EMP_GRD_CD}</td>
+									<td>${i.USE_YN_NM}</td>
+								</tr>
 							</c:forEach>
 						  </tbody>
 						</table>

@@ -12,5 +12,118 @@
 			ORDER BY SORT_ORD  
        	]]>
     </select>
-        
+    
+     <select id="getMngTeamList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT DISTINCT B.DEPT_NO, B.TEAMNM
+			FROM T_DEPT_EMP_REL_D A, T_DEPT_M B
+			WHERE A.EMP_DEPT_REL_GBN_CD ='0001'
+				AND A.EFF_END_DT ='99991231'
+				AND A.DEPT_NO = B.DEPT_NO
+				AND B.USE_YN = 'Y'
+			ORDER BY B.SORT_ORD 
+       	]]>
+    </select>
+    
+     <select id="getDeptEmpList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT DISTINCT B.EMP_NO, B.EMP_NM
+			FROM T_DEPT_EMP_REL_D A, T_EMP_M B
+			WHERE A.EMP_DEPT_REL_GBN_CD ='0002'
+				AND A.EFF_END_DT ='99991231'
+				AND A.DEPT_NO = B.DEPT_NO
+				AND A.DEPT_NO= #{deptno}
+				AND B.USE_YN = 'Y'
+			ORDER BY B.EMP_NO
+       	]]>
+    </select>
+    
+    <select id="getVendorCnt" resultType="DataMap">
+    	<![CDATA[
+    		 SELECT 
+				COALESCE(count(VENDOR_NO),0) CNT
+			 FROM T_VENDOR_M
+			 WHERE VENDOR_NO = #{vendor_no}   
+       	]]>
+    </select>    
+    
+    <update id="masterInsert">
+    	<![CDATA[
+    	INSERT INTO T_VENDOR_M
+			(OUTLET_NM ,VENDOR_STAT_CD ,VENDOR_ZIP_NO ,VENDOR_ADDR ,VENDOR_TEL_NO ,VENDOR_URL ,MARKET_DIVS_CD ,VENDOR_SGMT_DIVS_CD ,VENDOR_BRNO, VENDOR_RRNO,
+  			 WHOLESALE_YN, WHOLESALE_VENDOR_NO ,GOV_REL_D ,GOV_REL_CNTN ,BANK_NM ,BANK_ACCNT_NO ,BANK_ACCNT_NM ,PAYMENT_TERM ,DATA_REG_DTM ,DATA_REG_ID ,DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{outlet_nm}, '01', #{vendor_zip_no}, #{vendor_addr}, #{vendor_tel_no}, #{vendor_url}, #{market_divs_cd}, #{vendor_sgmt_divs_cd}, #{vendor_brno}, (HEX(AES_ENCRYPT(#{vendor_rrno}, 'tb_sms'))),
+			#{wholesale_yn}, #{wholesale_vendor_no}, #{gov_rel_d}, #{gov_rel_cntn}, #{bank_nm}, (HEX(AES_ENCRYPT(#{bank_accnt_no}, 'tb_sms'))), #{bank_accnt_nm}, #{payment_term}, now(), #{login_id}, now(), #{login_id})
+    	]]>
+    </update>
+     
+    <update id="detailInsert">
+    	<![CDATA[
+    	INSERT INTO T_VENDOR_EMP_D
+			(VENDOR_NO, EFF_END_DT, EFF_STA_DT, MNGR_DIVS_CD, EMP_NO, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM , DATA_UPD_ID) 
+			VALUES ( #{vendor_no}, '99991231',  DATE_FORMAT(now(), '%Y%m%d'), '0001', #{empno}, now(),#{login_id}, now(),#{login_id})
+    	]]>
+    </update>
+    
+    <update id="vendor_userInsert">
+    	<![CDATA[
+    	INSERT INTO T_VENDOR_USER_D
+			( VENDOR_NO, RELR_DIVS_CD, RELR_NM, RELR_DEPT_NM, RELR_POSTION_NM, RELR_EMAIL, RELR_TEL_NO, RELR_ANVS_DT,
+			  ETC, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{vendor_no}, #{relr_divs_cd}, #{relr_nm}, #{relr_dept_nm}, #{relr_postion_nm}, #{relr_email}, #{relr_tel_no}, #{relr_anvs_dt}, #{etc}, now(), #{login_id}, now(),#{login_id})
+    	]]>
+    </update>
+    
+    <update id="masterUpdate">
+    	<![CDATA[
+    		UPDATE T_VENDOR_M
+    			SET   OUTLET_NM =   #{outlet_nm}
+    			  	,VENDOR_ZIP_NO = #{vendor_zip_no}
+				  	,VENDOR_ADDR = #{vendor_addr}
+				  	,VENDOR_TEL_NO = #{vendor_tel_no}
+				  	,VENDOR_URL = #{vendor_url}
+				  	,MARKET_DIVS_CD = #{market_divs_cd}
+				  	,VENDOR_SGMT_DIVS_CD = #{vendor_sgmt_divs_cd}
+				  	,WHOLESALE_YN = #{wholesale_yn}
+				  	,WHOLESALE_VENDOR_NO =#{wholesale_vendor_no}
+				  	,GOV_REL_D = #{gov_rel_d}
+				  	,GOV_REL_CNTN =#{gov_rel_cntn}
+				  	,BANK_NM = #{bank_nm}
+				  	,BANK_ACCNT_NO = (HEX(AES_ENCRYPT(#{bank_accnt_no}, 'tb_sms')))
+				  	,BANK_ACCNT_NM =#{bank_accnt_nm}
+				  	,PAYMENT_TERM = #{payment_term}
+    				,DATA_UPD_DTM = NOW()
+    				,DATA_UPD_ID = #{login_id}
+    	    WHERE VENDOR_NO = #{vendor_no}
+    	]]>
+    </update>
+    
+    <update id="detailupdate">
+    	<![CDATA[
+    		UPDATE T_VENDOR_EMP_D
+    		SET EFF_END_DT = DATE_FORMAT(now(), '%Y%m%d'),
+    		    DATA_UPD_DTM = now(),
+    			DATA_UPD_ID =   #{login_id}
+ 			WHERE VENDOR_NO = #{vendor_no}			
+    	]]>
+    </update>
+    
+    <select id="getdetailEmpNo" resultType="DataMap">
+    	<![CDATA[
+    		 SELECT 
+				EMP_NO
+			 FROM T_VENDOR_EMP_D
+			 WHERE VENDOR_NO = #{vendor_no} 
+			 AND EFF_END_DT='99991231'  
+       	]]>
+    </select>  
+    
+     <select id="getVendorNo" resultType="DataMap">
+    	<![CDATA[
+		  	SELECT VENDOR_NO
+			FROM T_VENDOR_M 
+			WHERE OUTLET_NM =#{outlet_nm} 
+       	]]>
+    </select>
+    
 </mapper>

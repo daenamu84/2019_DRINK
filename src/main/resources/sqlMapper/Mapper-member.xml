@@ -52,7 +52,7 @@
     	<![CDATA[
     	INSERT INTO T_DEPT_EMP_REL_D
 			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( 'E001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+			VALUES ( '0001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
     	]]>
     </update>
     
@@ -60,7 +60,7 @@
     	<![CDATA[
     	INSERT INTO T_DEPT_EMP_REL_D
 			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( 'M001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+			VALUES ( '0002', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
     	]]>
     </update>
     
@@ -102,9 +102,10 @@
     
      <select id="getmemberMView" resultType="DataMap">
     	<![CDATA[
-			SELECT EMP_NO, EMP_NM, EMP_HP_NO, LOGIN_ID, LOGIN_PWD, ENTCO_DT, ZIP_CD, EMP_ADDR, EMP_BIRTH, USE_YN, EMP_GRD_CD, DEPT_NO, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID 
-			FROM T_EMP_M
-			WHERE EMP_NO =#{emp_no}
+    		SELECT A.EMP_NO, A.EMP_NM, A.EMP_HP_NO, A.LOGIN_ID, A.LOGIN_PWD, A.ENTCO_DT, A.ZIP_CD, A.EMP_ADDR, A.EMP_BIRTH, A.USE_YN, A.EMP_GRD_CD, A.DEPT_NO, A.DATA_REG_DTM, A.DATA_REG_ID, A.DATA_UPD_DTM, A.DATA_UPD_ID ,
+  				(SELECT TEAMNM FROM T_DEPT_M B WHERE B.DEPT_NO = A.DEPT_NO) TEAMNM
+			FROM T_EMP_M A
+			WHERE A.EMP_NO =#{emp_no}
        	]]>
     </select>
     

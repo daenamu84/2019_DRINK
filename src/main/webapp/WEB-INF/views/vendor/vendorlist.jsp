@@ -83,6 +83,7 @@
 												<td style="padding-left:20px;">팀</td>
 												<td style="padding-left:20px;">
 													<select name="deptno" class="form-control" id="deptno">
+														<option value="ALL">전체</option>
 														<c:forEach items="${deptMMList}" var="i">
 															<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
 														</c:forEach>
@@ -95,20 +96,25 @@
 												<td>Market</td>
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
-														<option value="1">Market1</option>
-														<option value="2">Market2</option>
+														<option value="ALL">전체</option>
+														<c:forEach items="${marketMap}" var="k">
+															<option value="${k.CMM_CD}">${k.CMM_CD_NM} </option>
+														</c:forEach>
 													</select>
 												</td>
 												<td style="padding-left:20px;">Segmentation</td>
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
-														<option value="1">Segmentation1</option>
-														<option value="2">Segmentation2</option>
+														<option value="ALL">전체</option>
+														<c:forEach items="${sgmtMap}" var="l">
+															<option value="${l.CMM_CD}">${l.CMM_CD_NM} </option>
+														</c:forEach>
 													</select>
 												</td>
 												<td style="padding-left:20px;">거래처상태</td>
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
+														<option value="ALL">전체</option>
 														<c:forEach items="${commonList}" var="j">
 															<option value="${j.CMM_CD}">${j.CMM_CD_NM} </option>
 														</c:forEach>

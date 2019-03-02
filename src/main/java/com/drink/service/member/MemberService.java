@@ -157,4 +157,12 @@ public class MemberService {
 		}
 	}
 	
+	public List getCommonCode(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Code.getCommonCodeList",map.getMap());
+		
+		return param;
+	}
+	
 }
