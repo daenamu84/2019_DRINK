@@ -45,7 +45,13 @@
 		        ajaxFlag=false;
 		    }  
 		});
+	}
+	
+	function wholesalevendo(e){
 		
+		if(e.value =='N'){
+			$("#wholesale_vendor_area").show();
+		}
 	}
 	
 	$(document).on("click","#vendorInsert", function(){
@@ -54,6 +60,18 @@
 		
 		if($("#outlet_nm").val() ==""){
 			alert("거래처명을 입력하세요");
+			ajaxFlag=false;
+			return;
+		}
+		
+		if($("#vendor_grd_cd option:selected").val() == ""){
+			alert("거래처 등급을  선택 하세요");
+			ajaxFlag=false;
+			return;
+		}
+		
+		if($("#vendor_area_cd option:selected").val() == ""){
+			alert("거래처 지역을  선택 하세요");
 			ajaxFlag=false;
 			return;
 		}
@@ -72,6 +90,21 @@
 			ajaxFlag=false;
 			return;
 		}
+		
+		if($("#wholesale_yn option:selected").val() == ""){
+			alert("도매장여부 선택 하세요");
+			ajaxFlag=false;
+			return;
+		}
+		
+		
+		if($("#gov_rel_d option:selected").val() == ""){
+			alert("공직자관련여부  선택 하세요");
+			ajaxFlag=false;
+			return;
+		}
+		
+		
 		
 		document.Form.action="/vendorInsert";
 		document.Form.submit();
@@ -92,6 +125,42 @@
                                 	<label for="outlet_nm" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처명 </label>
                                     <div class="col-md-6"><input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NM}"></div>
                                 </div>
+                                <%if(request.getParameter("gubun")!=null){ %>
+                                <c:if test="${loginSession.emp_grd_cd ne '0004' }">
+                                <div class="form-group row">
+                                	<label for="vendor_stat_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처 상태 </label>
+                                    <div class="col-md-6">
+                                    	<select name="vendor_stat_cd" class="form-control" id="vendor_stat_cd" >
+											<c:forEach items="${vendorstatList}" var="z">
+											<option value="${z.CMM_CD}" <c:if test="${z.CMM_CD eq data.VENDOR_STAT_CD}">selected</c:if>>${z.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+                                </div>
+                                </c:if>
+                                <%} %>
+                                <div class="form-group row">
+                                    <label for="vendor_grd_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처 등급</label>
+                                    <div class="col-md-6">
+                                    	<select name="vendor_grd_cd" class="form-control" id="vendor_grd_cd" >
+											<option value="">선택하세요</option>
+											<c:forEach items="${vendorgrdcdList}" var="a">
+											<option value="${a.CMM_CD}" <c:if test="${a.CMM_CD eq data.VENDOR_GRD_CD}">selected</c:if>>${a.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+                                    </div>
+                                </div>
+                                 <div class="form-group row">
+                                    <label for="vendor_area_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처 지역</label>
+                                    <div class="col-md-6">
+                                    	<select name="vendor_area_cd" class="form-control" id="vendor_area_cd" >
+											<option value="">선택하세요</option>
+											<c:forEach items="${vendorareacdMap}" var="b">
+											<option value="${b.CMM_CD}" <c:if test="${b.CMM_CD eq data.VENDOR_AREA_CD}">selected</c:if>>${b.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label for="vendor_brno" class="col-md-2 col-form-label text-md-left">사업자등록번호</label>
                                     <div class="col-md-6"><input type="text" id="vendor_brno" class="form-control" name="vendor_brno" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_BRNO}"></div>
@@ -107,9 +176,9 @@
                                     <label for="deptno" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>관리 팀</label>
                                     <div class="col-md-6">
                                     	<select name="deptno" class="form-control" id="deptno" onchange="getTeamList(event);">
-											<option value="ALL">전체</option>
-											<c:forEach items="${deptMngList}" var="i">
-											<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
+											<option value="">선택하세요</option>
+											<c:forEach items="${deptMngList}" var="c">
+											<option value="${c.DEPT_NO}" <c:if test="${c.DEPT_NO eq data.DEPT_NO}">selected</c:if>>${c.TEAMNM} </option>
 											</c:forEach>
 										</select>
                                     </div>
@@ -138,8 +207,8 @@
                                     <label for="market_divs_cd" class="col-md-2 col-form-label text-md-left">Market</label>
                                     <div class="col-md-6">
                                     	<select name="market_divs_cd" class="form-control" id="market_divs_cd">
-											<c:forEach items="${marketMap}" var="k">
-												<option value="${k.CMM_CD}">${k.CMM_CD_NM} </option>
+											<c:forEach items="${marketMap}" var="d">
+												<option value="${d.CMM_CD}" <c:if test="${d.CMM_CD eq data.MARKET_DIVS_CD}">selected</c:if>>${d.CMM_CD_NM} </option>
 											</c:forEach>
 										</select>
                                     </div>
@@ -148,8 +217,8 @@
                                     <label for="vendor_sgmt_divs_cd" class="col-md-2 col-form-label text-md-left">Segmentation</label>
                                     <div class="col-md-6">
                                     	<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
-											<c:forEach items="${sgmtMap}" var="l">
-												<option value="${l.CMM_CD}">${l.CMM_CD_NM} </option>
+											<c:forEach items="${sgmtMap}" var="e">
+												<option value="${e.CMM_CD}" <c:if test="${e.CMM_CD eq data.VENDOR_SGMT_DIVS_CD}">selected</c:if>>${e.CMM_CD_NM} </option>
 											</c:forEach>
 										</select>
                                     </div>
@@ -159,26 +228,28 @@
                                     <div class="col-md-6"><input type="text" id="vendor_rrno" class="form-control" name="vendor_rrno" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_RRNO}"></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="wholesale_vendor_no" class="col-md-2 col-form-label text-md-left">도매장</label>
-                                    <div class="col-md-6">
-                                    	<input type="text" id="wholesale_vendor_no" class="form-control" name="wholesale_vendor_no"   value="${data.WHOLESALE_VENDOR_NO}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <label for="wholesale_vendor_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 도매장여부</label>
                                     <div class="col-md-6">
-                                    	<select name="wholesale_yn" id="wholesale_yn">
-                                    		<option value="Y">Y</option>
-                                    		<option value="N">N</option>
+                                    	<select name="wholesale_yn" id="wholesale_yn" onchange="wholesalevendo(this)">
+                                    		<option value="">선택하세요</option>
+                                    		<option value="Y" <c:if test="${'Y' eq data.WHOLESALE_YN}">selected</c:if>>Y</option>
+                                    		<option value="N" <c:if test="${'N' eq data.WHOLESALE_YN}">selected</c:if>>N</option>
                                     	</select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row" id="wholesale_vendor_area" style="display:none">
+                                    <label for="wholesale_vendor_no" class="col-md-2 col-form-label text-md-left">도매장</label>
+                                    <div class="col-md-6">
+                                    	<input type="text" id="wholesale_vendor_no" class="form-control" readonly name="wholesale_vendor_no"  value="${data.WHOLESALE_VENDOR_NO}">
+                                    </div>
+                                </div>
+                                 <div class="form-group row">
                                     <label for="gov_rel_d" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 공직자관련여부</label>
                                     <div class="col-md-6">
                                     	<select name="gov_rel_d" id="gov_rel_d">
-                                    		<option value="Y">Y</option>
-                                    		<option value="N">N</option>
+                                    		<option value="">선택하세요</option>
+                                    		<option value="Y" <c:if test="${'Y' eq data.GOV_REL_D}">selected</c:if>>Y</option>
+                                    		<option value="N" <c:if test="${'N' eq data.GOV_REL_D}">selected</c:if>>N</option>
                                     	</select>
                                     </div>
                                 </div>
@@ -227,8 +298,8 @@
 										<tr>
 											<td>
 												<select name="relr_divs_cd" class="form-control" id="relr_divs_cd" style="wdith:30%">
-												<c:forEach items="${relrdivscdMap}" var="o">
-													<option value="${o.CMM_CD}">${o.CMM_CD_NM} </option>
+												<c:forEach items="${relrdivscdMap}" var="f">
+													<option value="${f.CMM_CD}" <c:if test="${f.CMM_CD eq data.RELR_DIVS_CD}">selected</c:if>>${f.CMM_CD_NM} </option>
 												</c:forEach>
 												</select>
 											</td>

@@ -36,6 +36,13 @@ public class VendorService {
 	@Autowired
 	GenericMapperImpl<Object, Object> gdi;
 
+	public List getVendorList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Vendor.getVendorList",param);
+		
+		return param;
+	}
 	
 	public List getTeamList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
@@ -109,4 +116,11 @@ public class VendorService {
 		
 	}
 	
+	public DataMap vendorView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		
+		param = (DataMap) gdi.selectOne("Vendor.getVendorView",map.getMap());
+		
+		return param;
+	}
 }

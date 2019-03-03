@@ -35,7 +35,7 @@
 								<input type="hidden" name="deptno" id="deptno"/>
 								<input class="btn btn-dark" type="button" value="등록" id="codeSInsert" />
 								<input class="btn btn-dark" type="button" value="수정" id="codeSupdate" style="display:none"/>
-								<input class="btn btn-dark" type="button" value="신규" id="codeSnew" style="display:none"/>
+								<input class="btn btn-dark" type="button" value="취소" id="codeSnew" style="display:none"/>
 							</td>
 						</tr>
 					</thead>

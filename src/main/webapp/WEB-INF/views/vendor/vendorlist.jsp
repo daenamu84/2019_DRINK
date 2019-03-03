@@ -63,6 +63,13 @@
 	});
 	
 	
+	function vendorView(vendor_no, gubun){
+		document.viewForm.vendor_no.value=vendor_no;
+		document.viewForm.gubun.value=gubun;
+		
+		document.viewForm.action="/vendorView";
+		document.viewForm.submit();
+	}
 	
 	</script>
 	<div class="title"> ◈  거래처 관리</div>
@@ -84,8 +91,8 @@
 												<td style="padding-left:20px;">
 													<select name="deptno" class="form-control" id="deptno">
 														<option value="ALL">전체</option>
-														<c:forEach items="${deptMMList}" var="i">
-															<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
+														<c:forEach items="${deptMMList}" var="a">
+															<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
 														</c:forEach>
 													</select>
 												</td>
@@ -97,8 +104,8 @@
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
 														<option value="ALL">전체</option>
-														<c:forEach items="${marketMap}" var="k">
-															<option value="${k.CMM_CD}">${k.CMM_CD_NM} </option>
+														<c:forEach items="${marketMap}" var="b">
+															<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
 														</c:forEach>
 													</select>
 												</td>
@@ -106,8 +113,8 @@
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
 														<option value="ALL">전체</option>
-														<c:forEach items="${sgmtMap}" var="l">
-															<option value="${l.CMM_CD}">${l.CMM_CD_NM} </option>
+														<c:forEach items="${sgmtMap}" var="c">
+															<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
 														</c:forEach>
 													</select>
 												</td>
@@ -115,8 +122,8 @@
 												<td style="padding-left:20px;">
 													<select name="" class="form-control" id="">
 														<option value="ALL">전체</option>
-														<c:forEach items="${commonList}" var="j">
-															<option value="${j.CMM_CD}">${j.CMM_CD_NM} </option>
+														<c:forEach items="${commonList}" var="d">
+															<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
 														</c:forEach>
 													</select>
 												</td>
@@ -131,7 +138,18 @@
 														<option value="N">N</option>
 													</select>
 												</td>
-												<td style="padding-left:20px;" colspan="2" class="text-right">
+												<td style="padding-left:20px;">거래처등급</td>
+												<td style="padding-left:20px;">
+													<select name="" class="form-control" id="">
+														<option value="ALL">전체</option>
+														<c:forEach items="${vendorgrdcdList}" var="e">
+															<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
+														</c:forEach>
+													</select>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-left:20px;" colspan="6" class="text-right">
 													<input class="btn btn-dark" type="button" value="검색" id=""/>
 													<input class="btn btn-dark" type="button" value="등록" id="vendorForm"/>
 													<input class="btn btn-dark" type="button" value="엑셀다운로드" id=""/>
@@ -159,20 +177,22 @@
 						      <th scope="col" colspan="3" class="text-center" >관리</th>
 						    </tr>
 						  </thead>
-						  <tbody>
-						    	<tr>
-									<td>성포주류</td>
-									<td>T-1</td>
-									<td>박지승</td>
-									<td>010456789</td>
-									<td>경기 고양시 일산구 장항동 547-12</td>
-									<td>On Trade</td>
-									<td>Trendy Bar</td>
-									<td>승인완료</td>
+						  <tbody>	
+						  	<c:forEach items="${vendorList}" var="f" varStatus="status">	
+						  		<tr>
+									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.OUTLET_NM}</a></td>
+									<td>${f.TEAMNM}</td>
+									<td>${f.EMP_NM}</td>
+									<td>${f.VENDOR_TEL_NO}</td>
+									<td>${f.VENDOR_ADDR}</td>
+									<td>${f.MARKGET_NM}</td>
+									<td>${f.SGMT_NM}</td>
+									<td>${f.STAT_NM}</td>
 									<td>원장보기</td>
 									<td>메뉴보기</td>
 									<td>수정</td>
 								</tr>
+						  	</c:forEach>
 						  </tbody>
 						</table>
 					</div>
@@ -180,4 +200,8 @@
 			</div>
 		</div>
 	</div>
+	<form name="viewForm" method="post">
+		<input type="hidden" name="vendor_no"/>
+		<input type="hidden" name="gubun"/> 
+	</form>
 	

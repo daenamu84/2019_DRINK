@@ -30,15 +30,21 @@
 	          	<li class="nav-item">
 	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">업무조회</a>
 	          	</li>
-	          	<li class="nav-item">
-	            	<a class="nav-link " href="/vendorList">업소관리</a>
+	          	<li class="nav-item active dropdown">
+	            	<a class="nav-link dropdown-toggle" href="/vendorList" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업소관리</a>
+	            	<div class="dropdown-menu" aria-labelledby="dropdown03">
+						<a class="dropdown-item" href="/vendorList">거래처목록</a>
+		              	<a class="dropdown-item" href="/memberList">거래처 메뉴</a>
+		              	<a class="dropdown-item" href="javascript:alert('작업중입니다.')">거래처 원장</a>
+		              	
+	            	</div>
 	          	</li>
 	          	<li class="nav-item">
 	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">리포트</a>
 	          	</li>
 	          	<li class="nav-item active dropdown">
-	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리 <span class="sr-only">(current)</span></a>
-	            	<div class="dropdown-menu" aria-labelledby="dropdown01">
+	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리 <span class="sr-only">(current)</span></a>
+	            	<div class="dropdown-menu" aria-labelledby="dropdown05">
 						<a class="dropdown-item" href="/teamList">팀관리</a>
 		              	<a class="dropdown-item" href="/memberList">사원관리</a>
 		              	<a class="dropdown-item" href="/productManager">제품관리</a>

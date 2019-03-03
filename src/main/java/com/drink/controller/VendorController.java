@@ -96,16 +96,23 @@ public class VendorController {
 		map.clear();
 		map.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
 		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
+		
+		map.clear();
+		map.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
+		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(map);
+		
 //		
-//		List<DataMap> rtnMap = vendorService.getEmpMList(paramMap);
+		List<DataMap> rtnVendrMap = vendorService.getVendorList(paramMap);
 //		
 //		logger.debug("rtnMap :: " + rtnMpa0);
 //		logger.debug("rtnMap :: " + rtnMap);
 //		
 		mav.addObject("deptMMList", rtnMap);
+		mav.addObject("vendorList", rtnVendrMap);
 		mav.addObject("commonList", commonMap);		
 		mav.addObject("marketMap", marketMap);
 		mav.addObject("sgmtMap", sgmtMap);
+		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
 //		mav.addObject("empMList", rtnMap);
 		
 		mav.setViewName("vendor/vendorlist");
@@ -114,8 +121,6 @@ public class VendorController {
 	
 	@RequestMapping(value = "/vendorForm")
 	public ModelAndView memberForm(Locale locale, Model model) throws DrinkException {
-		
-	
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -132,12 +137,23 @@ public class VendorController {
 		paramMap.put("cmm_cd_grp_id", "00008"); // 관계자 구분코드
 		List<DataMap> relrdivscdMap = vendorService.getCommonCode(paramMap);
 		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00009"); // 거래처 지역 코드
+		List<DataMap> vendorareacdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
+		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
+		
+		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
 		mav.addObject("marketMap", marketMap);
 		mav.addObject("sgmtMap", sgmtMap);
 		mav.addObject("relrdivscdMap", relrdivscdMap);
+		mav.addObject("vendorareacdMap", vendorareacdMap);
 		mav.addObject("deptMngList", rtnMngMap);
+		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
 		
 		mav.setViewName("vendor/vendorfrom");
 		return mav;
@@ -176,5 +192,56 @@ public class VendorController {
 		
 		return "redirect:/vendorList";
 		//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/vendorView", method = RequestMethod.POST)
+	public ModelAndView vendorView(Locale locale, ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00005"); // 마켓코드
+		List<DataMap> marketMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
+		List<DataMap> sgmtMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00008"); // 관계자 구분코드
+		List<DataMap> relrdivscdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00009"); // 거래처 지역 코드
+		List<DataMap> vendorareacdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
+		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00001"); // 거래처 상태 코드
+		List<DataMap> vendorstatcdMap = vendorService.getCommonCode(paramMap);
+		
+		
+		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		DataMap vendorView =  vendorService.vendorView(rtMap);
+		
+		mav.addObject("data",vendorView);
+		mav.addObject("marketMap", marketMap);
+		mav.addObject("sgmtMap", sgmtMap);
+		mav.addObject("relrdivscdMap", relrdivscdMap);
+		mav.addObject("vendorareacdMap", vendorareacdMap);
+		mav.addObject("deptMngList", rtnMngMap);
+		mav.addObject("vendorstatList", vendorstatcdMap);
+		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
+		
+		mav.setViewName("vendor/vendorfrom");
+		return mav;
+		
 	}
 }

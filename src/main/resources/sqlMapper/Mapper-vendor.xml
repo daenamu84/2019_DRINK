@@ -13,6 +13,20 @@
        	]]>
     </select>
     
+    <select id="getVendorList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT A.VENDOR_NO, A.OUTLET_NM, (SELECT D.TEAMNM FROM T_DEPT_M D WHERE D.DEPT_NO= C.DEPT_NO) AS TEAMNM,
+			  C.EMP_NM, A.VENDOR_TEL_NO, A.VENDOR_ADDR, 
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00005' AND E.CMM_CD = A.MARKET_DIVS_CD) AS MARKGET_NM,
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00006' AND E.CMM_CD = A.VENDOR_SGMT_DIVS_CD) AS SGMT_NM,
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00001' AND E.CMM_CD = A.VENDOR_STAT_CD ) AS STAT_NM
+			FROM T_VENDOR_M A, T_VENDOR_EMP_D B, T_EMP_M C
+			WHERE A.VENDOR_NO = B.VENDOR_NO
+			AND B.EMP_NO = C.EMP_NO
+			AND B.EFF_END_DT='99991231'  
+       	]]>
+    </select>
+    
      <select id="getMngTeamList" resultType="DataMap">
     	<![CDATA[
     		SELECT DISTINCT B.DEPT_NO, B.TEAMNM
@@ -50,9 +64,9 @@
     <update id="masterInsert">
     	<![CDATA[
     	INSERT INTO T_VENDOR_M
-			(OUTLET_NM ,VENDOR_STAT_CD ,VENDOR_ZIP_NO ,VENDOR_ADDR ,VENDOR_TEL_NO ,VENDOR_URL ,MARKET_DIVS_CD ,VENDOR_SGMT_DIVS_CD ,VENDOR_BRNO, VENDOR_RRNO,
+			(OUTLET_NM ,VENDOR_STAT_CD , VENDOR_GRD_CD, VENDOR_AREA_CD, VENDOR_ZIP_NO ,VENDOR_ADDR ,VENDOR_TEL_NO ,VENDOR_URL ,MARKET_DIVS_CD ,VENDOR_SGMT_DIVS_CD ,VENDOR_BRNO, VENDOR_RRNO,
   			 WHOLESALE_YN, WHOLESALE_VENDOR_NO ,GOV_REL_D ,GOV_REL_CNTN ,BANK_NM ,BANK_ACCNT_NO ,BANK_ACCNT_NM ,PAYMENT_TERM ,DATA_REG_DTM ,DATA_REG_ID ,DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{outlet_nm}, '01', #{vendor_zip_no}, #{vendor_addr}, #{vendor_tel_no}, #{vendor_url}, #{market_divs_cd}, #{vendor_sgmt_divs_cd}, #{vendor_brno}, (HEX(AES_ENCRYPT(#{vendor_rrno}, 'tb_sms'))),
+			VALUES ( #{outlet_nm}, '01', #{vendor_grd_cd}, #{vendor_area_cd}, #{vendor_zip_no}, #{vendor_addr}, #{vendor_tel_no}, #{vendor_url}, #{market_divs_cd}, #{vendor_sgmt_divs_cd}, #{vendor_brno}, (HEX(AES_ENCRYPT(#{vendor_rrno}, 'tb_sms'))),
 			#{wholesale_yn}, #{wholesale_vendor_no}, #{gov_rel_d}, #{gov_rel_cntn}, #{bank_nm}, (HEX(AES_ENCRYPT(#{bank_accnt_no}, 'tb_sms'))), #{bank_accnt_nm}, #{payment_term}, now(), #{login_id}, now(), #{login_id})
     	]]>
     </update>
@@ -125,5 +139,23 @@
 			WHERE OUTLET_NM =#{outlet_nm} 
        	]]>
     </select>
+    
+    <select id="getVendorView" resultType="DataMap">
+    	<![CDATA[
+		 SELECT A.VENDOR_NO, A.OUTLET_NM, A.VENDOR_STAT_CD, A.VENDOR_GRD_CD, A.VENDOR_AREA_CD, 
+		          A.VENDOR_ZIP_NO, A.VENDOR_ADDR, A.VENDOR_TEL_NO, A.VENDOR_URL, A.MARKET_DIVS_CD, 
+		          A.VENDOR_SGMT_DIVS_CD, A.VENDOR_BRNO, CAST(AES_DECRYPT(UNHEX(A.VENDOR_RRNO), 'tb_sms')  as char(100)) as VENDOR_RRNO , A.WHOLESALE_YN, A.WHOLESALE_VENDOR_NO, 
+		          A.GOV_REL_D, A.GOV_REL_CNTN, A.BANK_NM, CAST(AES_DECRYPT(UNHEX(A.BANK_ACCNT_NO), 'tb_sms')  as char(200)) as BANK_ACCNT_NO, A.BANK_ACCNT_NM, 
+		          A.PAYMENT_TERM, B.EMP_NO, (SELECT DEPT_NO FROM T_EMP_M D WHERE D.EMP_NO = B.EMP_NO) AS DEPT_NO,
+		          C.RELR_DIVS_CD , C.RELR_NM, C.RELR_DEPT_NM, C.RELR_POSTION_NM, C.RELR_EMAIL,
+		          RELR_TEL_NO, C.RELR_ANVS_DT, C.ETC
+		  FROM T_VENDOR_M A , T_VENDOR_EMP_D B, T_VENDOR_USER_D C
+		  WHERE A.VENDOR_NO = B.VENDOR_NO
+		  AND A.VENDOR_NO =#{vendor_no} 
+		  AND A.VENDOR_NO = C.VENDOR_NO
+		  AND B.VENDOR_NO = C.VENDOR_NO 
+       	]]>
+    </select>
+    
     
 </mapper>

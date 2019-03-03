@@ -291,7 +291,7 @@ var ajaxFlag = false;
 									<input type="hidden" name="deptno" id="deptno"/>
 									<input class="btn btn-dark" type="button" value="등록" id="codeInsert" />
 									<input class="btn btn-dark" type="button" value="수정" id="codeupdate" style="display:none"/>
-									<input class="btn btn-dark" type="button" value="신규" id="codenew" style="display:none"/>
+									<input class="btn btn-dark" type="button" value="취소" id="codenew" style="display:none"/>
 								</td>
 							</tr>
 						</thead>
