@@ -13,48 +13,8 @@
 	
 	$(document).ready(function(){
 		
-		$("#memberSearch").click(function(){
-			if(ajaxFlag)return;
-			
-			var deptno = $("#deptno").val();
-			var teamnm = $("#teamnm").val();
-			var use_yn = $("#use_yn").val();
-			
-			if(teamnm.replace(/^\s*/,"") ==""){
-				alert("팀명을 입력하세요");
-				ajaxFlag=false;
-				return;
-			}
-			
-			$.ajax({      
-			    type:"POST",  
-			    url:"/",      
-			    data: JSON.stringify({"deptno":deptno,"teamnm":teamnm,"use_yn":use_yn}),
-			    dataType:"json",
-			    contentType:"application/json;charset=UTF-8",
-			    traditional:true,
-			    success:function(args){   
-			        if(args.returnCode == "0000"){
-			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.replace("/teamList");
-			        }else{
-			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.replace("/teamList");
-			        }
-			        ajaxFlag=false;
-			    },   
-			    error:function(xhr, status, e){
-			    	
-			        if(xhr.status == 403){
-			        	alert("로그인이 필요한 메뉴 입니다.");
-			        	location.replace("/logIn");
-			        }else{
-			        	alert("처리중 에러가 발생 하였습니다.");
-			        	location.reload();
-			        }
-			        ajaxFlag=false;
-			    }  
-			});
+		$("#vendorSearch, #downloadExcel").click(function(){
+			alert("작업중입니다.")
 		});
 		
 		$("#vendorForm").click(function(){
@@ -150,9 +110,9 @@
 											</tr>
 											<tr>
 												<td style="padding-left:20px;" colspan="6" class="text-right">
-													<input class="btn btn-dark" type="button" value="검색" id=""/>
+													<input class="btn btn-dark" type="button" value="검색" id="vendorSearch"/>
 													<input class="btn btn-dark" type="button" value="등록" id="vendorForm"/>
-													<input class="btn btn-dark" type="button" value="엑셀다운로드" id=""/>
+													<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadExcel"/>
 												</td>
 											</tr>
 										</thead>
@@ -204,4 +164,9 @@
 		<input type="hidden" name="vendor_no"/>
 		<input type="hidden" name="gubun"/> 
 	</form>
+	<script>
+		<c:if test="${returnCode eq '0000'}">
+	 		alert("저장하였습니다.");
+		</c:if>
+	</script>
 	

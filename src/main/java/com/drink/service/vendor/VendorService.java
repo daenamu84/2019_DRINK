@@ -112,6 +112,24 @@ public class VendorService {
 			if(rtCnt < 1){
 				throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
 			}
+			logger.debug("ext_emmp_no1="+ map.get("ext_emp_no")+", emmp_no1=" + map.get("empno"));
+			
+			if(!map.get("ext_emp_no").equals(map.get("empno"))) {
+				logger.debug("detailUpdate ");
+				int rtCntDetail = gdi.update("Vendor.detailUpdate", map.getMap());
+				if(rtCntDetail < 1){
+					throw new DrinkException(new String[]{"messageError"," 이력 수정에 실패 했습니다."});
+				}
+				gdi.update("Vendor.detailInsert", map.getMap());
+				
+			}
+			logger.debug("detailUpdate skip");
+			int rtCntUser = gdi.update("Vendor.vendor_userUpdate", map.getMap()); 
+			
+			if(rtCntUser < 1){
+				throw new DrinkException(new String[]{"messageError"," 거래처 담당자 정보 수정에 실패 했습니다."});
+			}
+			
 		}
 		
 	}
@@ -123,4 +141,13 @@ public class VendorService {
 		
 		return param;
 	}
+	
+	public List getWholesaleVendorList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Vendor.getWholesaleVendorList",param);
+		
+		return param;
+	}
+	
 }

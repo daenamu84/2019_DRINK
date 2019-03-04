@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
@@ -168,6 +170,7 @@ public class VendorController {
 		List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
 
 		mav.addObject("EmpList", rtnMap);
+		mav.addObject("emp_no", rtMap.get("empno"));
 		mav.setViewName("nobody/vendor/vendorTeamList");
 		return mav;
 		}catch (Exception e) {
@@ -177,15 +180,19 @@ public class VendorController {
 	}
 
 	@RequestMapping(value = "/vendorInsert")
-	
-	public String VendorInsert(Locale locale,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	public String VendorInsert(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		
 		rtMap.put("login_id", loginSession.getLgin_id());
 		
 		logger.debug("map :: " + rtMap.toString());
+		
+		rtMap.put("wholesale_vendor_no", rtMap.getInt("wholesale_vendor_no"));
 		vendorService.VendorInsert(rtMap);
+		
+		redirectAttributes.addFlashAttribute("returnCode", "0000");
+		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("message", "저장 하였습니다.");
@@ -194,9 +201,18 @@ public class VendorController {
 		//return rtnMap;
 	}
 	
-	@RequestMapping(value = "/vendorView", method = RequestMethod.POST)
-	public ModelAndView vendorView(Locale locale, ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	@RequestMapping(value = "/vendorView", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView vendorView(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
+		logger.debug("map :: " + rtMap.toString());
+		logger.debug("map2 :: " + model.toString());
+		
+//		logger.debug("rtMap.vendorno:" + rtMap.get("vendor_no"));
+//		if(rtMap.get("vendor_no")==null) {
+//			rtMap.put("vendor_no", model.get("vendor_no"));
+//			rtMap.put("gubun", model.get("gubun"));
+//			rtMap.put("returnCode", model.get("returnCode"));
+//		}
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
@@ -227,7 +243,6 @@ public class VendorController {
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
-		logger.debug("map :: " + rtMap.toString());
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
 		
@@ -239,9 +254,64 @@ public class VendorController {
 		mav.addObject("deptMngList", rtnMngMap);
 		mav.addObject("vendorstatList", vendorstatcdMap);
 		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
+		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.addObject("returnCode",rtMap.get("returnCode"));
 		
 		mav.setViewName("vendor/vendorfrom");
 		return mav;
 		
+	}
+	
+	@RequestMapping(value = "/wholesaleVendorList")
+	public ModelAndView wholesaleVendorList(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		List<DataMap> rtnVendrMap = vendorService.getWholesaleVendorList(paramMap);
+		
+		mav.addObject("WholesaleVendorList", rtnVendrMap);
+		mav.setViewName("nobody/vendor/wholesaleVendorList");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/vendorUpdate")
+	public ModelAndView vendorUpdate(Locale locale,   RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		
+		rtMap.put("login_id", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		rtMap.put("wholesale_vendor_no", rtMap.getInt("wholesale_vendor_no"));
+		vendorService.VendorInsert(rtMap);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "수정 하였습니다.");
+		
+		ModelAndView mav = new ModelAndView();
+
+		RedirectView redirectView = new RedirectView("/vendorView"); // redirect url 설정
+		redirectView.setExposeModelAttributes(false);
+		mav.addObject("vendor_no", rtMap.get("vendor_no"));
+		mav.addObject("returnCode", "0000");
+		mav.addObject("gubun", "update");
+		
+		mav.setView(redirectView);
+
+		return  mav;
+			
+//		return "redirect:/vendorView?vendor_no="+rtMap.get("vendor_no")+ "&returnCode=0000&gubun=update";
+		//return rtnMap;
 	}
 }

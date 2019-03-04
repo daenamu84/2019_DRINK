@@ -91,15 +91,16 @@
     <update id="masterUpdate">
     	<![CDATA[
     		UPDATE T_VENDOR_M
-    			SET   OUTLET_NM =   #{outlet_nm}
+    			SET OUTLET_NM =   #{outlet_nm}
+    				,VENDOR_STAT_CD =   #{vendor_stat_cd}
+    				,VENDOR_GRD_CD =  #{vendor_grd_cd}
+  					,VENDOR_AREA_CD =  #{vendor_area_cd}
     			  	,VENDOR_ZIP_NO = #{vendor_zip_no}
 				  	,VENDOR_ADDR = #{vendor_addr}
 				  	,VENDOR_TEL_NO = #{vendor_tel_no}
 				  	,VENDOR_URL = #{vendor_url}
 				  	,MARKET_DIVS_CD = #{market_divs_cd}
 				  	,VENDOR_SGMT_DIVS_CD = #{vendor_sgmt_divs_cd}
-				  	,WHOLESALE_YN = #{wholesale_yn}
-				  	,WHOLESALE_VENDOR_NO =#{wholesale_vendor_no}
 				  	,GOV_REL_D = #{gov_rel_d}
 				  	,GOV_REL_CNTN =#{gov_rel_cntn}
 				  	,BANK_NM = #{bank_nm}
@@ -122,6 +123,24 @@
     	]]>
     </update>
     
+    <update id="vendor_userUpdate">
+    	<![CDATA[
+    		UPDATE T_VENDOR_USER_D
+			SET  RELR_DIVS_CD = #{relr_divs_cd}
+				  ,RELR_NM = #{relr_nm}
+				  ,RELR_DEPT_NM = #{relr_dept_nm}
+				  ,RELR_POSTION_NM = #{relr_postion_nm}
+				  ,RELR_EMAIL = #{relr_email}
+				  ,RELR_TEL_NO = #{relr_tel_no}
+				  ,RELR_ANVS_DT = #{relr_tel_no}
+				  ,ETC = #{etc}
+				  ,DATA_UPD_DTM = now()
+				  ,DATA_UPD_ID = #{login_id}
+				WHERE VENDOR_NO = #{vendor_no}
+    	]]>
+    </update>
+    
+    
     <select id="getdetailEmpNo" resultType="DataMap">
     	<![CDATA[
     		 SELECT 
@@ -142,7 +161,8 @@
     
     <select id="getVendorView" resultType="DataMap">
     	<![CDATA[
-		 SELECT A.VENDOR_NO, A.OUTLET_NM, A.VENDOR_STAT_CD, A.VENDOR_GRD_CD, A.VENDOR_AREA_CD, 
+		 SELECT A.VENDOR_NO, A.OUTLET_NM, A.VENDOR_STAT_CD, A.VENDOR_GRD_CD, A.VENDOR_AREA_CD,
+		   		 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00001' AND E.CMM_CD = A.VENDOR_STAT_CD) VENDOR_STAT_NM, 
 		          A.VENDOR_ZIP_NO, A.VENDOR_ADDR, A.VENDOR_TEL_NO, A.VENDOR_URL, A.MARKET_DIVS_CD, 
 		          A.VENDOR_SGMT_DIVS_CD, A.VENDOR_BRNO, CAST(AES_DECRYPT(UNHEX(A.VENDOR_RRNO), 'tb_sms')  as char(100)) as VENDOR_RRNO , A.WHOLESALE_YN, A.WHOLESALE_VENDOR_NO, 
 		          A.GOV_REL_D, A.GOV_REL_CNTN, A.BANK_NM, CAST(AES_DECRYPT(UNHEX(A.BANK_ACCNT_NO), 'tb_sms')  as char(200)) as BANK_ACCNT_NO, A.BANK_ACCNT_NM, 
@@ -157,5 +177,12 @@
        	]]>
     </select>
     
-    
+    <select id="getWholesaleVendorList" resultType="DataMap">
+		<![CDATA[
+    		SELECT  VENDOR_NO, OUTLET_NM
+			FROM T_VENDOR_M
+			WHERE WHOLESALE_YN ='y'
+       	]]>
+    </select>
+   
 </mapper>

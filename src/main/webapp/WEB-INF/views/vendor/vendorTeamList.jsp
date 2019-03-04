@@ -10,6 +10,6 @@
 
 <select name="empno" class="form-control" id="empno">
 	<c:forEach items="${EmpList}" var="m">
-	<option value="${m.EMP_NO}">${m.EMP_NM} </option>
+	<option value="${m.EMP_NO}" <c:if test="${emp_no eq m.EMP_NO}">selected</c:if>>${m.EMP_NM} </option>
 	</c:forEach>
 </select>
