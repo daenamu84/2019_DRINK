@@ -314,4 +314,32 @@ public class VendorController {
 //		return "redirect:/vendorView?vendor_no="+rtMap.get("vendor_no")+ "&returnCode=0000&gubun=update";
 		//return rtnMap;
 	}
+	
+	@RequestMapping(value = "/vendorSearchPop")
+	public ModelAndView vendorSearchPop(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			RequestMap paramMap = new RequestMap();
+			List<DataMap> vendorList = vendorService.getVendorList1(param);
+			
+			
+			mav.addObject("vendorList", vendorList);
+			mav.setViewName("nobody/prodmenu/popVendorList");
+
+			return mav;
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+			}
+	}
+	
 }

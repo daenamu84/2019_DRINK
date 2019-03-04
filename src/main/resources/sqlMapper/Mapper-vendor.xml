@@ -26,6 +26,19 @@
 			AND B.EFF_END_DT='99991231'  
        	]]>
     </select>
+
+    <select id="getVendorList1" resultType="DataMap">
+    	<![CDATA[
+    		SELECT VENDOR_NO, OUTLET_NM, VENDOR_ADDR 
+    		FROM T_VENDOR_M
+			WHERE 1=1
+       	]]>
+       	<if test="vendorNm != null">
+       		<![CDATA[
+			AND OUTLET_NM like  CONCAT('%',#{vendorNm},'%')
+			]]>
+		</if>
+    </select>
     
      <select id="getMngTeamList" resultType="DataMap">
     	<![CDATA[

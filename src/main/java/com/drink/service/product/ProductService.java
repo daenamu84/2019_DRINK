@@ -89,4 +89,11 @@ public class ProductService {
 			throw new DrinkException(new String[]{"messageError","수정된 데이터가 없습니다."});
 		}
 	}
+	
+	public List prdSearch(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Product.getProdSearchList",map.getMap());
+		
+		return param;
+	}
 }
