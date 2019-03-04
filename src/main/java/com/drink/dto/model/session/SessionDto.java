@@ -28,8 +28,15 @@ public class SessionDto implements Serializable{
 	String lgin_id;
 	String log_nm;
 	String emp_grd_cd;
-	String emp_no; 
+	String emp_no;
+	String dept_no; 
 	
+	public String getDept_no() {
+		return dept_no;
+	}
+	public void setDept_no(String dept_no) {
+		this.dept_no = dept_no;
+	}
 	/**
 	 * @return the headTitle
 	 */
@@ -69,7 +76,7 @@ public class SessionDto implements Serializable{
 	@Override
 	public String toString() {
 		return "SessionDto [sessionId=" + sessionId + ", lgin_id=" + lgin_id + ", log_nm=" + log_nm + ", emp_grd_cd="
-				+ emp_grd_cd + ", emp_no=" + emp_no + "]";
+				+ emp_grd_cd + ", emp_no=" + emp_no + ", dept_no=" + dept_no + "]";
 	}
 	
 	

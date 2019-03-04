@@ -42,6 +42,7 @@
 	          	<li class="nav-item">
 	            	<a class="nav-link " href="javascript:alert('작업중입니다.')">리포트</a>
 	          	</li>
+	          	<c:if test="${loginSession.emp_grd_cd eq '0001'}">
 	          	<li class="nav-item active dropdown">
 	            	<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리 <span class="sr-only">(current)</span></a>
 	            	<div class="dropdown-menu" aria-labelledby="dropdown05">
@@ -52,6 +53,7 @@
 		              	<a class="dropdown-item" href="/brandList">브랜드코드마스터</a>
 	            	</div>
 	          	</li>
+	          	</c:if>
 	        </ul>
 	        <form class="form-inline my-2 my-lg-0">
 				<c:if test="${nul ne loginSession}">

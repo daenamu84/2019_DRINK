@@ -113,7 +113,7 @@
     	<![CDATA[
     		SELECT EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO
 			FROM T_DEPT_EMP_REL_D
-			WHERE EMP_DEPT_REL_GBN_CD='M001'
+			WHERE EMP_DEPT_REL_GBN_CD='0002'
 				AND EFF_END_DT='99991231'
 				AND EMP_NO=#{emp_no}
        	]]>
@@ -148,7 +148,7 @@
     				  DATA_UPD_DTM = now(),
     				  DATA_UPD_ID =  '0'
     	    WHERE EMP_NO = #{emp_no}
-    	    AND EMP_DEPT_REL_GBN_CD ='E001'
+    	    AND EMP_DEPT_REL_GBN_CD ='0001'
     	    AND DEPT_NO = #{ex_dept_no} 
     	    AND EFF_END_DT = '99991231'
     	    
@@ -162,7 +162,7 @@
     				  DATA_UPD_DTM = now(),
     				  DATA_UPD_ID =  '0'
     	    WHERE EMP_NO = #{emp_no}
-    	    AND EMP_DEPT_REL_GBN_CD ='M001'
+    	    AND EMP_DEPT_REL_GBN_CD ='0002'
     	    AND EFF_END_DT = '99991231'
     	    
     	]]>
@@ -176,7 +176,7 @@
     
      <select id="getLoginPassWD" resultType="DataMap">
     	<![CDATA[
-		  	SELECT CAST(AES_DECRYPT(UNHEX(LOGIN_PWD), 'tb_sms')  as char(100))  LOGIN_PWD, EMP_NM, EMP_NO,LOGIN_ID , EMP_GRD_CD
+		  	SELECT CAST(AES_DECRYPT(UNHEX(LOGIN_PWD), 'tb_sms')  as char(100))  LOGIN_PWD, EMP_NM, EMP_NO,LOGIN_ID , EMP_GRD_CD, DEPT_NO
 			FROM T_EMP_M 
 			WHERE LOGIN_ID =#{login_id} 
 				AND USE_YN ='Y'
