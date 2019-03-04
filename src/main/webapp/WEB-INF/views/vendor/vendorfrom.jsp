@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	
 	<script type="text/javascript">
 	var ajaxFlag = false;
@@ -109,7 +109,49 @@
 		document.Form.action="/vendorInsert";
 		document.Form.submit();
 	});
-	
+	</script>
+	<script>
+	//daum 주소
+	function foldPostcode(obj) {
+		var element_wrap = document.getElementById('wrap'+obj);      
+	    // iframe을 넣은 element를 안보이게 한다.        
+	    element_wrap.style.display = 'none';
+	}
+
+	function execPostcode(obj) {
+		var element_wrap = document.getElementById('wrap'+obj);        
+	    var frm = document.OrderForm;       
+	    var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+	    
+	    var themeObj = {
+	    		bgColor: "#F3F3F3", //바탕 배경색
+	    		//searchBgColor: "", //검색창 배경색
+	    		//contentBgColor: "", //본문 배경색(검색결과,결과없음,첫화면,검색서제스트)
+	    		//pageBgColor: "", //페이지 배경색
+	    		textColor: "#444444", //기본 글자색
+	    		//queryTextColor: "", //검색창 글자색
+	    		postcodeTextColor: "#888888", //우편번호 글자색
+	    		emphTextColor: "#C11353", //강조 글자색
+	    		outlineColor: "#DCDCDC" //테두리
+	    };
+	    
+	    new daum.Postcode({
+	        oncomplete: function(data) {                
+	            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            document.Form.vendor_addr.value= data.roadAddress;
+	            document.Form.vendor_zip_no.value=data.zonecode;	
+	            element_wrap.style.display = 'none';                
+	            // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+	            document.body.scrollTop = currentScroll;                
+			},          
+	        width : '100%',
+	        height : '100%',
+	        theme: themeObj
+	    }).embed(element_wrap);
+	    element_wrap.style.display = 'block';
+	}
+	 
 	</script>
 	
 	<div class="container " style="max-width:100%;">
@@ -165,10 +207,14 @@
                                     <label for="vendor_brno" class="col-md-2 col-form-label text-md-left">사업자등록번호</label>
                                     <div class="col-md-6"><input type="text" id="vendor_brno" class="form-control" name="vendor_brno" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_BRNO}"></div>
                                 </div>
+                                <div id="wrap4" style="display:none; border:1px solid; width:570px; height:440px; margin:50px 0px 0px 73px; position:absolute; z-index:10;">
+									<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldPostcode('4')" alt="접기 버튼">
+								</div>
                                 <div class="form-group row">
                                     <label for="vendor_addr" class="col-md-2 col-form-label text-md-left">주소</label>
                                     <div class="col-md-6">
-                                    	<input type="text" id="vendor_zip_no" class="form-control"  style="width:30%" name="vendor_zip_no" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_ZIP_NO}">
+                                    	<input type="text" id="vendor_zip_no" class="form-control"  style="width:30%;display:initial;" name="vendor_zip_no" readonly  value="${data.VENDOR_ZIP_NO}">
+                                    	<input class="btn btn-dark" type="button" value="우편번호"  onclick="execPostcode('4')" style="margin-top: -5px;"/>
                                     	<input type="text" id="vendor_addr" class="form-control"  name="vendor_addr" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NM}">
                                     </div>
                                 </div>
