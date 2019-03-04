@@ -31,15 +31,17 @@
 					<div class="col-sm-2">주류유형코드</div>
 					<div class="col-sm-2">
 						<select class="custom-select" id="liqKdCd">
-							<option value="1" selected>1</option>
-							<option value="2">2</option>
+							<c:forEach items="${liqKdCdList}" var="i" varStatus="status">
+								<option value="${i.CMM_CD}">${i.CMM_CD_NM}</option>
+							</c:forEach>
 						</select>
 					</div>
 					<div class="col-sm-2">STCASE코드</div>
 					<div class="col-sm-3">
 						<select class="custom-select" id="stcaseCd">
-							<option value="1" selected>1</option>
-							<option value="2">2</option>
+							<c:forEach items="${stcaseCdList}" var="i" varStatus="status">
+								<option value="${i.CMM_CD}">${i.CMM_CD_NM}</option>
+							</c:forEach>
 						</select>
 					</div>
 				</div>
@@ -82,9 +84,9 @@
 					<tr>
 						<td><a href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"class="text-decoration-none">${i.SUB_BRAND_ID}</a></td>
 						<td><a href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"class="text-decoration-none">${i.SUB_BRAND_NM}</a></td>
-						<td>${i.LIQ_KD_CD}</td>
+						<td>${i.LIQ_KD_NM}</td>
 						<td>${i.USE_YN}</td>
-						<td>${i.STCASE_CD}</td>
+						<td>${i.STCASE_NM}</td>
 						<td>${i.SORT_ORD}</td>
 					</tr>
 				</c:forEach>

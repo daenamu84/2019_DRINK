@@ -13,9 +13,9 @@
 		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_NO}</a></td>
 		<td>${i.BRAND_NM}</td>
 		<td>${i.SUB_BRAND_NM}</td>
-		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_ML_CD}</a></td>
-		<td>${i.LIQ_KD_CD}</td>
-		<td>${i.ORCO_BRAND_YN}</td>
+		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_ML_NM}</a></td>
+		<td>${i.LIQ_KD_NM}</td>
+		<td>${i.ORCO_BRAND_NM}</td>
 		<td>${i.USE_YN}</td>
 	</tr>
 </c:forEach>

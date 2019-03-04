@@ -292,11 +292,12 @@ var ajaxFlag = false;
 							    <option value="N">N</option>
 						  </select>
 						</div>
-						<div class="col-sm-2">자사/타사</div>
+						<div class="col-sm-2">자사/경쟁사</div>
 						<div class="col-sm-3">
 							<select class="custom-select" id="orcoBrandYn">
-							    <option value="Y" selected>자사</option>
-							    <option value="N">경쟁사</option>
+								<c:forEach items="${cd00014}" var="i" varStatus="status">
+									<option value="${i.CMM_CD}">${i.CMM_CD_NM}</option>
+								</c:forEach>
 						  </select>
 						</div>
 					</div>

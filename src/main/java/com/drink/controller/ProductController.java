@@ -34,6 +34,7 @@ import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.service.brand.BrandService;
 import com.drink.service.product.ProductService;
+import com.drink.service.vendor.VendorService;
 
 /** 
 * @ ClassName: ProductController 
@@ -52,6 +53,9 @@ public class ProductController {
 	@Autowired 
 	private ProductService productService;
 	
+	@Autowired
+	private VendorService vendorService;
+	
 	@RequestMapping(value = "/productManager")
 	public ModelAndView productManager(Locale locale, Model model) throws DrinkException {
 		
@@ -60,6 +64,11 @@ public class ProductController {
 		RequestMap paramMap = new RequestMap();
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
+		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00017"); // 용량
+		List<DataMap> cd00017List = vendorService.getCommonCode(map);
+		mav.addObject("cd00017List", cd00017List);
 		
 		mav.addObject("brandList", rtnMap);
 		
@@ -83,6 +92,7 @@ public class ProductController {
 		List<DataMap> rtnMap = productService.productList(rtMap);
 
 		mav.addObject("productList", rtnMap);
+		
 		mav.setViewName("nobody/product/managerSearch");
 		return mav;
 		}catch (Exception e) {
@@ -121,6 +131,13 @@ public class ProductController {
 		DataMap detail = productService.productDetail(rtMap);
 
 		mav.addObject("productList", detail);
+		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00017"); // 용량
+		List<DataMap> cd00017List = vendorService.getCommonCode(map);
+		mav.addObject("cd00017List", cd00017List);
+		
+		
 		mav.setViewName("nobody/product/managerUpdate");
 		return mav;
 		}catch (Exception e) {

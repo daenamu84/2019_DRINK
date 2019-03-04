@@ -26,8 +26,9 @@
 							<div class="col-sm-3">용량</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="uProdMlCd">
-								    <option value="1000" <c:if test="${productList.PROD_ML_CD eq '1000'}">selected</c:if>>1000</option>
-								    <option value="1500" <c:if test="${productList.PROD_ML_CD eq '1500'}">selected</c:if>>1500</option>
+									<c:forEach items="${cd00017List}" var="i" varStatus="status">
+										<option value="${i.CMM_CD}"  <c:if test="${productList.PROD_ML_CD eq i.CMM_CD}">selected</c:if>>${i.CMM_CD_NM}</option>
+									</c:forEach>
 							  </select>
 						  </div>
 						</div>

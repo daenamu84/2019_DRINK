@@ -261,7 +261,7 @@ var ajaxFlag = false;
 			      <th scope="col">서브브랜드</th>
 			      <th scope="col">용량</th>
 			      <th scope="col">주류유형</th>
-			      <th scope="col">당사/타사</th>
+			      <th scope="col">당사/경쟁사</th>
 			      <th scope="col">활성화</th>
 			    </tr>
 			  </thead>
@@ -304,8 +304,9 @@ var ajaxFlag = false;
 							<div class="col-sm-3">용량</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iProdMlCd">
-								    <option value="1000" selected>1000</option>
-								    <option value="1500">1500</option>
+									<c:forEach items="${cd00017List}" var="i" varStatus="status">
+										<option value="${i.CMM_CD}">${i.CMM_CD_NM}</option>
+									</c:forEach>
 							  </select>
 						  </div>
 						</div>

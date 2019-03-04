@@ -33,6 +33,7 @@ import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.service.brand.BrandService;
+import com.drink.service.vendor.VendorService;
 
 /** 
 * @ ClassName: BrandController 
@@ -48,6 +49,9 @@ public class BrandController {
 	@Autowired 
 	private BrandService brandService;
 	
+	@Autowired
+	private VendorService vendorService;
+	
 	@RequestMapping(value = "/brandList")
 	public ModelAndView main(Locale locale, Model model) throws DrinkException {
 		
@@ -57,7 +61,12 @@ public class BrandController {
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
 		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00014"); // 자사/경쟁사
+		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
+		
 		mav.addObject("brandList", rtnMap);
+		mav.addObject("cd00014", sgmtMap);
 
 		mav.setViewName("brand/main");
 		
@@ -124,6 +133,17 @@ public class BrandController {
 		
 		mav.addObject("masterBrandId", param.getString("masterBrandId"));
 		mav.addObject("brandSubList", rtnMap);
+		
+
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00015"); // 주류유형코드
+		List<DataMap> liqKdCdList = vendorService.getCommonCode(map);
+		mav.addObject("liqKdCdList", liqKdCdList);
+		
+		map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00016"); // STCASE
+		List<DataMap> stcaseCdList = vendorService.getCommonCode(map);
+		mav.addObject("stcaseCdList", stcaseCdList);
 		
 		mav.setViewName("nobody/brand/subMain");
 		return mav;
