@@ -207,6 +207,7 @@ public class VendorController {
 		logger.debug("map :: " + rtMap.toString());
 		logger.debug("map2 :: " + model.toString());
 		
+		
 //		logger.debug("rtMap.vendorno:" + rtMap.get("vendor_no"));
 //		if(rtMap.get("vendor_no")==null) {
 //			rtMap.put("vendor_no", model.get("vendor_no"));
@@ -299,17 +300,20 @@ public class VendorController {
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("message", "수정 하였습니다.");
 		
-		ModelAndView mav = new ModelAndView();
-
-		RedirectView redirectView = new RedirectView("/vendorView"); // redirect url 설정
-		redirectView.setExposeModelAttributes(false);
-		mav.addObject("vendor_no", rtMap.get("vendor_no"));
-		mav.addObject("returnCode", "0000");
-		mav.addObject("gubun", "update");
 		
-		mav.setView(redirectView);
+		//RedirectView redirectView = new RedirectView("/vendorView"); // redirect url 설정
+		RedirectView redirectView = new RedirectView("vendorView?vendor_no="+rtMap.get("vendor_no")+ "&gubun=update"); // redirect url 설정
+	//	redirectView.setExposeModelAttributes(true);
+		ModelAndView mav = new ModelAndView(redirectView);
 
-		return  mav;
+//		mav.addObject("vendor_no", rtMap.get("vendor_no"));
+		mav.addObject("returnCode", "0000");
+//		mav.addObject("gubun", "update");
+		
+//		mav.setView(redirectView);
+
+		//return new ModelAndView(redirectView);
+		return mav;
 			
 //		return "redirect:/vendorView?vendor_no="+rtMap.get("vendor_no")+ "&returnCode=0000&gubun=update";
 		//return rtnMap;

@@ -62,6 +62,7 @@ public class LoginService {
 				sesstionDto.setEmp_no(param.getString("EMP_NO"));
 				sesstionDto.setEmp_grd_cd(param.getString("EMP_GRD_CD"));
 				sesstionDto.setLog_nm(param.getString("EMP_NM"));
+				sesstionDto.setDept_no(param.getString("DEPT_NO"));
 				
 				sesstionDto.setSessionId(map.getRequest().getSession().getId());
 				
