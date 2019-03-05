@@ -34,6 +34,7 @@ var ajaxFlag = false;
 		      }
 			
 			var _cmm_cd_grp_nm = $("#cmm_cd_grp_nm").val();
+			var _cmm_cd_grp_cntn  = $("#cmm_cd_grp_cntn").val();
 			var _use_yn = $("#use_yn option:selected").val();
 			
 			
@@ -48,7 +49,7 @@ var ajaxFlag = false;
 			$.ajax({      
 			    type:"POST",  
 			    url:"/codeInsert",      
-			    data: JSON.stringify({"cmm_cd_grp_id":_cmm_cd_grp_id,"cmm_cd_grp_nm":_cmm_cd_grp_nm,"use_yn" :_use_yn }),
+			    data: JSON.stringify({"cmm_cd_grp_id":_cmm_cd_grp_id,"cmm_cd_grp_nm":_cmm_cd_grp_nm,"cmm_cd_grp_cntn":_cmm_cd_grp_cntn,"use_yn" :_use_yn }),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
 			    traditional:true,
@@ -127,8 +128,8 @@ var ajaxFlag = false;
 	      }
 		
 		var cmm_cd_nm = $("#cmm_cd_nm").val();
+		var cmm_cd_cntn = $("#cmm_cd_cntn").val();
 		var sub_use_yn = $("#sub_use_yn option:selected").val();
-		
 		
 		if(cmm_cd_nm.replace(/^\s*/,"") ==""){
 			alert("코드명을 입력하세요.");
@@ -139,7 +140,7 @@ var ajaxFlag = false;
 		$.ajax({      
 		    type:"POST",  
 		    url:"/codeSubInsert",      
-		    data: JSON.stringify({"mcmm_cd_grp_id":mcmm_cd_grp_id,"cmm_cd":cmm_cd,"cmm_cd_nm":cmm_cd_nm,"sub_use_yn" :sub_use_yn }),
+		    data: JSON.stringify({"mcmm_cd_grp_id":mcmm_cd_grp_id,"cmm_cd":cmm_cd,"cmm_cd_nm":cmm_cd_nm,"cmm_cd_cntn":cmm_cd_cntn,"sub_use_yn" :sub_use_yn }),
 		    dataType:"json",
 		    contentType:"application/json;charset=UTF-8",
 		    traditional:true,
@@ -204,6 +205,7 @@ var ajaxFlag = false;
 		        if(args.returnCode == "0000"){
 		        	$("#cmm_cd_grp_id").val(args.data.CMM_CD_GRP_ID);
 					$("#cmm_cd_grp_nm").val(args.data.CMM_CD_GRP_NM);
+					$("#cmm_cd_grp_cntn").val(args.data.CMM_CD_GRP_CNTN);
 					$("#use_yn").val(args.data.USE_YN);
 					$("#codeupdate").show();
 					$("#codenew").show();
@@ -243,6 +245,7 @@ var ajaxFlag = false;
 		        if(args.returnCode == "0000"){
 		        	$("#cmm_cd").val(args.data.CMM_CD);
 					$("#cmm_cd_nm").val(args.data.CMM_CD_NM);
+					$("#cmm_cd_cntn").val(args.data.CMM_CD_CNTN);
 					$("#sub_use_yn").val(args.data.USE_YN);
 					$("#codeSupdate").show();
 					$("#codeSnew").show();
@@ -274,8 +277,8 @@ var ajaxFlag = false;
 	<div class="container" style="max-width:100%;">
 		<div class="row">			
 			<div class="col">
-				<div class="container border" style="padding: 5px;">
-					<table class="table-borderless ">
+				<div class=" border" style="padding: 5px;">
+					<table class="table-borderless" width="100%">
 						<thead>
 							<tr>
 								<td>코드</td>
@@ -287,6 +290,8 @@ var ajaxFlag = false;
 								</select></td>
 								<td style="padding-left:20px;">코드명</td>
 								<td style="padding-left:20px;"><input type="text" class="form-control" name="cmm_cd_grp_nm" id="cmm_cd_grp_nm"></td>
+								<td style="padding-left:20px;">코드설명</td>
+								<td style="padding-left:20px;"><input type="text" class="form-control" name="cmm_cd_grp_cntn" id="cmm_cd_grp_cntn"></td>
 								<td>
 									<input type="hidden" name="deptno" id="deptno"/>
 									<input class="btn btn-dark" type="button" value="등록" id="codeInsert" />
@@ -306,6 +311,7 @@ var ajaxFlag = false;
 			      <th scope="col">선택</th>
 			      <th scope="col">코드</th>
 			      <th scope="col">코드명</th>
+			      <th scope="col">코드설명</th>
 			      <th scope="col">사용여부</th>
 			    </tr>
 			  </thead>
@@ -315,6 +321,7 @@ var ajaxFlag = false;
 							<th scope="row"><input type="radio" name="cmm_cd_grp_mid" data-cmm_cd_grp_id="${i.CMM_CD_GRP_ID}"></th>
 							<td><a href="javascript:listView('${i.CMM_CD_GRP_ID}');" class="text-decoration-none">${i.CMM_CD_GRP_ID}</a></td>
 							<td><a href="javascript:listView('${i.CMM_CD_GRP_ID}');" class="text-decoration-none">${i.CMM_CD_GRP_NM}</a></td>
+							<td><a href="javascript:listView('${i.CMM_CD_GRP_ID}');" class="text-decoration-none">${i.CMM_CD_GRP_CNTN}</a></td>
 							<td>${i.USE_YN_NM}</td>
 						</tr>
 					</c:forEach>
@@ -325,7 +332,7 @@ var ajaxFlag = false;
 	
 <!-- modal start  -->	
 	<div id="popLayer" class="modal fade" role="dialog" data-backdrop="static">
-		<div class="modal-dialog modal-xl">
+		<div class="modal-dialog modal-xl" style="max-width: 1540px">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">

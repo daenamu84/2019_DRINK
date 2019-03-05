@@ -17,41 +17,20 @@
 			if(ajaxFlag)return;
 			
 			var deptno = $("#deptno").val();
-			var teamnm = $("#teamnm").val();
-			var use_yn = $("#use_yn").val();
+			var empno = $("#empno").val();
 			
-			if(teamnm.replace(/^\s*/,"") ==""){
-				alert("팀명을 입력하세요");
-				ajaxFlag=false;
-				return;
-			}
 			
-			$.ajax({      
-			    type:"POST",  
-			    url:"/",      
-			    data: JSON.stringify({"deptno":deptno,"teamnm":teamnm,"use_yn":use_yn}),
-			    dataType:"json",
-			    contentType:"application/json;charset=UTF-8",
+			$.ajax({
+				type:"GET",  
+			    url:"/memberSearch?deptno="+$("#deptno").val()+"&empno="+$("#empno").val(),
+			    type:"GET",  
+			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
-			        if(args.returnCode == "0000"){
-			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.replace("/teamList");
-			        }else{
-			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.replace("/teamList");
-			        }
+			    	$("#memberSearchLayer").html(args);
 			        ajaxFlag=false;
 			    },   
-			    error:function(xhr, status, e){
-			    	
-			        if(xhr.status == 403){
-			        	alert("로그인이 필요한 메뉴 입니다.");
-			        	location.replace("/logIn");
-			        }else{
-			        	alert("처리중 에러가 발생 하였습니다.");
-			        	location.reload();
-			        }
+			    error:function(xhr, status, e){  
 			        ajaxFlag=false;
 			    }  
 			});
@@ -70,6 +49,34 @@
 		document.viewForm.submit();
 	}
 	
+	function showEmpList(){
+		deptno = $("#deptno option:selected").val();
+		
+		if(deptno!="ALL"){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/EmpSearchPop?deptno="+deptno,      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#EmpListLayer").html(args);
+			    	$("#EmpListNM").show();
+					$("#EmpListLayer").show();
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+			
+		}else{
+			
+			$("#EmpListNM").hide();
+			$("#EmpListLayer").hide();
+		}
+	}
 	</script>
 	<div class="title"> ◈  사원관리</div>
 	<div class="container" style="max-width:100%;">
@@ -79,21 +86,24 @@
 					<div class="row">			
 						<div class="col">
 							<div class="container border" style="padding: 5px;">
-								<form name="Frm" method="post">
-								<div class="row"style="padding-left:20px;">
-									<table class="table-borderless ">
+								
+								<div class="row " style="padding-left:20px;">
+									<table class="table-borderless">
 										<thead>
 											<tr>
 												<td>팀</td>
-												<td style="padding-left:20px;"><select name="deptno" class="form-control" id="deptno">
+												<td style="padding-left:20px;">
+												<select name="deptno" class="form-control" id="deptno" onchange="showEmpList()" >
+													<option value="ALL">전체</option>
 													<c:forEach items="${deptMMList}" var="i">
 														<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
 													</c:forEach>
 												</select></td>
-												<td style="padding-left:20px;">사원</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="empnm" id="empnm"></td>
+												<td style="padding-left:20px;display:none" id="EmpListNM" >사원</td>
+												<td style="padding-left:20px;" id="EmpListLayer">
+													
+												</td>
 												<td>
-													<input type="hidden" name="deptno" id="deptno"/>
 													<input class="btn btn-dark" type="button" value="검색" id="memberSearch"/>
 													<input class="btn btn-dark" type="button" value="등록" id="memberForm"/>
 												</td>
@@ -101,12 +111,12 @@
 										</thead>
 									</table>
 								</div>
-								</form>
+								
 							</div>
 						</div>
 					</div>
-					<div class="row" style="padding-top:10px;">	
-						<table class="table">
+					<div class="row table-responsive" style="padding-top:10px;">	
+						<table class="table ">
 						  <thead>
 						    <tr>
 						      <th scope="col">팀</th>
@@ -116,7 +126,7 @@
 						      <th scope="col">근무여부</th>
 						    </tr>
 						  </thead>
-						  <tbody>
+						  <tbody id="memberSearchLayer">
 						    <c:forEach items="${empMList}" var="i" varStatus="status">
 								<tr>
 									<td>${i.TEAMNM}</td>

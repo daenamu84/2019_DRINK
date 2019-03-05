@@ -35,6 +35,8 @@ import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.login.LoginService;
 import com.drink.service.member.MemberService;
 import com.drink.service.vendor.VendorService;
@@ -62,6 +64,9 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private SessionUtils sessionUtils;
+	
 	
 	@RequestMapping(value = "/memberList")
 	public ModelAndView main(Locale locale, Model model) throws DrinkException {
@@ -76,8 +81,6 @@ public class MemberController {
 		
 		List<DataMap> rtnMap = memberService.getEmpMList(paramMap);
 		
-		logger.debug("rtnMap :: " + rtnMpa0);
-		logger.debug("rtnMap :: " + rtnMap);
 		
 		mav.addObject("deptMMList", rtnMpa0);
 		mav.addObject("empMList", rtnMap);
@@ -233,6 +236,60 @@ public class MemberController {
 		rtnMap.put("message", "저장 하였습니다.");
 		
 		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/memberSearch")
+	public ModelAndView memberSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			List<DataMap> rtnMap = memberService.getEmpMList(param);
+			
+			mav.addObject("empList", rtnMap);
+			mav.setViewName("nobody/member/memberSearch");
+			
+			return mav;
+			
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
+			}
+	}
+	
+	@RequestMapping(value = "/EmpSearchPop")
+	public ModelAndView EmpSearchPop(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			
+			List<DataMap> rtnMap = memberService.getEmpMList(param);
+			
+			mav.addObject("empList", rtnMap);
+			mav.setViewName("nobody/member/emplist");
+			
+			return mav;
+			
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","팀원  조회중 에러가 발생 하였습니다."});
+			}
 	}
 	
 	

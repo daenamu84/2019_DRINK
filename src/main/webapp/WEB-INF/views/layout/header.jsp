@@ -27,14 +27,18 @@
 	        	<li class="nav-item ">
 	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">프로모션 관리 </a>
 	          	</li>
-	          	<li class="nav-item">
-	            	<a class="nav-link" href="javascript:alert('작업중입니다.')">업무조회</a>
+	          	<li class="nav-item active dropdown">
+	            	<a class="nav-link dropdown-toggle" href="/callList" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업무조회</a>
+	            	<div class="dropdown-menu" aria-labelledby="dropdown02">
+						<a class="dropdown-item" href="/callList">콜 목록</a>
+		              	<a class="dropdown-item" href="javascript:alert('작업중입니다.')">콜 (Calendar)</a>
+	            	</div>
 	          	</li>
 	          	<li class="nav-item active dropdown">
 	            	<a class="nav-link dropdown-toggle" href="/vendorList" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업소관리</a>
 	            	<div class="dropdown-menu" aria-labelledby="dropdown03">
 						<a class="dropdown-item" href="/vendorList">거래처목록</a>
-		              	<a class="dropdown-item" href="/memberList">거래처 메뉴</a>
+		              	<a class="dropdown-item" href="/ProdMenuList">거래처메뉴</a>
 		              	<a class="dropdown-item" href="javascript:alert('작업중입니다.')">거래처 원장</a>
 		              	
 	            	</div>

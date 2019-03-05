@@ -75,6 +75,7 @@ public class CodeController {
 		RequestMap dt = new RequestMap();
 		dt.put("cmm_cd_grp_id", vts.get("cmm_cd_grp_id"));
 		dt.put("cmm_cd_grp_nm", vts.get("cmm_cd_grp_nm"));
+		dt.put("cmm_cd_grp_cntn", vts.get("cmm_cd_grp_cntn"));
 		dt.put("use_yn", vts.get("use_yn"));
 		
 		codeService.CodeInsert(dt);
@@ -145,6 +146,7 @@ public class CodeController {
 		dt.put("cmm_cd_grp_id", vts.get("mcmm_cd_grp_id"));
 		dt.put("cmm_cd", vts.get("cmm_cd"));
 		dt.put("cmm_cd_nm", vts.get("cmm_cd_nm"));
+		dt.put("cmm_cd_cntn", vts.get("cmm_cd_cntn"));
 		dt.put("sub_use_yn", vts.get("sub_use_yn"));
 		
 		

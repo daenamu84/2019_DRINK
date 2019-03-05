@@ -93,6 +93,8 @@
 			
 			var mng_dept_no = $("#mng_dept_no").val();
 			
+			
+			
 			if(emp_nm.replace(/^\s*/,"") ==""){
 				alert("이름을  입력하세요.");
 				ajaxFlag=false;
@@ -117,6 +119,12 @@
 				return;
 			}
 			
+			if(emp_grd_cd.replace(/^\s*/,"") ==""){
+				alert("사원등급을  입력하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			
 			var checkArr = [];     // 배열 초기화
 			
 		    $("input[name='mng_dept_no']").each(function(i,e){
@@ -125,6 +133,7 @@
 					
 				}
 			});
+			
 			
 		    var url = "/memberWork";
 			if(emp_no!=""){
@@ -181,6 +190,16 @@
 		
 		document.viewForm.action="/memberView";
 		document.viewForm.submit();
+		
+	}
+	
+	function showMngDept(){
+		var emp_grd_cd_t= $("#emp_grd_cd option:selected").val();
+		if(emp_grd_cd_t=="0002"){
+			$("#deptMng").show();
+		}else{
+			$("#deptMng").hide();
+		}
 		
 	}
 	</script>
@@ -311,11 +330,12 @@
                                 <div class="form-group row">
                                     <label for="emp_grd_cd" class="col-md-2 col-form-label text-md-left">사원등급</label>
                                     <div class="col-md-6">
-                                    	<select name="emp_grd_cd" class="form-control" id="emp_grd_cd">
-													<c:forEach items="${commonList}" var="j">
-														<option value="${j.CMM_CD}" <c:if test="${j.CMM_CD eq data.EMP_GRD_CD}">selected</c:if>>${j.CMM_CD_NM} </option>
-													</c:forEach>
-												</select>
+                                    	<select name="emp_grd_cd" class="form-control" id="emp_grd_cd" onChange="showMngDept()">
+                                    		<option value="">선택하세요</option>
+											<c:forEach items="${commonList}" var="j">
+											<option value="${j.CMM_CD}" <c:if test="${j.CMM_CD eq data.EMP_GRD_CD}">selected</c:if>>${j.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
                                         
                                     </div>
                                 </div>
@@ -326,7 +346,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="border" style="padding: 15px;">
+                                <div class="border" id="deptMng" style="padding: 15px;display:none" >
                                   		관리할 팀을 선택 해 주세요<br>
 
                                     <c:forEach items="${deptMMList}" var="i">

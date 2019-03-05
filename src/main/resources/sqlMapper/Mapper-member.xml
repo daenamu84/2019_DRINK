@@ -18,6 +18,18 @@
 				(SELECT c.TEAMNM FROM T_DEPT_M c WHERE c.DEPT_NO = a.DEPT_NO) AS TEAMNM,
 				a.EMP_NO,a.EMP_NM,a.LOGIN_ID,a.EMP_GRD_CD, IF(a.USE_YN = 'Y', "재직자","퇴사자")USE_YN_NM, a.USE_YN
 			FROM T_EMP_M a
+		]]>
+			<if test="deptno != null and deptno !='ALL'">
+			<![CDATA[
+			WHERE a.DEPT_NO =#{deptno}
+			]]> 
+			</if>
+			<if test="empno != null and empno !='ALL'">
+			<![CDATA[
+				AND a.EMP_NO =#{empno}
+			]]> 
+			</if>
+		<![CDATA[			
 			ORDER BY a.DATA_REG_DTM desc
        	]]>
     </select>
@@ -132,6 +144,7 @@
     	<![CDATA[
     		UPDATE T_EMP_M
     			SET EMP_HP_NO = #{emp_hp_no},
+    				  LOGIN_PWD = (HEX(AES_ENCRYPT(#{login_pwd}, 'tb_sms'))),
     				  ZIP_CD = #{zip_cd},
     				  EMP_ADDR =  #{emp_addr},
     				  USE_YN = #{use_yn},
@@ -144,7 +157,7 @@
     <update id="empteam_dept_relUpdate">
     	<![CDATA[
     		UPDATE T_DEPT_EMP_REL_D
-    			SET EFF_END_DT = DATE_FORMAT(now(), '%Y%m%d'),
+    			SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
     				  DATA_UPD_DTM = now(),
     				  DATA_UPD_ID =  '0'
     	    WHERE EMP_NO = #{emp_no}
@@ -158,7 +171,7 @@
       <update id="empteam_mng_dept_relUpdate">
     	<![CDATA[
     		UPDATE T_DEPT_EMP_REL_D
-    			SET EFF_END_DT = DATE_FORMAT(now(), '%Y%m%d'),
+    			SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
     				  DATA_UPD_DTM = now(),
     				  DATA_UPD_ID =  '0'
     	    WHERE EMP_NO = #{emp_no}

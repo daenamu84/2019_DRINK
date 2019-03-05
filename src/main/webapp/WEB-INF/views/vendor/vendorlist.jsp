@@ -13,9 +13,41 @@
 	
 	$(document).ready(function(){
 		
-		$("#vendorSearch, #downloadExcel").click(function(){
+		$("#downloadExcel").click(function(){
 			alert("작업중입니다.")
 		});
+		
+		$("#vendorSearch").click(function(){
+			
+			var outlet_nm = $("#outlet_nm").val();
+			var dept_no = $("#dept_no option:selected").val();
+			var emp_nm = $("#emp_nm").val();
+			var market_divs_cd = $("#market_divs_cd option:selected").val();
+			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
+			var vendor_stat_cd = $("#vendor_stat_cd option:selected").val();
+			var wholesale_yn = $("#wholesale_yn option:selected").val();
+			var vendor_grd_cd = $("#vendor_grd_cd option:selected").val();
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/vendorSearch?outlet_nm="+outlet_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
+			    +"&vendor_stat_cd="+vendor_stat_cd+"&wholesale_yn="+wholesale_yn+"&vendor_grd_cd="+vendor_grd_cd,
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#vendorSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+			
+			
+		});
+		
 		
 		$("#vendorForm").click(function(){
 			location.replace("/vendorForm");
@@ -40,16 +72,15 @@
 					<div class="row">			
 						<div class="col">
 							<div class="container border" style="padding: 5px;">
-								<form name="Frm" method="post">
 								<div class="row"style="padding-left:50px;">
 									<table class="table-borderless" style="border-spacing: 0 5px;border-collapse: separate;width:90%">
 										<thead>
 											<tr>
 												<td>거래처명</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="" id=""></td>
+												<td style="padding-left:20px;"><input type="text" class="form-control" name="outlet_nm" id="outlet_nm"></td>
 												<td style="padding-left:20px;">팀</td>
 												<td style="padding-left:20px;">
-													<select name="deptno" class="form-control" id="deptno">
+													<select name="dept_no" class="form-control" id="dept_no">
 														<option value="ALL">전체</option>
 														<c:forEach items="${deptMMList}" var="a">
 															<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
@@ -57,12 +88,12 @@
 													</select>
 												</td>
 												<td style="padding-left:20px;">담당자</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="" id=""></td>
+												<td style="padding-left:20px;"><input type="text" class="form-control" name="emp_nm" id="emp_nm"></td>
 											</tr>
 											<tr >
 												<td>Market</td>
 												<td style="padding-left:20px;">
-													<select name="" class="form-control" id="">
+													<select name="market_divs_cd" class="form-control" id="market_divs_cd">
 														<option value="ALL">전체</option>
 														<c:forEach items="${marketMap}" var="b">
 															<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
@@ -71,7 +102,7 @@
 												</td>
 												<td style="padding-left:20px;">Segmentation</td>
 												<td style="padding-left:20px;">
-													<select name="" class="form-control" id="">
+													<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
 														<option value="ALL">전체</option>
 														<c:forEach items="${sgmtMap}" var="c">
 															<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
@@ -80,7 +111,7 @@
 												</td>
 												<td style="padding-left:20px;">거래처상태</td>
 												<td style="padding-left:20px;">
-													<select name="" class="form-control" id="">
+													<select name="vendor_stat_cd" class="form-control" id="vendor_stat_cd">
 														<option value="ALL">전체</option>
 														<c:forEach items="${commonList}" var="d">
 															<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
@@ -89,36 +120,34 @@
 												</td>
 											</tr>
 											<tr >
-												<td>도매장</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="" id=""></td>
 												<td style="padding-left:20px;">도매장여부</td>
 												<td style="padding-left:20px;">
-													<select name="" class="form-control" id="">
+													<select name="wholesale_yn" class="form-control" id="wholesale_yn">
+														<option value="ALL">전체</option>
 														<option value="Y">Y</option>
 														<option value="N">N</option>
 													</select>
 												</td>
 												<td style="padding-left:20px;">거래처등급</td>
 												<td style="padding-left:20px;">
-													<select name="" class="form-control" id="">
+													<select name="vendor_grd_cd" class="form-control" id="vendor_grd_cd">
 														<option value="ALL">전체</option>
 														<c:forEach items="${vendorgrdcdList}" var="e">
 															<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
 														</c:forEach>
 													</select>
 												</td>
-											</tr>
-											<tr>
-												<td style="padding-left:20px;" colspan="6" class="text-right">
+												<td style="padding-left:20px;" colspan="2" class="text-right">
 													<input class="btn btn-dark" type="button" value="검색" id="vendorSearch"/>
 													<input class="btn btn-dark" type="button" value="등록" id="vendorForm"/>
 													<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadExcel"/>
 												</td>
 											</tr>
+											
 										</thead>
 									</table>
 								</div>
-								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -137,7 +166,7 @@
 						      <th scope="col" colspan="3" class="text-center" >관리</th>
 						    </tr>
 						  </thead>
-						  <tbody>	
+						  <tbody id="vendorSeachLayer">	
 						  	<c:forEach items="${vendorList}" var="f" varStatus="status">	
 						  		<tr>
 									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.OUTLET_NM}</a></td>

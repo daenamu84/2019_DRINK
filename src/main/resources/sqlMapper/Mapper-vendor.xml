@@ -26,6 +26,46 @@
 			AND B.EMP_NO = C.EMP_NO
 			AND B.EFF_END_DT='99991231'  
        	]]>
+       	<if test="outlet_nm != null">
+			<![CDATA[
+				AND OUTLET_NM like  CONCAT('%',#{outlet_nm},'%')
+			]]> 
+		</if>
+		<if test="dept_no != null and dept_no !='ALL' ">
+			<![CDATA[
+				AND C.DEPT_NO = #{dept_no}
+			]]> 
+		</if>
+		<if test="emp_nm != null">
+			<![CDATA[
+				AND C.EMP_NM like  CONCAT('%',#{emp_nm},'%')
+			]]> 
+		</if>
+		<if test="market_divs_cd != null and market_divs_cd !='ALL'">
+			<![CDATA[
+				AND A.MARKET_DIVS_CD = #{market_divs_cd}
+			]]> 
+		</if>
+		<if test="vendor_sgmt_divs_cd != null and vendor_sgmt_divs_cd !='ALL'">
+			<![CDATA[
+				AND A.VENDOR_SGMT_DIVS_CD = #{vendor_sgmt_divs_cd}
+			]]> 
+		</if>
+		<if test="vendor_stat_cd != null and vendor_stat_cd !='ALL'">
+			<![CDATA[
+				AND A.VENDOR_STAT_CD = #{vendor_stat_cd}
+			]]> 
+		</if>
+		<if test="wholesale_yn != null and wholesale_yn !='ALL'">
+			<![CDATA[
+				AND A.wholesale_yn = #{wholesale_yn}
+			]]> 
+		</if>
+		<if test="vendor_grd_cd != null and vendor_grd_cd !='ALL'">
+			<![CDATA[
+				AND A.VENDOR_GRD_CD = #{&vendor_grd_cd}
+			]]> 
+		</if>
     </select>
 
     <select id="getVendorList1" resultType="DataMap">
@@ -130,7 +170,7 @@
     <update id="detailupdate">
     	<![CDATA[
     		UPDATE T_VENDOR_EMP_D
-    		SET EFF_END_DT = DATE_FORMAT(now(), '%Y%m%d'),
+    		SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
     		    DATA_UPD_DTM = now(),
     			DATA_UPD_ID =   #{login_id}
  			WHERE VENDOR_NO = #{vendor_no}			

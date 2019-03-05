@@ -47,8 +47,8 @@ public class MemberService {
 	
 	public List getEmpMList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
-		
-		param = gdi.selectList("Member.getEmpMList",param);
+		logger.debug("map===" + map.getMap());
+		param = gdi.selectList("Member.getEmpMList",map.getMap());
 		
 		return param;
 	}
@@ -122,22 +122,24 @@ public class MemberService {
 		String pwd = "";
 		param = (DataMap) gdi.selectOne("Member.getEmPassWD",map.getMap());
 		
-		if(param.getString("LOGIN_PWD")!= ""){
-			pwd = param.getString("LOGIN_PWD");
-			
-			if(!map.get("login_pwd").equals(pwd)) {
-				throw new DrinkException(new String[]{"messageError","비밀번호가 상이합니다."});
-			}
-		}else {
-			throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.1"});
-		}
+//		if(param.getString("LOGIN_PWD")!= ""){
+//			pwd = param.getString("LOGIN_PWD");
+//			
+//			if(!map.get("login_pwd").equals(pwd)) {
+//				throw new DrinkException(new String[]{"messageError","비밀번호가 상이합니다."});
+//			}
+//		}else {
+//			throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.1"});
+//		}
 		
 		int rtCnt = gdi.update("Member.empUpdate", map.getMap());
 		if(rtCnt < 1){
 			throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.2"});
 		}
 		
-		if(map.get("deptno")!=map.get("ex_dept_no")) {
+		logger.debug("deptno==="+ map.get("deptno") + ", ex_dept_no="+map.get("ex_dept_no"));
+		
+		if(!map.getString("deptno").equals(map.getString("ex_dept_no"))) {
 			int rtCnt0 = gdi.update("Member.empteam_dept_relUpdate", map.getMap());
 			if(rtCnt0 < 1){
 				throw new DrinkException(new String[]{"messageError","수정에 실패했습니다.2"});

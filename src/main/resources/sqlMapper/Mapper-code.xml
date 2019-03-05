@@ -6,7 +6,7 @@
     <select id="getCodeList" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				CMM_CD_GRP_ID , CMM_CD_GRP_NM, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
+				CMM_CD_GRP_ID , CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
 			 FROM T_CMM_CD_GRP_M
 			 
        	]]>
@@ -25,14 +25,14 @@
     	<![CDATA[
     	INSERT INTO T_CMM_CD_GRP_M
 			(CMM_CD_GRP_ID, CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{cmm_cd_grp_id}, #{cmm_cd_grp_nm}, '', #{use_yn}, now(), '0', now(), '0')
+			VALUES ( #{cmm_cd_grp_id}, #{cmm_cd_grp_nm}, #{ cmm_cd_grp_cntn}, #{use_yn}, now(), '0', now(), '0')
     	]]>
     </update>
     
     <select id="getMasterCodeView" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				CMM_CD_GRP_ID, CMM_CD_GRP_NM,  USE_YN
+				CMM_CD_GRP_ID, CMM_CD_GRP_NM, CMM_CD_GRP_CNTN,   USE_YN
 			 FROM T_CMM_CD_GRP_M
 			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
        	]]>
@@ -42,6 +42,7 @@
     	<![CDATA[
     		UPDATE T_CMM_CD_GRP_M
     			SET CMM_CD_GRP_NM =   #{cmm_cd_grp_nm},
+    			 	CMM_CD_GRP_CNTN =   #{cmm_cd_grp_cntn},
     				  USE_YN = #{use_yn},
     				  DATA_UPD_DTM = NOW(),
     				  DATA_UPD_ID = 'hoyairis'
@@ -52,7 +53,7 @@
     <select id="getCodeSubList" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				 CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
+				 CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, CMM_CD_CNTN, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
 			 FROM T_CMM_CD_M
 			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
 			 ORDER BY SORT_ORD
@@ -82,14 +83,14 @@
     	<![CDATA[
     	INSERT INTO T_CMM_CD_M
 			(CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, CMM_CD_CNTN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{cmm_cd_grp_id},#{cmm_cd}, #{cmm_cd_nm}, '', #{sort_ord}, #{sub_use_yn}, now(), '0', now(), '0')
+			VALUES ( #{cmm_cd_grp_id},#{cmm_cd}, #{cmm_cd_nm},  #{cmm_cd_cntn}, #{sort_ord}, #{sub_use_yn}, now(), '0', now(), '0')
     	]]>
     </update>
     
     <select id="getCodeSubView" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, USE_YN
+				CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, CMM_CD_CNTN, USE_YN
 			 FROM T_CMM_CD_M
 			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
 			 AND CMM_CD = #{cmm_cd}
@@ -100,6 +101,7 @@
     	<![CDATA[
     		UPDATE T_CMM_CD_M
     			SET   CMM_CD_NM = #{cmm_cd_nm},
+    				  CMM_CD_CNTN = #{cmm_cd_cntn},
     				  USE_YN = #{sub_use_yn},
     				  DATA_UPD_DTM = NOW(),
     				  DATA_UPD_ID = 'hoyairis'

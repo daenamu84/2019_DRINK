@@ -346,4 +346,30 @@ public class VendorController {
 			}
 	}
 	
+	@RequestMapping(value = "/vendorSearch")
+	public ModelAndView vendorSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			List<DataMap> rtnVendrMap = vendorService.getVendorList(param);
+			
+			mav.addObject("vendorList", rtnVendrMap);
+			mav.setViewName("nobody/vendor/vendorSearch");
+			
+			return mav;
+			
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
+			}
+	}
+	
 }

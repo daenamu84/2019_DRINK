@@ -15,7 +15,7 @@
 <div class="container" style="max-width:100%;">
 	<div class="row">
 		<div class="col">
-			<div class="container border" style="padding: 5px;">
+			<div class=" border" style="padding: 5px;">
 				<table class="table-borderless ">
 					<thead>
 						<tr>
@@ -31,6 +31,8 @@
 							</select></td>
 							<td style="padding-left:20px;">코드명</td>
 							<td style="padding-left:20px;"><input type="text" class="form-control" name="cmm_cd_nm" id="cmm_cd_nm"></td>
+							<td style="padding-left:20px;">코드설명</td>
+							<td style="padding-left:20px;"><input type="text" class="form-control" name="cmm_cd_cntn" id="cmm_cd_cntn"></td>
 							<td>
 								<input type="hidden" name="deptno" id="deptno"/>
 								<input class="btn btn-dark" type="button" value="등록" id="codeSInsert" />
@@ -49,6 +51,7 @@
 			    <tr>
 			      <th scope="col">코드</th>
 			      <th scope="col">코드명</th>
+			      <th scope="col">코드설명</th>
 			      <th scope="col">사용여부</th>
 			    </tr>
 			  </thead>
@@ -57,6 +60,7 @@
 					<tr>
 						<td><a href="javascript:subListView('${cmm_cd_grp_id}','${i.CMM_CD}');"class="text-decoration-none">${i.CMM_CD}</a></td>
 						<td><a href="javascript:subListView('${cmm_cd_grp_id}','${i.CMM_CD}');"class="text-decoration-none">${i.CMM_CD_NM}</a></td>
+						<td><a href="javascript:subListView('${cmm_cd_grp_id}','${i.CMM_CD}');"class="text-decoration-none">${i.CMM_CD_CNTN}</a></td>
 						<td>${i.USE_YN_NM}</td>
 					</tr>
 				</c:forEach>
