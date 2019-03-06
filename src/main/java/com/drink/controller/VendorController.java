@@ -182,11 +182,11 @@ public class VendorController {
 		
 		try{
 		ModelAndView mav = new ModelAndView();
-		logger.debug("rtMap 1:: " + rtMap + "/"+rtMap.get("gubun").toString());
-		if(rtMap.get("gubun").toString().equals("null")) {
+		logger.debug("rtMap 1:: " + rtMap + "/"+rtMap.getString("gubun"));
+		if(rtMap.getString("gubun").equals("")) {
 			rtMap.put("gubun", "new");
 		}
-		logger.debug("gubun=" + rtMap.get("gubun"));
+		logger.debug("gubun=" + rtMap.getString("gubun"));
 		List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
 
 		mav.addObject("EmpList", rtnMap);
@@ -357,7 +357,11 @@ public class VendorController {
 			ModelAndView mav = new ModelAndView();
 			
 			RequestMap paramMap = new RequestMap();
-			List<DataMap> vendorList = vendorService.getVendorList1(param);
+			paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+			paramMap.put("emp_no", loginSession.getEmp_no());
+			paramMap.put("deptno", loginSession.getDept_no());
+			paramMap.put("outlet_nm", param.getString("vendorNm"));
+			List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 			
 			
 			mav.addObject("vendorList", vendorList);

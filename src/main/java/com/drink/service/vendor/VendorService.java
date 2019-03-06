@@ -45,14 +45,6 @@ public class VendorService {
 		return param;
 	}
 
-	public List getVendorList1(RequestMap map) throws DrinkException{
-		List<DataMap> param = new ArrayList<>();
-		
-		param = gdi.selectList("Vendor.getVendorList1",map.getMap());
-		
-		return param;
-	}
-	
 	public List getTeamList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		

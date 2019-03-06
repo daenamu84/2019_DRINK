@@ -26,21 +26,41 @@ var ajaxFlag = false;
 				monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
 		};
 		_pDdataRangeOptions.singleDatePicker =  true;
-		_pDdataRangeOptions.autoUpdateInput = false;
+		_pDdataRangeOptions.autoUpdateInput = true;
 			
 		$("._pDateRange").daterangepicker(_pDdataRangeOptions);
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
 			$(this).val(picker.endDate.format('YYYYMMDD'));
 		});
+		
+		$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
 	});	
 
 	$(document).ready(function(){
 	
-		$("#vendorPop").click(function(){
-			$("#popLayer").modal("show");
+		$("#vendorNm").click(function(){
+			$("#vdSearchLayer").modal("show");
 		});
 		
 		$("#vendorSearch").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/vendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#vendorSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		});
+		
+		$("#prodSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			var _pDeptNo = $("#deptno").val();
@@ -67,14 +87,20 @@ var ajaxFlag = false;
 				ajaxFlag=false;
 				return;
 			}
+			var _pVendorId = $("#vendorId").val();
+			if(_pVendorId =="" || _pVendorId == undefined){
+				alert("업소를 검색하세요.");
+				ajaxFlag=false;
+				return;
+			}
 			$.ajax({      
 			    type:"GET",  
-			    url:"/vendorSearchPop?="+$("#_sVendorNm").val(),
-			    data: {"deptNo":_pDeptNo,"empNo":_pEmpNo,"staDt":_pStaDt,"endDt":_pEndDt},
+			    url:"/prodSearchList?="+$("#_sVendorNm").val(),
+			    data: {"deptNo":_pDeptNo,"empNo":_pEmpNo,"staDt":_pStaDt,"endDt":_pEndDt,"vendorId":_pVendorId},
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
-			    	$("#vendorSeachLayer").html(args);
+			    	$("#productList").html(args);
 			        ajaxFlag=false;
 			    },   
 			    error:function(xhr, status, e){  
@@ -97,22 +123,7 @@ var ajaxFlag = false;
 	function setVendorId(vendorId, vendorNm){
 		$("#vendorId").val(vendorId);
 		$("#vendorNm").val(vendorNm);
-		$("#popLayer").modal("hide");
-		if(ajaxFlag)return;
-		ajaxFlag=true;
-		$.ajax({      
-		    type:"GET",  
-		    url:"/prodSearch?vendorId="+vendorId,      
-		    dataType:"html",
-		    traditional:true,
-		    success:function(args){   
-		    	$("#productList").html(args);
-		        ajaxFlag=false;
-		    },   
-		    error:function(xhr, status, e){  
-		        ajaxFlag=false;
-		    }  
-		});
+		$("#vdSearchLayer").modal("hide");
 	}
 	
 	$(document).on("change","#deptno", _.debounce( function(){
@@ -125,7 +136,7 @@ var ajaxFlag = false;
 		$.ajax({      
 		    type:"POST",  
 		    url:"/Dept_EmpList",      
-		    data: {"deptno":$(this).val(),"empno": ""},
+		    data: {"deptno":$(this).val(),"empno": "${loginSession.dept_no}"},
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
@@ -155,14 +166,35 @@ var ajaxFlag = false;
 		<div class="row">			
 			<div class="col">
 				<div class="container border" style="padding: 5px;">
-					<div class="row">
-						<div class="col-sm-2"><span class="align-middle">업소</span></div>
-						<div class="col-sm-3">
+					<div class="row" style="padding: 5px 0px;">
+						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>
+						<div class="col-12 col-sm-2">
+							<select name="deptno" class="form-control" id="deptno" >
+								<option value="">선택하세요</option>
+								<c:forEach items="${teamList}" var="c">
+								<option value="${c.DEPT_NO}" >${c.TEAMNM} </option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-12 col-sm-2" id="empList">
+						</div>
+						<div class="col-12 col-sm-2"><span class="align-middle">업소</span></div>
+						<div class="col-12 col-sm-4">
 							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly/>
 							<input type="hidden" name="vendorId" id="vendorId" class="form-control" />
 						</div>
-						<div class="col-sm-5">
-							<input class="btn btn-primary" type="button" id="vendorPop" value="선택">
+					</div>
+					<div class="row" style="padding: 5px 0px;">
+						<div class="col-12 col-sm-2"><span class="align-middle">기간</span></div>
+						<div class="col-12 col-sm-3">
+							<input type="text" class="_pDateRange form-control" id="_pStaDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+						</div>
+						<div class="col-12 col-sm-1">~</div>
+						<div class="col-12 col-sm-3">
+							<input type="text" class="_pDateRange form-control" id="_pEndDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+						</div>
+						<div class="col-12 col-sm-3">
+							<input class="btn btn-primary" type="button" id="prodSearch" value="조회">
 						</div>
 					</div>
 				</div>
@@ -187,45 +219,29 @@ var ajaxFlag = false;
 	</div>
 	
 	<!-- modal start  -->	
-	<div id="popLayer" class="modal fade" role="dialog">
+	<div id="vdSearchLayer" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-xl">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
-					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container" style="padding: 5px;">
-						<div class="row" style="padding: 5px 0px;">
-							<div class="col-sm-2"><span class="align-middle">팀</span></div>
+						<div class="row">
+							<div class="col-sm-2"><span class="align-middle">업소</span></div>
 							<div class="col-sm-3">
-								<select name="deptno" class="form-control" id="deptno" >
-									<option value="">선택하세요</option>
-									<c:forEach items="${teamList}" var="c">
-									<option value="${c.DEPT_NO}" >${c.TEAMNM} </option>
-									</c:forEach>
-								</select>
+								<input type="text"  id="_sVendorNm" class="form-control" />
 							</div>
-							<div class="col-sm-2"><span class="align-middle">팀원</span></div>
-							<div class="col-sm-3" id="empList">
-							</div>
-						</div>
-						<div class="row" style="padding: 5px 0px;">
-							<div class="col-sm-2"><span class="align-middle">기간</span></div>
-							<div class="col-sm-2">
-								<input type="text" class="_pDateRange form-control" id="_pStaDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
-							</div>~
-							<div class="col-sm-2">
-								<input type="text" class="_pDateRange form-control" id="_pEndDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
-							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-5">
 								<input class="btn btn-primary" type="button" id="vendorSearch" value="조회">
 							</div>
 						</div>
 					</div>
 				</div>					
 				<div class="modal-body" id="subLayer">
+				</div>
+				<div class="modal-footer">
 					<table class="table">
 						<thead>
 							<tr>
@@ -245,50 +261,9 @@ var ajaxFlag = false;
 						</tbody>
 					</table>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
 			</div>
 		</div>
 	</div>
 <!-- modal  end  -->
 	
-	 <input type="file" name="files" onchange="fileUpload(this);">
-<script>
-function fileUpload(e){
-	  console.log("start");
-	   event.preventDefault();
-	   
-	   
-	   var file = e;
-	   
-	   var formData = new FormData();
-	   formData.append("files",e.files[0]);
-	   
-	   console.log(formData);
-
-	  $.ajax({    
-	   type:"POST",  
-	      url:"/fileUpload2",      
-	      data: formData,
-	      contentType: false,
-	      processData : false,
-	      success:function(args){   
-	          $("#empList").empty();
-	          $("#empList").html(args);
-	          ajaxFlag=false;
-	      },   
-	      error:function(xhr, status, e){  
-	          if(xhr.status == 403){
-	           alert("로그인이 필요한 메뉴 입니다.");
-	           location.replace("/logIn");
-	          }else{
-	           alert("처리중 에러가 발생 하였습니다.");
-	           location.reload();
-	          }
-	          ajaxFlag=false;
-	      }  
-	  });
-	 }
-</script>
 </div>

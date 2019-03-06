@@ -60,7 +60,7 @@ public class ProdMenuController {
 	@Autowired
 	private SessionUtils sessionUtils;
 	
-	@RequestMapping(value = "/ProdMenuList")
+	@RequestMapping(value = "/ProdMenuAdd")
 	public ModelAndView main(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
@@ -72,13 +72,13 @@ public class ProdMenuController {
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
-		List<DataMap> vendorList = vendorService.getVendorList1(rtMap);
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 		mav.addObject("vendorList", vendorList);
 		
-		List<DataMap> teamList = vendorService.getMngTeamList(paramMap);
-		mav.addObject("teamList", teamList);
-		
-		mav.setViewName("prodmenu/menuList");
+		mav.setViewName("prodmenu/menuAdd");
 		return mav;
 	}
 	
@@ -108,4 +108,61 @@ public class ProdMenuController {
 		}
 	}
 	
+	@RequestMapping(value = "/ProdMenuList")
+	public ModelAndView prodMenuList(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		List<DataMap> teamList = vendorService.getMngTeamList(paramMap);
+		
+		mav.addObject("teamList", teamList);
+		
+		
+		paramMap = new RequestMap();
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
+		mav.addObject("vendorList", vendorList);
+		
+		mav.setViewName("prodmenu/menuList");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/prodSearchList")
+	public ModelAndView prodSearchList(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		List<DataMap> rtnMap = productService.prdSearchView(param);
+		
+		
+		mav.addObject("prodVendorList", rtnMap);
+		
+		mav.setViewName("nobody/prodmenu/prodSearch");
+		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+		}
+	}
 }

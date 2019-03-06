@@ -77,23 +77,6 @@
 		</if>
     </select>
 
-    <select id="getVendorList1" resultType="DataMap">
-    	<![CDATA[
-    		SELECT V.VENDOR_NO, V.OUTLET_NM, V.VENDOR_ADDR 
-    		FROM T_VENDOR_M V, T_VENDOR_EMP_D E
-			WHERE 1=1
-			AND V.VENDOR_NO =E.VENDOR_NO
-		    AND E.EMP_NO = #{empNo}
-		    AND E.EFF_STA_DT >= #{staDt}
-		    AND E.EFF_END_DT <= #{endDt}
-       	]]>
-       	<if test="vendorNm != null">
-       		<![CDATA[
-			AND V.OUTLET_NM like  CONCAT('%',#{vendorNm},'%')
-			]]>
-		</if>
-    </select>
-    
      <select id="getMngTeamList" resultType="DataMap">
      	<if test="emp_grd_cd == '0001'">
      		<![CDATA[

@@ -96,4 +96,11 @@ public class ProductService {
 		
 		return param;
 	}
+
+	public List prdSearchView(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Product.getProdSearchView",map.getMap());
+		
+		return param;
+	}
 }

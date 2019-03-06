@@ -20,12 +20,14 @@
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/upload/**"/>
 			<beans:bean id="commonInterceptor" class="com.drink.commonHandler.Interceptor"></beans:bean>
 		</interceptor>
 	</interceptors>
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/upload/**" location="/upload/" />
 	
 	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource" >
 		<beans:property name="defaultEncoding" value="UTF-8" />

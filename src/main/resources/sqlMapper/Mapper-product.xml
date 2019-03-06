@@ -59,7 +59,7 @@
     <select id="getProdSearchList" resultType="DataMap">
     	<![CDATA[
     		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, P.PROD_ML_CD, V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
-    		FROM T_PROD_M P LEFT JOIN T_VENDOR_MENU_D V
+    		FROM T_PROD_M P LEFT JOIN T_VENDOR_MENU_D V, 
 			ON V.PROD_NO = P.PROD_NO
 			AND V.VENDOR_NO = ${vendorId} 
 			, T_SUB_BRAND_M S, T_BRAND_M M
@@ -68,5 +68,25 @@
 			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
 			AND M.BRAND_ID = S.BRAND_ID 
        	]]>
+    </select>
+    
+    <select id="getProdSearchView" resultType="DataMap">
+    	<![CDATA[
+    		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, P.PROD_ML_CD, V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
+    		FROM T_PROD_M P , T_VENDOR_MENU_D V, T_SUB_BRAND_M S, T_BRAND_M M, T_EMP_M E, T_VENDOR_EMP_D D
+			WHERE 1=1
+			AND V.PROD_NO = P.PROD_NO
+			AND P.BRAND_ID = S.BRAND_ID
+			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
+			AND M.BRAND_ID = S.BRAND_ID 
+	        AND E.EMP_NO = D.EMP_NO
+	        AND D.VENDOR_NO = V.PROD_NO
+	        AND D.VENDOR_NO = ${vendorId}
+	        AND V.SALE_STA_DT = #{staDt} 
+      		AND V.SALE_END_DT = #{endDt}
+      		AND E.DEPT_NO = #{deptNo}
+            AND E.EMP_NO =  #{empNo}
+       	]]>
+       	/* 팀 팀원 기간 */
     </select>
 </mapper>
