@@ -7,198 +7,205 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	
 	<script type="text/javascript">
-	var ajaxFlag = false;
-	// 한글입력막기 스크립트
-	$( function(){
-		$("#login_id" ).on("blur keyup", function() {
-			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
-		});
-	})
+		var ajaxFlag = false;
+		// 한글입력막기 스크립트
+		$( function(){
+			$("#login_id" ).on("blur keyup", function() {
+				$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
+			});
+		})
 
-	function fileUpload(e){
-		  console.log("start");
-		   event.preventDefault();
-		   
-		   
-		   var file = e;
-		   
-		   var formData = new FormData();
-		   formData.append("files",e.files[0]);
-		   
-		   console.log(formData);
+		function FileClick(a){
+			$('#file'+a).click();
+		}
 
-		  $.ajax({    
-		   type:"POST",  
-		      url:"/fileUpload2",      
-		      data: formData,
-		      contentType: false,
-		      processData : false,
-		      success:function(args){   
-		          $("#empList").empty();
-		          $("#empList").html(args);
-		          ajaxFlag=false;
-		      },   
-		      error:function(xhr, status, e){  
-		          if(xhr.status == 403){
-		           alert("로그인이 필요한 메뉴 입니다.");
-		           location.replace("/logIn");
-		          }else{
-		           alert("처리중 에러가 발생 하였습니다.");
-		           location.reload();
-		          }
-		          ajaxFlag=false;
-		      }  
-		  });
-		 }
-	
+		function fileUpload(e, b) {
+			console.log("start");
 
-	
-	function getTeamList(){
-		if(ajaxFlag)return;
-		ajaxFlag=true;
-		var deptno = "";
-		var gubun = "<%=request.getParameter("gubun")%>";
-		
-		if(gubun=='null'){
-			deptno = $("#deptno option:selected").val();
-		}else{
-			deptno = '${data.DEPT_NO}';
+			var file = e;
+
+			var formData = new FormData();
+			formData.append("files", e.files[0]);
+
+			console.log(formData);
+
+			$.ajax({
+				type : "POST",
+				url : "/fileUpload2",
+				data : formData,
+				contentType : false,
+				processData : false,
+				success : function(args) {
+					$("#apnd_file_divs_cd" + b).val(args.data);
+					//$("#empList").empty();
+					//$("#empList").html(args);
+					ajaxFlag = false;
+				},
+				error : function(xhr, status, e) {
+					if (xhr.status == 403) {
+						alert("로그인이 필요한 메뉴 입니다.");
+						location.replace("/logIn");
+					} else {
+						alert("처리중 에러가 발생 하였습니다.");
+						location.reload();
+					}
+					ajaxFlag = false;
+				}
+			});
 		}
+
 		
-		$.ajax({      
-		    type:"POST",  
-		    url:"/Dept_EmpList",      
-		    data: {"deptno":deptno,"gubun":gubun,"empno": '${data.EMP_NO}'},
-		    dataType:"html",
-		    traditional:true,
-		    success:function(args){   
-		        $("#empList").empty();
-		        $("#empList").html(args);
-		        ajaxFlag=false;
-		    },   
-		    error:function(xhr, status, e){  
-		        if(xhr.status == 403){
-		        	alert("로그인이 필요한 메뉴 입니다.");
-		        	location.replace("/logIn");
-		        }else{
-		        	alert("처리중 에러가 발생 하였습니다.");
-		        	location.reload();
-		        }
-		        ajaxFlag=false;
-		    }  
+		function getTeamList() {
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
+			var deptno = "";
+			var gubun = "<%=request.getParameter("gubun")%>";
+			
+			if (gubun == 'null') {
+				deptno = $("#deptno option:selected").val();
+			} else {
+				deptno = '${data.DEPT_NO}';
+			}
+
+			$.ajax({
+				type : "POST",
+				url : "/Dept_EmpList",
+				data : {
+					"deptno" : deptno,
+					"gubun" : gubun,
+					"empno" : '${data.EMP_NO}'
+				},
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#empList").empty();
+					$("#empList").html(args);
+					ajaxFlag = false;
+				},
+				error : function(xhr, status, e) {
+					if (xhr.status == 403) {
+						alert("로그인이 필요한 메뉴 입니다.");
+						location.replace("/logIn");
+					} else {
+						alert("처리중 에러가 발생 하였습니다.");
+						location.reload();
+					}
+					ajaxFlag = false;
+				}
+			});
+		}
+
+		function wholesalevendo(e) {
+
+			if (e.value == 'N') {
+				$("#wholesale_vendor_area").show();
+			}
+			if (e.value == 'Y') {
+				$("#wholesale_vendor_area").hide();
+				$("#wholesale_vendor_no").val("");
+				$("#wholesale_vendor_nm").val("");
+			}
+		}
+
+		$(document).on("click", "#vendorList", function() {
+			window.location.href = "/vendorList";
 		});
-	}
-	
-	function wholesalevendo(e){
-		
-		if(e.value =='N'){
-			$("#wholesale_vendor_area").show();
-		}
-		if(e.value =='Y'){
-			$("#wholesale_vendor_area").hide();
-			$("#wholesale_vendor_no").val("");
-			$("#wholesale_vendor_nm").val("");
-		}
-	}
-	
-	$(document).on("click","#vendorList", function(){
-		window.location.href="/vendorList";
-	});
-	
-	$(document).on("click","#vendorInsert", function(){
-		
-		
-		if(ajaxFlag)return;
-		ajaxFlag=true;
-		
-		if($("#outlet_nm").val() ==""){
-			alert("거래처명을 입력하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		if($("#vendor_grd_cd option:selected").val() == ""){
-			alert("거래처 등급을  선택 하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		if($("#vendor_area_cd option:selected").val() == ""){
-			alert("거래처 지역을  선택 하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		var empno= $("#empno option:selected").val();
-		$("#empno1").val(empno);
-		
-		if(($("#empno1").val())==""){
-			alert("관리 담당자를 선택 세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		if($("#vendor_tel_no").val() ==""){
-			alert("전화번호를 입력하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		if($("#wholesale_yn option:selected").val() == ""){
-			alert("도매장여부 선택 하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		
-		if($("#gov_rel_d option:selected").val() == ""){
-			alert("공직자관련여부  선택 하세요");
-			ajaxFlag=false;
-			return;
-		}
-		
-		var gubun = $("#gubun").val();
-		
-		if(gubun ==""){ 
-			document.Form.action="/vendorInsert";
-		}else{
-			document.Form.action="/vendorUpdate";
-		}
-		document.Form.submit();
-	});
-	
-	$(document).on("click","#wholesale_vendor_no", function(){
-		console.log("도매장 검색");
-		if(ajaxFlag)return;
-		ajaxFlag=true;
-		$("#subLayer").empty();
-		$("#popLayer").modal("show");
-		
-		$.ajax({      
-		    type:"GET",  
-		    url:"/wholesaleVendorList",      
-		    dataType:"html",
-		    traditional:true,
-		    success:function(args){   
-		    	$("#subLayer").html(args);
-		        ajaxFlag=false;
-		    },   
-		    error:function(xhr, status, e){  
-		        ajaxFlag=false;
-		    }  
+
+		$(document).on("click", "#vendorInsert", function() {
+
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
+
+			if ($("#outlet_nm").val() == "") {
+				alert("거래처명을 입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			if ($("#vendor_grd_cd option:selected").val() == "") {
+				alert("거래처 등급을  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			if ($("#vendor_area_cd option:selected").val() == "") {
+				alert("거래처 지역을  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			var empno = $("#empno option:selected").val();
+			$("#empno1").val(empno);
+
+			if (($("#empno1").val()) == "") {
+				alert("관리 담당자를 선택 세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			if ($("#vendor_tel_no").val() == "") {
+				alert("전화번호를 입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			if ($("#wholesale_yn option:selected").val() == "") {
+				alert("도매장여부 선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			if ($("#gov_rel_d option:selected").val() == "") {
+				alert("공직자관련여부  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+
+			var gubun = $("#gubun").val();
+
+			if (gubun == "") {
+				document.Form.action = "/vendorInsert";
+			} else {
+				document.Form.action = "/vendorUpdate";
+			}
+			document.Form.submit();
 		});
-		
-	});
-	
-	function subListView(vendor_no, outlet_nm){
-		$("#wholesale_vendor_no").val(vendor_no);
-		//$("#wholesale_vendor_nm").val(outlet_nm);
-		$("#popLayer").modal('hide');
-	}
-	
+
+		$(document).on("click", "#wholesale_vendor_no", function() {
+			console.log("도매장 검색");
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
+			$("#subLayer").empty();
+			$("#popLayer").modal("show");
+
+			$.ajax({
+				type : "GET",
+				url : "/wholesaleVendorList",
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#subLayer").html(args);
+					ajaxFlag = false;
+				},
+				error : function(xhr, status, e) {
+					ajaxFlag = false;
+				}
+			});
+
+		});
+
+		function subListView(vendor_no, outlet_nm) {
+			$("#wholesale_vendor_no").val(vendor_no);
+			//$("#wholesale_vendor_nm").val(outlet_nm);
+			$("#popLayer").modal('hide');
+		}
 	</script>
 	<script>
 	//daum 주소
@@ -430,45 +437,51 @@
 							 <div class="container" style="padding: 15px;">◈  첨부파일 </div>
                             <div class="container border" style="padding: 15px;">
 								<div class="form-group row">
-                                	<label for="bank_nm" class="col-md-2 col-form-label text-md-left">사업자 등록증</label>
+                                	<label for="bank_nm" class="col-md-3 col-form-label text-md-left">사업자 등록증</label>
                                     <div class="col-md-6">
-                                    	<input type="hidden" id="apnd_file_divs_cd1" class="form-control" name="apnd_file_divs_cd1" style="width:30%;display:initial;">
-                                    	<input type="file" id="file1" class="fileDrop" name="file1" onchange="fileUpload(this);" style="width:60%;display:initial;">
+                                    	<input type="file" id="file1" class="fileDrop" name="file1" onchange="fileUpload(this,1);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd1" class="form-control" name="apnd_file_divs_cd1" style="width:50%;display:initial;" value="${apnd_file_divs_cd1}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(1)">&nbsp;<a href="/upload/${apnd_file_divs_cd1}">파일받기</a>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">통장사본</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">통장사본</label>
                                     <div class="col-md-6">
-                                    	<input type="file" id="file2" class="form-control" name="file2"   value="${data.BANK_ACCNT_NM}">
-                                    	<input type="text" id="apnd_file_divs_cd2" class="form-control" name="apnd_file_divs_cd2">
+                                    	<input type="file" id="file2" class="fileDrop" name="file2" onchange="fileUpload(this,2);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd2" class="form-control" name="apnd_file_divs_cd2" style="width:50%;display:initial;" value="${apnd_file_divs_cd2}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(2)">&nbsp;<a href="/upload/${apnd_file_divs_cd2}">파일받기</a>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">신분증</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">신분증</label>
                                     <div class="col-md-6">
-                                    	<input type="file" id="file3" class="form-control" name="file3"  value="${data.BANK_ACCNT_NO}">
-                                    	<input type="text" id="apnd_file_divs_cd3" class="form-control" name="apnd_file_divs_cd3">
+                                    	<input type="file" id="file3" class="fileDrop" name="file3" onchange="fileUpload(this,3);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd3" class="form-control" name="apnd_file_divs_cd3" style="width:50%;display:initial;" value="${apnd_file_divs_cd3}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(3)">&nbsp;<a href="/upload/${apnd_file_divs_cd3}">파일받기</a>
                                     </div>
                                 </div>
                                  <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">명함</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">명함</label>
                                     <div class="col-md-6">
-                                    	<input type="text" id="file4" class="form-control" name="file4"   value="${data.PAYMENT_TERM}">
-                                    	<input type="text" id="apnd_file_divs_cd4" class="form-control" name="apnd_file_divs_cd4">
+                                    	<input type="file" id="file4" class="fileDrop" name="file4" onchange="fileUpload(this,4);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd4" class="form-control" name="apnd_file_divs_cd4" style="width:50%;display:initial;" value="${apnd_file_divs_cd4}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(4)">&nbsp;<a href="/upload/${apnd_file_divs_cd4}">파일받기</a>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">메뉴사진</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">메뉴사진</label>
                                     <div class="col-md-6">
-                                    	<input type="text" id="file5" class="form-control" name="file5"   value="${data.PAYMENT_TERM}">
-                                    	<input type="text" id="apnd_file_divs_cd5" class="form-control" name="apnd_file_divs_cd5">
+                                    	<input type="file" id="file5" class="fileDrop" name="file5" onchange="fileUpload(this,5);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd5" class="form-control" name="apnd_file_divs_cd5" style="width:50%;display:initial;" value="${apnd_file_divs_cd5}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(5)">&nbsp;<a href="/upload/${apnd_file_divs_cd5}">파일받기</a>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">개인정보수집 및 활용 동의서</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">개인정보수집 및 활용 동의서</label>
                                     <div class="col-md-6">
-                                    	<input type="text" id="file6" class="form-control" name="file6"   value="${data.PAYMENT_TERM}">
-                                    	<input type="text" id="apnd_file_divs_cd6" class="form-control" name="apnd_file_divs_cd6">
+                                    	<input type="file" id="file6" class="fileDrop" name="file6" onchange="fileUpload(this,6);" style="width:60%;display:none;">
+                                    	<input type="text" id="apnd_file_divs_cd6" class="form-control" name="apnd_file_divs_cd6" style="width:50%;display:initial;" value="${apnd_file_divs_cd6}">
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(6)">&nbsp;<a href="/upload/${apnd_file_divs_cd6}">파일받기</a>
                                     </div>
                                 </div>
 							</div>

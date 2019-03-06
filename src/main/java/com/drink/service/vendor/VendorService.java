@@ -115,6 +115,41 @@ public class VendorService {
 			gdi.update("Vendor.detailInsert", map.getMap());
 			gdi.update("Vendor.vendor_userInsert", map.getMap());
 			
+			map.put("reg_folder_nm" ,"/resources/fileimg");
+			
+			if(!map.getString("apnd_file_divs_cd1").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0001");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd1"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd2").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0002");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd2"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd3").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0003");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd3"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd4").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0004");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd4"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd5").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0005");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd5"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd6").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0006");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd6"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			
+		
+			
 		}else{
 			int rtCnt = gdi.update("Vendor.masterUpdate", map.getMap());
 			if(rtCnt < 1){
@@ -131,12 +166,50 @@ public class VendorService {
 				gdi.update("Vendor.detailInsert", map.getMap());
 				
 			}
-			logger.debug("detailUpdate skip");
+			
+			gdi.update("Vendor.filedelete", map.getMap());
+			
+			map.put("reg_folder_nm" ,"/resources/fileimg");
+			
+			if(!map.getString("apnd_file_divs_cd1").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0001");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd1"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd2").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0002");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd2"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd3").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0003");
+				gdi.update("Vendor.fileInsert", map.getMap());
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd3"));
+			}
+			if(!map.getString("apnd_file_divs_cd4").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0004");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd4"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd5").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0005");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd5"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			if(!map.getString("apnd_file_divs_cd6").equals("")) {
+				map.put("apnd_file_divs_cd" ,"0006");
+				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd6"));
+				gdi.update("Vendor.fileInsert", map.getMap());
+			}
+			
+			
 			int rtCntUser = gdi.update("Vendor.vendor_userUpdate", map.getMap()); 
 			
 			if(rtCntUser < 1){
 				throw new DrinkException(new String[]{"messageError"," 거래처 담당자 정보 수정에 실패 했습니다."});
 			}
+			
+			
 			
 		}
 		
@@ -157,5 +230,15 @@ public class VendorService {
 		
 		return param;
 	}
+	
+	public List getVendorFileView(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Vendor.getVendorFileView", map.getMap());
+		
+		return param;
+	}
+	
+	
 	
 }

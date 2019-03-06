@@ -13,6 +13,7 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,6 +29,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -67,6 +69,7 @@ public class FileUploadController {
 	*
 	*/ 
 	@RequestMapping(value = "/fileUpload")
+	
 	public String fileUpload(Locale locale, Model model,  MultipartRequest multiPartRequest,  HttpServletRequest param )throws Exception {
 		
 		List<MultipartFile> multiPartFile = multiPartRequest.getFiles("files");
@@ -81,24 +84,30 @@ public class FileUploadController {
 		}
 		
 		logger.info("param1 :: " + param.getParameter("name") );
-		
+
+	
 		
 		return null;
 	}
 	
 	@RequestMapping(value = "/fileUpload2")
-	public String fileUpload2(Locale locale, Model model,   FileParam multiPartFile,  HttpServletRequest param )throws Exception {
+	@ResponseBody
+	public HashMap<String, Object>  fileUpload2(Locale locale, Model model,   FileParam multiPartFile,  HttpServletRequest param )throws Exception {
+		String OriginalFilename="";
 		if(multiPartFile.getFiles() != null){
 			for ( MultipartFile fileArg : multiPartFile.getFiles() ) {
 				logger.info(fileArg.isEmpty());
 				if(!fileArg.isEmpty()){
+					logger.debug("path :: " +param.getSession().getServletContext().getRealPath(""));
 					logger.info("파일 이름 ::: " + fileArg.getName());
 					logger.info("파일 이름 ::: " + fileArg.getOriginalFilename());
+					OriginalFilename = fileArg.getOriginalFilename();
 					logger.info("파일 크기 ::: " + fileArg.getSize());
 					logger.info("컨텐트 타입 ::: " + fileArg.getContentType());
 					logger.info("컨텐트 타입 ::: " +  fileArg);
 					logger.info("uploadDirResource ::: " + uploadDirResource.getPath() + " :: " + uploadDirResource.getFilename());
-					File file = new File("D:/images/" + fileArg.getOriginalFilename());
+					File file = new File(param.getSession().getServletContext().getRealPath("")+"/upload/" + fileArg.getOriginalFilename());
+					//File file = new File("/transbev1/transbev/upload/" + fileArg.getOriginalFilename());
 					fileArg.transferTo(file);
 					/*BufferedImage bi2 = ImageIO.read( new File("D:/images/" + fileArg.getOriginalFilename()));
 					logger.info("image size ::: " +  bi2.getWidth() + " height:: " + bi2.getHeight());
@@ -118,8 +127,12 @@ public class FileUploadController {
 		//servlet-context.xml -- org.springframework.core.io.FileSystemResource  셋팅 테스트 진행 
 		logger.info("param1 :: " + param.getParameter("name") );
 		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "조회 성공 하였습니다.");
+		rtnMap.put("data", OriginalFilename);
+		return rtnMap;
 		
-		return null;
 	}
 	
 	public static ImageIcon resizeImage(String fileName, int maxWidth, int maxHeight){

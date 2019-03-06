@@ -185,6 +185,15 @@
     	]]>
     </update>
     
+    <update id="fileInsert">
+    	<![CDATA[
+    	INSERT INTO T_VENDOR_APND_FILE_D
+			(VENDOR_NO, APND_FILE_DIVS_CD, REG_FOLDER_NM, REG_FILE_NM, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM,DATA_UPD_ID )
+			 VALUES ( #{vendor_no}, #{apnd_file_divs_cd}, #{reg_folder_nm}, #{reg_file_nm}, now(), #{login_id}, now(), #{login_id})
+    	]]>
+    </update>
+    
+    
     <update id="masterUpdate">
     	<![CDATA[
     		UPDATE T_VENDOR_M
@@ -217,6 +226,23 @@
     		    DATA_UPD_DTM = now(),
     			DATA_UPD_ID =   #{login_id}
  			WHERE VENDOR_NO = #{vendor_no}			
+    	]]>
+    </update>
+    
+    <update id="fileupdate">
+    	<![CDATA[
+    		UPDATE T_VENDOR_APND_FILE_D
+    		SET REG_FILE_NM= #{reg_file_nm}
+			  ,DATA_UPD_DTM =now()
+			  ,DATA_UPD_ID= #{login_id}
+ 			WHERE VENDOR_NO = #{vendor_no}			
+    	]]>
+    </update>
+    
+    <update id="filedelete">
+    	<![CDATA[
+    		DELETE FROM T_VENDOR_APND_FILE_D
+    		WHERE VENDOR_NO = #{vendor_no}			
     	]]>
     </update>
     
@@ -271,6 +297,14 @@
 		  AND A.VENDOR_NO =#{vendor_no} 
 		  AND A.VENDOR_NO = C.VENDOR_NO
 		  AND B.VENDOR_NO = C.VENDOR_NO 
+       	]]>
+    </select>
+    
+    <select id="getVendorFileView" resultType="DataMap">
+    	<![CDATA[
+		SELECT APND_FILE_DIVS_CD, REG_FILE_NM
+		FROM  T_VENDOR_APND_FILE_D
+		WHERE VENDOR_NO =#{vendor_no} 
        	]]>
     </select>
     
