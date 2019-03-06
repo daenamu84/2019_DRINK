@@ -17,42 +17,42 @@
 			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
 		});
 	})
-	
-	function fileUpload(e){
-		console.log("start");
-		 event.preventDefault();
-		 
-		 
-		 var file = e;
-		 console.log(file);
-		 
-		 var formData = new FormData();
-		 formData.append("file", file);
-		 
 
-		$.ajax({    
-			type:"POST",  
-		    url:"/fileUpload",      
-   		    data: formData,
-		    contentType: false,
-		    processData : false,
-		    success:function(args){   
-		        $("#empList").empty();
-		        $("#empList").html(args);
-		        ajaxFlag=false;
-		    },   
-		    error:function(xhr, status, e){  
-		        if(xhr.status == 403){
-		        	alert("로그인이 필요한 메뉴 입니다.");
-		        	location.replace("/logIn");
-		        }else{
-		        	alert("처리중 에러가 발생 하였습니다.");
-		        	location.reload();
-		        }
-		        ajaxFlag=false;
-		    }  
-		});
-	}
+	function fileUpload(e){
+		  console.log("start");
+		   event.preventDefault();
+		   
+		   
+		   var file = e;
+		   
+		   var formData = new FormData();
+		   formData.append("files",e.files[0]);
+		   
+		   console.log(formData);
+
+		  $.ajax({    
+		   type:"POST",  
+		      url:"/fileUpload2",      
+		      data: formData,
+		      contentType: false,
+		      processData : false,
+		      success:function(args){   
+		          $("#empList").empty();
+		          $("#empList").html(args);
+		          ajaxFlag=false;
+		      },   
+		      error:function(xhr, status, e){  
+		          if(xhr.status == 403){
+		           alert("로그인이 필요한 메뉴 입니다.");
+		           location.replace("/logIn");
+		          }else{
+		           alert("처리중 에러가 발생 하였습니다.");
+		           location.reload();
+		          }
+		          ajaxFlag=false;
+		      }  
+		  });
+		 }
 	
 
 	
