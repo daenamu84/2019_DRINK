@@ -8,8 +8,13 @@
 */ 
 package com.drink.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,7 +33,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -103,7 +111,11 @@ public class VendorController {
 		map.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
 		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(map);
 		
-//		
+		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
+		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
 		List<DataMap> rtnVendrMap = vendorService.getVendorList(paramMap);
 //		
 //		logger.debug("rtnMap :: " + rtnMpa0);
@@ -122,7 +134,7 @@ public class VendorController {
 	}
 	
 	@RequestMapping(value = "/vendorForm")
-	public ModelAndView memberForm(Locale locale, Model model) throws DrinkException {
+	public ModelAndView memberForm(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -147,7 +159,11 @@ public class VendorController {
 		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
 		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
 		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
 		mav.addObject("marketMap", marketMap);
@@ -166,7 +182,11 @@ public class VendorController {
 		
 		try{
 		ModelAndView mav = new ModelAndView();
-		logger.debug("rtMap :: " + rtMap);
+		logger.debug("rtMap 1:: " + rtMap + "/"+rtMap.get("gubun").toString());
+		if(rtMap.get("gubun").toString().equals("null")) {
+			rtMap.put("gubun", "new");
+		}
+		logger.debug("gubun=" + rtMap.get("gubun"));
 		List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
 
 		mav.addObject("EmpList", rtnMap);
@@ -241,6 +261,11 @@ public class VendorController {
 		paramMap.put("cmm_cd_grp_id", "00001"); // 거래처 상태 코드
 		List<DataMap> vendorstatcdMap = vendorService.getCommonCode(paramMap);
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
+		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
@@ -372,4 +397,73 @@ public class VendorController {
 			}
 	}
 	
+	@RequestMapping(value="/fileUpload", method=RequestMethod.POST)
+    public ModelAndView upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+		logger.debug("aaa");
+		ModelAndView mav = new ModelAndView();
+		  // 저장 경로 설정
+		String url = null;
+	    String PREFIX_URL ="/temp";
+	    try {
+	      // 파일 정보
+	      String originFilename = multipartFile.getOriginalFilename();
+	      logger.debug("originFilename=="+ originFilename);
+	      String extName
+	        = originFilename.substring(originFilename.lastIndexOf("."), originFilename.length());
+	      Long size = multipartFile.getSize();
+	       
+	      // 서버에서 저장 할 파일 이름
+	      String saveFileName = genSaveFileName(extName);
+	       
+	      logger.debug("originFilename : " + originFilename);
+	      logger.debug("extensionName : " + extName);
+	      logger.debug("size : " + size);
+	      logger.debug("saveFileName : " + saveFileName);
+	       
+	      writeFile(multipartFile, saveFileName);
+	      url = PREFIX_URL + saveFileName;
+	    }
+	    catch (IOException e) {
+	      // 원래라면 RuntimeException 을 상속받은 예외가 처리되어야 하지만
+	      // 편의상 RuntimeException을 던진다.
+	      // throw new FileUploadException();
+	    e.printStackTrace();
+	      throw new RuntimeException(e);
+	      
+	    }
+	  
+         
+        return mav;
+
+
+	}
+
+	// 현재 시간을 기준으로 파일 이름 생성
+	public String genSaveFileName(String extName) {
+	  String fileName = "";
+	   
+	  Calendar calendar = Calendar.getInstance();
+	  fileName += calendar.get(Calendar.YEAR);
+	  fileName += calendar.get(Calendar.MONTH);
+	  fileName += calendar.get(Calendar.DATE);
+	  fileName += calendar.get(Calendar.HOUR);
+	  fileName += calendar.get(Calendar.MINUTE);
+	  fileName += calendar.get(Calendar.SECOND);
+	  fileName += calendar.get(Calendar.MILLISECOND);
+	  fileName += extName;
+	   
+	  return fileName;
+	}
+	
+	//파일을 실제로 write 하는 메서드
+	public boolean writeFile(MultipartFile multipartFile, String saveFileName)  throws IOException {
+		boolean result = false;
+		String SAVE_PATH = "C://Temp";
+		byte[] data = multipartFile.getBytes();
+		FileOutputStream fos = new FileOutputStream(SAVE_PATH + "/" + saveFileName);
+		fos.write(data);
+		fos.close();
+	  
+		return result;
+	}
 }

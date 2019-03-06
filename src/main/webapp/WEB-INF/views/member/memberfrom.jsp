@@ -372,6 +372,7 @@
 	</div>
 	<script>
 	 	<c:forEach items="${memberDeptList}" var="j">
+	 		$("#deptMng").show();
 			$("input[name=mng_dept_no][value=${j.DEPT_NO}]").prop("checked",true);
 		</c:forEach>
 	</script>

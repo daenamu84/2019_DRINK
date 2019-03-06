@@ -66,6 +66,15 @@
 				AND A.VENDOR_GRD_CD = #{&vendor_grd_cd}
 			]]> 
 		</if>
+		<if test="emp_grd_cd == '0004'">
+				AND B.EMP_NO =#{emp_no}
+		</if>
+		<if test="emp_grd_cd == '0003'">
+			    AND C.DEPT_NO=  #{deptno}
+		</if>
+		<if test="emp_grd_cd == '0002'">
+			    AND C.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND EMP_DEPT_REL_GBN_CD ='0002')
+		</if>
     </select>
 
     <select id="getVendorList1" resultType="DataMap">
@@ -86,28 +95,58 @@
     </select>
     
      <select id="getMngTeamList" resultType="DataMap">
-    	<![CDATA[
-    		SELECT DISTINCT B.DEPT_NO, B.TEAMNM
-			FROM T_DEPT_EMP_REL_D A, T_DEPT_M B
-			WHERE A.EMP_DEPT_REL_GBN_CD ='0001'
-				AND A.EFF_END_DT ='99991231'
-				AND A.DEPT_NO = B.DEPT_NO
-				AND B.USE_YN = 'Y'
-			ORDER BY B.SORT_ORD 
-       	]]>
+     	<if test="emp_grd_cd == '0001'">
+     		<![CDATA[
+	     	 	SELECT B.DEPT_NO, B.TEAMNM
+	      		FROM  T_DEPT_M B
+	      		WHERE B.USE_YN = 'Y'
+					ORDER BY B.SORT_ORD
+			]]> 
+     	</if>
+     	<if test="emp_grd_cd == '0002'">
+     		<![CDATA[
+	     	 	SELECT DISTINCT B.DEPT_NO, B.TEAMNM
+				FROM T_DEPT_EMP_REL_D A, T_DEPT_M B
+				WHERE A.EMP_DEPT_REL_GBN_CD ='0002'
+					AND A.EFF_END_DT ='99991231'
+					AND A.DEPT_NO = B.DEPT_NO
+	        		AND A.EMP_NO =#{emp_no}
+					AND B.USE_YN = 'Y'
+				ORDER BY B.SORT_ORD 
+			]]> 
+     	</if>
+     	<if test="emp_grd_cd == '0003' or emp_grd_cd == '0004'">
+     		<![CDATA[
+	     	 	SELECT DISTINCT B.DEPT_NO, B.TEAMNM
+				FROM T_DEPT_EMP_REL_D A, T_DEPT_M B
+				WHERE A.EMP_DEPT_REL_GBN_CD ='0001'
+					AND A.EFF_END_DT ='99991231'
+					AND A.DEPT_NO = B.DEPT_NO
+	        		AND A.EMP_NO =#{emp_no}
+					AND B.USE_YN = 'Y'
+				ORDER BY B.SORT_ORD
+			]]> 
+     	</if>
+    	
     </select>
     
      <select id="getDeptEmpList" resultType="DataMap">
-    	<![CDATA[
-    		SELECT DISTINCT B.EMP_NO, B.EMP_NM
-			FROM T_DEPT_EMP_REL_D A, T_EMP_M B
-			WHERE A.EMP_DEPT_REL_GBN_CD ='0002'
-				AND A.EFF_END_DT ='99991231'
-				AND A.DEPT_NO = B.DEPT_NO
-				AND A.DEPT_NO= #{deptno}
-				AND B.USE_YN = 'Y'
-			ORDER BY B.EMP_NO
-       	]]>
+	     <if test="gubun == 'new'">
+	     <![CDATA[
+	    		SELECT  B.EMP_NO, B.EMP_NM
+				FROM  T_EMP_M B
+				WHERE B.DEPT_NO=  #{deptno}
+					AND B.USE_YN = 'Y'
+				ORDER BY B.EMP_NO
+	       	]]>
+	   	 </if>
+   	 <if test="gubun != 'new'">
+   	 	SELECT  B.EMP_NO, B.EMP_NM
+		FROM  T_EMP_M B
+		WHERE B.DEPT_NO=  #{deptno}
+		ORDER BY B.EMP_NO
+   	 </if>
+    	
     </select>
     
     <select id="getVendorCnt" resultType="DataMap">

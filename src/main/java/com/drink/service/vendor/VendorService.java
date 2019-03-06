@@ -63,8 +63,7 @@ public class VendorService {
 	
 	public List getMngTeamList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
-		
-		param = gdi.selectList("Vendor.getMngTeamList",param);
+		param = gdi.selectList("Vendor.getMngTeamList",map.getMap());
 		
 		return param;
 	}

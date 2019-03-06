@@ -18,19 +18,60 @@
 		});
 	})
 	
+	function fileUpload(e){
+		console.log("start");
+		 event.preventDefault();
+		 
+		 
+		 var file = e;
+		 console.log(file);
+		 
+		 var formData = new FormData();
+		 formData.append("file", file);
+		 
+
+		$.ajax({    
+			type:"POST",  
+		    url:"/fileUpload",      
+   		    data: formData,
+		    contentType: false,
+		    processData : false,
+		    success:function(args){   
+		        $("#empList").empty();
+		        $("#empList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	}
+	
+
+	
 	function getTeamList(){
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		var deptno = "";
-		<%if(request.getParameter("gubun") !=null){ %>
-		deptno = $("#deptno option:selected").val();
-		<%}else{%>
-		deptno = '${data.DEPT_NO}';
-		<%}%>
+		var gubun = "<%=request.getParameter("gubun")%>";
+		
+		if(gubun=='null'){
+			deptno = $("#deptno option:selected").val();
+		}else{
+			deptno = '${data.DEPT_NO}';
+		}
+		
 		$.ajax({      
 		    type:"POST",  
 		    url:"/Dept_EmpList",      
-		    data: {"deptno":deptno,"empno": '${data.EMP_NO}'},
+		    data: {"deptno":deptno,"gubun":gubun,"empno": '${data.EMP_NO}'},
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
@@ -62,6 +103,10 @@
 			$("#wholesale_vendor_nm").val("");
 		}
 	}
+	
+	$(document).on("click","#vendorList", function(){
+		window.location.href="/vendorList";
+	});
 	
 	$(document).on("click","#vendorInsert", function(){
 		
@@ -382,6 +427,51 @@
                                     <div class="col-md-6"><input type="text" id="payment_term" class="form-control" name="payment_term"   value="${data.PAYMENT_TERM}"></div>
                                 </div>
 							</div>
+							 <div class="container" style="padding: 15px;">◈  첨부파일 </div>
+                            <div class="container border" style="padding: 15px;">
+								<div class="form-group row">
+                                	<label for="bank_nm" class="col-md-2 col-form-label text-md-left">사업자 등록증</label>
+                                    <div class="col-md-6">
+                                    	<input type="hidden" id="apnd_file_divs_cd1" class="form-control" name="apnd_file_divs_cd1" style="width:30%;display:initial;">
+                                    	<input type="file" id="file1" class="fileDrop" name="file1" onchange="fileUpload(this);" style="width:60%;display:initial;">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">통장사본</label>
+                                    <div class="col-md-6">
+                                    	<input type="file" id="file2" class="form-control" name="file2"   value="${data.BANK_ACCNT_NM}">
+                                    	<input type="text" id="apnd_file_divs_cd2" class="form-control" name="apnd_file_divs_cd2">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">신분증</label>
+                                    <div class="col-md-6">
+                                    	<input type="file" id="file3" class="form-control" name="file3"  value="${data.BANK_ACCNT_NO}">
+                                    	<input type="text" id="apnd_file_divs_cd3" class="form-control" name="apnd_file_divs_cd3">
+                                    </div>
+                                </div>
+                                 <div class="form-group row">
+                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">명함</label>
+                                    <div class="col-md-6">
+                                    	<input type="text" id="file4" class="form-control" name="file4"   value="${data.PAYMENT_TERM}">
+                                    	<input type="text" id="apnd_file_divs_cd4" class="form-control" name="apnd_file_divs_cd4">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">메뉴사진</label>
+                                    <div class="col-md-6">
+                                    	<input type="text" id="file5" class="form-control" name="file5"   value="${data.PAYMENT_TERM}">
+                                    	<input type="text" id="apnd_file_divs_cd5" class="form-control" name="apnd_file_divs_cd5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bank_nm" class="col-md-2 col-form-label text-md-left">개인정보수집 및 활용 동의서</label>
+                                    <div class="col-md-6">
+                                    	<input type="text" id="file6" class="form-control" name="file6"   value="${data.PAYMENT_TERM}">
+                                    	<input type="text" id="apnd_file_divs_cd6" class="form-control" name="apnd_file_divs_cd6">
+                                    </div>
+                                </div>
+							</div>
                             <div class="container" style="padding: 15px;">◈  거래처 담당자 정보</div>
 							<div class="container border" style="padding: 15px;">
 								<table class="table-borderless" style="border-spacing: 0 5px;border-collapse: separate;width:100%">
@@ -419,6 +509,7 @@
 								<div class="text-md-right">
 								<input type="hidden" name="gubun" value="${gubun}" id="gubun">
 								<input class="btn btn-dark" type="button" value="등록" id="vendorInsert">
+								<input class="btn btn-dark" type="button" value="목록" id="vendorList">
                             	</div>
 							</div>
 							
