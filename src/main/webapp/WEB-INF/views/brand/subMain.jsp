@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col">
 			<div class="container border" style="padding: 5px;">
-				<div class="row">
+				<div class="row" style="padding: 5px 0px;">
 					<input type="hidden" id="masterBrandId" value="${masterBrandId}">
 					<div class="col-sm-2">서브 코드</div>
 					<div class="col-sm-2">
@@ -27,7 +27,7 @@
 						<input type="text" class="form-control" id="subBrandNm" />
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="padding: 5px 0px;">
 					<div class="col-sm-2">주류유형코드</div>
 					<div class="col-sm-2">
 						<select class="custom-select" id="liqKdCd">
@@ -45,7 +45,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="padding: 5px 0px;">
 					<div class="col-sm-2">사용</div>
 					<div class="col-sm-2">
 						<select class="custom-select" id="subUseYn">
@@ -58,10 +58,11 @@
 						<input type="text" class="form-control" id="subSortOrd"/>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="padding: 5px 0px;">
 					<div class="col-sm-3">
-						<input class="btn btn-primary" type="button" id="brandSInsert" value="등록/수정">
-						<input class="btn btn-primary" type="button" id="brandSClean" value="초기화">
+						<input class="btn btn-primary" type="button" id="brandSInsert" value="등록">
+						<input class="btn btn-primary" type="button" id="brandSUpdate" style="display:none;" value="수정">
+						<input class="btn btn-primary" type="button" id="brandSClean" style="display:none;" value="초기화">
 					</div>
 				</div>
 			</div>

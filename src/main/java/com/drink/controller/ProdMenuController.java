@@ -74,6 +74,10 @@ public class ProdMenuController {
 		RequestMap paramMap = new RequestMap();
 		List<DataMap> vendorList = vendorService.getVendorList1(rtMap);
 		mav.addObject("vendorList", vendorList);
+		
+		List<DataMap> teamList = vendorService.getMngTeamList(paramMap);
+		mav.addObject("teamList", teamList);
+		
 		mav.setViewName("prodmenu/menuList");
 		return mav;
 	}

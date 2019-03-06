@@ -12,8 +12,8 @@
 		<td>${i.SUB_BRAND_NM}</td>
 		<td>${i.PROD_ML_CD}</td>
 		<td><input type="number" min="0" name="salePrice" value="${i.SALE_PRICE}" autocomplete="off"/></td>
-		<td><input type="text" class="dateRange" name="saleStaDt" value="${i.SALE_STA_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
-		<td><input type="text" class="dateRange" name="saleEndDt" value="${i.SALE_END_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="dateRange form-control" name="saleStaDt" value="${i.SALE_STA_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="dateRange form-control" name="saleEndDt" value="${i.SALE_END_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
 	</tr>
 </c:forEach>
 <script>

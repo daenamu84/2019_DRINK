@@ -13,7 +13,7 @@ var ajaxFlag = false;
 
 	$(document).ready(function(){
 		
-		$("#brandInsert").click(function(){
+		$("#brandInsert" ,"#brandUpdate").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			var blank_pattern = /[\s]/g;
@@ -89,23 +89,28 @@ var ajaxFlag = false;
 			$("#useYn option:eq(0)").prop("selected", true);
 			$("#orcoBrandYn option:eq(0)").prop("selected", true);
 			$("#sortOrd").val("");
+			$("#brandInsert").show();
+			$("#brandUpdate").hide();
+			$("#brandClean").hide();
 			
 		});
 		
 	});
 	
 	$(document).on("click","#brandSClean", function(){
-		console.log("서브브랜드 초기화");
 		$("#subBrandId").val("");
 		$("#subBrandNm").val("");
 		$("#liqKdCd option:eq(0)").prop("selected", true);
 		$("#stcaseCd option:eq(0)").prop("selected", true);
 		$("#subUseYn option:eq(0)").prop("selected", true);
 		$("#subSortOrd").val("");
+		$("#brandSInsert").show();
+		$("#brandSUpdate").hide();
+		$("#brandSClean").hide();
 		
 	});
 
-	$(document).on("click","#brandSInsert", function(){
+	$(document).on("click","#brandSInsert ,#brandSUpdate", function(){
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		
@@ -215,6 +220,9 @@ var ajaxFlag = false;
 					$("#useYn").val(args.data.USE_YN);
 					$("#orcoBrandYn").val(args.data.ORCO_BRAND_YN);
 					$("#sortOrd").val(args.data.SORT_ORD);
+					$("#brandInsert").hide();
+					$("#brandUpdate").show();
+					$("#brandClean").show();
 		        }else{
 		        	alert(args.message.replace(/<br>/gi,"\n"));
 		        	location.reload();
@@ -252,6 +260,9 @@ var ajaxFlag = false;
 					$("#liqKdCd").val(args.data.LIQ_KD_CD);
 					$("#stcaseCd").val(args.data.STCASE_CD);
 					$("#subSortOrd").val(args.data.SORT_ORD);
+					$("#brandSInsert").hide();
+					$("#brandSUpdate").show();
+					$("#brandSClean").show();
 		        }else{
 		        	alert(args.message.replace(/<br>/gi,"\n"));
 		        	$("input:radio[name='brandMrd']").trigger("change");
@@ -278,13 +289,13 @@ var ajaxFlag = false;
 		<div class="row">			
 			<div class="col">
 				<div class="container border" style="padding: 5px;">
-					<div class="row">
+					<div class="row" style="padding: 5px 0px;">
 						<div class="col-sm-2">코드</div>
 						<div class="col-sm-3"><input type="text" id="brandID" class="form-control" /></div>
 						<div class="col-sm-2">브랜드명</div>
 						<div class="col-sm"><input type="text" id="brandNM" class="form-control" /></div>
 					</div>
-					<div class="row">
+					<div class="row" style="padding: 5px 0px;">
 						<div class="col-sm-2">사용</div>
 						<div class="col-sm-3">
 							<select class="custom-select" id="useYn">
@@ -301,12 +312,13 @@ var ajaxFlag = false;
 						  </select>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" style="padding: 5px 0px;">
 						<div class="col-sm-2">순위</div>
 						<div class="col-sm-2"><input type="text" id="sortOrd" class="form-control" /></div>
 						<div class="col-sm-5">
-							<input class="btn btn-primary" type="button" id="brandInsert" value="등록/수정">
-							<input class="btn btn-primary" type="button" id="brandClean" value="초기화">
+						    <input class="btn btn-primary" type="button" id="brandInsert" value="등록">
+							<input class="btn btn-primary" type="button" style="display:none;" id="brandUpdate" value="수정">
+							<input class="btn btn-primary" type="button" style="display:none;" id="brandClean" value="초기화">
 						</div>
 					</div>
 				</div>

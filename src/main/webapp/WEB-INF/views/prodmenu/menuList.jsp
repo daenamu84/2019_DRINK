@@ -11,6 +11,29 @@
 <script>
 var ajaxFlag = false;
 
+	$(function() {
+		var _pDdataRangeOptions = {};
+		_pDdataRangeOptions.locale={
+				format:'YYYYMMDD',
+				separator: ' - ',
+				applyLabel: 'Apply',
+				cancelLabel: 'Cancel',
+				fromLabel: 'From',
+				toLabel: 'To',
+				customRangeLabel: 'Custom',
+				weekLabel: 'W',
+				daysOfWeek: ['일', '월', '화', '수', '목', '금','토'],
+				monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+		};
+		_pDdataRangeOptions.singleDatePicker =  true;
+		_pDdataRangeOptions.autoUpdateInput = false;
+			
+		$("._pDateRange").daterangepicker(_pDdataRangeOptions);
+		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
+			$(this).val(picker.endDate.format('YYYYMMDD'));
+		});
+	});	
+
 	$(document).ready(function(){
 	
 		$("#vendorPop").click(function(){
@@ -20,9 +43,34 @@ var ajaxFlag = false;
 		$("#vendorSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
+			var _pDeptNo = $("#deptno").val();
+			if(_pDeptNo =="" || _pDeptNo == undefined){
+				alert("팀을 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			var _pEmpNo = $("#empno").val();
+			if(_pEmpNo =="" || _pEmpNo == undefined){
+				alert("팀원을 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			var _pStaDt = $("#_pStaDt").val();
+			if(_pStaDt =="" || _pStaDt == undefined){
+				alert("시작일자를 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
+			var _pEndDt = $("#_pEndDt").val();
+			if(_pEndDt =="" || _pEndDt == undefined){
+				alert("종료일자를 선택하세요.");
+				ajaxFlag=false;
+				return;
+			}
 			$.ajax({      
 			    type:"GET",  
-			    url:"/vendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
+			    url:"/vendorSearchPop?="+$("#_sVendorNm").val(),
+			    data: {"deptNo":_pDeptNo,"empNo":_pEmpNo,"staDt":_pStaDt,"endDt":_pEndDt},
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
@@ -35,6 +83,11 @@ var ajaxFlag = false;
 			});
 		});
 		
+		
+	});
+	
+	$(document).on("click","i[name='_pDateRangeIcon']",function() {
+	      $(this).parent().find("._pDateRange").click();
 	});
 	
 	$(document).on("click","i[name='dateRangeIcon']",function() {
@@ -61,6 +114,37 @@ var ajaxFlag = false;
 		    }  
 		});
 	}
+	
+	$(document).on("change","#deptno", _.debounce( function(){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		if($(this).val() == ""){
+			ajaxFlag=false;
+			return;
+		}
+		$.ajax({      
+		    type:"POST",  
+		    url:"/Dept_EmpList",      
+		    data: {"deptno":$(this).val(),"empno": ""},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		        $("#empList").empty();
+		        $("#empList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	},0));
 	
 	
 </script>
@@ -109,23 +193,39 @@ var ajaxFlag = false;
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
+					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container" style="padding: 5px;">
-						<div class="row">
-							<div class="col-sm-2"><span class="align-middle">업소</span></div>
+						<div class="row" style="padding: 5px 0px;">
+							<div class="col-sm-2"><span class="align-middle">팀</span></div>
 							<div class="col-sm-3">
-								<input type="text"  id="_sVendorNm" class="form-control" />
+								<select name="deptno" class="form-control" id="deptno" >
+									<option value="">선택하세요</option>
+									<c:forEach items="${teamList}" var="c">
+									<option value="${c.DEPT_NO}" >${c.TEAMNM} </option>
+									</c:forEach>
+								</select>
 							</div>
-							<div class="col-sm-5">
+							<div class="col-sm-2"><span class="align-middle">팀원</span></div>
+							<div class="col-sm-3" id="empList">
+							</div>
+						</div>
+						<div class="row" style="padding: 5px 0px;">
+							<div class="col-sm-2"><span class="align-middle">기간</span></div>
+							<div class="col-sm-2">
+								<input type="text" class="_pDateRange form-control" id="_pStaDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							</div>~
+							<div class="col-sm-2">
+								<input type="text" class="_pDateRange form-control" id="_pEndDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							</div>
+							<div class="col-sm-4">
 								<input class="btn btn-primary" type="button" id="vendorSearch" value="조회">
 							</div>
 						</div>
 					</div>
 				</div>					
 				<div class="modal-body" id="subLayer">
-				</div>
-				<div class="modal-footer">
 					<table class="table">
 						<thead>
 							<tr>
@@ -144,6 +244,9 @@ var ajaxFlag = false;
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
