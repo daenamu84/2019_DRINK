@@ -272,6 +272,33 @@ public class VendorController {
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
 		
+		List<DataMap> rtnFileMap  = vendorService.getVendorFileView(rtMap);
+		
+		if(rtnFileMap.size()>0) {
+			for(int i=0; i<rtnFileMap.size();i++) {
+				DataMap  filemap = rtnFileMap.get(i);
+				
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0001")) {
+					mav.addObject("apnd_file_divs_cd1", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0002")) {
+					mav.addObject("apnd_file_divs_cd2", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0003")) {
+					mav.addObject("apnd_file_divs_cd3", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0004")) {
+					mav.addObject("apnd_file_divs_cd4", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0005")) {
+					mav.addObject("apnd_file_divs_cd5", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0006")) {
+					mav.addObject("apnd_file_divs_cd6", filemap.getString("REG_FILE_NM"));
+				}
+			}
+		}
+		
 		mav.addObject("data",vendorView);
 		mav.addObject("marketMap", marketMap);
 		mav.addObject("sgmtMap", sgmtMap);
