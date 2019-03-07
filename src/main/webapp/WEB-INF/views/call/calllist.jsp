@@ -127,7 +127,7 @@
 $(function() {
 	dataRangeOptions.singleDatePicker =  true;
 	dataRangeOptions.autoUpdateInput = false;
-	dataRangeOptions.locale= {format: 'YYYYMMDD'};
+	dataRangeOptions.locale.format="YYYYMMDD";
 	
 	$(".dateRange").daterangepicker(dataRangeOptions);
 	$('.dateRange').on('apply.daterangepicker', function(ev, picker) {

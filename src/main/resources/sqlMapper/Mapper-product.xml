@@ -58,8 +58,11 @@
     
     <select id="getProdSearchList" resultType="DataMap">
     	<![CDATA[
-    		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, P.PROD_ML_CD, V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
-    		FROM T_PROD_M P LEFT JOIN T_VENDOR_MENU_D V, 
+    		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, 
+    					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00017' AND E.CMM_CD = P.PROD_ML_CD) AS PROD_ML_NM,
+    					P.PROD_ML_CD, 
+    					V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
+    		FROM T_PROD_M P LEFT JOIN T_VENDOR_MENU_D V
 			ON V.PROD_NO = P.PROD_NO
 			AND V.VENDOR_NO = ${vendorId} 
 			, T_SUB_BRAND_M S, T_BRAND_M M
@@ -81,12 +84,12 @@
 			AND M.BRAND_ID = S.BRAND_ID 
 	        AND E.EMP_NO = D.EMP_NO
 	        AND D.VENDOR_NO = V.PROD_NO
+	        AND D.EFF_END_DT = '99991231'
 	        AND D.VENDOR_NO = ${vendorId}
 	        AND V.SALE_STA_DT = #{staDt} 
       		AND V.SALE_END_DT = #{endDt}
       		AND E.DEPT_NO = #{deptNo}
             AND E.EMP_NO =  #{empNo}
        	]]>
-       	/* 팀 팀원 기간 */
     </select>
 </mapper>

@@ -35,6 +35,18 @@ var ajaxFlag = false;
 			});
 		});
 		
+		$("#prodMenuAdd").click(function(){
+			console.log("등록");
+			var _oProdNo = $("input[name='prodNo']");
+			var _oBrandId = $("input[name='brandId']");
+			var _oSubBrandId = $("input[name='subBrandId']");
+			var _oSalePrice = $("input[name='salePrice']");
+			var _oSaleStdDt = $("input[name='saleStaDt']");
+			var _oSaleEndDt = $("input[name='saleEndDt']");
+			
+			
+		});
+		
 	});
 	
 	$(document).on("click","i[name='dateRangeIcon']",function() {
@@ -99,6 +111,9 @@ var ajaxFlag = false;
 			  <tbody id="productList">
 			  </tbody>
 			</table>
+		</div>
+		<div class="row flex-row-reverse" style="padding-top:10px;">	
+			<input class="btn btn-primary float-sm-right" type="button" id="prodMenuAdd" value="등록">
 		</div>
 	</div>
 	

@@ -8,12 +8,12 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <c:forEach items="${prodVendorList}" var="i" varStatus="status">
 	<tr>
-		<td>${i.BRAND_NM}<input type="hidden" name="prodNo" value="${i.PROD_NO}"/><input type="hidden" name="brandId" value="${i.BRAND_ID}"/><input type="hidden" name="subBrandId" value="${i.SUB_BRAND_ID}"/></td> 
+		<td>${i.BRAND_NM}<input type="hidden" name="_oProdNo" value="${i.PROD_NO}"/><input type="hidden" name="_oBrandId" value="${i.BRAND_ID}"/><input type="hidden" name="_oSubBrandId" value="${i.SUB_BRAND_ID}"/></td> 
 		<td>${i.SUB_BRAND_NM}</td>
-		<td>${i.PROD_ML_CD}</td>
-		<td><input type="number" min="0" name="salePrice" value="${i.SALE_PRICE}" autocomplete="off"/></td>
-		<td><input type="text" class="dateRange form-control" name="saleStaDt" value="${i.SALE_STA_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
-		<td><input type="text" class="dateRange form-control" name="saleEndDt" value="${i.SALE_END_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td>${i.PROD_ML_NM}</td>
+		<td><input type="number" min="0" name="_oSalePrice" value="${i.SALE_PRICE}" autocomplete="off"/></td>
+		<td><input type="text" class="dateRange form-control" name="_oSaleStaDt" value="${i.SALE_STA_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="dateRange form-control" name="_oSaleEndDt" value="${i.SALE_END_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
 	</tr>
 </c:forEach>
 <script>
@@ -21,7 +21,7 @@
 $(function() {
 	dataRangeOptions.singleDatePicker =  true;
 	dataRangeOptions.autoUpdateInput = false;
-	dataRangeOptions.locale= {format: 'YYYYMMDD'};
+	dataRangeOptions.locale.format="YYYYMMDD";
 	
 	$(".dateRange").daterangepicker(dataRangeOptions);
 	$('.dateRange').on('apply.daterangepicker', function(ev, picker) {
