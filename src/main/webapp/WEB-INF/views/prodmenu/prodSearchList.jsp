@@ -12,10 +12,15 @@
 		<td>${i.SUB_BRAND_NM}</td>
 		<td>${i.PROD_ML_NM}</td>
 		<td>${i.SALE_PRICE}</td>
-		<td>상태</td>
+		<td>
+			<c:choose>
+			<c:when test="${i.USE_YN eq 'Y'}">진행중</c:when>
+			<c:when test="${i.USE_YN eq 'N'}">일시중지</c:when>
+			</c:choose>
+		</td>
 		<td>${i.SALE_STA_DT}</td>
 		<td>${i.SALE_END_DT}</td>
-		<td>자사여부</td>
+		<td>${i.ORCO_BRAND_NM}</td>
 		<td>관리</td>
 	</tr>
 </c:forEach>
