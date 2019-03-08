@@ -11,6 +11,7 @@ package com.drink.service.product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,5 +103,25 @@ public class ProductService {
 		param = gdi.selectList("Product.getProdSearchView",map.getMap());
 		
 		return param;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void prdMenuAdd( Map<String, Object> map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		String vendorId = (String) map.get("vendorId");
+		if(vendorId == null || "".equals(vendorId)){
+			throw new DrinkException(new String[]{"messageError","업소가 선택 되지 않았습니다."});
+		}
+		
+		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addPram");
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("vendorId", vendorId);
+			 svMap.put("regId", map.get("regId"));
+			gdi.update("Product.prodMenuAdd",data.get(i));
+		}
+		
 	}
 }

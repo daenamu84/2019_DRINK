@@ -32,6 +32,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.brand.BrandService;
 import com.drink.service.vendor.VendorService;
 
@@ -51,6 +53,9 @@ public class BrandController {
 	
 	@Autowired
 	private VendorService vendorService;
+	
+	@Autowired
+	private SessionUtils sessionUtils;
 	
 	@RequestMapping(value = "/brandList")
 	public ModelAndView main(Locale locale, Model model) throws DrinkException {
@@ -78,8 +83,11 @@ public class BrandController {
 	@ResponseBody
 	public HashMap<String, Object> BrandInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 
-		logger.debug("vts :: " + vts.toString());
-		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		
 		RequestMap dt = new RequestMap();
 		dt.put("brandId", vts.get("brandId"));
@@ -87,6 +95,7 @@ public class BrandController {
 		dt.put("useYn", vts.get("useYn"));
 		dt.put("orcoBrandYn", vts.get("orcoBrandYn"));
 		dt.put("sortOrd", vts.get("sortOrd"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		
 		brandService.BrandInsert(dt);
@@ -158,8 +167,11 @@ public class BrandController {
 	@ResponseBody
 	public HashMap<String, Object> BrandSubInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 
-		logger.debug("vts :: " + vts.toString());
-		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		
 		RequestMap dt = new RequestMap();
 		dt.put("masterBrandId", vts.get("masterBrandId"));
@@ -169,6 +181,7 @@ public class BrandController {
 		dt.put("liqKdCd", vts.get("liqKdCd"));
 		dt.put("stcaseCd", vts.get("stcaseCd"));
 		dt.put("subSortOrd", vts.get("subSortOrd"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		
 		brandService.BrandSubInsert(dt);

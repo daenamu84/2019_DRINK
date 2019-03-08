@@ -11,9 +11,9 @@
 		<td>${i.BRAND_NM}<input type="hidden" name="_oProdNo" value="${i.PROD_NO}"/><input type="hidden" name="_oBrandId" value="${i.BRAND_ID}"/><input type="hidden" name="_oSubBrandId" value="${i.SUB_BRAND_ID}"/></td> 
 		<td>${i.SUB_BRAND_NM}</td>
 		<td>${i.PROD_ML_NM}</td>
-		<td><input type="number" min="0" name="_oSalePrice" value="${i.SALE_PRICE}" autocomplete="off"/></td>
-		<td><input type="text" class="dateRange form-control" name="_oSaleStaDt" value="${i.SALE_STA_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
-		<td><input type="text" class="dateRange form-control" name="_oSaleEndDt" value="${i.SALE_END_DT}" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="number" min="0" name="_oSalePrice" value="" autocomplete="off"/></td>
+		<td><input type="text" class="dateRange form-control bg-white" name="_oSaleStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="dateRange form-control bg-white" name="_oSaleEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
 	</tr>
 </c:forEach>
 <script>

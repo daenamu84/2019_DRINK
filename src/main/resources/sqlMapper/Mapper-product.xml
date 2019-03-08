@@ -8,7 +8,7 @@
     	<![CDATA[
 		INSERT INTO T_PROD_M
 			(BRAND_ID, SUB_BRAND_ID, PROD_ML_CD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES (#{brandId}, #{subBrandId}, #{prodMlCd}, #{useYn}, now(), '0', now(), '0')    	
+			VALUES (#{brandId}, #{subBrandId}, #{prodMlCd}, #{useYn}, #{regId}, '0', now(), #{regId})    	
     	]]>
     </update>
     
@@ -50,7 +50,7 @@
 			SET PROD_ML_CD = #{prodMlCd},
 				  USE_YN = #{useYn},
 				  DATA_UPD_DTM = NOW(),
-    			  DATA_UPD_ID = '1'
+    			  DATA_UPD_ID = #{regId}
 		   WHERE PROD_NO = #{prodNo}
     	]]>
     </update>
@@ -60,36 +60,42 @@
     	<![CDATA[
     		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, 
     					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00017' AND E.CMM_CD = P.PROD_ML_CD) AS PROD_ML_NM,
-    					P.PROD_ML_CD, 
-    					V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
-    		FROM T_PROD_M P LEFT JOIN T_VENDOR_MENU_D V
-			ON V.PROD_NO = P.PROD_NO
-			AND V.VENDOR_NO = ${vendorId} 
-			, T_SUB_BRAND_M S, T_BRAND_M M
-			WHERE 1=1
+    					P.PROD_ML_CD
+    		FROM T_PROD_M P , T_SUB_BRAND_M S, T_BRAND_M M
+			WHERE  1=1 
 			AND P.BRAND_ID = S.BRAND_ID
 			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
 			AND M.BRAND_ID = S.BRAND_ID 
+      		AND NOT EXISTS (SELECT * FROM T_VENDOR_MENU_D WHERE VENDOR_NO = #{vendorId} AND PROD_NO = P.PROD_NO)
        	]]>
     </select>
     
     <select id="getProdSearchView" resultType="DataMap">
     	<![CDATA[
     		SELECT P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, P.PROD_ML_CD, V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
-    		FROM T_PROD_M P , T_VENDOR_MENU_D V, T_SUB_BRAND_M S, T_BRAND_M M, T_EMP_M E, T_VENDOR_EMP_D D
+    		FROM T_VENDOR_MENU_D V, T_PROD_M P, T_BRAND_M M, T_SUB_BRAND_M S, T_VENDOR_EMP_D D, T_EMP_M E
 			WHERE 1=1
 			AND V.PROD_NO = P.PROD_NO
-			AND P.BRAND_ID = S.BRAND_ID
+			AND P.BRAND_ID = M.BRAND_ID
 			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
-			AND M.BRAND_ID = S.BRAND_ID 
-	        AND E.EMP_NO = D.EMP_NO
-	        AND D.VENDOR_NO = V.PROD_NO
-	        AND D.EFF_END_DT = '99991231'
-	        AND D.VENDOR_NO = ${vendorId}
-	        AND V.SALE_STA_DT = #{staDt} 
-      		AND V.SALE_END_DT = #{endDt}
+			AND M.BRAND_ID = S.BRAND_ID
+			AND D.VENDOR_NO = V.VENDOR_NO
+			AND E.EMP_NO = D.EMP_NO
+			AND D.EFF_END_DT = '99991231' 
+	        AND D.VENDOR_NO = #{vendorId}
+	        AND V.SALE_STA_DT >= #{staDt} 
+      		AND V.SALE_END_DT <= #{endDt}
       		AND E.DEPT_NO = #{deptNo}
             AND E.EMP_NO =  #{empNo}
        	]]>
     </select>
+    
+    <update id="prodMenuAdd">
+    	<![CDATA[
+		INSERT INTO T_VENDOR_MENU_D
+		(VENDOR_NO,PROD_NO,SALE_PRICE,SALE_STA_DT,SALE_END_DT,DATA_REG_DTM,DATA_REG_ID,DATA_UPD_DTM,DATA_UPD_ID) 
+		VALUES (#{vendorId},#{prodNo},#{salePrice},#{saleStdDt},#{saleEndDt},now(),#{regId},now(),#{regId})    	
+    	]]>
+    </update>
+    	
 </mapper>

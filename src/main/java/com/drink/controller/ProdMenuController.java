@@ -8,18 +8,26 @@
 */ 
 package com.drink.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
@@ -30,6 +38,8 @@ import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.product.ProductService;
 import com.drink.service.vendor.VendorService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 
 /** 
@@ -79,6 +89,8 @@ public class ProdMenuController {
 		mav.addObject("vendorList", vendorList);
 		
 		mav.setViewName("prodmenu/menuAdd");
+		
+		
 		return mav;
 	}
 	
@@ -164,5 +176,31 @@ public class ProdMenuController {
 			logger.debug("brandSubList err :: " + e);
 			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
 		}
+	}
+	
+	@RequestMapping(value = "/prodMenuAdd", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> prodMenuAdd(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" a ::: "+rtMap.get("a"));
+		logger.debug(" b ::: "+rtMap.get("b"));
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		productService.prdMenuAdd(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
 	}
 }

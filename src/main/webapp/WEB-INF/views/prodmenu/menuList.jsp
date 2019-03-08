@@ -175,11 +175,11 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">기간</span></div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control" id="_pStaDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-1">~</div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control" id="_pEndDt" value="" style="width: 90%;display: inline-block;" autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-3">
 							<input class="btn btn-primary" type="button" id="prodSearch" value="조회">

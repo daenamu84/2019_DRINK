@@ -36,15 +36,68 @@ var ajaxFlag = false;
 		});
 		
 		$("#prodMenuAdd").click(function(){
-			console.log("등록");
-			var _oProdNo = $("input[name='prodNo']");
-			var _oBrandId = $("input[name='brandId']");
-			var _oSubBrandId = $("input[name='subBrandId']");
-			var _oSalePrice = $("input[name='salePrice']");
-			var _oSaleStdDt = $("input[name='saleStaDt']");
-			var _oSaleEndDt = $("input[name='saleEndDt']");
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			var _oProdNo = $("input[name='_oProdNo']");
+			var _oBrandId = $("input[name='_oBrandId']");
+			var _oSubBrandId = $("input[name='_oSubBrandId']");
+			var _oSalePrice = $("input[name='_oSalePrice']");
+			var _oSaleStdDt = $("input[name='_oSaleStaDt']");
+			var _oSaleEndDt = $("input[name='_oSaleEndDt']");
 			
+			var _addParam = [];
 			
+			for (var i = 0; i < _oProdNo.length; i++) {
+				if(_oProdNo[i].value =="" || _oBrandId[i].value =="" || _oSubBrandId[i].value =="" || _oSalePrice[i].value =="" || _oSaleStdDt[i].value =="" || _oSaleEndDt[i].value =="" ){
+					continue;
+				}
+				if( (_oSaleStdDt[i].value != "" &&  _oSaleEndDt[i].value != "" ) && _oSaleStdDt[i].value > _oSaleEndDt[i].value ){
+					alert("시작일은 종료일보다 클수 없습니다.");
+					ajaxFlag=false;
+					return;
+				}
+				_addParam.push({"prodNo":_oProdNo[i].value,"brandId":_oBrandId[i].value,"subBrandId":_oSubBrandId[i].value,"salePrice":_oSalePrice[i].value,"saleStdDt":_oSaleStdDt[i].value,"saleEndDt":_oSaleEndDt[i].value});
+			}
+
+			if(_addParam.length < 1){
+				alert("저장할 데이터를 입력해주세요.");
+				ajaxFlag=false;
+				return;
+			}
+			var _vendorId = $("#vendorId").val();
+			if(_vendorId == ""  || _vendorId == undefined){
+			//	alert("업소가 선택 되지 않았습니다.");
+			//	ajaxFlag=false;
+			//	return;
+			}
+			$.ajax({      
+			    type:"POST",  
+			    url:"/prodMenuAdd",
+			    data: JSON.stringify({"_addPram":_addParam,"vendorId":_vendorId}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	//location.reload();
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	//location.reload();
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }   
+			});
 		});
 		
 	});

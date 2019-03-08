@@ -32,6 +32,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.brand.BrandService;
 import com.drink.service.product.ProductService;
 import com.drink.service.vendor.VendorService;
@@ -55,6 +57,9 @@ public class ProductController {
 	
 	@Autowired
 	private VendorService vendorService;
+	
+	@Autowired
+	private SessionUtils sessionUtils;
 	
 	@RequestMapping(value = "/productManager")
 	public ModelAndView productManager(Locale locale, Model model) throws DrinkException {
@@ -105,14 +110,18 @@ public class ProductController {
 	@ResponseBody
 	public HashMap<String, Object> productInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
-		logger.debug("vts :: " + vts.toString());
-		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		
 		RequestMap dt = new RequestMap();
 		dt.put("brandId", vts.get("brandId"));
 		dt.put("subBrandId", vts.get("subBrandId"));
 		dt.put("prodMlCd", vts.get("prodMlCd"));
 		dt.put("useYn", vts.get("useYn"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		productService.productInsert(dt);
 		
@@ -150,12 +159,17 @@ public class ProductController {
 	@ResponseBody
 	public HashMap<String, Object> productUpdate(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
-		logger.debug("vts :: " + vts.toString());
-		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
 		RequestMap dt = new RequestMap();
 		dt.put("prodNo", vts.get("prodNo"));
 		dt.put("prodMlCd", vts.get("prodMlCd"));
 		dt.put("useYn", vts.get("useYn"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		productService.productUpdate(dt);
 		

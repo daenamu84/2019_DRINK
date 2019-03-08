@@ -53,7 +53,7 @@
     				  SORT_ORD = #{sortOrd},
     				  USE_YN = #{useYn},
     				  DATA_UPD_DTM = NOW(),
-    				  DATA_UPD_ID = '1'
+    				  DATA_UPD_ID = #{regId}
     	    WHERE BRAND_ID = #{brandId}
     	]]>
     </update>
@@ -62,7 +62,7 @@
     	<![CDATA[
     	INSERT INTO T_BRAND_M
 			(BRAND_ID, BRAND_NM, ORCO_BRAND_YN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{brandId}, #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), '0', now(), '0')
+			VALUES ( #{brandId}, #{brandNm}, #{orcoBrandYn}, #{sortOrd}, #{useYn}, now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -85,7 +85,7 @@
     				  SORT_ORD = #{subSortOrd},
     				  USE_YN = #{subUseYn},
     				  DATA_UPD_DTM = NOW(),
-    				  DATA_UPD_ID = '1'
+    				  DATA_UPD_ID = #{regId}
     	    WHERE BRAND_ID = #{masterBrandId}
     	    AND SUB_BRAND_ID = #{subBrandId}
     	]]>
@@ -95,7 +95,7 @@
     	<![CDATA[
     	INSERT INTO T_SUB_BRAND_M
 			(BRAND_ID, SUB_BRAND_ID,SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{masterBrandId},#{subBrandId}, #{subBrandNm}, #{liqKdCd}, #{stcaseCd}, #{subSortOrd},  #{subUseYn}, now(), '0', now(), '0')
+			VALUES ( #{masterBrandId},#{subBrandId}, #{subBrandNm}, #{liqKdCd}, #{stcaseCd}, #{subSortOrd},  #{subUseYn}, #{regId}, '0', now(), #{regId})
     	]]>
     </update>
     
