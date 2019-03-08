@@ -330,7 +330,7 @@ var ajaxFlag = false;
 		</div>
 	</div>
 	
-<!-- modal start  -->	
+	<!-- modal start  -->	
 	<div id="popLayer" class="modal fade" role="dialog" data-backdrop="static">
 		<div class="modal-dialog modal-xl" style="max-width: 1540px">
 			<!-- Modal content-->
@@ -348,5 +348,5 @@ var ajaxFlag = false;
 			</div>
 		</div>
 	</div>
-<!-- modal  end  -->
+	<!-- modal  end  -->
 </div>

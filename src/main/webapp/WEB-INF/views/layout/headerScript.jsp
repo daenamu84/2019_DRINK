@@ -15,7 +15,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/daterangepicker.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jumbotron.css">
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-datetimepicker.css"> -->
-<script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.2.1.min.js"></script >
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+<!-- script src="http://code.jquery.com/jquery-1.8.0.min.js"></script -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/moment-width-locales.js"></script> 
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.bundle.min.js"></script>

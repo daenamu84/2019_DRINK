@@ -28,7 +28,7 @@
        	]]>
        	<if test="outlet_nm != null">
 			<![CDATA[
-				AND OUTLET_NM like  CONCAT('%',#{outlet_nm},'%')
+				AND A.OUTLET_NM like  CONCAT('%',#{outlet_nm},'%')
 			]]> 
 		</if>
 		<if test="dept_no != null and dept_no !='ALL' ">

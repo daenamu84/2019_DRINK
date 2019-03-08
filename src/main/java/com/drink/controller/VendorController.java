@@ -414,6 +414,13 @@ public class VendorController {
 		
 		try {
 			ModelAndView mav = new ModelAndView();
+			
+			
+			
+			param.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+			param.put("emp_no", loginSession.getEmp_no());
+			param.put("deptno", loginSession.getDept_no());
+			
 			List<DataMap> rtnVendrMap = vendorService.getVendorList(param);
 			
 			mav.addObject("vendorList", rtnVendrMap);

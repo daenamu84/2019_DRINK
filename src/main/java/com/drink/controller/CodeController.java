@@ -137,7 +137,7 @@ public class CodeController {
 	
 	@RequestMapping(value = "/codeSubInsert", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public HashMap<String, Object> BrandSubInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	public HashMap<String, Object> codeSubInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());

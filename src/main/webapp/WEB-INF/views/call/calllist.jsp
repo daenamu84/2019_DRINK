@@ -14,17 +14,214 @@
 	      $(this).parent().find(".dateRange").click();
 	});
 	
+	
+	$(document).on("click","#callupdate", function(){
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		
+		var scall_no  			= $("#scall_no").val();
+		var scall_purpose_cd_u 	= $("#scall_purpose_cd_u option:selected").val();
+		var scall_pfr_nm_u		= $("#scall_pfr_nm_u option:selected").val();
+		var scall_rslt_cd_u		= $("#scall_rslt_cd_u option:selected").val();
+		var scall_sale_cntn_u = $("#scall_sale_cntn_u").val();
+		var scall_cprt_cntn_u = $("#scall_cprt_cntn_u").val();
+		
+		$.ajax({      
+		    type:"POST",  
+		    url:"/callUpdate",      
+		    data: JSON.stringify({"scall_no":scall_no,"scall_purpose_cd_u":scall_purpose_cd_u,"scall_pfr_nm_u":scall_pfr_nm_u,"scall_rslt_cd_u":scall_rslt_cd_u,"scall_sale_cntn_u" :scall_sale_cntn_u,"scall_cprt_cntn_u" :scall_cprt_cntn_u  }),
+		    dataType:"json",
+		    contentType:"application/json;charset=UTF-8",
+		    traditional:true,
+		    success:function(args){   
+		        if(args.returnCode == "0000"){
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.reload();
+		        	
+		        }else{
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	});
+	
 	$(document).ready(function(){
 		
-		$("#callSearch, #downloadCallExcel").click(function(){
+		$("#downloadCallExcel").click(function(){
 			alert("작업중입니다.")
 		});
+		
+		
+		$("#calldelete").click(function(){
+			
+			var checkdelete = $("input[name='checkdelete']");
+		
+			var _addParam = [];
+			
+			
+			for (var i = 0; i < checkdelete.length; i++) {
+				if(!checkdelete[i].checked){
+					continue;
+				}
+				
+				_addParam.push({"scall_no":checkdelete[i].value});
+			}
+			if(_addParam.length==0){
+				alert("삭제할 걸 선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			$.ajax({      
+			    type:"POST",  
+			    url:"/callDelete",
+			    data: JSON.stringify({"_addPram":_addParam}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.replace("/callList");
+			        	//location.reload();
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	//location.reload();
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }   
+			});
+		});
+		
+		
+		
+		$("#callSearch").click(function(){
+			
+			var deptno = $("#deptno option:selected").val();
+			var empno = $("#empno").val();
+			
+			var temp = $("#empno option:selected").val();
+			
+			 if(typeof temp == "undefined"){
+				 temp = "";
+			 } 
+			
+			var outlet_nm = $("#outlet_nm").val();
+			var scallStaDt = $("#scallStaDt").val();
+			var scallEndDt = $("#scallEndDt").val();
+			var scall_gbn_nm = $("#scall_gbn_nm option:selected").val();
+			var scall_rslt_cd = $("#scall_rslt_cd option:selected").val();
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&outlet_nm="+outlet_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
+			    +"&scall_rslt_cd="+scall_rslt_cd,
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#callSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+			
+			
+		});
+		
 		
 		$("#callForm").click(function(){
 			location.replace("/callForm");
 		});
 	});
 	 
+	function getTeamList() {
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var deptno = "";
+		var gubun = "<%=request.getParameter("gubun")%>";
+		
+		deptno = $("#deptno option:selected").val();
+		
+		$.ajax({
+			type : "POST",
+			url : "/Dept_EmpList",
+			data : {
+				"deptno" : deptno,
+				"gubun" : gubun,
+				"empno" : '${data.EMP_NO}'
+			},
+			dataType : "html",
+			traditional : true,
+			success : function(args) {
+				$("#empList").empty();
+				$("#empList").html(args);
+				ajaxFlag = false;
+			},
+			error : function(xhr, status, e) {
+				if (xhr.status == 403) {
+					alert("로그인이 필요한 메뉴 입니다.");
+					location.replace("/logIn");
+				} else {
+					alert("처리중 에러가 발생 하였습니다.");
+					location.reload();
+				}
+				ajaxFlag = false;
+			}
+		});
+	}
+	
+	function callView(scall_no){
+		
+		var _scall_no = scall_no;
+		
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		$("#subLayer").empty();
+		$("#popLayer").modal("show");
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/callView?scall_no="+scall_no,      
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#subLayer").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+		
+	}
 	</script>
 	<div class="title"> ◈  Sales Call</div>
 	<div class="container" style="max-width:100%;">
@@ -41,17 +238,17 @@
 											<tr>
 												<td style="padding-left:20px;">팀</td>
 												<td style="padding-left:20px;" colspan="2">
-													<select name="deptno" class="form-control" id="deptno">
+													<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
 														<option value="ALL">전체</option>
 														<c:forEach items="${deptList}" var="a">
 															<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
 														</c:forEach>
 													</select>
+													<input type="hidden" name="empno1" id="empno1"/>
 												</td>
 												<td style="padding-left:20px;">팀원</td>
-												<td style="padding-left:20px;">
-													<select name="emp_no" class="form-control" id="emp_no">
-													</select>
+												<td style="padding-left:20px;"  id="empList">
+													
 												</td>
 												<td style="padding-left:20px;">거래처</td>
 												<td style="padding-left:20px;"><input type="text" class="form-control" name="outlet_nm" id="outlet_nm"></td>
@@ -59,10 +256,10 @@
 											<tr>
 												<td style="padding-left:20px;">기간</td>
 												<td style="padding-left:20px;">
-													<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~
-													</td>
+													<input type="text" class="dateRange" name="scallStaDt" id="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~
+												</td>
 												<td>	
-													<input type="text" class="dateRange" name="scallEndDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
+													<input type="text" class="dateRange" name="scallEndDt" id="scallEndDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
 												</td>
 												<td style="padding-left:20px;">구분</td>
 												<td style="padding-left:20px;">
@@ -73,11 +270,19 @@
 														</c:forEach>
 													</select>
 												</td>
-												<td></td>
-												<td style="padding-left:20px;"></td>
+												<td style="padding-left:20px;">콜 방문결과</td>
+												<td style="padding-left:20px;">
+													<select name="scall_rslt_cd" class="form-control" id="scall_rslt_cd">
+														<option value="ALL">전체</option>
+														<c:forEach items="${scallrsltcdList}" var="d">
+															<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
+														</c:forEach>
+													</select>
+												</td>
 											</tr>
 											<tr>
 												<td style="padding-left:20px;" colspan="7" class="text-right">
+													<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
 													<input class="btn btn-dark" type="button" value="검색" id="callSearch"/>
 													<input class="btn btn-dark" type="button" value="등록" id="callForm"/>
 													<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadCallExcel"/>
@@ -104,12 +309,17 @@
 						      <th scope="col">선호도</th>
 						    </tr>
 						  </thead>
-						  <tbody>
-						    <c:forEach items="${deptList}" var="i" varStatus="status">
+						  <tbody  id="callSeachLayer">	
+						    <c:forEach items="${CallList}" var="i" varStatus="status">
 								<tr>
-									<td><a href="javascript:fnCopy('${i.DEPT_NO}','${i.TEAMNM}','${i.USE_YN}')">${i.DEPT_NO}</a></td>
-									<td><a href="javascript:fnCopy('${i.DEPT_NO}','${i.TEAMNM}','${i.USE_YN}')">${i.TEAMNM}</a></td>
-									<td>${i.USE_YN_NM}</td>
+									<td><input type="checkbox" name="checkdelete" value="${i.SCALL_NO}"></td>
+									<td><a href="javascript:callView('${i.SCALL_NO}')">${i.SCALL_GBN_NM_M}</a></td>
+									<td>${i.SCALL_DT}</td>
+									<td>${i.OUTLET_NM}</td>
+									<td>${i.TEAMNM}</td>
+									<td>${i.EMP_NM}</td>
+									<td>${i.SCALL_PURPOSE_CD_NM}</td>
+									<td>${i.SCALL_PFR_NM}</td>
 								</tr>
 							</c:forEach>
 						  </tbody>
@@ -118,6 +328,18 @@
 				</div>
 			</div>
 		</div>
+		<!-- modal start  -->	
+	<div id="popLayer" class="modal fade" role="dialog" data-backdrop="static">
+		<div class="modal-dialog modal-xl" style="max-width: 1540px">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body" id="subLayer">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal  end  -->
 	</div>
 
 
@@ -127,7 +349,7 @@
 $(function() {
 	dataRangeOptions.singleDatePicker =  true;
 	dataRangeOptions.autoUpdateInput = false;
-	dataRangeOptions.locale.format="YYYYMMDD";
+	dataRangeOptions.locale.format = 'YYYYMMDD';
 	
 	$(".dateRange").daterangepicker(dataRangeOptions);
 	$('.dateRange').on('apply.daterangepicker', function(ev, picker) {
