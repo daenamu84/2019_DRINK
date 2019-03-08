@@ -120,7 +120,7 @@ public class ProductService {
 			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
 			 svMap.put("vendorId", vendorId);
 			 svMap.put("regId", map.get("regId"));
-			gdi.update("Product.prodMenuAdd",data.get(i));
+			gdi.update("Product.prodMenuAdd",svMap);
 		}
 		
 	}
