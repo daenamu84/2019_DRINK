@@ -33,7 +33,7 @@
 				AND C.OUTLET_NM like  CONCAT('%',#{outlet_nm},'%')
 			]]> 
 		</if>
-		<if test="deptno != null and deptno !='ALL' ">
+		<if test="deptno != null and deptno !='ALL' and emp_grd_cd != '0001' ">
 			<![CDATA[
 				AND B.DEPT_NO = #{deptno}
 			]]> 
