@@ -80,10 +80,10 @@ var ajaxFlag = false;
 			    success:function(args){   
 			        if(args.returnCode == "0000"){
 			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	//location.reload();
+			        	location.reload();
 			        }else{
 			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	//location.reload();
+			        	location.reload();
 			        }
 			        ajaxFlag=false;
 			    },   
