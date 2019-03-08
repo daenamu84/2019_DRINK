@@ -123,6 +123,7 @@
 			WHERE M.BRAND_ID = S.BRAND_ID
 			AND M.ORCO_BRAND_YN ='Y'
 			AND M.USE_YN = 'Y'
+			AND S.USE_YN ='Y'
 			AND M.BRAND_ID = #{BrandId}
        	]]>
     </select>

@@ -196,8 +196,11 @@ var ajaxFlag = false;
 			      <th scope="col">서브브랜드</th>
 			      <th scope="col">용량</th>
 			      <th scope="col">가격(원)</th>
+			      <th scope="col">상태</th>
 			      <th scope="col">시작일</th>
 			      <th scope="col">종료일</th>
+			      <th scope="col">자사메뉴여부</th>
+			      <th scope="col">관리</th>
 			    </tr>
 			  </thead>
 			  <tbody id="productList">

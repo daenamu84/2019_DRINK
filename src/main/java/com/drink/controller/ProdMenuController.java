@@ -169,7 +169,7 @@ public class ProdMenuController {
 		
 		mav.addObject("prodVendorList", rtnMap);
 		
-		mav.setViewName("nobody/prodmenu/prodSearch");
+		mav.setViewName("nobody/prodmenu/prodSearchList");
 		return mav;
 		
 		} catch (Exception e) {
