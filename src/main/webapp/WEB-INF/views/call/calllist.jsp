@@ -329,7 +329,8 @@
 			</div>
 		</div>
 		<!-- modal start  -->	
-	<div id="popLayer" class="modal fade" role="dialog" data-backdrop="static">
+		
+	<div id="popLayer" class="modal fade" role="dialog" >
 		<div class="modal-dialog modal-xl" style="max-width: 1540px">
 			<!-- Modal content-->
 			<div class="modal-content">

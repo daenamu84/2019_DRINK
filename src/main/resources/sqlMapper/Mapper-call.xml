@@ -124,7 +124,7 @@
 			AND C.VENDOR_NO = D.VENDOR_NO
        	]]>
        	
-		<if test="deptno != null and deptno !='ALL' ">
+		<if test="deptno != null and deptno !='ALL' and emp_grd_cd != '0001' ">
 			<![CDATA[
 				AND B.DEPT_NO = #{deptno}
 			]]> 
