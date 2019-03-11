@@ -73,7 +73,7 @@
 			    AND C.DEPT_NO=  #{deptno}
 		</if>
 		<if test="emp_grd_cd == '0002'">
-			    AND C.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND EMP_DEPT_REL_GBN_CD ='0002')
+			    AND C.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND  EFF_END_DT ='99991231' AND EMP_DEPT_REL_GBN_CD ='0002')
 		</if>
     </select>
 
