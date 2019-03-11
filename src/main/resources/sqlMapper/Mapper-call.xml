@@ -65,7 +65,7 @@
 		</if>
 		<if test="emp_grd_cd == '0004'">
 			<![CDATA[
-				AND D.EMP_NO =#{emp_no}
+				AND A.EMP_NO =#{emp_no}
 			]]> 
 		</if>
 		<if test="emp_grd_cd == '0003'">
