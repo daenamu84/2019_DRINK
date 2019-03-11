@@ -6,8 +6,29 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
+<link type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 	<script type="text/javascript">
+	
+	$(function(){
+
+		//  var source = ['난누군가','또여긴어딘가','누가날불러?'];
+	    // 자동으로 /ajax/auato 주소로 term 이란 파라미터가 전송된다.
+	    // 응답은 [{label:~~~,value:~~~},{label:~~~,value:~~~}] 형태가 된다.
+		    $('.temp').autocomplete({"source":function(request,response){
+		    	console.log(request);
+		           $.getJSON("/vendorAuto",{"term":request.term},
+	                   function(result) {
+	                          return response($.map(result, function(item){
+	                                  var l = item.label.replace(request.term, request.term);
+	                                  return {label:l, value:item.label};
+					}));
+		           });
+		    }}, $('.temp')[0]);
+		});
+	
 	
 	var ajaxFlag = false;
 	
@@ -63,6 +84,38 @@
 		document.viewForm.submit();
 	}
 	
+	function getSegment() {
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var market_divs_cd = "";
+		
+		market_divs_cd = $("#market_divs_cd option:selected").val();
+		var gubun="list";
+		$.ajax({
+			type : "POST",
+			url : "/VendorSegList",
+			data : {"market_divs_cd" : market_divs_cd, "gubun" : gubun},
+			dataType : "html",
+			traditional : true,
+			success : function(args) {
+				$("#segList").empty();
+				$("#segList").html(args);
+				ajaxFlag = false;
+			},
+			error : function(xhr, status, e) {
+				if (xhr.status == 403) {
+					alert("로그인이 필요한 메뉴 입니다.");
+					location.replace("/logIn");
+				} else {
+					alert("처리중 에러가 발생 하였습니다.");
+					location.reload();
+				}
+				ajaxFlag = false;
+			}
+		});
+	}
+	
 	</script>
 	<div class="title"> ◈  거래처 관리</div>
 	<div class="container" style="max-width:100%;">
@@ -77,7 +130,7 @@
 										<thead>
 											<tr>
 												<td>거래처명</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="outlet_nm" id="outlet_nm"></td>
+												<td style="padding-left:20px;"><input type="text" class="form-control temp" name="outlet_nm" id="outlet_nm"></td>
 												<td style="padding-left:20px;">팀</td>
 												<td style="padding-left:20px;">
 													<select name="dept_no" class="form-control" id="dept_no">
@@ -93,7 +146,7 @@
 											<tr >
 												<td>Market</td>
 												<td style="padding-left:20px;">
-													<select name="market_divs_cd" class="form-control" id="market_divs_cd">
+													<select name="market_divs_cd" class="form-control" id="market_divs_cd"  onchange="getSegment();">
 														<option value="ALL">전체</option>
 														<c:forEach items="${marketMap}" var="b">
 															<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
@@ -101,13 +154,8 @@
 													</select>
 												</td>
 												<td style="padding-left:20px;">Segmentation</td>
-												<td style="padding-left:20px;">
-													<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
-														<option value="ALL">전체</option>
-														<c:forEach items="${sgmtMap}" var="c">
-															<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
-														</c:forEach>
-													</select>
+												<td style="padding-left:20px;" id="segList">
+													
 												</td>
 												<td style="padding-left:20px;">거래처상태</td>
 												<td style="padding-left:20px;">
@@ -120,7 +168,7 @@
 												</td>
 											</tr>
 											<tr >
-												<td style="padding-left:20px;">도매장여부</td>
+												<td>도매장여부</td>
 												<td style="padding-left:20px;">
 													<select name="wholesale_yn" class="form-control" id="wholesale_yn">
 														<option value="ALL">전체</option>

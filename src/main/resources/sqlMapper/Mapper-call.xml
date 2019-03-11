@@ -53,6 +53,11 @@
 				AND A.SCALL_RSLT_CD = #{scall_rslt_cd}
 			]]> 
 		</if>
+		<if test="scall_purpose_cd != null and scall_purpose_cd !='ALL'">
+			<![CDATA[
+				AND A.SCALL_PURPOSE_CD = #{scall_purpose_cd}
+			]]> 
+		</if>
 		<if test="scallStaDt !=null and scallStaDt!='' and scallEndDt !=null and scallEndDt!=''">
 			<![CDATA[
 				AND A.SCALL_DT BETWEEN #{scallStaDt} AND #{scallEndDt}

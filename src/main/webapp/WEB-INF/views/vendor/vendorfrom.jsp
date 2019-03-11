@@ -154,7 +154,13 @@
 				ajaxFlag = false;
 				return;
 			}
-
+			
+			if ($("#market_divs_cd option:selected").val() == "") {
+				alert("Market을  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
 			if ($("#wholesale_yn option:selected").val() == "") {
 				alert("도매장여부 선택 하세요");
 				ajaxFlag = false;
@@ -206,6 +212,39 @@
 			//$("#wholesale_vendor_nm").val(outlet_nm);
 			$("#popLayer").modal('hide');
 		}
+		
+		function getSegment() {
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
+			var market_divs_cd = "";
+			
+			market_divs_cd = $("#market_divs_cd option:selected").val();
+			var gubun="new";
+			$.ajax({
+				type : "POST",
+				url : "/VendorSegList",
+				data : {"market_divs_cd" : market_divs_cd, "gubun" : gubun},
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#segList").empty();
+					$("#segList").html(args);
+					ajaxFlag = false;
+				},
+				error : function(xhr, status, e) {
+					if (xhr.status == 403) {
+						alert("로그인이 필요한 메뉴 입니다.");
+						location.replace("/logIn");
+					} else {
+						alert("처리중 에러가 발생 하였습니다.");
+						location.reload();
+					}
+					ajaxFlag = false;
+				}
+			});
+		}
+		
 	</script>
 	<script>
 	//daum 주소
@@ -359,9 +398,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="market_divs_cd" class="col-md-2 col-form-label text-md-left">Market</label>
+                                    <label for="market_divs_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> Market</label>
                                     <div class="col-md-6">
-                                    	<select name="market_divs_cd" class="form-control" id="market_divs_cd">
+                                    	<select name="market_divs_cd" class="form-control" id="market_divs_cd" onchange="getSegment();">
+                                    			<option value="">선택하세요</option>
 											<c:forEach items="${marketMap}" var="d">
 												<option value="${d.CMM_CD}" <c:if test="${d.CMM_CD eq data.MARKET_DIVS_CD}">selected</c:if>>${d.CMM_CD_NM} </option>
 											</c:forEach>
@@ -369,13 +409,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="vendor_sgmt_divs_cd" class="col-md-2 col-form-label text-md-left">Segmentation</label>
-                                    <div class="col-md-6">
-                                    	<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
-											<c:forEach items="${sgmtMap}" var="e">
-												<option value="${e.CMM_CD}" <c:if test="${e.CMM_CD eq data.VENDOR_SGMT_DIVS_CD}">selected</c:if>>${e.CMM_CD_NM} </option>
-											</c:forEach>
-										</select>
+                                    <label for="vendor_sgmt_divs_cd" class="col-md-2 col-form-label text-md-left"> <font color="red">*</font>Segmentation</label>
+                                    <div class="col-md-6" id="segList">
+                                    	
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -487,10 +523,10 @@
 							</div>
                             <div class="container" style="padding: 15px;">◈  거래처 담당자 정보</div>
 							<div class="container border" style="padding: 15px;">
-								<table class="table-borderless" style="border-spacing: 0 5px;border-collapse: separate;width:100%">
+								<table class="table table-borderless  text-center" style="border-spacing: 0 5px;border-collapse: separate;width:100%">
 									<thead>
 										<tr class="text-md-center">
-											<td>구분코드</td>
+											<td>구분</td>
 											<td> <font color="red">*</font> 이름</td>
 											<td>직책</td>
 											<td>부서명</td>
@@ -501,6 +537,7 @@
 										</tr>
 									</thead>
 									<tbody>
+									
 										<tr>
 											<td>
 												<select name="relr_divs_cd" class="form-control" id="relr_divs_cd" style="wdith:30%">
@@ -509,7 +546,7 @@
 												</c:forEach>
 												</select>
 											</td>
-											<td><input type="text" id="relr_nm" class="form-control"  name="relr_nm"   value="${data.RELR_NM}"> </td>
+											<td><input type="text" id="relr_nm" class="form-control" style="width:80%;"  name="relr_nm"   value="${data.RELR_NM}"> </td>
 											<td><input type="text" id="relr_postion_nm" class="form-control"  name="relr_postion_nm"   value="${data.RELR_POSTION_NM}"></td>
 											<td><input type="text" id="relr_dept_nm" class="form-control"  name="relr_dept_nm"  value="${data.RELR_DEPT_NM}"></td>
 											<td><input type="text" id="relr_tel_no" class="form-control"  name="relr_tel_no"   value="${data.RELR_TEL_NO}"></td>

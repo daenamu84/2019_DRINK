@@ -281,6 +281,18 @@
 												</td>
 											</tr>
 											<tr>
+												<td style="padding-left:20px;">콜 방문목적</td>
+												<td style="padding-left:20px;">
+													<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd">
+														<option value="ALL">전체</option>
+														<c:forEach items="${scallpurposeCdList}" var="e">
+															<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
+														</c:forEach>
+													</select>
+												</td>
+												<td colspan="5"></td>
+											</tr>
+											<tr>
 												<td style="padding-left:20px;" colspan="7" class="text-right">
 													<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
 													<input class="btn btn-dark" type="button" value="검색" id="callSearch"/>
@@ -336,6 +348,9 @@
 			<div class="modal-content">
 				<div class="modal-body" id="subLayer">
 					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>

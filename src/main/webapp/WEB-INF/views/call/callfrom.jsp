@@ -21,16 +21,27 @@
     // 자동으로 /ajax/auato 주소로 term 이란 파라미터가 전송된다.
     // 응답은 [{label:~~~,value:~~~},{label:~~~,value:~~~}] 형태가 된다.
 <%--    $('#term').autocomplete({"source":"<%=cp%>/ajax/auto"}); --%>
-	    $('.temp').autocomplete({"source":function(request,response){
-	    	console.log(request);
-	           $.getJSON("/vendorAuto",{"term":request.term},
-                   function(result) {
-                          return response($.map(result, function(item){
-                                  var l = item.label.replace(request.term, request.term);
-                                  return {label:l, value:item.value};
-				}));
-	           });
-	    }}, $('.temp')[0]);
+	    $('.temp').autocomplete({
+	    	"source":function(request,response){
+	    		console.log(request);
+	           	$.getJSON("/vendorAuto",{"term":request.term},
+	                function(result) {
+	                	return response($.map(result, function(item){
+	                    	var l = item.label.replace(request.term, request.term);
+	                        return {label:l, code:item.value, value:item.code};
+	                                  //return {label:l, value:item.label};
+					}));
+	          	});
+	    },
+	    select: function(event, ui) {
+            console.log(ui.item);
+            var id_check = $(this).attr("id");
+            console.log(id_check);
+            //$("#outlet_nm1").val(ui.item.label);
+            $("#vendor_no"+id_check).val(ui.item.code);
+        }},
+	  
+	    $('.temp')[0]);
 	});
 
 
@@ -57,13 +68,19 @@
 		
 		deptno = $("#deptno option:selected").val();
 		
+		var empno = '${data.EMP_NO}';
+		
+		if(empno==""){
+			empno = '${emp_no}';
+		}
+		
 		$.ajax({
 			type : "POST",
 			url : "/Dept_EmpList",
 			data : {
 				"deptno" : deptno,
 				"gubun" : gubun,
-				"empno" : '${data.EMP_NO}'
+				"empno" : empno
 			},
 			dataType : "html",
 			traditional : true,
@@ -204,7 +221,7 @@
                                     	<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
 											<option value="">선택하세요</option>
 											<c:forEach items="${deptMngList}" var="a">
-											<option value="${a.DEPT_NO}" <c:if test="${a.DEPT_NO eq data.DEPT_NO}">selected</c:if>>${a.TEAMNM} </option>
+											<option value="${a.DEPT_NO}" <c:if test="${a.DEPT_NO eq data.DEPT_NO or a.DEPT_NO eq deptno}">selected</c:if>>${a.TEAMNM} </option>
 											</c:forEach>
 										</select>
                                     </div>
@@ -221,7 +238,7 @@
                                 <div class="form-group row">
                                     <label for="vendor_tel_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 날짜 </font></label>
                                     <div class="col-md-6">
-                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~
+                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
                                     </div>
                                 </div>
                             </div>
@@ -248,9 +265,9 @@
 													</c:forEach>
 												</select>
 											</td>
-											<td><input type="text" class="form-control temp" name="vendor_no" id="vendor_no<%=i%>">
-											
-
+											<td>
+												<input type="text" class="form-control temp" name="outlet_nm" id="<%=i%>">
+												<input type="hidden" class="form-control" name="vendor_no" id="vendor_no<%=i%>">
 											</td>
 											<td>
 												<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd<%=i%>" >
@@ -335,7 +352,11 @@
 	<c:if test="${returnCode eq '0000'}">
  		alert("수정 하였습니다.");
 	</c:if>
-
+	
+	<c:if test="${deptno ne ''}">
+		getTeamList();
+	</c:if>
+	
    </script>
    <script>
 //조회화면에 추가 하자 
@@ -348,6 +369,6 @@ $(function() {
 	$('.dateRange').on('apply.daterangepicker', function(ev, picker) {
 		$(this).val(picker.endDate.format('YYYYMMDD'));
 	});
-	
 });
+
 </script>

@@ -231,6 +231,13 @@ public class VendorService {
 		return param;
 	}
 	
-	
+	public List VendorSegList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		logger.debug("map=="+ map.toString());
+		
+		param = gdi.selectList("Vendor.VendorSegList",map.getMap());
+		
+		return param;
+	}
 	
 }

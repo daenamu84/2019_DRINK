@@ -95,6 +95,11 @@ public class CallController {
 		paramMap.put("cmm_cd_grp_id", "00019"); // 	콜 방문결과
 		List<DataMap> scallrsltcdMap = vendorService.getCommonCode(paramMap);
 		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00018"); // 	콜 방문목적코드
+		List<DataMap> scallpurposecdMap = vendorService.getCommonCode(paramMap);
+		
+		
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
@@ -107,6 +112,7 @@ public class CallController {
 		mav.addObject("deptList", rtnMngMap);
 		mav.addObject("scallgbNmList", scallgbnnmMap);
 		mav.addObject("scallrsltcdList", scallrsltcdMap);
+		mav.addObject("scallpurposeCdList", scallpurposecdMap);
 		mav.setViewName("call/calllist");
 		return mav;
 	}
@@ -150,7 +156,8 @@ public class CallController {
 		mav.addObject("scallrsltcdList", scallrsltcdMap);
 		mav.addObject("scallpurposeCdList", scallpurposecdMap);
 		mav.addObject("scallpfrNmList", scallpfrNmMap);
-		
+		mav.addObject("deptno", loginSession.getDept_no());
+		mav.addObject("emp_no", loginSession.getEmp_no());
 		mav.setViewName("call/callfrom");
 		return mav;
 	}
@@ -186,6 +193,7 @@ public class CallController {
 				sg = new JsonObject();
 				DataMap map1 = rtnVendrMap.get(i);
 				sg.addProperty("label", map1.getString("OUTLET_NM"));
+				sg.addProperty("code", map1.getString("OUTLET_NM"));
 				sg.addProperty("value", map1.getString("VENDOR_NO"));
 				
 				gonarray.add(sg);

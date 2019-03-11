@@ -103,9 +103,9 @@ public class VendorController {
 		map.put("cmm_cd_grp_id", "00005"); // 마켓코드
 		List<DataMap> marketMap = vendorService.getCommonCode(map);
 		
-		map.clear();
-		map.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
-		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
+//		map.clear();
+//		map.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
+//		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
 		
 		map.clear();
 		map.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
@@ -125,7 +125,7 @@ public class VendorController {
 		mav.addObject("vendorList", rtnVendrMap);
 		mav.addObject("commonList", commonMap);		
 		mav.addObject("marketMap", marketMap);
-		mav.addObject("sgmtMap", sgmtMap);
+//		mav.addObject("sgmtMap", sgmtMap);
 		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
 //		mav.addObject("empMList", rtnMap);
 		
@@ -433,6 +433,26 @@ public class VendorController {
 				logger.debug("brandSubList err :: " + e);
 				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
 			}
+	}
+	
+	@RequestMapping(value = "/VendorSegList")
+	public ModelAndView VendorSegList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		try{
+		ModelAndView mav = new ModelAndView();
+		
+		
+		List<DataMap> sgmtMap = vendorService.VendorSegList(rtMap);
+		
+		mav.addObject("gubun", rtMap.get("gubun"));
+		mav.addObject("sgmtMap", sgmtMap);
+		
+		mav.setViewName("nobody/vendor/vendorSegList");
+		return mav;
+		}catch (Exception e) {
+			logger.debug("err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","세그먼트  검색중 에러가 발생 하였습니다."});
+		}
 	}
 	
 }
