@@ -203,4 +203,54 @@ public class ProdMenuController {
 		
 		return rtnMap;
 	}
+	
+	
+	@RequestMapping(value = "/prodUpdateView")
+	public ModelAndView prodUpdateView(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		DataMap rtnMap = productService.prdMenuDetailView(param);
+		
+		
+		mav.addObject("prodMenuView", rtnMap);
+		
+		mav.setViewName("nobody/prodmenu/prodUpdateView");
+		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+		}
+	}
+	
+	
+	
+	@RequestMapping(value = "/prodMenuDetailUpdate", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> prodMenuDetailUpdate(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		productService.prdMenuDetailUpdate(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+	}
 }

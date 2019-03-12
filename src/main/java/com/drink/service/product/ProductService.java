@@ -124,4 +124,40 @@ public class ProductService {
 		}
 		
 	}
+	
+	public DataMap prdMenuDetailView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		param = (DataMap) gdi.selectOne("Product.getProdMenuDetail",map.getMap());
+		
+		return param;
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void prdMenuDetailUpdate( Map<String, Object> map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		String vendorNo = (String) map.get("vendorNo");
+		String prodNo = (String) map.get("prodNo");
+		String salePrice = (String) map.get("salePrice");
+		String saleStaDt = (String) map.get("saleStaDt");
+		String saleEndDt = (String) map.get("saleEndDt");
+		if(vendorNo == null || "".equals(vendorNo)){
+			throw new DrinkException(new String[]{"messageError","필수 데이터가 누락 되었습니다."});
+		}
+		if(prodNo == null || "".equals(prodNo)){
+			throw new DrinkException(new String[]{"messageError","필수 데이터가 누락 되었습니다."});
+		}
+		if(salePrice == null || "".equals(salePrice)){
+			throw new DrinkException(new String[]{"messageError","가격은 필수 입력 데이터 입니다."});
+		}
+		if(saleStaDt == null || "".equals(saleStaDt)){
+			throw new DrinkException(new String[]{"messageError","시작일은 필수 입력 데이터 입니다."});
+		}
+		if(saleEndDt == null || "".equals(saleEndDt)){
+			throw new DrinkException(new String[]{"messageError","종료일은 필수 입력 데이터 입니다."});
+		}
+		
+		gdi.update("Product.prodMenuUpdate",map);		
+	}
 }

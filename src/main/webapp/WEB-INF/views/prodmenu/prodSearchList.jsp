@@ -21,6 +21,6 @@
 		<td>${i.SALE_STA_DT}</td>
 		<td>${i.SALE_END_DT}</td>
 		<td>${i.ORCO_BRAND_NM}</td>
-		<td>관리</td>
+		<td><a href="javascript:prodUpdateView('${i.VENDOR_NO}','${i.PROD_NO}');"class="text-decoration-none">수정</a></td>
 	</tr>
 </c:forEach>

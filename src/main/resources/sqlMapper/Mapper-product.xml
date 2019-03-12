@@ -101,5 +101,36 @@
 		VALUES (#{vendorId},#{prodNo},#{salePrice},#{saleStdDt},#{saleEndDt},now(),#{regId},now(),#{regId})    	
     	]]>
     </update>
+    
+    <select id="getProdMenuDetail" resultType="DataMap">
+    	<![CDATA[
+    	SELECT V.VENDOR_NO, P.PROD_NO, P.BRAND_ID, M.BRAND_NM, P.SUB_BRAND_ID, S.SUB_BRAND_NM, P.USE_YN, M.ORCO_BRAND_YN,
+              			(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00014' AND E.CMM_CD = M.ORCO_BRAND_YN) AS ORCO_BRAND_NM,
+    					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00017' AND E.CMM_CD = P.PROD_ML_CD) AS PROD_ML_NM,
+    					P.PROD_ML_CD, V.SALE_PRICE, V.SALE_STA_DT, V.SALE_END_DT 
+    		FROM T_VENDOR_MENU_D V, T_PROD_M P, T_BRAND_M M, T_SUB_BRAND_M S
+			WHERE 1=1
+			AND V.PROD_NO = P.PROD_NO
+			AND P.BRAND_ID = M.BRAND_ID
+			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
+			AND M.BRAND_ID = S.BRAND_ID
+	    	AND V.VENDOR_NO = #{vendorNo}
+      		AND V.PROD_NO = #{prodNo}
+      	]]>
+    </select>
+    
+    
+    <update id="prodMenuUpdate">
+    	<![CDATA[
+		UPDATE T_VENDOR_MENU_D
+			SET SALE_PRICE =  #{salePrice} , 
+			      SALE_STA_DT = #{saleStaDt} ,
+			      SALE_END_DT = #{saleEndDt} ,
+			      DATA_UPD_ID =   #{regId},
+			      DATA_UPD_DTM = now()
+		WHERE VENDOR_NO = #{vendorNo}
+		AND PROD_NO = #{prodNo}
+    	]]>
+    </update>
     	
 </mapper>

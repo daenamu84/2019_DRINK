@@ -26,10 +26,62 @@ var ajaxFlag = false;
 
 	$(document).ready(function(){
 	
+		$("#deptno").val("");
 		$("#vendorNm").click(function(){
 			$("#vdSearchLayer").modal("show");
 		});
+
+		$("#prodInsert").click(function(){
+			location.href="/ProdMenuAdd";
+		});
 		
+		$("#prodUpdateBtn").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			var _uVendorNo = $("input[name='_uVendorNo']");
+			var _uProdNo = $("input[name='_uProdNo']");
+			var _uSalePrice = $("input[name='_uSalePrice']");
+			var _uSaleStaDt = $("input[name='_uSaleStaDt']");
+			var _uSaleEndDt = $("input[name='_uSaleEndDt']");
+			
+			if(_uVendorNo.length < 1 && _uProdNo.length < 1 && _uSalePrice.length < 1 && _uSaleStaDt.length < 1 && _uSaleEndDt.length < 1 ){
+				alert("입력 정보는 필수 입니다. \n 다시 시도해주세요.");
+				location.reload();
+				ajaxFlag=false;
+				return;
+			}
+			
+			
+			$.ajax({      
+			    type:"POST",  
+			    url:"/prodMenuDetailUpdate",
+			    data: JSON.stringify({"vendorNo":_uVendorNo[0].value,"prodNo":_uProdNo[0].value,"salePrice":_uSalePrice[0].value,"saleStaDt":_uSaleStaDt[0].value,"saleEndDt":_uSaleEndDt[0].value}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.reload();
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }   
+			});
+			
+		});
 		$("#vendorSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
@@ -104,10 +156,10 @@ var ajaxFlag = false;
 	      $(this).parent().find("._pDateRange").click();
 	});
 	
-	$(document).on("click","i[name='dateRangeIcon']",function() {
-	      $(this).parent().find(".dateRange").click();
+	$(document).on("click","i[name='_uDateRangeIcon']",function() {
+	      $(this).parent().find("._uDateRange").click();
 	});
-	 
+	
 	function setVendorId(vendorId, vendorNm){
 		$("#vendorId").val(vendorId);
 		$("#vendorNm").val(vendorNm);
@@ -145,7 +197,34 @@ var ajaxFlag = false;
 		});
 	},0));
 	
-	
+	function prodUpdateView(vendorNo, prodNo){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		$.ajax({      
+		    type:"POST",  
+		    url:"/prodUpdateView",      
+		    data: {"vendorNo":vendorNo,"prodNo": prodNo},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		        $("#subProdUpdateLayer").empty();
+		        $("#subProdUpdateLayer").html(args);
+		        $("#vProdUpdateLayer").modal("show");
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+		
+	}
 </script>
 
 <div class="">
@@ -157,7 +236,7 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>
 						<div class="col-12 col-sm-2">
-							<select name="deptno" class="form-control" id="deptno" >
+							<select name="deptno" class="form-control" id="deptno">
 								<option value="">선택하세요</option>
 								<c:forEach items="${teamList}" var="c">
 								<option value="${c.DEPT_NO}" >${c.TEAMNM} </option>
@@ -168,7 +247,7 @@ var ajaxFlag = false;
 						</div>
 						<div class="col-12 col-sm-2"><span class="align-middle">업소</span></div>
 						<div class="col-12 col-sm-4">
-							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly/>
+							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly autocomplete="off"/>
 							<input type="hidden" name="vendorId" id="vendorId" class="form-control" />
 						</div>
 					</div>
@@ -183,6 +262,7 @@ var ajaxFlag = false;
 						</div>
 						<div class="col-12 col-sm-3">
 							<input class="btn btn-primary" type="button" id="prodSearch" value="조회">
+							<input class="btn btn-primary" type="button" id="prodInsert" value="등록">
 						</div>
 					</div>
 				</div>
@@ -216,6 +296,7 @@ var ajaxFlag = false;
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
+					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container" style="padding: 5px;">
@@ -230,9 +311,7 @@ var ajaxFlag = false;
 						</div>
 					</div>
 				</div>					
-				<div class="modal-body" id="subLayer">
-				</div>
-				<div class="modal-footer">
+				<div class="modal-body" >
 					<table class="table">
 						<thead>
 							<tr>
@@ -251,6 +330,28 @@ var ajaxFlag = false;
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- modal  end  -->
+
+<!-- modal start  -->	
+	<div id="vProdUpdateLayer" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">거래처 수정</h5>
+				</div>
+				<div class="modal-body" id="subProdUpdateLayer">
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-success float-right" type="button" id="prodUpdateBtn" value="수정">
+					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
 				</div>
 			</div>
 		</div>

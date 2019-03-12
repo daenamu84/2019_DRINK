@@ -177,6 +177,7 @@ var ajaxFlag = false;
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
+					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container" style="padding: 5px;">
@@ -192,8 +193,6 @@ var ajaxFlag = false;
 					</div>
 				</div>					
 				<div class="modal-body" id="subLayer">
-				</div>
-				<div class="modal-footer">
 					<table class="table">
 						<thead>
 							<tr>
@@ -212,6 +211,9 @@ var ajaxFlag = false;
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
 				</div>
 			</div>
 		</div>

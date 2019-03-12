@@ -283,7 +283,7 @@ var ajaxFlag = false;
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
-						<div class="row">			
+						<div class="row"  style="padding: 5px 0px;">			
 							<div class="col-sm-3">브랜드</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iBrandId">
@@ -293,14 +293,14 @@ var ajaxFlag = false;
 							  </select>
 						  </div>
 						</div>
-						<div class="row">			
+						<div class="row"  style="padding: 5px 0px;">			
 							<div class="col-sm-3">서브 브랜드</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iSubBrandId">
 							  </select>
 						  </div>
 						</div>
-						<div class="row">			
+						<div class="row"  style="padding: 5px 0px;">			
 							<div class="col-sm-3">용량</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iProdMlCd">
@@ -310,7 +310,7 @@ var ajaxFlag = false;
 							  </select>
 						  </div>
 						</div>
-						<div class="row">	
+						<div class="row"  style="padding: 5px 0px;">	
 							<div class="col-sm-3">활성화</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iUseYn">
