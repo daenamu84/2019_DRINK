@@ -170,6 +170,7 @@ var ajaxFlag = false;
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		if($(this).val() == ""){
+			$("#empList").empty();
 			ajaxFlag=false;
 			return;
 		}
