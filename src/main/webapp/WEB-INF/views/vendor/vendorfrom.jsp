@@ -537,7 +537,28 @@
 										</tr>
 									</thead>
 									<tbody>
-									
+									<c:if test="${gubun eq 'update'}"> 
+										<c:forEach items="${vendorViewUser}" var="g" varStatus="status">	
+									  		<tr>
+												<td>
+													<select name="relr_divs_cd" class="form-control" id="relr_divs_cd" style="wdith:30%">
+													<c:forEach items="${relrdivscdMap}" var="f">
+														<option value="${f.CMM_CD}" <c:if test="${f.CMM_CD eq g.RELR_DIVS_CD}">selected</c:if>>${f.CMM_CD_NM} </option>
+													</c:forEach>
+													</select>
+													</td>
+												<td><input type="text" id="relr_nm" class="form-control" style="width:80%;"  name="relr_nm"   value="${g.RELR_NM}"> </td>
+												<td><input type="text" id="relr_postion_nm" class="form-control"  name="relr_postion_nm"   value="${g.RELR_POSTION_NM}"></td>
+												<td><input type="text" id="relr_dept_nm" class="form-control"  name="relr_dept_nm"  value="${g.RELR_DEPT_NM}"></td>
+												<td><input type="text" id="relr_tel_no" class="form-control"  name="relr_tel_no"   value="${g.RELR_TEL_NO}"></td>
+												<td><input type="text" id="relr_email" class="form-control"  name="relr_email"  value="${g.RELR_EMAIL}"></td>
+												<td><input type="text" id="relr_anvs_dt" class="form-control"  name="relr_anvs_dt"  value="${g.RELR_ANVS_DT}"></td>
+												<td><input type="text" id="etc" class="form-control"  name="etc"   value="${g.ETC}"></td>
+											</tr>
+									  	</c:forEach>
+									</c:if>
+									<c:if test="${gubun ne 'update'}">
+										<%for(int j=0; j<3;j++) {%>
 										<tr>
 											<td>
 												<select name="relr_divs_cd" class="form-control" id="relr_divs_cd" style="wdith:30%">
@@ -554,6 +575,8 @@
 											<td><input type="text" id="relr_anvs_dt" class="form-control"  name="relr_anvs_dt"  value="${data.RELR_ANVS_DT}"></td>
 											<td><input type="text" id="etc" class="form-control"  name="etc"   value="${data.ETC}"></td>
 										</tr>
+										<%} %>
+										</c:if>
 									</tbody> 
 								</table>
 								<div class="text-md-right">

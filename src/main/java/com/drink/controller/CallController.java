@@ -312,6 +312,36 @@ public class CallController {
 		//return rtnMap;
 	}
 	
+	@RequestMapping(value = "/callviewdelete", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> callviewdelete(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" a ::: "+rtMap.get("a"));
+		logger.debug(" b ::: "+rtMap.get("b"));
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		callService.CallViewDelete(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "삭제 하였습니다.");
+		
+		return rtnMap;
+		//return rtnMap;
+	}
+	
 	
 	
 	@RequestMapping(value = "/callView")

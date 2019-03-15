@@ -68,7 +68,7 @@
 				<td colspan="4">
 					<input type="hidden" name="scall_no" id="scall_no"  value="${data.SCALL_NO}"/>
 					<input class="btn btn-dark" type="button" value="수정" id="callupdate"/>
-					<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
+					<input class="btn btn-dark" type="button" value="삭제" id="callviewdelete"/>
 				</td>
 			</tr>
 		</tbody>

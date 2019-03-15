@@ -8,6 +8,8 @@
 */ 
 package com.drink.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -208,7 +210,27 @@ public class VendorController {
 		
 		logger.debug("map :: " + rtMap.toString());
 		
+		logger.debug("req :: " + req.getParameterValues("relr_nm"));
+		
+		String relr_divs_cd[] = req.getParameterValues("relr_divs_cd");
+		String relr_nm[] = req.getParameterValues("relr_nm");
+		String relr_postion_nm[] = req.getParameterValues("relr_postion_nm");
+		String relr_dept_nm[] = req.getParameterValues("relr_dept_nm");
+		String relr_tel_no[] = req.getParameterValues("relr_tel_no");
+		String relr_email[] = req.getParameterValues("relr_email");
+		String relr_anvs_dt[] = req.getParameterValues("relr_anvs_dt");
+		String etc[] = req.getParameterValues("etc");
+		
 		rtMap.put("wholesale_vendor_no", rtMap.getInt("wholesale_vendor_no"));
+		
+		rtMap.put("relr_divs_cd", relr_divs_cd);
+		rtMap.put("relr_nm", relr_nm);
+		rtMap.put("relr_postion_nm", relr_postion_nm);
+		rtMap.put("relr_dept_nm", relr_dept_nm);
+		rtMap.put("relr_tel_no", relr_tel_no);
+		rtMap.put("relr_email", relr_email);
+		rtMap.put("relr_anvs_dt", relr_anvs_dt);
+		rtMap.put("etc", etc);
 		vendorService.VendorInsert(rtMap);
 		
 		redirectAttributes.addFlashAttribute("returnCode", "0000");
@@ -272,6 +294,8 @@ public class VendorController {
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
 		
+		List<DataMap> vendorViewUser  = vendorService.vendorViewUser(rtMap);
+		
 		List<DataMap> rtnFileMap  = vendorService.getVendorFileView(rtMap);
 		
 		if(rtnFileMap.size()>0) {
@@ -308,6 +332,7 @@ public class VendorController {
 		mav.addObject("vendorstatList", vendorstatcdMap);
 		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
 		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.addObject("vendorViewUser",vendorViewUser);
 		mav.addObject("returnCode",rtMap.get("returnCode"));
 		
 		mav.setViewName("vendor/vendorfrom");

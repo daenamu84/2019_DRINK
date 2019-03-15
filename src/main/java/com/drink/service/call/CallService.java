@@ -87,6 +87,14 @@ public class CallService {
 		}
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void CallViewDelete ( Map<String, Object> map) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		map.put("scall_no", map.get("scall_no"));
+		gdi.update("Call.callDelete",map);
+	}
+	
 	public DataMap CallView(RequestMap map) throws DrinkException{
 		DataMap param = new DataMap();
 		

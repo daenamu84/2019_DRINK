@@ -58,6 +58,43 @@
 		});
 	});
 	
+	$(document).on("click","#callviewdelete", function(){
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		
+		var scall_no  			= $("#scall_no").val();
+		$.ajax({      
+		    type:"POST",  
+		    url:"/callviewdelete",      
+		    data: JSON.stringify({"scall_no":scall_no }),
+		    dataType:"json",
+		    contentType:"application/json;charset=UTF-8",
+		    traditional:true,
+		    success:function(args){   
+		        if(args.returnCode == "0000"){
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.reload();
+		        	
+		        }else{
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	});
+	
 	$(document).ready(function(){
 		
 		$("#downloadCallExcel").click(function(){

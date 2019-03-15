@@ -105,7 +105,31 @@ public class VendorService {
 			map.put("vendor_no", vendor_no);
 			
 			gdi.update("Vendor.detailInsert", map.getMap());
-			gdi.update("Vendor.vendor_userInsert", map.getMap());
+			
+			String[] relr_divs_cd =  (String[]) map.get("relr_divs_cd");
+			String[] relr_nm =  (String[]) map.get("relr_nm");
+			String[] relr_postion_nm =  (String[]) map.get("relr_postion_nm");
+			String[] relr_dept_nm =  (String[]) map.get("relr_dept_nm");
+			String[] relr_tel_no =  (String[]) map.get("relr_tel_no");
+			String[] relr_email =  (String[]) map.get("relr_email");
+			String[] relr_anvs_dt =  (String[]) map.get("relr_anvs_dt");
+			String[] etc =  (String[]) map.get("etc");
+			
+			if(relr_nm.length > 0) {
+				for(int k=0; k< relr_nm.length ; k++) {
+					if(relr_nm[k] != "") {
+						map.put("relr_divs_cd", relr_divs_cd[k]);
+						map.put("relr_nm", relr_nm[k]);
+						map.put("relr_postion_nm", relr_postion_nm[k]);
+						map.put("relr_dept_nm", relr_dept_nm[k]);
+						map.put("relr_tel_no", relr_tel_no[k]);
+						map.put("relr_email", relr_email[k]);
+						map.put("relr_anvs_dt", relr_anvs_dt[k]);
+						map.put("etc", etc[k]);
+						gdi.update("Vendor.vendor_userInsert", map.getMap());
+					}
+				}
+			}
 			
 			map.put("reg_folder_nm" ,"/resources/fileimg");
 			
@@ -214,6 +238,15 @@ public class VendorService {
 		
 		return param;
 	}
+	
+	public List vendorViewUser(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Vendor.getVendorViewUser", map.getMap());
+		
+		return param;
+	}
+	
 	
 	public List getWholesaleVendorList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
