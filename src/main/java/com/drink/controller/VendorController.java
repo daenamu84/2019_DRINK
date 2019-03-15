@@ -8,7 +8,6 @@
 */ 
 package com.drink.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.io.File;
 import java.io.FileOutputStream;
