@@ -155,8 +155,57 @@
 			    AND B.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND EMP_DEPT_REL_GBN_CD ='0002')
 			]]> 			    
 		</if>
-		
-     
+    </select>
+    
+    <select  id="callCalendar" resultType="DataMap">
+	    <![CDATA[
+	    	SELECT YM,WEEKNUM
+				     , MIN(CASE DW WHEN 1 THEN D END) SUN
+				     , MIN(CASE DW WHEN 2 THEN D END) MON
+				     , MIN(CASE DW WHEN 3 THEN D END) TUE
+				     , MIN(CASE DW WHEN 4 THEN D END) WED
+				     , MIN(CASE DW WHEN 5 THEN D END) THU
+				     , MIN(CASE DW WHEN 6 THEN D END) FRI
+				     , MIN(CASE DW WHEN 7 THEN D END) SAT
+				  FROM (SELECT date_format(DT,'%Y%m') YM
+				             , Week(DT) WEEKNUM
+				             , Day(DT) D
+				             , DayofWeek(DT) DW
+				          FROM (SELECT CONCAT(Y, '0101') + INTERVAL A*100 + B*10 + C DAY dt
+				                  FROM (SELECT 0 A
+				                        UNION ALL SELECT 1
+				                        UNION ALL SELECT 2
+				                        UNION ALL SELECT 3
+				                        ) A
+				                     , (SELECT 0 B
+				                        UNION ALL SELECT 1
+				                        UNION ALL SELECT 2
+				                        UNION ALL SELECT 3
+				                        UNION ALL SELECT 4
+				                        UNION ALL SELECT 5
+				                        UNION ALL SELECT 6
+				                        UNION ALL SELECT 7
+				                        UNION ALL SELECT 8
+				                        UNION ALL SELECT 9
+				                        ) B
+				                     , (SELECT 0 C
+				                        UNION ALL SELECT 1
+				                        UNION ALL SELECT 2
+				                        UNION ALL SELECT 3
+				                        UNION ALL SELECT 4
+				                        UNION ALL SELECT 5
+				                        UNION ALL SELECT 6
+				                        UNION ALL SELECT 7
+				                        UNION ALL SELECT 8
+				                        UNION ALL SELECT 9
+				                        ) C
+				                     , (SELECT #{year} Y) D
+				                 WHERE A*100 + B*10 + C < DayOfYear(CONCAT(Y, '1231'))
+				                ) A
+				        ) A
+				  where YM like  CONCAT(#{yearDt},'%')
+				 GROUP BY YM, WEEKNUM
+	    ]]> 	
     </select>
     
 </mapper>

@@ -427,4 +427,36 @@ public class CallController {
 		return rtnMap;
 	}
 
+	@RequestMapping(value = "/callCalendar")
+	public ModelAndView callCalendar(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		ModelAndView mav = new ModelAndView();
+		RequestMap paramMap = new RequestMap();
+		
+		paramMap.put("year", "2019");
+		paramMap.put("yearDt", "201903");
+		List<DataMap> callCalendar = callService.getCallCalendar(paramMap);
+		
+		for (int i = 0; i < callCalendar.size(); i++) {
+			DataMap dm = callCalendar.get(i);
+			logger.debug("1 "+dm.get("SUN"));
+			logger.debug("1 ?",dm.get("SUN"));
+			logger.debug("2 "+dm.get("MON"));
+			logger.debug("3 "+dm.get("TUE"));
+			logger.debug("4 "+dm.get("WED"));
+			logger.debug("5 "+dm.get("THU"));
+			logger.debug("6 "+dm.get("FRI"));
+			logger.debug("7 "+dm.get("SAT"));
+			
+		}
+		
+		mav.setViewName("call/callCalendar");
+		mav.addObject("callCalendar",callCalendar);
+		return mav;
+	}
 }

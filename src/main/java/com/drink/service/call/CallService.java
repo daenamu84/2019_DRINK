@@ -113,5 +113,13 @@ public class CallService {
 		}
 			
 	}
-	
+
+	public List getCallCalendar(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Call.callCalendar",map.getMap());
+		
+		return param;
+	}
 }
