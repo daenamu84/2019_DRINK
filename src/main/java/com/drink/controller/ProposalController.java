@@ -98,4 +98,80 @@ public class ProposalController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value = "/proPosalList")
+	public ModelAndView proPosalList(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00021"); // 제안목적
+		List<DataMap> cd00021List = vendorService.getCommonCode(map);
+		mav.addObject("cd00021List", cd00021List);
+
+		map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00022"); // 엑티비티 계획
+		List<DataMap> cd00022List = vendorService.getCommonCode(map);
+		mav.addObject("cd00022List", cd00022List);
+
+		map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00020"); // 제안상태
+		List<DataMap> cd00020List = vendorService.getCommonCode(map);
+		mav.addObject("cd00020List", cd00020List);
+
+		List<DataMap> teamList = vendorService.getTeamList(paramMap);
+		mav.addObject("teamList", teamList);
+		mav.setViewName("proposal/proposalListView");
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/proPosalView")
+	public ModelAndView proPosalView(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		RequestMap map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00021"); // 제안목적
+		List<DataMap> cd00021List = vendorService.getCommonCode(map);
+		mav.addObject("cd00021List", cd00021List);
+
+		map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00022"); // 엑티비티 계획
+		List<DataMap> cd00022List = vendorService.getCommonCode(map);
+		mav.addObject("cd00022List", cd00022List);
+
+		map = new RequestMap();
+		map.put("cmm_cd_grp_id", "00020"); // 제안상태
+		List<DataMap> cd00020List = vendorService.getCommonCode(map);
+		mav.addObject("cd00020List", cd00020List);
+
+		List<DataMap> teamList = vendorService.getTeamList(paramMap);
+		mav.addObject("teamList", teamList);
+		mav.setViewName("proposal/proposalDetailView");
+		
+		
+		return mav;
+	}
 }

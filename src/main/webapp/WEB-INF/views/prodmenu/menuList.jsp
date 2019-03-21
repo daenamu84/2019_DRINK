@@ -22,6 +22,7 @@ var ajaxFlag = false;
 		});
 		
 		$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
+		$('#_pStaDt').data('daterangepicker').setEndDate(moment().add(-30,'days').format("YYYYMMDD"));
 	});	
 
 	$(document).ready(function(){
