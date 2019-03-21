@@ -160,4 +160,19 @@ public class ProductService {
 		
 		gdi.update("Product.prodMenuUpdate",map);		
 	}
+	
+	
+	public List prdBrandSearch(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Product.getProdBrandSearchList",map.getMap());
+		
+		return param;
+	}
+	
+	public List prdSubBrandSearch(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Product.getProdSubBrandSearchList",map.getMap());
+		
+		return param;
+	}
 }

@@ -13,8 +13,45 @@ var ajaxFlag = false;
 
 	$(document).ready(function(){
 	
-		$("#vendorPop").click(function(){
+		$("#vendorNm").click(function(){
 			$("#popLayer").modal("show");
+		});
+
+		$("#MenuSearch").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			var vendorId = $("#vendorId").val();
+			if(vendorId == ""  || vendorId == undefined){
+				alert("업소가 선택 되지 않았습니다.");
+				ajaxFlag=false;
+				return;
+			}
+			var sBrandId = $("#sBrandId").val();
+			if(sBrandId == ""  || sBrandId == undefined){
+				alert("브랜드가 선택 되지 않았습니다.");
+				ajaxFlag=false;
+				return;
+			}
+			var sSubBrandId = $("#sSubBrandId").val();
+			if(sSubBrandId == ""  || sSubBrandId == undefined){
+				alert("서브브랜드가 선택 되지 않았습니다.");
+				ajaxFlag=false;
+				return;
+			}
+			
+			$.ajax({      
+			    type:"GET",  
+			    url:"/prodSearch?vendorId="+vendorId+"&brandId="+sBrandId+"&subBrandId="+sSubBrandId,      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#productList").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
 		});
 		
 		$("#vendorSearch").click(function(){
@@ -64,11 +101,11 @@ var ajaxFlag = false;
 				ajaxFlag=false;
 				return;
 			}
-			var _vendorId = $("#vendorId").val();
+			var _vendorId = $("#_oVendorId").val();
 			if(_vendorId == ""  || _vendorId == undefined){
-			//	alert("업소가 선택 되지 않았습니다.");
-			//	ajaxFlag=false;
-			//	return;
+				alert("업소가 선택 되지 않았습니다.");
+				ajaxFlag=false;
+				return;
 			}
 			$.ajax({      
 			    type:"POST",  
@@ -110,15 +147,25 @@ var ajaxFlag = false;
 		$("#vendorId").val(vendorId);
 		$("#vendorNm").val(vendorNm);
 		$("#popLayer").modal("hide");
+		$("#sBrandId").empty();
+		$("#sBrandId").html("<option value=\"\">선택하세요</option>");
+		$("#sSubBrandId").empty();
+		$("#sSubBrandId").html("<option value=\"\">선택하세요</option>");
 		if(ajaxFlag)return;
 		ajaxFlag=true;
+		var vendorId = $("#vendorId").val();
+		if(vendorId == ""  || vendorId == undefined){
+			alert("업소가 선택 되지 않았습니다.");
+			ajaxFlag=false;
+			return;
+		}
 		$.ajax({      
 		    type:"GET",  
-		    url:"/prodSearch?vendorId="+vendorId,      
+		    url:"/prodBrandSearch?vendorId="+vendorId,      
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
-		    	$("#productList").html(args);
+		    	$("#sBrandId").html(args);
 		        ajaxFlag=false;
 		    },   
 		    error:function(xhr, status, e){  
@@ -127,11 +174,39 @@ var ajaxFlag = false;
 		});
 	}
 	
-	
+	$(document).on("change","#sBrandId", _.debounce( function(){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		if($(this).val() == ""){
+			ajaxFlag=false;
+			return;
+		}
+		var vendorId = $("#vendorId").val();
+		$.ajax({      
+		    type:"POST",  
+		    url:"/prodSubBrandSearch?vendorId="+vendorId+"&brandId="+$(this).val(),      
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#sSubBrandId").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	},0));
 </script>
 
 <div class="">
-	<div class="title"> ◈  거래처 메뉴</div> 
+	<div class="title"> ◈  거래처 등록</div> 
 	<div class="container-fluid">
 		<div class="row">			
 			<div class="col">
@@ -142,8 +217,22 @@ var ajaxFlag = false;
 							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly/>
 							<input type="hidden" name="vendorId" id="vendorId" class="form-control" />
 						</div>
-						<div class="col-sm-5">
-							<input class="btn btn-primary" type="button" id="vendorPop" value="선택">
+					</div>
+					<div class="row" style="padding: 5px 0px;">
+						<div class="col-sm-2">브랜드</div>
+						<div class="col-sm-3">
+								<select class="custom-select" id="sBrandId">
+									<option value="">선택하세요</option>
+							  </select>
+						  </div>
+						<div class="col-sm-2">서브브랜드</div>
+						<div class="col-sm-3">
+								<select class="custom-select" id="sSubBrandId">
+									<option value="">선택하세요</option>
+							  </select>
+						  </div>
+						<div class="col-sm-2">
+							<input class="btn btn-primary" type="button" id="MenuSearch" value="조회">
 						</div>
 					</div>
 				</div>

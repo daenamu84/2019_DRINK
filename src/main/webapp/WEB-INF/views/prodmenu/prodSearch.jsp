@@ -30,3 +30,4 @@ $(function() {
 	
 });
 </script>
+<input type="hidden" name="_oVendorId" id="_oVendorId" class="form-control" value="${vendorId}" />

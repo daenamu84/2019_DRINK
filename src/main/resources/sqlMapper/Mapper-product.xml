@@ -63,6 +63,8 @@
     					P.PROD_ML_CD
     		FROM T_PROD_M P , T_SUB_BRAND_M S, T_BRAND_M M
 			WHERE  1=1 
+			AND P.BRAND_ID = #{brandId}
+			AND P.SUB_BRAND_ID = #{subBrandId}
 			AND P.BRAND_ID = S.BRAND_ID
 			AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
 			AND M.BRAND_ID = S.BRAND_ID 
@@ -132,5 +134,30 @@
 		AND PROD_NO = #{prodNo}
     	]]>
     </update>
-    	
+    
+    <select id="getProdBrandSearchList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT P.BRAND_ID, M.BRAND_NM
+	    		FROM T_PROD_M P , T_SUB_BRAND_M S, T_BRAND_M M
+				WHERE  1=1 
+				AND P.BRAND_ID = S.BRAND_ID
+				AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
+				AND M.BRAND_ID = S.BRAND_ID 
+	      		AND NOT EXISTS (SELECT * FROM T_VENDOR_MENU_D WHERE VENDOR_NO = #{vendorId} AND PROD_NO = P.PROD_NO)
+      		GROUP BY P.BRAND_ID ,M.BRAND_NM
+       	]]>
+    </select>	
+    <select id="getProdSubBrandSearchList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT P.SUB_BRAND_ID, S.SUB_BRAND_NM
+	    		FROM T_PROD_M P , T_SUB_BRAND_M S, T_BRAND_M M
+				WHERE  1=1 
+				AND P.BRAND_ID = S.BRAND_ID
+				AND P.SUB_BRAND_ID = S.SUB_BRAND_ID
+				AND M.BRAND_ID = S.BRAND_ID 
+				AND P.BRAND_ID = #{brandId}
+	      		AND NOT EXISTS (SELECT * FROM T_VENDOR_MENU_D WHERE VENDOR_NO = #{vendorId} AND PROD_NO = P.PROD_NO)
+      		GROUP BY P.SUB_BRAND_ID, S.SUB_BRAND_NM
+       	]]>
+    </select>	
 </mapper>

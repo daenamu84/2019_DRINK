@@ -109,6 +109,9 @@ public class ProdMenuController {
 		List<DataMap> rtnMap = productService.prdSearch(param);
 		
 		
+		mav.addObject("vendorId", param.getString("vendorId"));
+		mav.addObject("brandId", param.getString("brandId"));
+		mav.addObject("subBrandId", param.getString("subBrandId"));
 		mav.addObject("prodVendorList", rtnMap);
 		
 		mav.setViewName("nobody/prodmenu/prodSearch");
@@ -252,5 +255,54 @@ public class ProdMenuController {
 		rtnMap.put("message", "저장 하였습니다.");
 		
 		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/prodBrandSearch")
+	public ModelAndView prodBrandSearch(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		List<DataMap> rtnMap = productService.prdBrandSearch(param);
+		
+		mav.addObject("prodBrandList", rtnMap);
+		
+		mav.setViewName("nobody/prodmenu/prodBrandSearch");
+		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+		}
+	}
+	@RequestMapping(value = "/prodSubBrandSearch")
+	public ModelAndView prodSubBrandSearch(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			RequestMap paramMap = new RequestMap();
+			List<DataMap> rtnMap = productService.prdSubBrandSearch(param);
+			
+			mav.addObject("prodSubBrandList", rtnMap);
+			
+			mav.setViewName("nobody/prodmenu/prodSubBrandSearch");
+			return mav;
+			
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+		}
 	}
 }
