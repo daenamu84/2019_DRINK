@@ -15,6 +15,10 @@ var ajaxFlag = false;
 	});		
 
 	$(document).ready(function(){
+		$("#goToTop").click(function(){
+			$( 'html, body' ).animate( { scrollTop : 0 }, 400 );
+			
+		});
 	
 	});
 	
@@ -37,8 +41,9 @@ var ajaxFlag = false;
 					<a class="btn btn-info text-white" style="width: 99%;" href="#monthActualtView">월별 ACTUAL</a>
 			</label>
 		</div>
-		<div class="row" style="padding-top:10px; overflow-x:auto;">	
-			<div id="defultView" style="height:800px;width:100%;background-color:yellow;">
+		<div class="row" style="overflow-x:auto;">	
+			<div id="defultView" style="width:100%;padding:10px 0px;">
+				<div class="title">PROPOSAL 기본정보</div> 
 				<div class="container-fluid">
 					<div class="row">			
 						<label class="col col-12 col-sm-2 bg-light text-center align-middle">제안명</label>
@@ -46,13 +51,37 @@ var ajaxFlag = false;
 							<p class="text-break text-monospace"> aaaaaaaaaaaa   aaaaaaaaa  a   </p>
 						</div>
 					</div>
-				</div>			
+				</div>
+				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>			
 			</div>
-			<div id="productView" style="height:800px;width:100%;background-color:green;">
+			<div id="productView" style="width:100%;padding:10px 0px;">
+				<div class="title">STEP02. PROPOSAL 제품/지원품목</div> 
+				<div class="container-fluid">
+					<div class="row">			
+					</div>
+				</div>
+				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>		
 			</div>
-			<div id="monthView" style="height:800px;width:100%;background-color:blue;">
+			<div id="monthView" style="width:100%;padding:10px 0px;">
+				<div class="title">STEP03. PROPOSAL 제품/지원품목 출고계획 등록</div> 
+				<div class="container-fluid">
+					<div class="row">			
+					</div>
+				</div>
+				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>	
 			</div>
-			<div id="monthActualtView" style="height:800px;width:100%;background-color:red;">
+			<div id="monthActualtView" style="width:100%;padding:10px 0px;">
+				<div class="title">PROPOSAL 제품/지원품목 ACTUAL 등록</div> 
+				<div class="container-fluid">
+					<div class="row">			
+					</div>
+				</div>
+				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>	
+			</div>
+		</div>
+		<div class="row" style="padding: 5px 0px;">
+			<div class="col-12 col-sm-6 text-left">
+				<input class="btn btn-light" type="button" id="" value="목록으로">
 			</div>
 		</div>
 	</div>

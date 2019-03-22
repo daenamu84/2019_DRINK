@@ -26,10 +26,6 @@
 	
 	$(document).ready(function(){
 		
-		$("#productInsertLayer").click(function(){
-			$("#popLayer").modal("show");
-		});
-		
 		$("#cntUpdate").click(function(){
 			 var productCnt = $("#productCnt").val();
 			 var supplyCnt = $("#supplyCnt").val();
@@ -39,15 +35,13 @@
 			 
 			 if(productLayer.length > productCnt){
 				 for(var i = 0; i< productLayer.length; i++){
-					 console.log("productCnt : " + productCnt +  "  i : " + i);
 					 if(productCnt  <=  i){
-						 console.log("remove :: " + i);
 						 $($("#view1 > tr")[productCnt]).remove()
 					 }
 				 }
 			 }else if(productLayer.length < productCnt){
 				 for(var y= 0; y< productCnt - productLayer.length ; y++){
-				 	$("#view1").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control\" name=\"prodNoSitemNm\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
+				 	$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\"></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
 				 }
 			 }
 			 
@@ -179,15 +173,21 @@
 				});
 			 
 		});
-		
-		
-		
-		
 	});
 	
- 	
-	
-	</script>
+	var popListObj = null;
+	$(document).on("click","input[id='productInsertLayer']",function() {
+		//$("#popLayer").modal("show");
+		console.log("1");
+		popListObj = this;
+	});
+
+	function setValueDate(arg1, arg2){
+		var obj = popListObj
+		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg1);
+		$(obj).parent().parent().children().find("#prodNoSitemCd").val(arg1);
+	}
+</script>
 	
 	
 <div class="">
@@ -258,8 +258,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -269,8 +273,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -280,8 +288,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -291,8 +303,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -317,8 +333,9 @@
 			  </thead>
 			  <tbody id="view2">
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -326,8 +343,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -335,8 +353,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -344,8 +363,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -353,8 +373,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -377,7 +398,6 @@
 <!-- modal start  -->
 	<div id="popLayer" class="modal fade" role="dialog">
 		<div class="modal-dialog" style="max-width:640px">
-			>
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
