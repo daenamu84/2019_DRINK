@@ -26,10 +26,8 @@
 	
 	$(document).ready(function(){
 		
-		$("#productInsertLayer").click(function(){
-			$("#popLayer").modal("show");
-		});
 		
+		//변경버튼 
 		$("#cntUpdate").click(function(){
 			 var productCnt = $("#productCnt").val();
 			 var supplyCnt = $("#supplyCnt").val();
@@ -39,15 +37,13 @@
 			 
 			 if(productLayer.length > productCnt){
 				 for(var i = 0; i< productLayer.length; i++){
-					 console.log("productCnt : " + productCnt +  "  i : " + i);
 					 if(productCnt  <=  i){
-						 console.log("remove :: " + i);
 						 $($("#view1 > tr")[productCnt]).remove()
 					 }
 				 }
 			 }else if(productLayer.length < productCnt){
 				 for(var y= 0; y< productCnt - productLayer.length ; y++){
-				 	$("#view1").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control\" name=\"prodNoSitemNm\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
+				 	$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\"></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
 				 }
 			 }
 			 
@@ -65,77 +61,72 @@
 			 
 		});
 		
-		$("#outlet_nm").click(function(){
-			$("#popLayer").modal("show");
-		});
-		
-		
-		$("#saveWork").click(function(){			
+		// modal - 서브 브랜드 검색 
+		$(document).on("change","#iBrandId", _.debounce( function(){
 			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$("#iSubBrandId").empty();
+			$.ajax({      
+			    type:"GET",  
+			    url:"/brandSCd?BrandId="+$(this).val()+"&bsearch=proposal",      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#iSubBrandId").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		},0));
+
+
+		// 제품 검색
+		$(document).on("change","#iSubBrandId", _.debounce( function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			var iBrandId = $("#iBrandId option:selected").val() ;
+			var iSubBrandId = $("#iSubBrandId option:selected").val() ;
 			
-			var prps_nm = $("#prps_nm").val();
-			if(prps_nm==""){
-				alert("제안명을 입력하세요");
-				ajaxFlag = false;
-				return;
+			
+			$.ajax({      
+			    type:"GET",  
+			    url:"/productBrandSearch?BrandId="+iBrandId+"&subBrandID="+iSubBrandId+"&bsearch=proposal",      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){  
+			    	$("#prodcutseach").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		},0));
+		
+		//등록
+		$("#saveWork2").click(function(){			
+			if(ajaxFlag)return;
+			var prps_id = $("input[name='prps_id']");
+			var prodNoSitemNm1 = $("input[name='prodNoSitemNm1']");
+			var prodNoSitemCd = $("input[name='prodNoSitemCd']");
+			var prodNoSitemCd1 = $("input[name='prodNoSitemCd1']");
+			var deliveryCnt = $("input[name='deliveryCnt']");
+			var deliveryAmt = $("input[name='deliveryAmt']");
+			var dcRate = $("input[name='dcRate']");
+			var lastDeliverAmt = $("input[name='lastDeliverAmt']");
+			
+			var _addParam = [];
+			
+			
+			for (var i = 0; i < vendor_no.length; i++) {
+				if(vendor_no[i].value ==""  ){
+					continue;
+				}
+				
+				_addParam.push({"prps_id":prps_id[i].value,"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"deliveryCnt":deliveryCnt[i].value,"deliveryAmt":deliveryAmt[i].value,"dcRate":dcRate[i].value,"dcRate":dcRate[i].value,"lastDeliverAmt":lastDeliverAmt[i].value});
 			}
-			
-			if ($("#prps_purpose_cd option:selected").val() == "") {
-				alert("제안목적을  선택 하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val() ;
-			
-			if ($("#act_plan_cd option:selected").val() == "") {
-				alert("액티비티계획을  선택 하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var act_plan_cd = $("#act_plan_cd option:selected").val() ;
-			
-			var prps_str_dt = $('input[name=prps_str_dt]').val();
-			if (prps_str_dt == "") {
-				alert("프로모션시작일자을  입력하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var prps_end_dt = $('input[name=prps_end_dt]').val();
-			if (prps_end_dt == "") {
-				alert("프로모션종료일자을  입력하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var outlet_no = $('input[name=outlet_no]').val();
-			if (outlet_no == "") {
-				alert("거래처를   입력하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var outlet_no = $("#outlet_no").val();
-			var wholesale_vendor_no = $("#wholesale_vendor_no").val();
-			var market_divs_cd = $("#market_divs_cd").val();
-			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd").val();
-			
-			var budg_amt = $("#budg_amt").val();
-			var base_prps_amt = $("#base_prps_amt").val();
-			var last_prps_amt = $("#last_prps_amt").val();
-			if (last_prps_amt == "") {
-				alert("최종제안금액  입력하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var caserate_amt = $("#caserate_amt").val();
-			
-			$('textarea[name="prps_cntn"]').html($('.summernote').summernote("code"));
-			
-			var prps_cntn = $('textarea[name="prps_cntn"]').html();
 			
 			var url = "/proposalWork";
 			
@@ -179,15 +170,22 @@
 				});
 			 
 		});
-		
-		
-		
-		
 	});
 	
- 	
-	
-	</script>
+	var popListObj = null;
+	$(document).on("click","input[id='productInsertLayer']",function() {
+		$("#popLayer").modal("show");
+		
+		popListObj = this;
+	});
+
+	function setValueDate(arg1, arg2){
+		var obj = popListObj;
+		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
+		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
+		$("#popLayer").modal("hide");
+	}
+</script>
 	
 	
 <div class="">
@@ -243,6 +241,7 @@
 			  <tbody id="view1">
 			  	<tr>
 			  		<td>
+			  			<input type="hidden" id="prps_id" name="prps_id" valaue="${prps_id}">
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
 			  			</span>
@@ -258,8 +257,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -269,8 +272,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -280,8 +287,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -291,8 +302,12 @@
 			  	</tr>
 			  	<tr>
 			  		<td>
-			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
@@ -308,17 +323,18 @@
 			<table class="table">
 			  <thead>
 			    <tr>
-			      <th scope="col">지원품목명</th>
-			      <th scope="col">출고수량</th>
-			      <th scope="col">출고단가</th>
-			      <th scope="col">할인률</th>
-			      <th scope="col">최종출고금액</th>
+			      <th scope="col"  width="30%">지원품목명</th>
+			      <th scope="col"  width="20%">출고수량</th>
+			      <th scope="col"  width="20%">출고단가</th>
+			      <th scope="col"  width="20%">할인률</th>
+			      <th scope="col"  width="10%">최종출고금액</th>
 			    </tr>
 			  </thead>
 			  <tbody id="view2">
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -326,8 +342,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -335,8 +352,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -344,8 +362,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -353,8 +372,9 @@
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
 			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
@@ -370,39 +390,45 @@
 				<input class="btn btn-light" type="button" id="" value="STEP01 수정">
 			</div>
 			<div class="col-12 col-sm-6 text-right">
-				<input class="btn btn-primary" type="button" id="proposalSearch" value="STEP03 등록">
+				<input class="btn btn-primary" type="button" id="saveWork2" value="STEP03 등록">
 			</div>
 		</div>
 	</div>
-<!-- modal start  -->
+	<!-- modal start  -->
 	<div id="popLayer" class="modal fade" role="dialog">
 		<div class="modal-dialog" style="max-width:640px">
-			>
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색</h5>
+					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색1</h5>
 					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span
 						aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row" style="padding: 5px 0px;">
-							<div class="col-sm-3">브랜드</div>
+							<div class="col-sm-2">브랜드</div>
 							<div class="col-sm-3">
 								<select class="custom-select" id="iBrandId">
+										<option value="">선택하세요</opption>
 									<c:forEach var="i" items="${mBrandCd}" varStatus="status">
 										<option value="${i.BRAND_ID}">${i.BRAND_NM}</option>
 									</c:forEach>
 								</select>
 							</div>
 							<div class="col-sm-3">서브 브랜드</div>
-							<div class="col-sm-3">
+							<div class="col-sm-4">
 								<select class="custom-select" id="iSubBrandId">
 								</select>
 							</div>
 						</div>
-
+						
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="container-fluid">
+						<div class="row" style="padding: 5px 0px;" id="prodcutseach">
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -412,5 +438,5 @@
 			</div>
 		</div>
 	</div>
-	<!-- modal  end  -->	
+	<!-- modal  end  -->
 </div>

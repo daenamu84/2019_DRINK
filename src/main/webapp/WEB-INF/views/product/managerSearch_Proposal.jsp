@@ -9,6 +9,6 @@
 
 
 <c:forEach items="${productList}" var="i" varStatus="status">
-	<a href="javascript:setValueDate('${i.PROD_NO}','${i.BRAND_NM}_${i.SUB_BRAND_NM}_${i.PROD_ML_NM}')"></a>
+	<a href="javascript:setValueDate('${i.PROD_NO}','${i.BRAND_NM}_${i.SUB_BRAND_NM}_${i.PROD_ML_NM}')">${i.BRAND_NM}_${i.SUB_BRAND_NM}_${i.PROD_ML_NM}</a>
 	
 </c:forEach>
