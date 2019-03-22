@@ -58,5 +58,12 @@ public class ProposalService {
 		return param;
 	}
 	
-	
+	public List getProPosal03List(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Proposal.getProPosal03List",map.getMap());
+		
+		return param;
+	}
 }

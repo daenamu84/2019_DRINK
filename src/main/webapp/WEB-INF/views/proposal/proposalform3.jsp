@@ -18,6 +18,19 @@
 		$("#login_id" ).on("blur keyup", function() {
 			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
 		});
+		
+		$("#setp03Insert").click(function(){
+			
+			
+			var prpsdId = $("input[name='prpsdId']");
+			
+			
+			$("input[name='planCnt'][data-prpsdid='1']")
+			$("input[name='planCnt'][data-prpsdid='1']")[0].value
+			$($("input[name='planCnt'][data-prpsdid='1']")[0]).data("deliverycnt");
+			
+			
+		});
 	})
 	
 	
@@ -40,40 +53,40 @@
 			<table class="table" style="width:90%;margin:0 auto;">
 			  <thead>
 			    <tr>
-			      <th class="border border-bottom-0 text-center" scope="col" width="60%">제품명(제안수량)</th>
-			      <th class="border border-bottom-0 text-center" scope="col" width="20%">출고월</th>
-			      <th class="border border-bottom-0 text-center" scope="col" width="20%">출고계획수량</th>
+			      <th class="border text-center" scope="col" width="60%">제품명(제안수량)</th>
+			      <th class="border text-center" scope="col" width="20%">출고월</th>
+			      <th class="border text-center" scope="col" width="20%">출고계획수량</th>
 			    </tr>
 			  </thead>
 			  <tbody>
-			  	<tr>
-			  		<td class="border">
-			  			<span>campari 750 ( 수량 100)</span>
-			  		</td>
-			  		<td class="border">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  		</td>
-			  		<td class="border">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  		</td>
-			  	</tr>
-			  	<tr>
-			  		<td class="border">
-			  			<span>campari 750 ( 수량 100)</span>
-			  		</td>
-			  		<td class="border">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  		</td>
-			  		<td class="border">
-			  			<input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" style="margin-bottom:3px;" value="">
-			  		</td>
-			  	</tr>
+		  		<c:forEach items="${listStep03}" var="i" varStatus="status">
+				  	<tr>
+				  		<td class="border">
+				  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
+							    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+							</c:if>
+							<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
+							    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
+							</c:if>
+				  			<input type="hidden" id="prpsdId"name="prpsdId" value="${i.PRPSD_ID}">
+				  			<input type="hidden" id="prpsId"name="prpsId" value="${i.PRPS_ID}">
+				  			<input type="hidden" id="prodSitemDivsCd"name="prodSitemDivsCd" value="${i.PROD_SITEM_DIVS_CD}">
+				  			<input type="hidden" id="prodNoSitemNm"name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM}">
+				  			<input type="hidden" id="deliveryCnt"name="deliveryCnt" value="${i.DELIVERY_CNT}">
+				  		</td>
+				  		<td class="border">
+				  			<c:forEach items="${i.dateList}" var="d">
+				  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d}" readonly>
+				  			</c:forEach>
+				  		</td>
+				  		<td class="border">
+				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  		</td>
+				  	</tr>
+				</c:forEach>
 			  </tbody>
 			 </table>
 		</div>
@@ -84,7 +97,7 @@
 				<input class="btn btn-light" type="button" id="" value="SETP02 수정">
 			</div>
 			<div class="col-12 col-sm-3 text-RIGHT">
-				<input class="btn btn-light" type="button" id="" value="SETP03 등록">
+				<input class="btn btn-light" type="button" id="setp03Insert" value="SETP03 등록">
 			</div>
 		</div>
 	</div>

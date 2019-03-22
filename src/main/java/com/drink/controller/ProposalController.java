@@ -8,7 +8,10 @@
 */ 
 package com.drink.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -142,11 +145,33 @@ public class ProposalController {
 		if(loginSession == null || (loginSession.getLgin_id()== null)){
 			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		Calendar cal = Calendar.getInstance();
+
 		logger.debug("==rtMap=="+ rtMap.toString());
 		
 		ModelAndView mav = new ModelAndView();
 		
+		rtMap.put("prps_id", "14");
+		
+		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
+		try {
+			for(int i=0; i<listStep03.size(); i++){
+				DataMap dm = listStep03.get(i);
+				cal.setTime(sdf.parse("201903"));
+				List<String> dateList = new ArrayList<>();
+				for(int x=0; x<=dm.getInt("monthCnt");x++){
+					cal.add(Calendar.MONTH, x);
+					dateList.add(sdf.format(cal.getTime()));
+				}
+				dm.put("dateList", dateList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+		}
+		
+		mav.addObject("listStep03", listStep03);
 		mav.setViewName("proposal/proposalform3");
 		return mav;
 	}
