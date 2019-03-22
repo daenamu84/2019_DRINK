@@ -128,7 +128,6 @@ public class ProposalController {
 		List<DataMap> rtnMap = brandService.BrandList(rtMap);
 		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
-		mav.addObject("prps_id", rtMap.getString("prps_id"));
 		mav.addObject("brandList", rtnMap);
 		mav.addObject("mBrandCd", mBrandCd);
 		mav.setViewName("proposal/proposalform2");
