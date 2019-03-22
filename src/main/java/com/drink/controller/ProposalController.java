@@ -134,6 +134,22 @@ public class ProposalController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/proPosalForm03")
+	public ModelAndView proPosalForm03(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("==rtMap=="+ rtMap.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("proposal/proposalform3");
+		return mav;
+	}
 	
 	@RequestMapping(value = "/proPosalList")
 	public ModelAndView proPosalList(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
