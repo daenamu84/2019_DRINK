@@ -108,66 +108,70 @@
 		//등록
 		$("#saveWork2").click(function(){			
 			if(ajaxFlag)return;
-			var prps_id = $("input[name='prps_id']");
-			var prodNoSitemNm1 = $("input[name='prodNoSitemNm1']");
+			var prps_id = $("#prps_id").val();
+			var prodNoSitemNm = $("input[name='prodNoSitemNm']");
 			var prodNoSitemCd = $("input[name='prodNoSitemCd']");
-			var prodNoSitemCd1 = $("input[name='prodNoSitemCd1']");
 			var deliveryCnt = $("input[name='deliveryCnt']");
 			var deliveryAmt = $("input[name='deliveryAmt']");
 			var dcRate = $("input[name='dcRate']");
 			var lastDeliverAmt = $("input[name='lastDeliverAmt']");
 			
+			var prodNoSitemNm1 = $("input[name='prodNoSitemNm1']");
+			var prodNoSitemCd1 = $("input[name='prodNoSitemCd1']");
+			var deliveryCnt1 = $("input[name='deliveryCnt1']");
+			var deliveryAmt1 = $("input[name='deliveryAmt1']");
+			var dcRate1 = $("input[name='dcRate1']");
+			var lastDeliverAmt1 = $("input[name='lastDeliverAmt1']");
 			var _addParam = [];
+			var _addParam1 = [];
 			
 			
-			for (var i = 0; i < vendor_no.length; i++) {
-				if(vendor_no[i].value ==""  ){
+			for (var i = 0; i < prodNoSitemNm.length; i++) {
+				if(prodNoSitemNm[i].value ==""){
 					continue;
 				}
 				
-				_addParam.push({"prps_id":prps_id[i].value,"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"deliveryCnt":deliveryCnt[i].value,"deliveryAmt":deliveryAmt[i].value,"dcRate":dcRate[i].value,"dcRate":dcRate[i].value,"lastDeliverAmt":lastDeliverAmt[i].value});
+				_addParam.push({"prodNoSitemNm":prodNoSitemNm[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"deliveryCnt":deliveryCnt[i].value,"deliveryAmt":deliveryAmt[i].value,"dcRate":dcRate[i].value,"lastDeliverAmt":lastDeliverAmt[i].value});
 			}
 			
-			var url = "/proposalWork";
 			
-			 $.ajax({      
-				    type:"POST",  
-				    url:url,      
-				    data: JSON.stringify({"prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
-				    dataType:"json",
-				    contentType:"application/json;charset=UTF-8",
-				    traditional:true,
-				    success:function(args){   
-				        if(args.returnCode == "0000"){
-				        	alert(args.message.replace(/<br>/gi,"\n"));
-				        	if(args.retgubun == "insert"){
-				        		//location.replace("/memberList");
-				        	}else{
-				        		//alert(0);
-				        		//ViewMember(emp_no,args.retgubun);	
-				        	}
-				        }else{
-				        	alert(args.message.replace(/<br>/gi,"\n"));
-				        	if(args.retgubun == "insert"){
-				        		location.replace("/memberList");
-				        	}else{
-				        		//alert(1);
-				        		//ViewMember(emp_no,args.retgubun);	
-				        	}
-				        }
-				        ajaxFlag=false;
-				    },   
-				    error:function(xhr, status, e){  
-				        if(xhr.status == 403){
-				        	alert("로그인이 필요한 메뉴 입니다.");
-				        	location.replace("/logIn");
-				        }else{
-				        	alert("처리중 에러가 발생 하였습니다.");
-				        	location.reload();
-				        }
-				        ajaxFlag=false;
-				    }  
-				});
+			for (var i = 0; i < prodNoSitemNm1.length; i++) {
+				if(prodNoSitemNm1[i].value ==""){
+					continue;
+				}
+				
+				_addParam1.push({"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"deliveryCnt1":deliveryCnt1[i].value,"deliveryAmt1":deliveryAmt1[i].value,"dcRate1":dcRate1[i].value,"lastDeliverAmt1":lastDeliverAmt1[i].value});
+			}
+			
+			$.ajax({      
+			    type:"POST",  
+			    url:"/proposalWork2",
+			    data: JSON.stringify({"_addPram":_addParam,"_addPram1":_addParam1,"prps_id":prps_id}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	//location.replace("/callList");
+			        	//location.reload();
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	//location.reload();
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }   
+			});
 			 
 		});
 	});
@@ -224,6 +228,7 @@
 			</div>
 			<div class="col col-12 col-sm-1" style="padding: 1px 0px;">
 					<input class="btn btn-primary" type="button" id="cntUpdate" value="변경">
+					<input type="hidden" id="prps_id" name="prps_id" value="${prps_id}">
 			</div>
 		</div>
 		<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
@@ -241,7 +246,6 @@
 			  <tbody id="view1">
 			  	<tr>
 			  		<td>
-			  			<input type="hidden" id="prps_id" name="prps_id" valaue="${prps_id}">
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
 			  			</span>

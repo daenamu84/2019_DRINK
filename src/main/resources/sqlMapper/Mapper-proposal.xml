@@ -111,5 +111,17 @@
        	]]>
     </select>
     
+     <update id="subInsert">
+    	<![CDATA[
+    	INSERT INTO T_PROPOSAL_PROD_D(
+   			PRPS_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, DELIVERY_CNT, DELIVERY_AMT,
+  			DC_RATE, LAST_DELIVER_AMT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID
+  		)VALUES (
+			#{prps_id}, #{prod_sitem_divs_cd}, #{prod_no_sitem_nm}, #{delivery_cnt}, #{delivery_amt},
+			 #{dc_rate}, #{last_deliver_amt}, now(), #{login_id}, now(), #{login_id}
+		 )
+    	]]>
+    </update>
+    
     
 </mapper>

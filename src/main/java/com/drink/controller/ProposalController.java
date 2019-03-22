@@ -128,6 +128,7 @@ public class ProposalController {
 		List<DataMap> rtnMap = brandService.BrandList(rtMap);
 		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
+		mav.addObject("prps_id", rtMap.getString("prps_id"));
 		mav.addObject("brandList", rtnMap);
 		mav.addObject("mBrandCd", mBrandCd);
 		mav.setViewName("proposal/proposalform2");
@@ -296,6 +297,36 @@ public class ProposalController {
 		rtnMap.put("message", "저장 하였습니다.");
 		
 		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/proposalWork2", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalWork2(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" a ::: "+rtMap.get("a"));
+		logger.debug(" b ::: "+rtMap.get("b"));
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		proposalService.proposalWork2(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+		//return rtnMap;
 	}
 	
 }
