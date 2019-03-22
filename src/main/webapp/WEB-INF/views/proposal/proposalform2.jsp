@@ -160,14 +160,22 @@
 				<div class="container-fluid" style="max-width:100%;">
 					<div class="row">			
 						<div class="col">
-							<div class="container-fluid border" style="padding: 15px;">
-								 <div class="form-group row">
-                                    <label for="prps_nm" class="col-md-2 col-form-label text-md-left">제안명</label>
-                                    <div class="col-md-8">
-                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}">
-                                    </div>
+							<div class="container-fluid" style="padding: 15px;width:90%">제안제품</div>
+							<div class="container-fluid border" style="padding: 15px;width:90%">
+								<div class="row" style="border-bottom: 1px solid #dee2e6">
+								  <div class="col-sm-4">제품명</div>
+								  <div class="col-sm-2">출고수량</div>
+								  <div class="col-sm-2">출고단가</div>
+								  <div class="col-sm-2">할인율</div>
+								  <div class="col-sm-2">최종금액</div>
+								</div>
+								<div class="row">
+									<div class="form-group row">
+	                                	<div class="col-md-8">
+	                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}">
+	                                    </div>
+	                                </div>
                                 </div>
-                                
                              </div>
 						</div>
 					</div>
