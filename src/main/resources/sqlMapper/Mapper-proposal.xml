@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Proposal">
+      
+    <update id="masterInsert">
+    	<![CDATA[
+    	INSERT INTO T_PROPOSAL_M(
+		  PRPS_STR_DT, PRPS_END_DT, DEPT_NO, EMP_NO, WHOLESALE_VENDOR_NO,
+		  OUTLET_NO, MARKET_DIVS_CD, PRPS_NM, PRPS_PURPOSE_CD, ACT_PLAN_CD, 
+		  BASE_PRPS_AMT, LAST_PRPS_AMT, BUDG_AMT, CASERATE_AMT, PRPS_CNTN, 
+		  PRPS_REG_DT, PRPS_STUS_CD, VENDOR_SGMT_DIVS_CD, DATA_REG_DTM, DATA_REG_ID, 
+		  DATA_UPD_DTM, DATA_UPD_ID
+		)
+		 VALUES (
+			#{prps_str_dt}, #{prps_end_dt}, #{dept_no}, #{emp_no}, #{wholesale_vendor_no},
+			#{outlet_no}, #{market_divs_cd}, #{prps_nm}, #{prps_purpose_cd}, #{act_plan_cd}, 
+			#{base_prps_amt}, #{last_prps_amt},#{ budg_amt}, #{caserate_amt}, #{prps_cntn}, 
+			#{prps_reg_dt}, #{prps_stus_cd}, #{vendor_sgmt_divs_cd}, now(), #{login_id}, 
+			now(), #{login_id}
+		 )
+    	]]>
+    </update>
+    
+    
+</mapper>
