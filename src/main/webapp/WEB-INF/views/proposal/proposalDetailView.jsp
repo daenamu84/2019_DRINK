@@ -21,65 +21,39 @@ var ajaxFlag = false;
 </script>
 
 <div class="">
+	<div class="title"> ◈  PROPOSAL Detail</div> 
 	<div class="container-fluid">
 		<div class="row" ">			
-			<div class="title col col-12  col-sm-5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 제품/지원목록 등록</div> 
-			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">제안제품수</label>
-			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
-					<select name="productCnt" class="form-control" id="productCnt">
-								<option value="1" >1</option>
-								<option value="2" >2</option>
-								<option value="3" >3</option>
-								<option value="4" >4</option>
-								<option value="5" >5</option>
-								<option value="6" >6</option>
-								<option value="7" >7</option>
-								<option value="8" >8</option>
-								<option value="9" >9</option>
-								<option value="10" >10</option>
-					</select>
-			</div>
-			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">지원품목수</label>
-			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
-					<select name="supplyCnt" class="form-control" id="supplyCnt">
-								<option value="1" >1</option>
-								<option value="2" >2</option>
-								<option value="3" >3</option>
-								<option value="4" >4</option>
-								<option value="5" >5</option>
-								<option value="6" >6</option>
-								<option value="7" >7</option>
-								<option value="8" >8</option>
-								<option value="9" >9</option>
-								<option value="10" >10</option>
-					</select>
-			</div>
-			<div class="col col-12 col-sm-1" style="padding: 1px 0px;">
-					<input class="btn btn-primary" type="button" id="prodInsert" value="변경">
-			</div>
+			<label class="col col-12  col-sm-3" style="padding: 1px 0px;">
+					<a class="btn btn-info text-white" style="width: 99%;" href="#defultView">PROPOSAL 기본정보</a>
+			</label>
+			<label class="col col-12 col-sm-3" style="padding: 1px 0px;">
+					<a class="btn btn-info text-white" style="width: 99%;" href="#productView">제품/지원품목</a>
+			</label>
+			<label class="col col-12 col-sm-3" style="padding: 1px 0px;">
+					<a class="btn btn-info text-white" style="width: 99%;" href="#monthView">월별 출고계획</a>
+			</label>
+			<label class="col col-12 col-sm-3" style="padding: 1px 0px;">
+					<a class="btn btn-info text-white" style="width: 99%;" href="#monthActualtView">월별 ACTUAL</a>
+			</label>
 		</div>
-		<div class="row" style="padding-top:10px; overflow-x:auto;">
-			<div class="title"> 제안제품</div> 
-			<table class="table">
-			  <thead>
-			    <tr>
-			      <th scope="col">제품명</th>
-			      <th scope="col">출고수량</th>
-			      <th scope="col">출고단가</th>
-			      <th scope="col">할인률</th>
-			      <th scope="col">최종출고금액</th>
-			    </tr>
-			  </thead>
-			  <tbody id="view1">
-			  	<tr>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
-			  	</tr>
-			  </tbody>
-			</table>
+		<div class="row" style="padding-top:10px; overflow-x:auto;">	
+			<div id="defultView" style="height:800px;width:100%;background-color:yellow;">
+				<div class="container-fluid">
+					<div class="row">			
+						<label class="col col-12 col-sm-2 bg-light text-center align-middle">제안명</label>
+						<div class="col col-12 col-sm-10">
+							<p class="text-break text-monospace"> aaaaaaaaaaaa   aaaaaaaaa  a   </p>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div id="productView" style="height:800px;width:100%;background-color:green;">
+			</div>
+			<div id="monthView" style="height:800px;width:100%;background-color:blue;">
+			</div>
+			<div id="monthActualtView" style="height:800px;width:100%;background-color:red;">
+			</div>
 		</div>
 	</div>
 
