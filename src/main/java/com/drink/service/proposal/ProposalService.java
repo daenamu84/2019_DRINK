@@ -66,4 +66,50 @@ public class ProposalService {
 		
 		return param;
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void proposalWork2 ( Map<String, Object> map) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		List<DataMap> param = new ArrayList<>();
+		
+		
+		String prps_id = (String) map.get("prps_id");
+		
+		
+		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addPram");
+		
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("prps_id", prps_id);
+			 svMap.put("prod_sitem_divs_cd", "01");
+			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
+			 svMap.put("delivery_cnt", svMap.get("deliveryCnt"));
+			 svMap.put("delivery_amt", svMap.get("deliveryAmt"));
+			 svMap.put("dc_rate", Float.valueOf((String)svMap.get("dcRate")));
+			 svMap.put("last_deliver_amt", svMap.get("lastDeliverAmt"));
+			 svMap.put("login_id", map.get("regId"));
+			 
+			 gdi.update("Proposal.subInsert",svMap);
+		}
+		
+		List<Map<String, Object>> data1 = (List<Map<String, Object>>) map.get("_addPram1");
+		for(int j=0; j< data1.size();j++){
+			 logger.debug(j+" :: " + data1.get(j).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data1.get(j);
+			 svMap.put("prps_id", prps_id);
+			 svMap.put("prod_sitem_divs_cd", "02");
+			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemNm1"));
+			 svMap.put("delivery_cnt", svMap.get("deliveryCnt1"));
+			 svMap.put("delivery_amt", svMap.get("deliveryAmt1"));
+			 svMap.put("dc_rate", Float.valueOf((String)svMap.get("dcRate1")));
+			 svMap.put("last_deliver_amt", svMap.get("lastDeliverAmt1"));
+			 svMap.put("login_id", map.get("regId"));
+			 
+			 gdi.update("Proposal.subInsert",svMap);
+		}
+		
+	}
+	
 }
