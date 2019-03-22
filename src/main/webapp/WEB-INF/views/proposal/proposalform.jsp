@@ -8,6 +8,8 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 	
 	<script type="text/javascript">
 	
@@ -24,13 +26,158 @@
 	
 	$(document).ready(function(){
 		
+		$('.summernote').summernote({
+			height: 400,
+			toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough', 'superscript', 'subscript']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']]
+			  ]
+			
+		});
+		
 		$(document).on("click","i[name='dateRangeIcon']",function() {
 		      $(this).parent().find(".dateRange").click();
 		});
 		
+		$("#outlet_nm").click(function(){
+			$("#popLayer").modal("show");
+		});
+		
+		function  goStep02(prps_id){
+			$("#prps_id").val(prps_id);
+			document.insert02.action = "/proPosalForm02";
+			document.insert02.submit();
+		}
+		$("#saveWork").click(function(){			
+			if(ajaxFlag)return;
+			
+			var prps_nm = $("#prps_nm").val();
+			if(prps_nm==""){
+				alert("제안명을 입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			if ($("#prps_purpose_cd option:selected").val() == "") {
+				alert("제안목적을  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val() ;
+			
+			if ($("#act_plan_cd option:selected").val() == "") {
+				alert("액티비티계획을  선택 하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var act_plan_cd = $("#act_plan_cd option:selected").val() ;
+			
+			var prps_str_dt = $('input[name=prps_str_dt]').val();
+			if (prps_str_dt == "") {
+				alert("프로모션시작일자을  입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var prps_end_dt = $('input[name=prps_end_dt]').val();
+			if (prps_end_dt == "") {
+				alert("프로모션종료일자을  입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var outlet_no = $('input[name=outlet_no]').val();
+			if (outlet_no == "") {
+				alert("거래처를   입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var outlet_no = $("#outlet_no").val();
+			var wholesale_vendor_no = $("#wholesale_vendor_no").val();
+			var market_divs_cd = $("#market_divs_cd").val();
+			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd").val();
+			
+			var budg_amt = $("#budg_amt").val();
+			var base_prps_amt = $("#base_prps_amt").val();
+			var last_prps_amt = $("#last_prps_amt").val();
+			if (last_prps_amt == "") {
+				alert("최종제안금액  입력하세요");
+				ajaxFlag = false;
+				return;
+			}
+			
+			var caserate_amt = $("#caserate_amt").val();
+			
+			$('textarea[name="prps_cntn"]').html($('.summernote').summernote("code"));
+			
+			var prps_cntn = $('textarea[name="prps_cntn"]').html();
+			
+			var url = "/proposalWork";
+			
+			 $.ajax({      
+				    type:"POST",  
+				    url:url,      
+				    data: JSON.stringify({"prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
+				    dataType:"json",
+				    contentType:"application/json;charset=UTF-8",
+				    traditional:true,
+				    success:function(args){   
+				        if(args.returnCode == "0000"){
+				        	alert(args.message.replace(/<br>/gi,"\n"));
+				        	if(args.retgubun == "insert"){
+				        		goStep02(args.prps_id);
+				        		//location.replace("/proPosalForm02");
+				        	}else{
+				        		//alert(0);
+				        		//ViewMember(emp_no,args.retgubun);	
+				        	}
+				        }else{
+				        	alert(args.message.replace(/<br>/gi,"\n"));
+				        	if(args.retgubun == "insert"){
+				        		location.replace("/memberList");
+				        	}else{
+				        		//alert(1);
+				        		//ViewMember(emp_no,args.retgubun);	
+				        	}
+				        }
+				        ajaxFlag=false;
+				    },   
+				    error:function(xhr, status, e){  
+				        if(xhr.status == 403){
+				        	alert("로그인이 필요한 메뉴 입니다.");
+				        	location.replace("/logIn");
+				        }else{
+				        	alert("처리중 에러가 발생 하였습니다.");
+				        	location.reload();
+				        }
+				        ajaxFlag=false;
+				    }  
+				});
+			 
+		});
+		
+		
+		
 		
 	});
 	
+ 	function setVendorId(outlet_no, outlet_nm, wholesale_vendor_no,market_divs_cd,vendor_sgmt_divs_cd){
+		$("#outlet_no").val(outlet_no);
+		$("#outlet_nm").val(outlet_nm);
+		$("#wholesale_vendor_no").val(wholesale_vendor_no);
+		$("#market_divs_cd").val(market_divs_cd);
+		$("#vendor_sgmt_divs_cd").val(vendor_sgmt_divs_cd);
+		$("#popLayer").modal("hide");
+
+	}
 	
 	</script>
 	
@@ -78,96 +225,42 @@
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">거래처</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="outlet_no" class="form-control" name="outlet_no" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NO}">
+                                    	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NO}">
+                                    	<input type="text" id="outlet_no"  name="outlet_no"/>
+                                    	<input type="text" id="wholesale_vendor_no"  name="wholesale_vendor_no"/>
+                                    	<input type="text" id="market_divs_cd"  name="market_divs_cd"/>
+                                    	<input type="text" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="login_id" class="col-md-2 col-form-label text-md-left">아이디</label>
-                                    <div class="col-md-6">
-                                    	<input type="text" id="login_id" class="form-control" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %> name="login_id" value="${data.LOGIN_ID}" style="width:30%;display:initial;"> 
-                                    	<%if(request.getParameter("gubun")==null){ %>
-                                    	<input class="btn btn-dark" type="button" value="중복체크" id="checkloginid" style="margin-top: -5px;"/>
-                                    	<input type="hidden" name="duplicatecheck" id="duplicatecheck"/><span id="msg" style="display:none">사용가능한 ID 입니다.</span>
-                                    	<% } %>
+                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">예산금액</label>
+                                    <div class="col-md-4">
+                                    	<input type="text" id="budg_amt" class="form-control" name="budg_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.BUDG_AMT}">
+                                    </div>
+                                    <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">제안금액</label>
+                                    <div class="col-md-4">
+                                    	<input type="text" id="base_prps_amt" class="form-control" name="base_prps_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.BASE_PRPS_AMT}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="login_pwd" class="col-md-2 col-form-label text-md-left">비밀번호</label>
-                                    <div class="col-md-6">
-                                    	<input type="password" id="login_pwd" class="form-control" name="login_pwd">
+                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">최종금액</label>
+                                    <div class="col-md-4">
+                                    	<input type="text" id="last_prps_amt" class="form-control" name="last_prps_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.LAST_PRPS_AMT}">
+                                    </div>
+                                    <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">CASERATE</label>
+                                    <div class="col-md-4">
+                                    	<input type="text" id="caserate_amt" class="form-control" name="caserate_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.CASERATE_AMT}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="login_pwd1" class="col-md-2 col-form-label text-md-left">비밀번호확인</label>
-                                    <div class="col-md-6">
-                                    	<input type="password" id="login_pwd1" class="form-control" name="login_pwd1">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="emp_hp_no" class="col-md-2 col-form-label text-md-left">휴대폰번호</label>
-                                    <div class="col-md-6">
-                                        <input type="text" id="emp_hp_no" class="form-control" name="emp_hp_no" value="${data.EMP_HP_NO}">
-                                    </div>
-                                </div>
-								<div id="wrap4" style="display:none; border:1px solid; width:570px; height:440px; margin:50px 0px 0px 73px; position:absolute; z-index:10;">
-									<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldPostcode('4')" alt="접기 버튼">
-								</div>
-                                <div class="form-group row">
-                                    <label for="emp_addr" class="col-md-2 col-form-label text-md-left">주소</label>
-                                    <div class="col-md-6">
-                                        <input type="text" id="zip_cd" class="form-control" name="zip_cd" readonly style="width:30%;display:initial;" value="${data.ZIP_CD}">
-                                        <input class="btn btn-dark" type="button" value="우편번호"  onclick="execPostcode('4')" style="margin-top: -5px;"/>
-                                        <br>
-                                        <input type="text" id="emp_addr" class="form-control" name="emp_addr" value="${data.EMP_ADDR}"><br>
-                                    </div>
-                                </div>
-								
-								<div class="form-group row">
-                                    <label for="emp_birth" class="col-md-2 col-form-label text-md-left">생일</label>
-                                    <div class="col-md-6">
-                                        <input type="text" id="emp_birth" class="form-control" name="emp_birth" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %> value="${data.EMP_BIRTH}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="entco_dt" class="col-md-2 col-form-label text-md-left">입사일</label>
-                                    <div class="col-md-6">
-                                        <input type="text" id="entco_dt" class="form-control" name="entco_dt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %> value="${data.ENTCO_DT}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="emp_grd_cd" class="col-md-2 col-form-label text-md-left">사원등급</label>
-                                    <div class="col-md-6">
-                                    	<select name="emp_grd_cd" class="form-control" id="emp_grd_cd" onChange="showMngDept()">
-                                    		<option value="">선택하세요</option>
-											<c:forEach items="${commonList}" var="j">
-											<option value="${j.CMM_CD}" <c:if test="${j.CMM_CD eq data.EMP_GRD_CD}">selected</c:if>>${j.CMM_CD_NM} </option>
-											</c:forEach>
-										</select>
-                                        
-                                    </div>
-                                </div>
-                                 <div class="form-group row">
-                                    <label for="use_yn" class="col-md-2 col-form-label text-md-left">급무여부</label>
-                                    <div class="col-md-6">
-                                    	<input type="checkbox" name="use_yn" id="use_yn"  value= "${data.USE_YN}" <c:if test="${data.USE_YN eq 'Y'}">checked</c:if>/>근무중
+                                    <div class="col-md-12">
+                                    	<textarea name="prps_cntn" class="summernote"></textarea>
                                     </div>
                                 </div>
                                 
-                                <div class="border" id="deptMng" style="padding: 15px;display:none" >
-                                  		관리할 팀을 선택 해 주세요<br>
-
-                                    <c:forEach items="${deptMMList}" var="i">
-										 
-										<input type="checkbox" id="mng_dept_no" name="mng_dept_no" value="${i.DEPT_NO}" <c:if test="{flag}">checked</c:if>> ${i.TEAMNM} <br>
-										
-									</c:forEach>											
-									
-                                    
-                                </div>
-
 								<div class="text-md-right">
 										<input type="hidden" name="gubun" value="${gubun}">
-										<input class="btn btn-dark" type="button" value="등록" id="memberWork">
+										<input class="btn btn-dark" type="button" value="STEP02 등록" id="saveWork">
                                 </div>
 								</form>
                              </div>
@@ -176,6 +269,55 @@
 				</div>
 			</div>
 		</div>
+		<!-- modal start  -->	
+	<div id="popLayer" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-xl">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
+					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+				</div>
+				<div class="modal-body">
+					<div class="container" style="padding: 5px;">
+						<div class="row">
+							<div class="col-sm-2"><span class="align-middle">업소</span></div>
+							<div class="col-sm-3">
+								<input type="text"  id="_sVendorNm" class="form-control" />
+							</div>
+							<div class="col-sm-5">
+								<input class="btn btn-primary" type="button" id="vendorSearch" value="조회">
+							</div>
+						</div>
+					</div>
+				</div>					
+				<div class="modal-body" id="subLayer">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">거래처 번호</th>
+								<th scope="col">거래처명</th>
+							</tr>
+						</thead>
+						<tbody id="vendorSeachLayer">
+							<c:forEach items="${vendorList}" var="i" varStatus="status">
+								<tr>
+									<td><a
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
+									<td><a
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}');" class="text-decoration-none">${i.OUTLET_NM}</a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-secondary float-right" type="button" data-dismiss="modal" value="Close">
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- modal  end  -->
 	</div>
 	
 
@@ -193,3 +335,7 @@ $(function() {
 	
 });
 </script>
+
+<form name="insert02" method="post">
+	<input type="text" name="prps_id" id="prps_id"/>
+</form>

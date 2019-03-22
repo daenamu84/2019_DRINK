@@ -32,6 +32,7 @@
           <mapper resource= "sqlMapper/Mapper-code.xml" />
           <mapper resource= "sqlMapper/Mapper-vendor.xml" />
           <mapper resource= "sqlMapper/Mapper-call.xml" />
+          <mapper resource= "sqlMapper/Mapper-proposal.xml" />
      </mappers>
 </configuration>
 

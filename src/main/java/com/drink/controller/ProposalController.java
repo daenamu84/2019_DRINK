@@ -8,18 +8,26 @@
 */ 
 package com.drink.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
@@ -29,6 +37,7 @@ import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.call.CallService;
+import com.drink.service.proposal.ProposalService;
 import com.drink.service.vendor.VendorService;
 
 
@@ -52,7 +61,7 @@ public class ProposalController {
 	private ConfigUtils configUtils;
 	
 	@Autowired
-	private CallService callService;
+	private ProposalService proposalService;
 	
 	@Autowired
 	private VendorService vendorService;
@@ -62,7 +71,7 @@ public class ProposalController {
 	
 		
 	@RequestMapping(value = "/proPosalForm")
-	public ModelAndView callForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -82,19 +91,38 @@ public class ProposalController {
 		paramMap.put("cmm_cd_grp_id", "00022"); // 제안액티비티계획코드
 		List<DataMap> p_activityMap = vendorService.getCommonCode(paramMap);
 		
-		
-		
-		
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
-		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		paramMap.put("deptno", loginSession.getDept_no());
 		
-		mav.addObject("deptMngList", rtnMngMap);
+		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
+		mav.addObject("vendorList", vendorList);
+		
 		mav.addObject("p_purposeList", p_purposeMap);
 		mav.addObject("p_activityList", p_activityMap);
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
 		mav.setViewName("proposal/proposalform");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/proPosalForm02")
+	public ModelAndView proPosalForm02(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("==rtMap=="+ rtMap.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		mav.setViewName("proposal/proposalform2");
 		return mav;
 	}
 	
@@ -198,4 +226,36 @@ public class ProposalController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/proposalWork", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> memberWork(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		vts.put("regId", loginSession.getLgin_id());
+		vts.put("dept_no", loginSession.getDept_no());
+		vts.put("emp_no", loginSession.getEmp_no());
+		vts.put("prps_stus_cd", "0001");  // 00020	제안상태코드  : 0001 작성중
+		
+		DataMap tmap =  proposalService.proposalWork(vts);
+		
+		logger.debug("tmap="+ tmap);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "insert");
+		rtnMap.put("prps_id", tmap.getString("PRPS_ID"));
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+	}
+	
 }
