@@ -226,10 +226,10 @@
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">거래처</label>
                                     <div class="col-md-4">
                                     	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NO}">
-                                    	<input type="text" id="outlet_no"  name="outlet_no"/>
-                                    	<input type="text" id="wholesale_vendor_no"  name="wholesale_vendor_no"/>
-                                    	<input type="text" id="market_divs_cd"  name="market_divs_cd"/>
-                                    	<input type="text" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd"/>
+                                    	<input type="hidden" id="outlet_no"  name="outlet_no"/>
+                                    	<input type="hidden" id="wholesale_vendor_no"  name="wholesale_vendor_no"/>
+                                    	<input type="hidden" id="market_divs_cd"  name="market_divs_cd"/>
+                                    	<input type="hidden" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">

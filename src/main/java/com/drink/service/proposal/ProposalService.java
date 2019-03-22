@@ -47,6 +47,24 @@ public class ProposalService {
 		return param;
 	}
 	
+	public DataMap proposalView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		logger.debug("map==="+ map.toString());
+		
+		param = (DataMap) gdi.selectOne("Proposal.ProPosalView",map.getMap());
+		
+		return param;
+	}
+	
+	public List proposalView2(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map==="+ map.toString());
+		param =  gdi.selectList("Proposal.ProPosalProdD_DView",map.getMap());
+		
+		return param;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public DataMap proposalWork(Map<String, Object> map) throws DrinkException{
 		DataMap param = new DataMap();

@@ -257,9 +257,9 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value = "/proPosalView")
-	public ModelAndView proPosalView(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalView(Locale locale, Model model , RequestMap rtMap, HttpServletRequest req) throws DrinkException {
 		
-		
+		logger.debug("rtMap :: " + rtMap.toString());
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
 		if(loginSession == null || (loginSession.getLgin_id()== null)){
@@ -268,26 +268,12 @@ public class ProposalController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		RequestMap paramMap = new RequestMap();
+		DataMap proPosalView =  proposalService.proposalView(rtMap);
+		List<DataMap> rtnProPosalDMap = proposalService.proposalView2(rtMap);
 		
 		
-		RequestMap map = new RequestMap();
-		map.put("cmm_cd_grp_id", "00021"); // 제안목적
-		List<DataMap> cd00021List = vendorService.getCommonCode(map);
-		mav.addObject("cd00021List", cd00021List);
-
-		map = new RequestMap();
-		map.put("cmm_cd_grp_id", "00022"); // 엑티비티 계획
-		List<DataMap> cd00022List = vendorService.getCommonCode(map);
-		mav.addObject("cd00022List", cd00022List);
-
-		map = new RequestMap();
-		map.put("cmm_cd_grp_id", "00020"); // 제안상태
-		List<DataMap> cd00020List = vendorService.getCommonCode(map);
-		mav.addObject("cd00020List", cd00020List);
-
-		List<DataMap> teamList = vendorService.getTeamList(paramMap);
-		mav.addObject("teamList", teamList);
+		mav.addObject("data",proPosalView);
+		mav.addObject("ProPosalDList", rtnProPosalDMap);
 		mav.setViewName("proposal/proposalDetailView");
 		
 		

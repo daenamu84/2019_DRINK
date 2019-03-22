@@ -105,6 +105,10 @@
 			});
 		},0));
 		
+		//목록
+		$("#proposalList").click(function(){
+			location.href="/proposalList"
+		});
 		//등록
 		$("#saveWork2").click(function(){			
 			if(ajaxFlag)return;
@@ -179,10 +183,11 @@
 	var popListObj = null;
 	$(document).on("click","input[id='productInsertLayer']",function() {
 		$("#popLayer").modal("show");
-		
 		popListObj = this;
 	});
 
+	
+	
 	function setValueDate(arg1, arg2){
 		var obj = popListObj;
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
@@ -390,8 +395,8 @@
 		</div>
 		<div class="row" style="padding: 5px 0px;">
 			<div class="col-12 col-sm-6 text-left">
-				<input class="btn btn-light" type="button" id="" value="목록">
-				<input class="btn btn-light" type="button" id="" value="STEP01 수정">
+				<input class="btn btn-light" type="button" id="proposalList" value="목록">
+				<input class="btn btn-light" type="button" id="proPosalForm01_List" value="STEP01 수정">
 			</div>
 			<div class="col-12 col-sm-6 text-right">
 				<input class="btn btn-primary" type="button" id="saveWork2" value="STEP03 등록">

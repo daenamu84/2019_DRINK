@@ -17,7 +17,9 @@
 	$(document).on("click","i[name='dateRangeIcon']",function() {
 	    $(this).parent().find("._pDateRange").click();
 	});
-$(function(){
+	
+	//자동완성
+	$(function(){
 
 	//  var source = ['난누군가','또여긴어딘가','누가날불러?'];
     // 자동으로 /ajax/auato 주소로 term 이란 파라미터가 전송된다.
@@ -47,6 +49,7 @@ $(function(){
 	});
 	var ajaxFlag = false;
 
+	//달력
 	$(function() {
 		dataRangeOptions.locale.format="YYYYMMDD";
 		dataRangeOptions.singleDatePicker =  true;
@@ -56,15 +59,11 @@ $(function(){
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
 			$(this).val(picker.endDate.format('YYYYMMDD'));
 		});
-		
-		
-		
-		
 	});		
 
 	$(document).ready(function(){
+		//검색
 		$("#proposalSearch").click(function(){
-			
 			var outlet_no = $("#outlet_no").val();
 			var deptno = $("#deptno option:selected").val();
 			var empno = $("#empno").val();
@@ -96,7 +95,7 @@ $(function(){
 			    }  
 			});
 		});
-		
+		//등록 
 		$("#proposalInsert").click(function(){
 			location.href="/proPosalForm";
 		});
@@ -138,6 +137,15 @@ $(function(){
 			}
 		});
 	}
+	
+	function setView(prps_id, gubun){
+		document.viewForm.prps_id.value=prps_id;
+		document.viewForm.gubun.value=gubun;
+		
+		document.viewForm.action="/proPosalView";
+		document.viewForm.submit();
+	}
+	
 	
 </script>
 
@@ -235,7 +243,7 @@ $(function(){
 			  <tbody id="proposalList">
 					<c:forEach items="${ProPosalList}" var="i" varStatus="status">
 						<tr>
-							<td>${i.PRPS_ID}</td>
+							<td><a href="javascript:setView('${i.PRPS_ID}','update')">${i.PRPS_ID}</a> </td>
 							<td>${i.TEAMNM}</td>
 							<td>${i.EMP_NM}</td>
 							<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
@@ -250,6 +258,8 @@ $(function(){
 			</table>
 		</div>
 	</div>
-
-	
 </div>
+<form name="viewForm" method="post">
+	<input type="hidden" name="prps_id" /> 
+	<input type="hidden" name="gubun" />
+</form>
