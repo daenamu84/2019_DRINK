@@ -225,8 +225,11 @@ public class BrandController {
 			logger.debug("rtnMap :: " + rtnMap);
 			
 			mav.addObject("brandSCd", rtnMap);
-			
-			mav.setViewName("nobody/brand/brandSCd");
+			if(param.getString("bsearch").equals("")) {
+				mav.setViewName("nobody/brand/brandSCd");	
+			}else {
+				mav.setViewName("nobody/brand/brandSCd_proposal");
+			}
 			return mav;
 		
 		} catch (Exception e) {

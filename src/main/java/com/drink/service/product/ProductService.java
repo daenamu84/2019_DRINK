@@ -57,7 +57,10 @@ public class ProductService {
 	
 	public List productList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
+		
+		if(map.getString("bsearch").equals("")) {
 		map.put("brandId", ((String)map.get("brandId")).split(",") );
+		}
 		
 		param = gdi.selectList("Product.getProductList",map.getMap());
 		

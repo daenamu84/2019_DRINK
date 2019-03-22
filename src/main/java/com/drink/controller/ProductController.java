@@ -97,8 +97,11 @@ public class ProductController {
 		List<DataMap> rtnMap = productService.productList(rtMap);
 
 		mav.addObject("productList", rtnMap);
-		
-		mav.setViewName("nobody/product/managerSearch");
+		if(rtMap.getString("bsearch").equals("")) {
+			mav.setViewName("nobody/product/managerSearch");	
+		}else {
+			mav.setViewName("nobody/product/managerSearch_Proposal");
+		}
 		return mav;
 		}catch (Exception e) {
 			logger.debug("err :: " + e);
