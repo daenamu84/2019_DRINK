@@ -40,11 +40,14 @@ public class ProposalService {
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void proposalWork(Map<String, Object> map) throws DrinkException{
-		
+	public DataMap proposalWork(Map<String, Object> map) throws DrinkException{
+		DataMap param = new DataMap();
 		logger.debug("map==="+ map.toString());
 		
 		gdi.update("Proposal.masterInsert",map);
+		param = (DataMap) gdi.selectOne("Proposal.getPRPS_ID",map);
+		
+		return param;
 	}
 	
 	

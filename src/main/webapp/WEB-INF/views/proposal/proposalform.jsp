@@ -48,7 +48,11 @@
 			$("#popLayer").modal("show");
 		});
 		
-		
+		function  goStep02(prps_id){
+			$("#prps_id").val(prps_id);
+			document.insert02.action = "/proPosalForm02";
+			document.insert02.submit();
+		}
 		$("#saveWork").click(function(){			
 			if(ajaxFlag)return;
 			
@@ -129,7 +133,8 @@
 				        if(args.returnCode == "0000"){
 				        	alert(args.message.replace(/<br>/gi,"\n"));
 				        	if(args.retgubun == "insert"){
-				        		//location.replace("/memberList");
+				        		goStep02(args.prps_id);
+				        		//location.replace("/proPosalForm02");
 				        	}else{
 				        		//alert(0);
 				        		//ViewMember(emp_no,args.retgubun);	
@@ -255,7 +260,7 @@
                                 
 								<div class="text-md-right">
 										<input type="hidden" name="gubun" value="${gubun}">
-										<input class="btn btn-dark" type="button" value="등록" id="saveWork">
+										<input class="btn btn-dark" type="button" value="STEP02 등록" id="saveWork">
                                 </div>
 								</form>
                              </div>
@@ -330,3 +335,7 @@ $(function() {
 	
 });
 </script>
+
+<form name="insert02" method="post">
+	<input type="text" name="prps_id" id="prps_id"/>
+</form>

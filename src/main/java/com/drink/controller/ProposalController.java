@@ -71,7 +71,7 @@ public class ProposalController {
 	
 		
 	@RequestMapping(value = "/proPosalForm")
-	public ModelAndView callForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -103,6 +103,26 @@ public class ProposalController {
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
 		mav.setViewName("proposal/proposalform");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/proPosalForm02")
+	public ModelAndView proPosalForm02(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("==rtMap=="+ rtMap.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		mav.setViewName("proposal/proposalform2");
 		return mav;
 	}
 	
@@ -199,13 +219,16 @@ public class ProposalController {
 		vts.put("regId", loginSession.getLgin_id());
 		vts.put("dept_no", loginSession.getDept_no());
 		vts.put("emp_no", loginSession.getEmp_no());
+		vts.put("prps_stus_cd", "0001");  // 00020	제안상태코드  : 0001 작성중
 		
-		proposalService.proposalWork(vts);
+		DataMap tmap =  proposalService.proposalWork(vts);
 		
+		logger.debug("tmap="+ tmap);
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");
 		rtnMap.put("retgubun", "insert");
+		rtnMap.put("prps_id", tmap.getString("PRPS_ID"));
 		rtnMap.put("message", "저장 하였습니다.");
 		
 		return rtnMap;

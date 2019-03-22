@@ -16,11 +16,22 @@
 			#{prps_str_dt}, #{prps_end_dt}, #{dept_no}, #{emp_no}, #{wholesale_vendor_no},
 			#{outlet_no}, #{market_divs_cd}, #{prps_nm}, #{prps_purpose_cd}, #{act_plan_cd}, 
 			#{base_prps_amt}, #{last_prps_amt},#{ budg_amt}, #{caserate_amt}, #{prps_cntn}, 
-			#{prps_reg_dt}, #{prps_stus_cd}, #{vendor_sgmt_divs_cd}, now(), #{login_id}, 
+			DATE_FORMAT(now(), '%Y%m%d'), #{prps_stus_cd}, #{vendor_sgmt_divs_cd}, now(), #{login_id}, 
 			now(), #{login_id}
 		 )
     	]]>
     </update>
+    
+    <select id="getPRPS_ID" resultType="DataMap">
+    	<![CDATA[
+		  	SELECT PRPS_ID
+			FROM T_PROPOSAL_M 
+			WHERE OUTLET_NO =#{outlet_no}
+			AND EMP_NO = #{emp_no}
+			ORDER BY DATA_REG_DTM DESC LIMIT 1
+			
+       	]]>
+    </select>
     
     
 </mapper>
