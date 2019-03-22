@@ -26,7 +26,23 @@ var ajaxFlag = false;
 	});		
 
 	$(document).ready(function(){
-	
+		$("#proposalSearch").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/proPosalListSearch",      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#proposalList").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		});
 	});
 	
 </script>
@@ -118,7 +134,7 @@ var ajaxFlag = false;
 			      <th scope="col">제안상태</th>
 			    </tr>
 			  </thead>
-			  <tbody id="productList">
+			  <tbody id="proposalList">
 			  </tbody>
 			</table>
 		</div>

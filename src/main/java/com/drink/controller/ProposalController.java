@@ -137,6 +137,30 @@ public class ProposalController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/proPosalListSearch")
+	public ModelAndView proPosalListSearch(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		RequestMap map = new RequestMap();
+		
+		
+		mav.setViewName("nobody/proposal/proposalListSearch");
+		
+		
+		return mav;
+	}
+	
 	@RequestMapping(value = "/proPosalView")
 	public ModelAndView proPosalView(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
 		
