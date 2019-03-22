@@ -147,6 +147,7 @@ public class ProposalController {
 			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
 		Calendar cal = Calendar.getInstance();
 
 		logger.debug("==rtMap=="+ rtMap.toString());
@@ -159,7 +160,7 @@ public class ProposalController {
 		try {
 			for(int i=0; i<listStep03.size(); i++){
 				DataMap dm = listStep03.get(i);
-				cal.setTime(sdf.parse("201903"));
+				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
 				List<String> dateList = new ArrayList<>();
 				for(int x=0; x<=dm.getInt("monthCnt");x++){
 					cal.add(Calendar.MONTH, x);

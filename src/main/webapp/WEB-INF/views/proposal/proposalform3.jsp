@@ -24,10 +24,17 @@
 			
 			var prpsdId = $("input[name='prpsdId']");
 			
-			
-			$("input[name='planCnt'][data-prpsdid='1']")
-			$("input[name='planCnt'][data-prpsdid='1']")[0].value
-			$($("input[name='planCnt'][data-prpsdid='1']")[0]).data("deliverycnt");
+			for(var i=0; i<prpsdId.length; i++){
+				var idx = prpsdId[i];
+				var planCntObj = $("input[name='planCnt'][data-prpsdid='"+idx.value+"']");
+				for(var j = 0; j<planCntObj.length; j++){
+					var planIdx = planCntObj[j];
+					console.log("palnIdx :: " + planIdx);
+					console.log("palnCnt :: " + planIdx.value);
+					console.log("palnCnt deliveryCnt :: " + $(planIdx).data("deliverycnt"));
+				}
+				
+			}
 			
 			
 		});
@@ -80,10 +87,9 @@
 				  			</c:forEach>
 				  		</td>
 				  		<td class="border">
-				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
-				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
-				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
-				  			<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  			<c:forEach items="${i.dateList}" var="d">
+				  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  			</c:forEach>
 				  		</td>
 				  	</tr>
 				</c:forEach>
