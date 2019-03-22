@@ -38,6 +38,14 @@ public class ProposalService {
 	GenericMapperImpl<Object, Object> gdi;
 	
 	
+	public List getProPosalList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Proposal.getProPosalList",map.getMap());
+		
+		return param;
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public DataMap proposalWork(Map<String, Object> map) throws DrinkException{

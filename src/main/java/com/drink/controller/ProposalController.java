@@ -8,6 +8,7 @@
 */ 
 package com.drink.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +37,7 @@ import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
+import com.drink.service.brand.BrandService;
 import com.drink.service.call.CallService;
 import com.drink.service.proposal.ProposalService;
 import com.drink.service.vendor.VendorService;
@@ -66,10 +68,14 @@ public class ProposalController {
 	@Autowired
 	private VendorService vendorService;
 	
+	@Autowired 
+	private BrandService brandService;
+	
 	@Autowired
 	private SessionUtils sessionUtils;
 	
-		
+	
+	
 	@RequestMapping(value = "/proPosalForm")
 	public ModelAndView proPosalForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
 		
@@ -119,9 +125,11 @@ public class ProposalController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		RequestMap paramMap = new RequestMap();
+		List<DataMap> rtnMap = brandService.BrandList(rtMap);
+		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
-		
+		mav.addObject("brandList", rtnMap);
+		mav.addObject("mBrandCd", mBrandCd);
 		mav.setViewName("proposal/proposalform2");
 		return mav;
 	}
@@ -159,6 +167,18 @@ public class ProposalController {
 
 		List<DataMap> teamList = vendorService.getTeamList(paramMap);
 		mav.addObject("teamList", teamList);
+		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		
+		List<DataMap> rtnProPosalMap = proposalService.getProPosalList(paramMap);
+		
+		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		
+		mav.addObject("deptList", rtnMngMap);
+		
+		mav.addObject("ProPosalList", rtnProPosalMap);
 		mav.setViewName("proposal/proposalListView");
 		
 		
@@ -166,7 +186,7 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value = "/proPosalListSearch")
-	public ModelAndView proPosalListSearch(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalListSearch(Locale locale, Model model , HttpServletRequest req, RequestMap param) throws DrinkException {
 		
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
@@ -178,11 +198,15 @@ public class ProposalController {
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
+		param.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		param.put("emp_no", loginSession.getEmp_no());
+		param.put("deptno", loginSession.getDept_no());
 		
+		logger.debug("param==" + param.toString());	
 		
-		RequestMap map = new RequestMap();
+		List<DataMap> rtnProPosalMap = proposalService.getProPosalList(param);
 		
-		
+		mav.addObject("ProPosalList", rtnProPosalMap);
 		mav.setViewName("nobody/proposal/proposalListSearch");
 		
 		

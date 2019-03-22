@@ -123,12 +123,36 @@
 				ORDER BY B.EMP_NO
 	       	]]>
 	   	 </if>
-   	 <if test="gubun != 'new'">
-   	 	SELECT  B.EMP_NO, B.EMP_NM
-		FROM  T_EMP_M B
-		WHERE B.DEPT_NO=  #{deptno}
-		ORDER BY B.EMP_NO
-   	 </if>
+	   	 
+	   	 <if test="gubun != 'new' and gubun != 'search'">
+	   	 	SELECT  B.EMP_NO, B.EMP_NM
+			FROM  T_EMP_M B
+			WHERE B.DEPT_NO=  #{deptno}
+			ORDER BY B.EMP_NO
+	   	 </if>
+	   	 
+	   	 <if test="gubun == 'search'">
+	   	 	SELECT  B.EMP_NO, B.EMP_NM
+			FROM  T_EMP_M B
+			WHERE 1=1
+			<if test="emp_grd_cd == '0004'">
+			<![CDATA[
+				AND B.EMP_NO =#{emp_no}
+				]]> 
+			</if>
+			<if test="emp_grd_cd == '0003'">
+				<![CDATA[
+				    AND B.DEPT_NO=  #{deptno}
+				]]> 
+			</if>
+			<if test="emp_grd_cd == '0002'">
+				<![CDATA[
+				    AND B.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND EMP_DEPT_REL_GBN_CD ='0002')
+				]]> 			    
+			</if>
+			AND B.DEPT_NO=  #{deptno}
+			ORDER BY B.EMP_NO
+	   	 </if>
     	
     </select>
     

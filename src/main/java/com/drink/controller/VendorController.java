@@ -179,21 +179,26 @@ public class VendorController {
 	}
 	
 	@RequestMapping(value = "/Dept_EmpList")
-	public ModelAndView DeptEmpList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+	public ModelAndView DeptEmpList(Locale locale, Model model, RequestMap rtMap, HttpServletRequest req) throws DrinkException {
 		
 		try{
-		ModelAndView mav = new ModelAndView();
-		logger.debug("rtMap 1:: " + rtMap + "/"+rtMap.getString("gubun"));
-		if(rtMap.getString("gubun").equals("")) {
-			rtMap.put("gubun", "new");
-		}
-		logger.debug("gubun=" + rtMap.getString("gubun"));
-		List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
+			SessionDto loginSession = sessionUtils.getLoginSession(req);
+			ModelAndView mav = new ModelAndView();
+			logger.debug("rtMap 1:: " + rtMap + "/" + rtMap.getString("gubun"));
+			if (rtMap.getString("gubun").equals("")) {
+				rtMap.put("gubun", "new");
+			}
+			logger.debug("gubun=" + rtMap.getString("gubun"));
 
-		mav.addObject("EmpList", rtnMap);
-		mav.addObject("emp_no", rtMap.get("empno"));
-		mav.setViewName("nobody/vendor/vendorTeamList");
-		return mav;
+			rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+			rtMap.put("emp_no", loginSession.getEmp_no());
+
+			List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
+
+			mav.addObject("EmpList", rtnMap);
+			mav.addObject("emp_no", rtMap.get("empno"));
+			mav.setViewName("nobody/vendor/vendorTeamList");
+			return mav;
 		}catch (Exception e) {
 			logger.debug("err :: " + e);
 			throw new DrinkException(new String[]{"nobody/common/error","제품 검색중 에러가 발생 하였습니다."});

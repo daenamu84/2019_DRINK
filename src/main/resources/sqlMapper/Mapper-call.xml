@@ -40,7 +40,7 @@
 		</if>
 		<if test="empno != null and empno != ''">
 			<![CDATA[
-				AND B.EMP_NO =  #{"empno != null"}
+				AND B.EMP_NO =  #{empno}
 			]]> 
 		</if>
 		<if test="scall_gbn_nm != null and scall_gbn_nm !='ALL'">

@@ -26,6 +26,10 @@
 	
 	$(document).ready(function(){
 		
+		$("#productInsertLayer").click(function(){
+			$("#popLayer").modal("show");
+		});
+		
 		$("#cntUpdate").click(function(){
 			 var productCnt = $("#productCnt").val();
 			 var supplyCnt = $("#supplyCnt").val();
@@ -224,22 +228,28 @@
 					<input class="btn btn-primary" type="button" id="cntUpdate" value="변경">
 			</div>
 		</div>
-		<div class="row" style="padding-top:10px; overflow-x:auto;">
+		<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
 			<div class="title"> 제안제품</div> 
 			<table class="table">
 			  <thead>
 			    <tr>
-			      <th scope="col">제품명</th>
-			      <th scope="col">출고수량</th>
-			      <th scope="col">출고단가</th>
-			      <th scope="col">할인률</th>
-			      <th scope="col">최종출고금액</th>
+			      <th scope="col" width="30%">제품명</th>
+			      <th scope="col" width="20%">출고수량</th>
+			      <th scope="col" width="20%">출고단가</th>
+			      <th scope="col" width="20%">할인률</th>
+			      <th scope="col" width="10%">최종출고금액</th>
 			    </tr>
 			  </thead>
 			  <tbody id="view1">
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
-			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		<td>
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			</span>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
@@ -247,8 +257,10 @@
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
-			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
@@ -256,8 +268,10 @@
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
-			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
@@ -265,8 +279,10 @@
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
-			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
@@ -274,8 +290,10 @@
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
 			  	<tr>
-			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
-			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		<td>
+			  			<input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
@@ -285,8 +303,8 @@
 			  </tbody>
 			</table>
 		</div>
-		<div class="row" style="padding-top:10px; overflow-x:auto;">
-			<div class="title"> 지원품목</div> 
+		<div class="row" style="padding-top:10px; overflow-x:auto;width:90%;text-align: center; margin: 0 auto;">
+			<div class="title"> 지원품목2</div> 
 			<table class="table">
 			  <thead>
 			    <tr>
@@ -298,6 +316,42 @@
 			    </tr>
 			  </thead>
 			  <tbody id="view2">
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
+			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
+			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
+			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
+			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
+			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
+			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
+			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
+			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
+			  	</tr>
 			  	<tr>
 			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
 			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
@@ -320,6 +374,43 @@
 			</div>
 		</div>
 	</div>
+<!-- modal start  -->
+	<div id="popLayer" class="modal fade" role="dialog">
+		<div class="modal-dialog" style="max-width:640px">
+			>
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색</h5>
+					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></a>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="padding: 5px 0px;">
+							<div class="col-sm-3">브랜드</div>
+							<div class="col-sm-3">
+								<select class="custom-select" id="iBrandId">
+									<c:forEach var="i" items="${mBrandCd}" varStatus="status">
+										<option value="${i.BRAND_ID}">${i.BRAND_NM}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="col-sm-3">서브 브랜드</div>
+							<div class="col-sm-3">
+								<select class="custom-select" id="iSubBrandId">
+								</select>
+							</div>
+						</div>
 
-	
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-secondary float-right" type="button"
+						data-dismiss="modal" value="Close">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal  end  -->	
 </div>

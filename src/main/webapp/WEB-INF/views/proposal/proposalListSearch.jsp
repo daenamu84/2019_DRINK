@@ -6,14 +6,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
+<c:forEach items="${ProPosalList}" var="i" varStatus="status">
 	<tr>
-		<td>ID</td> 
-		<td>team</td> 
-		<td>name</td> 
-		<td>date</td> 
-		<td>proposalNm</td> 
-		<td>vendorNm</td> 
-		<td>proposalTarget</td> 
-		<td>activity</td> 
-		<td>status</td> 
+		<td>${i.PRPS_ID}</td>
+		<td>${i.TEAMNM}</td>
+		<td>${i.EMP_NM}</td>
+		<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
+		<td>${i.PRPS_NM}</td>
+		<td>${i.VD_NM}</td>
+		<td>${i.PRPS_PURPOSE_CD_NM}</td>
+		<td>${i.ACT_PLAN_CD_NM}</td>
+		<td>${i.PRPS_STUS_CD_NM}</td>
 	</tr>
+</c:forEach>

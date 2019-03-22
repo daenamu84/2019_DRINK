@@ -6,32 +6,85 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
+<link type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
-var ajaxFlag = false;
+
+	$(document).on("click","i[name='dateRangeIcon']",function() {
+	    $(this).parent().find("._pDateRange").click();
+	});
+$(function(){
+
+	//  var source = ['난누군가','또여긴어딘가','누가날불러?'];
+    // 자동으로 /ajax/auato 주소로 term 이란 파라미터가 전송된다.
+    // 응답은 [{label:~~~,value:~~~},{label:~~~,value:~~~}] 형태가 된다.
+<%--    $('#term').autocomplete({"source":"<%=cp%>/ajax/auto"}); --%>
+	    $('.temp').autocomplete({
+	    	"source":function(request,response){
+	    		console.log(request);
+	           	$.getJSON("/vendorAuto",{"term":request.term},
+	                function(result) {
+	                	return response($.map(result, function(item){
+	                    	var l = item.label.replace(request.term, request.term);
+	                        return {label:l, code:item.value, value:item.code};
+	                                  //return {label:l, value:item.label};
+					}));
+	          	});
+	    },
+	    select: function(event, ui) {
+            console.log(ui.item);
+            var id_check = $(this).attr("id");
+            console.log(id_check);
+            //$("#outlet_nm1").val(ui.item.label);
+            $("#outlet_no").val(ui.item.code);
+        }},
+	  
+	    $('.temp')[0]);
+	});
+	var ajaxFlag = false;
 
 	$(function() {
 		dataRangeOptions.locale.format="YYYYMMDD";
 		dataRangeOptions.singleDatePicker =  true;
-		dataRangeOptions.autoUpdateInput = true;
+		dataRangeOptions.autoUpdateInput = false;
 			
 		$("._pDateRange").daterangepicker(dataRangeOptions);
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
 			$(this).val(picker.endDate.format('YYYYMMDD'));
 		});
 		
-		$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
-		$('#_pStaDt').data('daterangepicker').setEndDate(moment().add(-30,'days').format("YYYYMMDD"));
+		
+		
+		
 	});		
 
 	$(document).ready(function(){
 		$("#proposalSearch").click(function(){
+			
+			var outlet_no = $("#outlet_no").val();
+			var deptno = $("#deptno option:selected").val();
+			var empno = $("#empno").val();
+			var temp = $("#empno option:selected").val();
+			
+			 if(typeof temp == "undefined"){
+				 temp = "";
+			 } 
+			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val();
+			var act_plan_cd = $("#act_plan_cd option:selected").val();
+			var prsp_status = $("#prsp_status option:selected").val();
+			 
+			var prps_str_dt = $("#prps_str_dt").val();
+			var prps_end_dt = $("#prps_end_dt").val();
+			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/proPosalListSearch",      
+			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status,     
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
@@ -43,7 +96,48 @@ var ajaxFlag = false;
 			    }  
 			});
 		});
+		
+		$("#proposalInsert").click(function(){
+			location.href="/proPosalForm";
+		});
 	});
+	
+	function getTeamList() {
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var deptno = "";
+		var gubun = "search";
+		
+		deptno = $("#deptno option:selected").val();
+		
+		$.ajax({
+			type : "POST",
+			url : "/Dept_EmpList",
+			data : {
+				"deptno" : deptno,
+				"gubun" : gubun,
+				"empno" : '${data.EMP_NO}'
+			},
+			dataType : "html",
+			traditional : true,
+			success : function(args) {
+				$("#empList").empty();
+				$("#empList").html(args);
+				ajaxFlag = false;
+			},
+			error : function(xhr, status, e) {
+				if (xhr.status == 403) {
+					alert("로그인이 필요한 메뉴 입니다.");
+					location.replace("/logIn");
+				} else {
+					alert("처리중 에러가 발생 하였습니다.");
+					location.reload();
+				}
+				ajaxFlag = false;
+			}
+		});
+	}
 	
 </script>
 
@@ -57,25 +151,27 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-2"><span class="align-middle">거래처명</span></div>
 						<div class="col-12 col-sm-2">
 							<input type="text" class="form-control temp" name="outlet_nm" id="outlet_nm">
+							<input type="hidden" class="form-control" name="outlet_no" id="outlet_no">
 						</div>
-						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">팀222</span></div>
 						<div class="col-12 col-sm-2">
-							<select name="dept_no" class="form-control" id="dept_no">
+							<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
 								<option value="ALL">전체</option>
-								<c:forEach items="${teamList}" var="a">
+								<c:forEach items="${deptList}" var="a">
 									<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
 								</c:forEach>
 							</select>
 						</div>
 						<div class="col-12 col-sm-2"><span class="align-middle">담당자</span></div>
-						<div class="col-12 col-sm-2">
-							<input type="text" class="form-control" name="emp_nm" id="emp_nm">
+						<div class="col-12 col-sm-2" id="empList">
+							
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2">제안목적</div>
 						<div class="col-12 col-sm-2">
 							<select class="custom-select" name="prps_purpose_cd" id="prps_purpose_cd">
+									<option value="ALL">전체</option>
 									<c:forEach items="${cd00021List}" var="a">
 									<option value="${a.CMM_CD}">${a.CMM_CD_NM} </option>
 									</c:forEach>
@@ -84,6 +180,7 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-2">엑티비티계획</div>
 						<div class="col-12 col-sm-2">
 							<select class="custom-select" name="act_plan_cd" id="act_plan_cd">
+									<option value="ALL">전체</option>
 									<c:forEach items="${cd00022List}" var="b">
 										<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
 									</c:forEach>
@@ -92,20 +189,21 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-2">제안상태</div>
 						<div class="col-12 col-sm-2">
 							<select class="custom-select" name="prsp_status" id="prsp_status">
-									<c:forEach items="${cd00020List}" var="b">
-										<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
-									</c:forEach>
-						  </select>
+								<option value="ALL">전체</option>
+								<c:forEach items="${cd00020List}" var="b">
+									<option value="${b.CMM_CD}">${b.CMM_CD_NM}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">기간</span></div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="prps_str_dt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-1">~</div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="prps_end_dt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
@@ -135,7 +233,20 @@ var ajaxFlag = false;
 			    </tr>
 			  </thead>
 			  <tbody id="proposalList">
-			  </tbody>
+					<c:forEach items="${ProPosalList}" var="i" varStatus="status">
+						<tr>
+							<td>${i.PRPS_ID}</td>
+							<td>${i.TEAMNM}</td>
+							<td>${i.EMP_NM}</td>
+							<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
+							<td>${i.PRPS_NM}</td>
+							<td>${i.VD_NM}</td>
+							<td>${i.PRPS_PURPOSE_CD_NM}</td>
+							<td>${i.ACT_PLAN_CD_NM}</td>
+							<td>${i.PRPS_STUS_CD_NM}</td>							
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
 		</div>
 	</div>

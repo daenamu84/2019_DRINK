@@ -25,7 +25,7 @@
      	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 	     	<ul class="navbar-nav mr-auto">
 	        	<li class="nav-item active">
-	            	<a class="nav-link dropdown-toggle" href="/proPosalForm" id="dropdown01"  aria-haspopup="true" aria-expanded="false">프로모션</a>
+	            	<a class="nav-link dropdown-toggle" href="/proPosalList" id="dropdown01"  aria-haspopup="true" aria-expanded="false">프로모션</a>
 	          	</li>
 	          	<li class="nav-item active dropdown">
 	            	<a class="nav-link dropdown-toggle" href="/callList" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업무조회</a>
