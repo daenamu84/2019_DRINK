@@ -26,7 +26,40 @@
 	
 	$(document).ready(function(){
 		
-		
+		$("#cntUpdate").click(function(){
+			 var productCnt = $("#productCnt").val();
+			 var supplyCnt = $("#supplyCnt").val();
+			 var productLayer = $("#view1 > tr");
+			 var supplyLayer = $("#view2 > tr");
+			 
+			 
+			 if(productLayer.length > productCnt){
+				 for(var i = 0; i< productLayer.length; i++){
+					 console.log("productCnt : " + productCnt +  "  i : " + i);
+					 if(productCnt  <=  i){
+						 console.log("remove :: " + i);
+						 $($("#view1 > tr")[productCnt]).remove()
+					 }
+				 }
+			 }else if(productLayer.length < productCnt){
+				 for(var y= 0; y< productCnt - productLayer.length ; y++){
+				 	$("#view1").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control\" name=\"prodNoSitemNm\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
+				 }
+			 }
+			 
+			 if(supplyLayer.length > supplyCnt){
+				 for(var i = 0; i< supplyLayer.length; i++){
+					 if(supplyCnt  <=  i){
+						 $($("#view2 > tr")[supplyCnt]).remove()
+					 }
+				 }
+			 }else if(supplyLayer.length < supplyCnt){
+				 for(var y= 0; y< supplyCnt - supplyLayer.length ; y++){
+					 	$("#view2").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm1\" class=\"form-control\" name=\"prodNoSitemNm1\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd1\" class=\"form-control\" name=\"prodNoSitemCd1\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt1\" class=\"form-control\" name=\"deliveryCnt1\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt1\" class=\"form-control\" name=\"deliveryAmt1\" value=\"\"></td><td><input type=\"text\" id=\"dcRate1\" class=\"form-control\" name=\"dcRate1\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt1\" class=\"form-control\" name=\"lastDeliverAmt1\" value=\"\"></td></tr>");
+					 }
+			 }
+			 
+		});
 		
 		$("#outlet_nm").click(function(){
 			$("#popLayer").modal("show");
@@ -164,7 +197,7 @@
 								<option value="2" >2</option>
 								<option value="3" >3</option>
 								<option value="4" >4</option>
-								<option value="5" >5</option>
+								<option value="5" selected>5</option>
 								<option value="6" >6</option>
 								<option value="7" >7</option>
 								<option value="8" >8</option>
@@ -179,7 +212,7 @@
 								<option value="2" >2</option>
 								<option value="3" >3</option>
 								<option value="4" >4</option>
-								<option value="5" >5</option>
+								<option value="5" selected>5</option>
 								<option value="6" >6</option>
 								<option value="7" >7</option>
 								<option value="8" >8</option>
@@ -188,7 +221,7 @@
 					</select>
 			</div>
 			<div class="col col-12 col-sm-1" style="padding: 1px 0px;">
-					<input class="btn btn-primary" type="button" id="prodInsert" value="변경">
+					<input class="btn btn-primary" type="button" id="cntUpdate" value="변경">
 			</div>
 		</div>
 		<div class="row" style="padding-top:10px; overflow-x:auto;">
@@ -205,11 +238,49 @@
 			  </thead>
 			  <tbody id="view1">
 			  	<tr>
-			  		<td><input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}"></td>
-			  		<td><input type="text" id="2" class="form-control" name="2"></td>
-			  		<td><input type="text" id="3" class="form-control" name="3"></td>
-			  		<td><input type="text" id="4" class="form-control" name="4"></td>
-			  		<td><input type="text" id="5" class="form-control" name="5"></td>
+			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td><input type="text" id="prodNoSitemNm" class="form-control" name="prodNoSitemNm" value="">
+			  				<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
 			  </tbody>
 			</table>
@@ -226,13 +297,15 @@
 			      <th scope="col">최종출고금액</th>
 			    </tr>
 			  </thead>
-			  <tbody id="view1">
+			  <tbody id="view2">
 			  	<tr>
-			  		<td><input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}"></td>
-			  		<td><input type="text" id="2" class="form-control" name="2"></td>
-			  		<td><input type="text" id="3" class="form-control" name="3"></td>
-			  		<td><input type="text" id="4" class="form-control" name="4"></td>
-			  		<td><input type="text" id="5" class="form-control" name="5"></td>
+			  		<td><input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
+			  				<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+			  		</td>
+			  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value=""></td>
+			  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value=""></td>
+			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
 			  </tbody>
 			</table>
