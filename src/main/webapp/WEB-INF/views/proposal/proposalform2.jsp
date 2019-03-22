@@ -155,7 +155,7 @@
 	
 <div class="">
 	<div class="container-fluid">
-		<div class="row" ">			
+		<div class="row">			
 			<div class="title col col-12  col-sm-5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 제품/지원목록 등록</div> 
 			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">제안제품수</label>
 			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
@@ -206,13 +206,45 @@
 			  <tbody id="view1">
 			  	<tr>
 			  		<td><input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}"></td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td><input type="text" id="2" class="form-control" name="2"></td>
+			  		<td><input type="text" id="3" class="form-control" name="3"></td>
+			  		<td><input type="text" id="4" class="form-control" name="4"></td>
+			  		<td><input type="text" id="5" class="form-control" name="5"></td>
 			  	</tr>
 			  </tbody>
 			</table>
+		</div>
+		<div class="row" style="padding-top:10px; overflow-x:auto;">
+			<div class="title"> 지원품목</div> 
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">지원품목명</th>
+			      <th scope="col">출고수량</th>
+			      <th scope="col">출고단가</th>
+			      <th scope="col">할인률</th>
+			      <th scope="col">최종출고금액</th>
+			    </tr>
+			  </thead>
+			  <tbody id="view1">
+			  	<tr>
+			  		<td><input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}"></td>
+			  		<td><input type="text" id="2" class="form-control" name="2"></td>
+			  		<td><input type="text" id="3" class="form-control" name="3"></td>
+			  		<td><input type="text" id="4" class="form-control" name="4"></td>
+			  		<td><input type="text" id="5" class="form-control" name="5"></td>
+			  	</tr>
+			  </tbody>
+			</table>
+		</div>
+		<div class="row" style="padding: 5px 0px;">
+			<div class="col-12 col-sm-6 text-left">
+				<input class="btn btn-light" type="button" id="" value="목록">
+				<input class="btn btn-light" type="button" id="" value="STEP01 수정">
+			</div>
+			<div class="col-12 col-sm-6 text-right">
+				<input class="btn btn-primary" type="button" id="proposalSearch" value="STEP03 등록">
+			</div>
 		</div>
 	</div>
 

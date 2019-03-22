@@ -23,7 +23,7 @@ var ajaxFlag = false;
 <div class="">
 	<div class="title"> ◈  PROPOSAL Detail</div> 
 	<div class="container-fluid">
-		<div class="row" ">			
+		<div class="row">			
 			<label class="col col-12  col-sm-3" style="padding: 1px 0px;">
 					<a class="btn btn-info text-white" style="width: 99%;" href="#defultView">PROPOSAL 기본정보</a>
 			</label>
