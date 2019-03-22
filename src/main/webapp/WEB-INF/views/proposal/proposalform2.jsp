@@ -26,12 +26,10 @@
 	
 	$(document).ready(function(){
 		
-		//검색버튼
 		$("#productInsertLayer").click(function(){
 			$("#popLayer").modal("show");
 		});
 		
-		//변경버튼 
 		$("#cntUpdate").click(function(){
 			 var productCnt = $("#productCnt").val();
 			 var supplyCnt = $("#supplyCnt").val();
@@ -67,50 +65,11 @@
 			 
 		});
 		
-		// modal - 서브 브랜드 검색 
-		$(document).on("change","#iBrandId", _.debounce( function(){
-			if(ajaxFlag)return;
-			ajaxFlag=true;
-			$("#iSubBrandId").empty();
-			$.ajax({      
-			    type:"GET",  
-			    url:"/brandSCd?BrandId="+$(this).val()+"&bsearch=proposal",      
-			    dataType:"html",
-			    traditional:true,
-			    success:function(args){   
-			    	$("#iSubBrandId").html(args);
-			        ajaxFlag=false;
-			    },   
-			    error:function(xhr, status, e){  
-			        ajaxFlag=false;
-			    }  
-			});
-		},0));
+		$("#outlet_nm").click(function(){
+			$("#popLayer").modal("show");
+		});
 		
-		// 제품 검색
-		$(document).on("change","#iSubBrandId", _.debounce( function(){
-			if(ajaxFlag)return;
-			ajaxFlag=true;
-			var iBrandId = $("#iBrandId option:selected").val() ;
-			var iSubBrandId = $("#iSubBrandId option:selected").val() ;
-			
-			
-			$.ajax({      
-			    type:"GET",  
-			    url:"/productBrandSearch?BrandId="+iBrandId+"&subBrandID="+iSubBrandId+"&bsearch=proposal",      
-			    dataType:"html",
-			    traditional:true,
-			    success:function(args){   
-			    	$("#prodcutseach").html(args);
-			        ajaxFlag=false;
-			    },   
-			    error:function(xhr, status, e){  
-			        ajaxFlag=false;
-			    }  
-			});
-		},0));
 		
-		// 저장 - 미작업
 		$("#saveWork").click(function(){			
 			if(ajaxFlag)return;
 			
@@ -220,6 +179,9 @@
 				});
 			 
 		});
+		
+		
+		
 		
 	});
 	
@@ -419,30 +381,28 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색1</h5>
+					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색</h5>
 					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span
 						aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row" style="padding: 5px 0px;">
-							<div class="col-sm-2">브랜드</div>
+							<div class="col-sm-3">브랜드</div>
 							<div class="col-sm-3">
 								<select class="custom-select" id="iBrandId">
-										<option value="">선택하세요</opption>
 									<c:forEach var="i" items="${mBrandCd}" varStatus="status">
 										<option value="${i.BRAND_ID}">${i.BRAND_NM}</option>
 									</c:forEach>
 								</select>
 							</div>
 							<div class="col-sm-3">서브 브랜드</div>
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<select class="custom-select" id="iSubBrandId">
 								</select>
 							</div>
 						</div>
-						<div class="row" style="padding: 5px 0px;" id="prodcutseach">
-						</div>
+
 					</div>
 				</div>
 				<div class="modal-footer">
