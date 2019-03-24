@@ -396,7 +396,7 @@ public class CallController {
 	
 	@RequestMapping(value = "/callUpdate", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public HashMap<String, Object> BrandSubInsert(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	public HashMap<String, Object> callUpdate(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());

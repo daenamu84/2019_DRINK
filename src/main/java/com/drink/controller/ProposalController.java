@@ -80,7 +80,9 @@ public class ProposalController {
 	
 	
 	@RequestMapping(value = "/proPosalForm")
-	public ModelAndView proPosalForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalForm(Locale locale, Model model , RequestMap rtMap, HttpServletRequest req) throws DrinkException {
+		
+		logger.debug("==rtMap=="+ rtMap.toString());
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -107,6 +109,12 @@ public class ProposalController {
 		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 		mav.addObject("vendorList", vendorList);
 		
+		if(rtMap.getString("gubun").equals("update")) {
+			DataMap proPosalView =  proposalService.proposalView(rtMap);
+			mav.addObject("data",proPosalView);
+		}
+		
+		mav.addObject("gubun",rtMap.get("gubun"));
 		mav.addObject("p_purposeList", p_purposeMap);
 		mav.addObject("p_activityList", p_activityMap);
 		mav.addObject("deptno", loginSession.getDept_no());
@@ -131,6 +139,14 @@ public class ProposalController {
 		List<DataMap> rtnMap = brandService.BrandList(rtMap);
 		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
+		if(rtMap.getString("gubun").equals("update")) {
+			List<DataMap> rtnProPosalDMap1 = proposalService.proposalView2_1(rtMap);
+			mav.addObject("ProPosalDList1", rtnProPosalDMap1);
+			List<DataMap> rtnProPosalDMap2 = proposalService.proposalView2_2(rtMap);
+			mav.addObject("ProPosalDList2", rtnProPosalDMap2);
+		}
+		
+		mav.addObject("gubun",rtMap.get("gubun"));
 		mav.addObject("prps_id", rtMap.getString("prps_id"));
 		mav.addObject("brandList", rtnMap);
 		mav.addObject("mBrandCd", mBrandCd);
@@ -282,7 +298,7 @@ public class ProposalController {
 	
 	@RequestMapping(value = "/proposalWork", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public HashMap<String, Object> memberWork(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	public HashMap<String, Object> proposalWork(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -335,7 +351,72 @@ public class ProposalController {
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "insert");
 		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+		//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/proposalUpdate", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalUpdate(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("vts :: " + vts.toString());
+		logger.debug("map :: " + rtMap.toString());
+		
+		vts.put("regId", loginSession.getLgin_id());
+		vts.put("dept_no", loginSession.getDept_no());
+		vts.put("emp_no", loginSession.getEmp_no());
+		vts.put("prps_stus_cd", "0001");  // 00020	제안상태코드  : 0001 작성중
+		
+		proposalService.proposalUpdate(vts);
+		
+		
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "update");
+		rtnMap.put("prps_id", rtMap.getString("prps_id"));
+		rtnMap.put("message", "수정 하였습니다.");
+		
+		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/proposalUpdate2", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalUpdate2(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" a ::: "+rtMap.get("a"));
+		logger.debug(" b ::: "+rtMap.get("b"));
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		proposalService.proposalDelete2(vts);
+		
+		proposalService.proposalWork2(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "update");
+		rtnMap.put("message", "수정 하였습니다.");
 		
 		return rtnMap;
 		//return rtnMap;

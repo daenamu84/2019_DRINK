@@ -107,8 +107,16 @@
 		
 		//목록
 		$("#proposalList").click(function(){
-			location.href="/proposalList"
+			location.href="/proPosalList";
 		});
+		
+		
+		$("#proPosalForm01_List").click(function(){
+			document.viewForm.action="/proPosalForm";
+			document.viewForm.submit();
+		});
+		
+		
 		//등록
 		$("#saveWork2").click(function(){			
 			if(ajaxFlag)return;
@@ -147,9 +155,16 @@
 				_addParam1.push({"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"deliveryCnt1":deliveryCnt1[i].value,"deliveryAmt1":deliveryAmt1[i].value,"dcRate1":dcRate1[i].value,"lastDeliverAmt1":lastDeliverAmt1[i].value});
 			}
 			
+			var url = "";
+			if (gubun == "") {
+				url = "/proposalWork2";
+			}else{
+				url = "/proposalUpdate2";
+			}
+			
 			$.ajax({      
 			    type:"POST",  
-			    url:"/proposalWork2",
+			    url:url,
 			    data: JSON.stringify({"_addPram":_addParam,"_addPram1":_addParam1,"prps_id":prps_id}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
@@ -204,31 +219,31 @@
 			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">제안제품수</label>
 			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
 					<select name="productCnt" class="form-control" id="productCnt">
-								<option value="1" >1</option>
-								<option value="2" >2</option>
-								<option value="3" >3</option>
-								<option value="4" >4</option>
-								<option value="5" selected>5</option>
-								<option value="6" >6</option>
-								<option value="7" >7</option>
-								<option value="8" >8</option>
-								<option value="9" >9</option>
-								<option value="10" >10</option>
+								<option value="1" <c:if test="${fn:length(ProPosalDList1) eq '1'}">selected </c:if>>1</option>
+								<option value="2" <c:if test="${fn:length(ProPosalDList1) eq '2'}">selected </c:if>>2</option>
+								<option value="3" <c:if test="${fn:length(ProPosalDList1) eq '3'}">selected </c:if>>3</option>
+								<option value="4" <c:if test="${fn:length(ProPosalDList1) eq '4'}">selected </c:if>>4</option>
+								<option value="5" <c:if test="${fn:length(ProPosalDList1) eq '5'}">selected </c:if><c:if test="${gubun ne 'update'}">selected </c:if>>5</option>
+								<option value="6" <c:if test="${fn:length(ProPosalDList1) eq '6'}">selected </c:if>>6</option>
+								<option value="7" <c:if test="${fn:length(ProPosalDList1) eq '7'}">selected </c:if>>7</option>
+								<option value="8" <c:if test="${fn:length(ProPosalDList1) eq '8'}">selected </c:if>>8</option>
+								<option value="9" <c:if test="${fn:length(ProPosalDList1) eq '9'}">selected </c:if>>9</option>
+								<option value="10" <c:if test="${fn:length(ProPosalDList1) eq '10'}">selected </c:if>>10</option>
 					</select>
 			</div>
 			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">지원품목수</label>
 			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
 					<select name="supplyCnt" class="form-control" id="supplyCnt">
-								<option value="1" >1</option>
-								<option value="2" >2</option>
-								<option value="3" >3</option>
-								<option value="4" >4</option>
-								<option value="5" selected>5</option>
-								<option value="6" >6</option>
-								<option value="7" >7</option>
-								<option value="8" >8</option>
-								<option value="9" >9</option>
-								<option value="10" >10</option>
+								<option value="1" <c:if test="${fn:length(ProPosalDList2) eq '1'}">selected </c:if>>1</option>
+								<option value="2" <c:if test="${fn:length(ProPosalDList2) eq '2'}">selected </c:if>>2</option>
+								<option value="3" <c:if test="${fn:length(ProPosalDList2) eq '3'}">selected </c:if>>3</option>
+								<option value="4" <c:if test="${fn:length(ProPosalDList2) eq '4'}">selected </c:if>>4</option>
+								<option value="5" <c:if test="${fn:length(ProPosalDList2) eq '5'}">selected </c:if>><c:if test="${gubun ne 'update'}">selected </c:if>5</option>
+								<option value="6" <c:if test="${fn:length(ProPosalDList2) eq '6'}">selected </c:if>>6</option>
+								<option value="7" <c:if test="${fn:length(ProPosalDList2) eq '7'}">selected </c:if>>7</option>
+								<option value="8" <c:if test="${fn:length(ProPosalDList2) eq '8'}">selected </c:if>>8</option>
+								<option value="9" <c:if test="${fn:length(ProPosalDList2) eq '9'}">selected </c:if>>9</option>
+								<option value="10" <c:if test="${fn:length(ProPosalDList2) eq '10'}">selected </c:if>>10</option>
 					</select>
 			</div>
 			<div class="col col-12 col-sm-1" style="padding: 1px 0px;">
@@ -249,6 +264,7 @@
 			    </tr>
 			  </thead>
 			  <tbody id="view1">
+			  <c:if test="${gubun ne 'update'}">
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
@@ -324,6 +340,26 @@
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
+			  </c:if>
+			  <c:if test="${gubun eq 'update' }">
+			  	<c:forEach items="${ProPosalDList1}" var="i" varStatus="status">
+					<tr>
+			  			<td>
+				  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+				  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM2}">
+				  			</span>
+				  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
+				  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+				  			</span>
+				  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="${i.PROD_NO_SITEM_NM}">
+				  		</td>
+				  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value="${i.DELIVERY_CNT}"></td>
+				  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value="${i.DELIVERY_AMT}"></td>
+				  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value="${i.DC_RATE}"></td>
+				  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value="${i.LAST_DELIVER_AMT}"></td>
+			  		</tr>
+				</c:forEach>
+			  </c:if>
 			  </tbody>
 			</table>
 		</div>
@@ -340,6 +376,7 @@
 			    </tr>
 			  </thead>
 			  <tbody id="view2">
+			  	 <c:if test="${gubun ne 'update'}">
 			  	<tr>
 			  		<td>
 			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
@@ -390,6 +427,21 @@
 			  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value=""></td>
 			  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value=""></td>
 			  	</tr>
+			  	</c:if>
+			  	 <c:if test="${gubun eq 'update' }">
+				  	<c:forEach items="${ProPosalDList2}" var="i" varStatus="status">
+						<tr>
+					  		<td>
+					  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="${i.PROD_NO_SITEM_NM}">
+					  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
+					  		</td>
+					  		<td><input type="text" id="deliveryCnt1" class="form-control" name="deliveryCnt1" value="${i.DELIVERY_CNT}"></td>
+					  		<td><input type="text" id="deliveryAmt1" class="form-control" name="deliveryAmt1" value="${i.DELIVERY_AMT}"></td>
+					  		<td><input type="text" id="dcRate1" class="form-control" name="dcRate1" value="${i.DC_RATE}"></td>
+					  		<td><input type="text" id="lastDeliverAmt1" class="form-control" name="lastDeliverAmt1" value="${i.LAST_DELIVER_AMT}"></td>
+					  	</tr>
+					</c:forEach>
+				  </c:if>
 			  </tbody>
 			</table>
 		</div>
@@ -399,6 +451,7 @@
 				<input class="btn btn-light" type="button" id="proPosalForm01_List" value="STEP01 수정">
 			</div>
 			<div class="col-12 col-sm-6 text-right">
+				<input type="hidden" name="gubun" id="gubun" value="${gubun}">
 				<input class="btn btn-primary" type="button" id="saveWork2" value="STEP03 등록">
 			</div>
 		</div>
@@ -449,3 +502,8 @@
 	</div>
 	<!-- modal  end  -->
 </div>
+
+<form name="viewForm" method="post">
+	<input type="hidden" name="prps_id"  value="${prps_id}"/> 
+	<input type="hidden" name="gubun" value="${gubun}"/>
+</form>

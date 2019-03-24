@@ -48,11 +48,24 @@
 			$("#popLayer").modal("show");
 		});
 		
+		$("#proPosalList").click(function(){
+			location.href="/proPosalList";
+		});
+		
+		
+		$("#proPosalView").click(function(){
+			document.viewForm.action="/proPosalView";
+			document.viewForm.submit();
+		});
+		
+		
+		
 		function  goStep02(prps_id){
 			$("#prps_id").val(prps_id);
 			document.insert02.action = "/proPosalForm02";
 			document.insert02.submit();
 		}
+		
 		$("#saveWork").click(function(){			
 			if(ajaxFlag)return;
 			
@@ -120,21 +133,35 @@
 			
 			var prps_cntn = $('textarea[name="prps_cntn"]').html();
 			
-			var url = "/proposalWork";
+			var gubun = $("#gubun").val();
+
+			var url = "";
+			if (gubun == "") {
+				url = "/proposalWork";
+			}else{
+				url = "/proposalUpdate";
+			}
+			
+			var prps_id = $("#prps_id").val();
 			
 			 $.ajax({      
 				    type:"POST",  
 				    url:url,      
-				    data: JSON.stringify({"prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
+				    data: JSON.stringify({"prps_id":prps_id, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
 				    dataType:"json",
 				    contentType:"application/json;charset=UTF-8",
 				    traditional:true,
 				    success:function(args){   
 				        if(args.returnCode == "0000"){
 				        	alert(args.message.replace(/<br>/gi,"\n"));
-				        	if(args.retgubun == "insert"){
+				        	if(args.retgubun == "insert" || args.retgubun == "insert"){
 				        		goStep02(args.prps_id);
 				        		//location.replace("/proPosalForm02");
+				        	}else if(args.retgubun == "update"){
+				        		goStep02(prps_id);
+				        		//document.viewForm.action="/proPosalView#defultView";
+				    			//document.viewForm.submit();
+				        		
 				        	}else{
 				        		//alert(0);
 				        		//ViewMember(emp_no,args.retgubun);	
@@ -194,7 +221,7 @@
                                  <div class="form-group row">
                                     <label for="prps_nm" class="col-md-2 col-form-label text-md-left">제안명</label>
                                     <div class="col-md-8">
-                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.PRPS_NM}">
+                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm"   value="${data.PRPS_NM}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -220,46 +247,53 @@
                                 <div class="form-group row">
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">제안기간</label>
                                     <div class="col-md-4">
-                                    	<div style="float:left"><input type="text" class="dateRange" name="prps_str_dt" id="prps_str_dt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~</div>
-                                    	<div ><input type="text" class="dateRange" name="prps_end_dt" id="prps_end_dt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></div>
+                                    	<div style="float:left"><input type="text" class="dateRange" name="prps_str_dt" id="prps_str_dt" value="${data.PRPS_STR_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~</div>
+                                    	<div ><input type="text" class="dateRange" name="prps_end_dt" id="prps_end_dt" value="${data.PRPS_END_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></div>
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">거래처</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NO}">
-                                    	<input type="hidden" id="outlet_no"  name="outlet_no"/>
-                                    	<input type="hidden" id="wholesale_vendor_no"  name="wholesale_vendor_no"/>
-                                    	<input type="hidden" id="market_divs_cd"  name="market_divs_cd"/>
-                                    	<input type="hidden" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd"/>
+                                    	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VD_NM}">
+                                    	<input type="hidden" id="outlet_no"  name="outlet_no" value="${data.OUTLET_NO}"/>
+                                    	<input type="hidden" id="wholesale_vendor_no"  name="wholesale_vendor_no" value="${data.WHOLESALE_VENDOR_NO}"/>
+                                    	<input type="hidden" id="market_divs_cd"  name="market_divs_cd" value="${data.MARKET_DIVS_CD}"/>
+                                    	<input type="hidden" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd" value="${data.VENDOR_SGMT_DIVS_CD}"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">예산금액</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="budg_amt" class="form-control" name="budg_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.BUDG_AMT}">
+                                    	<input type="text" id="budg_amt" class="form-control" name="budg_amt"   value="${data.BUDG_AMT}">
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">제안금액</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="base_prps_amt" class="form-control" name="base_prps_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.BASE_PRPS_AMT}">
+                                    	<input type="text" id="base_prps_amt" class="form-control" name="base_prps_amt"  value="${data.BASE_PRPS_AMT}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">최종금액</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="last_prps_amt" class="form-control" name="last_prps_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.LAST_PRPS_AMT}">
+                                    	<input type="text" id="last_prps_amt" class="form-control" name="last_prps_amt"   value="${data.LAST_PRPS_AMT}">
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">CASERATE</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="caserate_amt" class="form-control" name="caserate_amt" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.CASERATE_AMT}">
+                                    	<input type="text" id="caserate_amt" class="form-control" name="caserate_amt"   value="${data.CASERATE_AMT}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                    	<textarea name="prps_cntn" class="summernote"></textarea>
+                                    	<textarea name="prps_cntn" class="summernote">${data.PRPS_CNTN}</textarea>
                                     </div>
                                 </div>
-                                
+                                <div class="text-md-left">
+										<c:if test="${gubun ne 'update'}">
+										<input class="btn btn-dark" type="button" value="목록" id="proPosalList">
+										</c:if>
+										<c:if test="${gubun eq 'update' }">
+										<input class="btn btn-dark" type="button" value="목록" id="proPosalView" >
+										</c:if>
+                                </div>
 								<div class="text-md-right">
-										<input type="hidden" name="gubun" value="${gubun}">
+										<input type="hidden" name="gubun" id="gubun" value="${gubun}">
 										<input class="btn btn-dark" type="button" value="STEP02 등록" id="saveWork">
                                 </div>
 								</form>
@@ -337,5 +371,11 @@ $(function() {
 </script>
 
 <form name="insert02" method="post">
-	<input type="text" name="prps_id" id="prps_id"/>
+	<input type="hidden" name="prps_id" id="prps_id" value="${data.PRPS_ID}"/>
+	<input type="hidden" name="gubun" value="${gubun}"/>
+</form>
+
+<form name="viewForm" method="post">
+	<input type="hidden" name="prps_id"  value="${data.PRPS_ID}"/> 
+	<input type="hidden" name="gubun" value="${gubun}"/>
 </form>

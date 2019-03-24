@@ -6,7 +6,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 
 <script>
 var ajaxFlag = false;
@@ -19,8 +20,25 @@ var ajaxFlag = false;
 			$( 'html, body' ).animate( { scrollTop : 0 }, 400 );
 			
 		});
-	
+		
+		$('.summernote').summernote({
+			height: 400,
+			toolbar: []
+			
+		});
+		$('.summernote').summernote('disable');
 	});
+	
+	function viewStep(prps_id, step, gubun){
+		document.viewForm.prps_id.value=prps_id;
+		document.viewForm.gubun.value=gubun;
+		if(step=='01'){
+			document.viewForm.action="/proPosalForm";
+		}else if(step=='02'){
+			document.viewForm.action="/proPosalForm02";	
+		}
+		document.viewForm.submit();
+	}
 	
 </script>
 
@@ -75,9 +93,9 @@ var ajaxFlag = false;
 									class="col-md-2 col-form-label text-md-left">제안기간</label>
 								<div class="col-md-4">
 									<input type="text" class="form-control" name="prps_str_dt"
-										value="${data.PRPS_STR_DT}" readonly />~ <input type="text"
+										value="${data.PRPS_STR_DT1}" readonly />~ <input type="text"
 										class="form-control" name="prps_end_dt"
-										value="${data.PRPS_END_DT}" readonly />
+										value="${data.PRPS_END_DT1}" readonly />
 								</div>
 								<label for="act_plan_cd"
 									class="col-md-2 col-form-label text-md-left">거래처</label>
@@ -117,13 +135,17 @@ var ajaxFlag = false;
 							<div class="form-group row">
 							<label for="act_plan_cd"
 									class="col-md-2 col-form-label text-md-left">제안내역</label>
-								<div class="col-md-12"><c:out value="${data.PRPS_CNTN}" escapeXml="false" /></div>
+								<div class="col-md-12">
+								<textarea name="prps_cntn" class="summernote">${data.PRPS_CNTN}</textarea>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="float-right">
-					<button type="button" class="btn btn-secondary btn-sm ">수정</button>
+					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
+					<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','01','update')"/>
+					</c:if>
 					<button type="button" name="goToTop" class="btn btn-secondary btn-sm">TOP</button>
 				</div>
 			</div>
@@ -158,7 +180,9 @@ var ajaxFlag = false;
 					</div>
 				</div>
 				<div class="float-right">
-				<button type="button" class="btn btn-secondary btn-sm ">수정</button>
+				<c:if test="${'0001' eq data.PRPS_STUS_CD}">
+					<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','02','update')"/>
+					</c:if>
 				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
 				</div>		
 			</div>
@@ -185,6 +209,9 @@ var ajaxFlag = false;
 			</div>
 		</div>
 	</div>
-
-	
 </div>
+
+<form name="viewForm" method="post">
+	<input type="hidden" name="prps_id"/>
+	<input type="hidden" name="gubun"/> 
+</form>

@@ -65,6 +65,24 @@ public class ProposalService {
 		return param;
 	}
 	
+	public List proposalView2_1(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map==="+ map.toString());
+		param =  gdi.selectList("Proposal.ProPosalProdD_DView2_1",map.getMap());
+		
+		return param;
+	}
+	
+	public List proposalView2_2(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map==="+ map.toString());
+		param =  gdi.selectList("Proposal.ProPosalProdD_DView2_2",map.getMap());
+		
+		return param;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public DataMap proposalWork(Map<String, Object> map) throws DrinkException{
 		DataMap param = new DataMap();
@@ -76,6 +94,16 @@ public class ProposalService {
 		return param;
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void proposalUpdate(Map<String, Object> map) throws DrinkException{
+		
+		int rtCnt = gdi.update("Proposal.masterUpdate", map);
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+		}
+			
+	}
+	
 	public List getProPosal03List(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
@@ -85,6 +113,16 @@ public class ProposalService {
 		return param;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void  proposalDelete2 ( Map<String, Object> map) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		List<DataMap> param = new ArrayList<>();
+		
+		String prps_id = (String) map.get("prps_id");
+		gdi.update("Proposal.subDelete",map);
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void proposalWork2 ( Map<String, Object> map) throws DrinkException{
 		
