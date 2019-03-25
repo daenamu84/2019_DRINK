@@ -273,7 +273,7 @@
     		INSERT INTO T_PROPOSAL_PROD_MON_D
 			(PRPS_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, DELIVERY_MON, PLAN_DELIVERY_CNT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
 			VALUES 
-			(#{prpsId}, #{prodSitemDivsCd}, #{prodNoSitemNm}, #{deliDate}, #{planCnt}, now(), #{login_id}, now(), #{Plogin_id});
+			(#{prpsId}, #{prodSitemDivsCd}, #{prodNoSitemNm}, #{deliDate}, #{planCnt}, now(), #{login_id}, now(), #{login_id})
     	]]>
     </update>
     
@@ -284,7 +284,7 @@
 			WHERE PRPS_ID = #{prpsId}
 			AND PROD_SITEM_DIVS_CD = #{prodSitemDivsCd}
 			AND PROD_NO_SITEM_NM = #{prodNoSitemNm}
-			AND DELIVERY_MON = #{deliDate};
+			AND DELIVERY_MON = #{deliDate}
     	]]>
     </select>
     
