@@ -213,7 +213,7 @@
 				D.PROD_SITEM_DIVS_CD, 
 				D.PROD_NO_SITEM_NM, 
 				D.DELIVERY_CNT,
-				B.PLAN_DELIVERY_CNT,
+				0 PLAN_DELIVERY_CNT,
 				(SELECT B.BRAND_NM
 								FROM T_PROD_M P, T_BRAND_M B, T_SUB_BRAND_M SB
 								WHERE P.BRAND_ID = B.BRAND_ID
@@ -237,10 +237,7 @@
 		        AND P.PROD_NO = D.PROD_NO_SITEM_NM
 		        LIMIT 1) PROD_ML_NM,
 				TIMESTAMPDIFF(month, DATE_FORMAT(M.PRPS_STR_DT, '%Y-%m-01') , DATE_FORMAT(M.PRPS_END_DT, '%Y-%m-01'))  AS monthCnt
-			FROM T_PROPOSAL_M M, T_PROPOSAL_PROD_D D LEFT JOIN T_PROPOSAL_PROD_MON_D B
-			ON D.PRPS_ID = B.PRPS_ID
-			AND D.PROD_SITEM_DIVS_CD = B.PROD_SITEM_DIVS_CD
-			AND D.PROD_NO_SITEM_NM = B.PROD_NO_SITEM_NM
+			FROM T_PROPOSAL_M M, T_PROPOSAL_PROD_D D 
 			WHERE M.PRPS_ID = ${prps_id}
 			AND M.PRPS_ID = D.PRPS_ID
        	]]>
@@ -265,6 +262,30 @@
     	]]>
     </update>
     
+    <update id="proposalWork3Delete">
+    	<![CDATA[
+    		DELETE FROM  T_PROPOSAL_PROD_MON_D
+			WHERE PRPS_ID =  #{prpsId}
+    	]]>
+    </update>
+    <update id="proposalWork3Insert">
+    	<![CDATA[
+    		INSERT INTO T_PROPOSAL_PROD_MON_D
+			(PRPS_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, DELIVERY_MON, PLAN_DELIVERY_CNT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES 
+			(#{prpsId}, #{prodSitemDivsCd}, #{prodNoSitemNm}, #{deliDate}, #{planCnt}, now(), #{login_id}, now(), #{Plogin_id});
+    	]]>
+    </update>
     
+    <select id="proPosalMonSearch" resultType="DataMap">
+    	<![CDATA[
+			SELECT PLAN_DELIVERY_CNT
+			FROM T_PROPOSAL_PROD_MON_D
+			WHERE PRPS_ID = #{prpsId}
+			AND PROD_SITEM_DIVS_CD = #{prodSitemDivsCd}
+			AND PROD_NO_SITEM_NM = #{prodNoSitemNm}
+			AND DELIVERY_MON = #{deliDate};
+    	]]>
+    </select>
     
 </mapper>

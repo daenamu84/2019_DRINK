@@ -177,10 +177,18 @@ public class ProposalController {
 			for(int i=0; i<listStep03.size(); i++){
 				DataMap dm = listStep03.get(i);
 				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
-				List<String> dateList = new ArrayList<>();
+				List<Object> dateList = new ArrayList<>();
 				for(int x=0; x<=dm.getInt("monthCnt");x++){
 					cal.add(Calendar.MONTH, x);
-					dateList.add(sdf.format(cal.getTime()));
+					DataMap paramDm = new DataMap();
+					paramDm.put("prpsId", dm.getString("PRPS_ID"));
+					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+					paramDm.put("deliDate", sdf.format(cal.getTime()));
+					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					dtList.put("deliDate", sdf.format(cal.getTime()));
+					dateList.add(dtList);
+					
 				}
 				dm.put("dateList", dateList);
 			}
@@ -422,4 +430,33 @@ public class ProposalController {
 		//return rtnMap;
 	}
 	
+	
+	@RequestMapping(value = "/proposalWork3", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalWork3(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		proposalService.proposalWork3(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "insert");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+		//return rtnMap;
+	}
 }

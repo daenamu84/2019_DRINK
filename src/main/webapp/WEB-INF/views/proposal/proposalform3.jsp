@@ -20,21 +20,74 @@
 		});
 		
 		$("#setp03Insert").click(function(){
-			
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
 			
 			var prpsdId = $("input[name='prpsdId']");
+			var _addParam = [];
 			
 			for(var i=0; i<prpsdId.length; i++){
 				var idx = prpsdId[i];
 				var planCntObj = $("input[name='planCnt'][data-prpsdid='"+idx.value+"']");
+				var tCnt = 0;
+				var sumCnt = 0;
 				for(var j = 0; j<planCntObj.length; j++){
 					var planIdx = planCntObj[j];
-					console.log("palnIdx :: " + planIdx);
-					console.log("palnCnt :: " + planIdx.value);
-					console.log("palnCnt deliveryCnt :: " + $(planIdx).data("deliverycnt"));
+					if(!Number(planIdx.value) ){
+						alert("숫자만 입력 가능 합니다.");
+						ajaxFlag=false;
+						return;
+					}
+					if(Number(planIdx.value) < 1){
+						alert("출고계획수량은 0이상 입력 해야 합니다.");
+						ajaxFlag=false;
+						return;
+					}
+					tCnt = $(planIdx).data("deliverycnt");
+					sumCnt = Number(sumCnt) + Number(planIdx.value);
+					_addParam.push({"prpsId":$("input[name='prpsId']")[i].value,"prodSitemDivsCd":$("input[name='prodSitemDivsCd']")[i].value,"prodNoSitemNm":$("input[name='prodNoSitemNm']")[i].value,"deliDate":$("input[name='deliDate']")[j].value,"planCnt":planIdx.value});
 				}
-				
+				if(tCnt !=0 && sumCnt != 0 &&  sumCnt != tCnt){
+					alert("출고계획수량은 제안수량과 동일해야 합니다.");
+					ajaxFlag=false;
+					return;
+				}
+				if(tCnt ==0 && sumCnt == 0 ){
+					alert("데이터에 에러가 발생 하였습니다.");
+					ajaxFlag=false;
+					return;
+				}
 			}
+
+			$.ajax({      
+			    type:"POST",  
+			    url:"/proposalWork3",
+			    data: JSON.stringify({"_addPram":_addParam}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			        if(args.returnCode == "0000"){
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.replace("/proPosalList")
+			        }else{
+			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	location.replace("/proPosalList")
+			        }
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        if(xhr.status == 403){
+			        	alert("로그인이 필요한 메뉴 입니다.");
+			        	location.replace("/logIn");
+			        }else{
+			        	alert("처리중 에러가 발생 하였습니다.");
+			        	location.reload();
+			        }
+			        ajaxFlag=false;
+			    }   
+			});
 			
 			
 		});
@@ -83,12 +136,12 @@
 				  		</td>
 				  		<td class="border">
 				  			<c:forEach items="${i.dateList}" var="d">
-				  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d}" readonly>
+				  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d.deliDate}" readonly>
 				  			</c:forEach>
 				  		</td>
 				  		<td class="border">
 				  			<c:forEach items="${i.dateList}" var="d">
-				  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="">
+				  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" value="${d.PLAN_DELIVERY_CNT}">
 				  			</c:forEach>
 				  		</td>
 				  	</tr>
