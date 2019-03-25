@@ -27,6 +27,10 @@ var ajaxFlag = false;
 			
 		});
 		$('.summernote').summernote('disable');
+		
+		$("#proPosalList").click(function(){
+			location.href="/proPosalList";
+		});
 	});
 	
 	function viewStep(prps_id, step, gubun){
@@ -36,6 +40,10 @@ var ajaxFlag = false;
 			document.viewForm.action="/proPosalForm";
 		}else if(step=='02'){
 			document.viewForm.action="/proPosalForm02";	
+		}else if(step=='03'){
+			document.viewForm.action="/proPosalForm03";	
+		}else if(step=='04'){
+			document.viewForm.action="/proPosalForm04";	
 		}
 		document.viewForm.submit();
 	}
@@ -68,10 +76,17 @@ var ajaxFlag = false;
 							<div class="form-group row">
 								<label for="prps_nm"
 									class="col-md-2 col-form-label text-md-left">제안명</label>
-								<div class="col-md-8">
+								<div class="col-md-4">
 									<input type="text" id="prps_nm" class="form-control"
 										name="prps_nm" value="${data.PRPS_NM}" readonly>
 								</div>
+								<label for="prps_nm"
+									class="col-md-2 col-form-label text-md-left">결제상태</label>
+								<div class="col-md-4">
+									<input type="text" id="prps_nm" class="form-control"
+										name="prps_nm" value="${data.PRPS_STUS_CD_NM}" readonly>
+								</div>
+								
 							</div>
 							<div class="form-group row">
 								<label for="prps_purpose_cd"
@@ -182,30 +197,133 @@ var ajaxFlag = false;
 				<div class="float-right">
 				<c:if test="${'0001' eq data.PRPS_STUS_CD}">
 					<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','02','update')"/>
-					</c:if>
+				</c:if>
 				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
 				</div>		
 			</div>
-			<div id="monthView" style="width:100%;padding:10px 0px;">
-				<div class="title">STEP03. PROPOSAL 제품/지원품목 출고계획 등록</div> 
-				<div class="container-fluid">
-					<div class="row">			
-					</div>
+			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
+				<div class="title"><b>STEP03. PROPOSAL 제품/지원품목 출고계획 등록</b></div> 
+				<div class="container-fluid border">
+					<div class="row" style="padding: 5px 0px;">
+						<table class="table" style="width:90%;margin:0 auto;">
+						  <thead>
+						    <tr>
+						      <th class="border text-center" scope="col" width="60%">제품명(제안수량)</th>
+						      <th class="border text-center" scope="col" width="20%">출고월</th>
+						      <th class="border text-center" scope="col" width="20%">출고계획수량</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+					  		<c:forEach items="${listStep03}" var="i" varStatus="status">
+							  	<tr>
+							  		<td class="border">
+							  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
+										    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+										</c:if>
+										<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
+										    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
+										</c:if>
+							  			<input type="hidden" id="prpsdId"name="prpsdId" value="${i.PRPSD_ID}">
+							  			<input type="hidden" id="prpsId"name="prpsId" value="${i.PRPS_ID}">
+							  			<input type="hidden" id="prodSitemDivsCd"name="prodSitemDivsCd" value="${i.PROD_SITEM_DIVS_CD}">
+							  			<input type="hidden" id="prodNoSitemNm"name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM}">
+							  			<input type="hidden" id="deliveryCnt"name="deliveryCnt" value="${i.DELIVERY_CNT}">
+							  		</td>
+							  		<td class="border">
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d.deliDate}" readonly>
+							  			</c:forEach>
+							  		</td>
+							  		<td class="border">
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" readonly value="${d.PLAN_DELIVERY_CNT}">
+							  			</c:forEach>
+							  		</td>
+							  	</tr>
+							</c:forEach>
+						  </tbody>
+						 </table>
+					</div>			
 				</div>
-				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>	
+				<div class="float-right">
+					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
+						<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','03','update')"/>
+					</c:if>
+					<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
+				</div>	
 			</div>
-			<div id="monthActualtView" style="width:100%;padding:10px 0px;">
+			<div id="monthActualtView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
 				<div class="title">PROPOSAL 제품/지원품목 ACTUAL 등록</div> 
-				<div class="container-fluid">
-					<div class="row">			
-					</div>
+				<div class="container-fluid border">
+					<div class="row" style="padding: 5px 0px;">
+						<table class="table" style="width:90%;margin:0 auto;">
+						  <thead>
+						    <tr>
+						      <th class="border text-center" scope="col" width="40%">제품명(제안수량)</th>
+						      <th class="border text-center" scope="col" width="15%">출고월</th>
+						      <th class="border text-center" scope="col" width="15%">출고계획수량</th>
+						      <th class="border text-center" scope="col" width="15%">실출고수량</th>
+						      <th class="border text-center" scope="col" width="15%">비고</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+					  		<c:forEach items="${listStep03}" var="i" varStatus="status">
+							  	<tr>
+							  		<td class="border">
+							  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
+										    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+										</c:if>
+										<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
+										    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
+										</c:if>
+							  			<input type="hidden" id="prpsdId"name="prpsdId" value="${i.PRPSD_ID}">
+							  			<input type="hidden" id="prpsId"name="prpsId" value="${i.PRPS_ID}">
+							  			<input type="hidden" id="prodSitemDivsCd"name="prodSitemDivsCd" value="${i.PROD_SITEM_DIVS_CD}">
+							  			<input type="hidden" id="prodNoSitemNm"name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM}">
+							  			<input type="hidden" id="deliveryCnt"name="deliveryCnt" value="${i.DELIVERY_CNT}">
+							  		</td>
+							  		<td class="border">
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d.deliDate}" readonly>
+							  			</c:forEach>
+							  		</td>
+							  		<td class="border">
+							  		<% int i = 0; %>
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" readonly value="${d.PLAN_DELIVERY_CNT}">
+							  				
+							  			</c:forEach>
+							  		</td>
+							  		<td class="border">
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" readonly value="${d.REAL_DELIVERY_CNT}">
+							  			</c:forEach>
+							  		</td>
+							  		<td class="border">
+							  			<c:forEach items="${i.dateList}" var="d">
+							  				<input type="text" min="0" id="planCnt" class="form-control" name="planCnt"  style="margin-bottom:3px;" readonly value="${d.REAL_DELIVERY_CNTN}">
+							  			</c:forEach>
+							  		</td>
+							  	</tr>
+							</c:forEach>
+						  </tbody>
+						 </table>
+					</div>	
 				</div>
-				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>	
+				<div class="float-right">
+					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
+					<c:if test="${'0' ne d_cnt}">
+						<input type="button" class="btn btn-secondary btn-sm" value="등록" onClick="viewStep('${data.PRPS_ID}','04','')"/>
+					</c:if>
+					</c:if>
+					<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
+				</div>	
+				
 			</div>
 		</div>
 		<div class="row" style="padding: 5px 0px;">
 			<div class="col-12 col-sm-6 text-left">
-				<input class="btn btn-light" type="button" id="" value="목록으로">
+				<input class="btn btn-light" type="button" id="proPosalList" value="목록으로">
 			</div>
 		</div>
 	</div>

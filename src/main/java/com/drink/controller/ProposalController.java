@@ -95,6 +95,11 @@ public class ProposalController {
 		RequestMap paramMap = new RequestMap();
 		
 		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00020"); // 	제안상태코드
+		List<DataMap> p_stusMap = vendorService.getCommonCode(paramMap);
+		
+		
+		paramMap.clear();
 		paramMap.put("cmm_cd_grp_id", "00021"); // 	제안목적코드
 		List<DataMap> p_purposeMap = vendorService.getCommonCode(paramMap);
 		
@@ -117,6 +122,7 @@ public class ProposalController {
 		mav.addObject("gubun",rtMap.get("gubun"));
 		mav.addObject("p_purposeList", p_purposeMap);
 		mav.addObject("p_activityList", p_activityMap);
+		mav.addObject("p_stusList", p_stusMap);
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
 		mav.setViewName("proposal/proposalform");
@@ -170,7 +176,7 @@ public class ProposalController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		rtMap.put("prps_id", "14");
+		rtMap.put("prps_id", rtMap.getString("prps_id"));
 		
 		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
 		try {
@@ -186,6 +192,9 @@ public class ProposalController {
 					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
 					paramDm.put("deliDate", sdf.format(cal.getTime()));
 					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					if(dtList ==null) {
+						dtList = new DataMap();
+					}
 					dtList.put("deliDate", sdf.format(cal.getTime()));
 					dateList.add(dtList);
 					
@@ -198,7 +207,62 @@ public class ProposalController {
 		}
 		
 		mav.addObject("listStep03", listStep03);
+		mav.addObject("prps_id", rtMap.getString("prps_id"));
+		mav.addObject("gubun",rtMap.get("gubun"));
 		mav.setViewName("proposal/proposalform3");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/proPosalForm04")
+	public ModelAndView proPosalForm04(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+
+		logger.debug("==rtMap=="+ rtMap.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		rtMap.put("prps_id", rtMap.getString("prps_id"));
+		
+		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
+		try {
+			for(int i=0; i<listStep03.size(); i++){
+				DataMap dm = listStep03.get(i);
+				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
+				List<Object> dateList = new ArrayList<>();
+				for(int x=0; x<=dm.getInt("monthCnt");x++){
+					cal.add(Calendar.MONTH, x);
+					DataMap paramDm = new DataMap();
+					paramDm.put("prpsId", dm.getString("PRPS_ID"));
+					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+					paramDm.put("deliDate", sdf.format(cal.getTime()));
+					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					if(dtList ==null) {
+						dtList = new DataMap();
+					}
+					dtList.put("deliDate", sdf.format(cal.getTime()));
+					dateList.add(dtList);
+					
+				}
+				dm.put("dateList", dateList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+		}
+		
+		mav.addObject("listStep03", listStep03);
+		mav.addObject("prps_id", rtMap.getString("prps_id"));
+		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.setViewName("proposal/proposalform4");
 		return mav;
 	}
 	
@@ -295,9 +359,48 @@ public class ProposalController {
 		DataMap proPosalView =  proposalService.proposalView(rtMap);
 		List<DataMap> rtnProPosalDMap = proposalService.proposalView2(rtMap);
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
 		
+		rtMap.put("prps_id", rtMap.getString("prps_id"));
+		int j =  1;
+		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
+		try {
+			
+			for(int i=0; i<listStep03.size(); i++){
+				DataMap dm = listStep03.get(i);
+				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
+				List<Object> dateList = new ArrayList<>();
+				
+				for(int x=0; x<=dm.getInt("monthCnt");x++){
+					cal.add(Calendar.MONTH, x);
+					DataMap paramDm = new DataMap();
+					paramDm.put("prpsId", dm.getString("PRPS_ID"));
+					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+					paramDm.put("deliDate", sdf.format(cal.getTime()));
+					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					if(dtList==null) {
+						dtList = new DataMap();
+						j = 0;
+					}
+					dtList.put("deliDate", sdf.format(cal.getTime()));
+					dateList.add(dtList);
+					
+				}
+				
+				dm.put("dateList", dateList);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+		}
+		mav.addObject("d_cnt", j);
 		mav.addObject("data",proPosalView);
 		mav.addObject("ProPosalDList", rtnProPosalDMap);
+		mav.addObject("listStep03", listStep03);
 		mav.setViewName("proposal/proposalDetailView");
 		
 		
@@ -382,7 +485,7 @@ public class ProposalController {
 		vts.put("regId", loginSession.getLgin_id());
 		vts.put("dept_no", loginSession.getDept_no());
 		vts.put("emp_no", loginSession.getEmp_no());
-		vts.put("prps_stus_cd", "0001");  // 00020	제안상태코드  : 0001 작성중
+		
 		
 		proposalService.proposalUpdate(vts);
 		
@@ -450,6 +553,63 @@ public class ProposalController {
 		logger.debug("map :: " + rtMap.toString());
 		
 		proposalService.proposalWork3(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "insert");
+		rtnMap.put("message", "저장 하였습니다.");
+		
+		return rtnMap;
+		//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/proposalUpdate3", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalUpdate3(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		proposalService.proposalWork3(vts);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "update");
+		rtnMap.put("message", "수정 하였습니다.");
+		
+		return rtnMap;
+	}
+	
+	@RequestMapping(value = "/proposalWork4", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proposalWork4(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug(" vts ::: "+vts.toString());
+		logger.debug(" vtsb ::: "+vts.toString());
+		
+		
+		vts.put("regId", loginSession.getLgin_id());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		proposalService.proposalWork4(vts);
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("returnCode", "0000");

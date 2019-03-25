@@ -76,6 +76,7 @@
 				return;
 			}
 			
+			
 			if ($("#prps_purpose_cd option:selected").val() == "") {
 				alert("제안목적을  선택 하세요");
 				ajaxFlag = false;
@@ -83,6 +84,16 @@
 			}
 			
 			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val() ;
+			
+			
+			var prps_stus_cd = "";
+			<c:if test="${loginSession.emp_grd_cd ne '0001'}">
+			prps_stus_cd = $("#prps_stus_cd").val();
+			</c:if>
+			<c:if test="${loginSession.emp_grd_cd eq '0001'}">
+			prps_stus_cd = $("#prps_stus_cd option:selected").val() ;
+			</c:if>
+			
 			
 			if ($("#act_plan_cd option:selected").val() == "") {
 				alert("액티비티계획을  선택 하세요");
@@ -147,14 +158,14 @@
 			 $.ajax({      
 				    type:"POST",  
 				    url:url,      
-				    data: JSON.stringify({"prps_id":prps_id, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
+				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
 				    dataType:"json",
 				    contentType:"application/json;charset=UTF-8",
 				    traditional:true,
 				    success:function(args){   
 				        if(args.returnCode == "0000"){
 				        	alert(args.message.replace(/<br>/gi,"\n"));
-				        	if(args.retgubun == "insert" || args.retgubun == "insert"){
+				        	if(args.retgubun == "insert"){
 				        		goStep02(args.prps_id);
 				        		//location.replace("/proPosalForm02");
 				        	}else if(args.retgubun == "update"){
@@ -219,10 +230,29 @@
 							<div class="container-fluid border" style="padding: 15px;">
 								<form name="Form"   method="post">
                                  <div class="form-group row">
-                                    <label for="prps_nm" class="col-md-2 col-form-label text-md-left">제안명</label>
-                                    <div class="col-md-8">
-                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm"   value="${data.PRPS_NM}">
-                                    </div>
+                                 	
+	                                    <label for="prps_nm" class="col-md-2 col-form-label text-md-left">제안명</label>
+	                                    <div class="col-md-4">
+	                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm"   value="${data.PRPS_NM}">
+	                                    </div>
+                                        <label for="prps_nm" class="col-md-2 col-form-label text-md-left">결제상태</label>
+	                                    <div class="col-md-4">
+										<c:if test="${loginSession.emp_grd_cd ne '0001'}">
+											<input type="hidden" id="prps_stus_cd" class="form-control" name="prps_stus_cd" value="${data.PRPS_STUS_CD}">
+											${data.PRPS_STUS_CD_NM}
+										</c:if>
+										<c:if test="${loginSession.emp_grd_cd eq '0001'}">
+											<select name="prps_stus_cd" class="form-control" id="prps_stus_cd">
+												<option value="">선택하세요</option>
+												<c:forEach items="${p_stusList}" var="a">
+													<option value="${a.CMM_CD}"
+														<c:if test="${a.CMM_CD eq data.PRPS_STUS_CD}">selected</c:if>>${a.CMM_CD_NM}
+													</option>
+												</c:forEach>
+											</select>
+										</c:if>
+									</div>
+                                	
                                 </div>
                                 <div class="form-group row">
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">제안목적</label>
@@ -294,7 +324,12 @@
                                 </div>
 								<div class="text-md-right">
 										<input type="hidden" name="gubun" id="gubun" value="${gubun}">
+										<c:if test="${gubun ne 'update'}">
 										<input class="btn btn-dark" type="button" value="STEP02 등록" id="saveWork">
+										</c:if>
+										<c:if test="${gubun eq 'update' }">
+										<input class="btn btn-dark" type="button" value="STEP01 수정" id="saveWork">
+										</c:if>
                                 </div>
 								</form>
                              </div>

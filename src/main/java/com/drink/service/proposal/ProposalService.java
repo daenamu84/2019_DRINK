@@ -168,6 +168,7 @@ public class ProposalService {
 		
 	}
 	
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void proposalWork3 ( Map<String, Object> map) throws DrinkException{
 		
@@ -186,6 +187,29 @@ public class ProposalService {
 			 svMap.put("planCnt", svMap.get("planCnt"));
 			 svMap.put("login_id", map.get("regId"));
 			 gdi.update("Proposal.proposalWork3Insert",svMap);
+		}
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void proposalWork4 ( Map<String, Object> map) throws DrinkException{
+		
+		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addPram");
+		
+		if(data.size()>0){
+			gdi.update("Proposal.proposalWork3Delete", ((Map<String, Object>)data.get(0)).get("prpsId"));
+		}
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("prpsId", svMap.get("prpsId"));
+			 svMap.put("prodSitemDivsCd", svMap.get("prodSitemDivsCd"));
+			 svMap.put("prodNoSitemNm", svMap.get("prodNoSitemNm"));
+			 svMap.put("deliDate", svMap.get("deliDate"));
+			 svMap.put("planCnt", svMap.get("planCnt"));
+			 svMap.put("real_delivery_cnt", svMap.get("real_delivery_cnt"));
+			 svMap.put("real_delivery_cntn", svMap.get("real_delivery_cntn"));
+			 svMap.put("login_id", map.get("regId"));
+			 gdi.update("Proposal.proposalWork4Insert",svMap);
 		}
 	}
 	

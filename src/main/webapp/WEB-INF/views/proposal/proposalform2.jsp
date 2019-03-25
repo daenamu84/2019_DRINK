@@ -117,6 +117,12 @@
 		});
 		
 		
+		function  goStep03(prps_id){
+			$("#prps_id").val(prps_id);
+			document.insert02.action = "/proPosalForm03";
+			document.insert02.submit();
+		}
+		
 		//등록
 		$("#saveWork2").click(function(){			
 			if(ajaxFlag)return;
@@ -155,6 +161,8 @@
 				_addParam1.push({"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"deliveryCnt1":deliveryCnt1[i].value,"deliveryAmt1":deliveryAmt1[i].value,"dcRate1":dcRate1[i].value,"lastDeliverAmt1":lastDeliverAmt1[i].value});
 			}
 			
+			var gubun = $("#gubun").val();
+			
 			var url = "";
 			if (gubun == "") {
 				url = "/proposalWork2";
@@ -172,6 +180,18 @@
 			    success:function(args){   
 			        if(args.returnCode == "0000"){
 			        	alert(args.message.replace(/<br>/gi,"\n"));
+			        	if(args.retgubun == "insert"){
+			        		goStep03(prps_id);
+			        		//location.replace("/proPosalForm02");
+			        	}else if(args.retgubun == "update"){
+			        		goStep03(prps_id);
+			        		//document.viewForm.action="/proPosalView#defultView";
+			    			//document.viewForm.submit();
+			        		
+			        	}else{
+			        		//alert(0);
+			        		//ViewMember(emp_no,args.retgubun);	
+			        	}
 			        	//location.replace("/callList");
 			        	//location.reload();
 			        }else{
@@ -238,7 +258,7 @@
 								<option value="2" <c:if test="${fn:length(ProPosalDList2) eq '2'}">selected </c:if>>2</option>
 								<option value="3" <c:if test="${fn:length(ProPosalDList2) eq '3'}">selected </c:if>>3</option>
 								<option value="4" <c:if test="${fn:length(ProPosalDList2) eq '4'}">selected </c:if>>4</option>
-								<option value="5" <c:if test="${fn:length(ProPosalDList2) eq '5'}">selected </c:if>><c:if test="${gubun ne 'update'}">selected </c:if>5</option>
+								<option value="5" <c:if test="${fn:length(ProPosalDList2) eq '5'}">selected </c:if><c:if test="${gubun ne 'update'}">selected </c:if>>5</option>
 								<option value="6" <c:if test="${fn:length(ProPosalDList2) eq '6'}">selected </c:if>>6</option>
 								<option value="7" <c:if test="${fn:length(ProPosalDList2) eq '7'}">selected </c:if>>7</option>
 								<option value="8" <c:if test="${fn:length(ProPosalDList2) eq '8'}">selected </c:if>>8</option>
@@ -268,7 +288,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
@@ -283,7 +303,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
@@ -298,7 +318,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
@@ -313,7 +333,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
@@ -328,7 +348,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
 			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
@@ -452,7 +472,13 @@
 			</div>
 			<div class="col-12 col-sm-6 text-right">
 				<input type="hidden" name="gubun" id="gubun" value="${gubun}">
-				<input class="btn btn-primary" type="button" id="saveWork2" value="STEP03 등록">
+				<c:if test="${gubun ne 'update'}">
+					<input class="btn btn-primary" type="button" id="saveWork2"	value="STEP03 등록">
+				</c:if>
+				<c:if test="${gubun eq 'update' }">
+					<input class="btn btn-primary" type="button" id="saveWork2"	value="STEP02 수정">
+				</c:if>
+
 			</div>
 		</div>
 	</div>
@@ -494,14 +520,18 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<input class="btn btn-secondary float-right" type="button"
-						data-dismiss="modal" value="Close">
+					<input class="btn btn-secondary float-right" type="button"	data-dismiss="modal" value="Close">
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- modal  end  -->
 </div>
+
+<form name="insert02" method="post">
+	<input type="hidden" name="prps_id" id="prps_id" value="${prps_id}"/>
+	<input type="hidden" name="gubun" value="${gubun}"/>
+</form>
 
 <form name="viewForm" method="post">
 	<input type="hidden" name="prps_id"  value="${prps_id}"/> 

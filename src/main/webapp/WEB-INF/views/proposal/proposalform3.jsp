@@ -19,6 +19,30 @@
 			$(this).val( $(this).val().replace( /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '' ) );
 		});
 		
+		
+		//목록
+		$("#proposalList").click(function(){
+			location.href="/proPosalList";
+		});
+		
+		
+		$("#proPosalForm01_List").click(function(){
+			document.viewForm.action="/proPosalForm";
+			document.viewForm.submit();
+		});
+		
+		$("#proPosalForm02_List").click(function(){
+			document.viewForm.action="/proPosalForm02";
+			document.viewForm.submit();
+		});
+		
+		
+		function  goStepDetail(prps_id){
+			$("#prps_id").val(prps_id);
+			document.viewForm.action = "/proPosalView#monthView";
+			document.viewForm.submit();
+		}
+		
 		$("#setp03Insert").click(function(){
 			if (ajaxFlag)
 				return;
@@ -59,10 +83,22 @@
 					return;
 				}
 			}
-
+			
+			var prps_id = $("#prps_id").val();
+			
+			var gubun = $("#gubun").val();
+			
+			var url = "";
+			if (gubun == "") {
+				url = "/proposalWork3";
+			}else{
+				url = "/proposalUpdate3";
+				alert("수정 시 기존 데이터 (출고계획/실출고 수량) 는\n삭제 됩니다.");
+			}
+			
 			$.ajax({      
 			    type:"POST",  
-			    url:"/proposalWork3",
+			    url:url,
 			    data: JSON.stringify({"_addPram":_addParam}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
@@ -70,7 +106,14 @@
 			    success:function(args){   
 			        if(args.returnCode == "0000"){
 			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.replace("/proPosalList")
+			        	if(args.retgubun == "insert"){
+			        		goStepDetail(prps_id);
+			        	}else if(args.retgubun == "update"){
+			        		goStepDetail(prps_id);
+			        	}else{
+			        		//alert(0);
+			        		
+			        	}
 			        }else{
 			        	alert(args.message.replace(/<br>/gi,"\n"));
 			        	location.replace("/proPosalList")
@@ -151,13 +194,24 @@
 		</div>
 		<div class="row" style="padding: 5px 0px;">
 			<div class="col-12 col-sm-9 text-left">
-				<input class="btn btn-light" type="button" id="" value="목록으로">
-				<input class="btn btn-light" type="button" id="" value="SETP01 수정">
-				<input class="btn btn-light" type="button" id="" value="SETP02 수정">
+				<input class="btn btn-light" type="button" id="proposalList" value="목록">
+				<input class="btn btn-light" type="button" id="proPosalForm01_List" value="STEP01 수정">
+				<input class="btn btn-light" type="button" id="proPosalForm02_List" value="STEP02 수정">
 			</div>
 			<div class="col-12 col-sm-3 text-RIGHT">
-				<input class="btn btn-light" type="button" id="setp03Insert" value="SETP03 등록">
+				<input type="hidden" name="gubun" id="gubun" value="${gubun}">
+				<c:if test="${gubun ne 'update'}">
+					<input class="btn btn-light" type="button" id="setp03Insert" value="SETP03 등록">
+				</c:if>
+				<c:if test="${gubun eq 'update' }">
+					<input class="btn btn-light" type="button" id="setp03Insert" value="SETP03 수정">
+				</c:if>
 			</div>
 		</div>
 	</div>
 </div>
+
+<form name="viewForm" method="post">
+	<input type="hidden" name="prps_id" id="prps_id"  value="${prps_id}"/> 
+	<input type="hidden" name="gubun" value="${gubun}"/>
+</form>
