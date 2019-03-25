@@ -161,7 +161,7 @@
 							<input type="text" class="form-control temp" name="outlet_nm" id="outlet_nm">
 							<input type="hidden" class="form-control" name="outlet_no" id="outlet_no">
 						</div>
-						<div class="col-12 col-sm-2"><span class="align-middle">팀222</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>
 						<div class="col-12 col-sm-2">
 							<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
 								<option value="ALL">전체</option>
