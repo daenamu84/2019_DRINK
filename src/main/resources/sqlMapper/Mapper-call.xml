@@ -160,13 +160,13 @@
     <select  id="callCalendar" resultType="DataMap">
 	    <![CDATA[
 	    	SELECT YM,WEEKNUM
-				     , MIN(CASE DW WHEN 1 THEN D END) SUN
-				     , MIN(CASE DW WHEN 2 THEN D END) MON
-				     , MIN(CASE DW WHEN 3 THEN D END) TUE
-				     , MIN(CASE DW WHEN 4 THEN D END) WED
-				     , MIN(CASE DW WHEN 5 THEN D END) THU
-				     , MIN(CASE DW WHEN 6 THEN D END) FRI
-				     , MIN(CASE DW WHEN 7 THEN D END) SAT
+				     , MIN(CASE DW WHEN 1 THEN LPAD(D,2,0) END) SUN
+				     , MIN(CASE DW WHEN 2 THEN LPAD(D,2,0) END) MON
+				     , MIN(CASE DW WHEN 3 THEN LPAD(D,2,0) END) TUE
+				     , MIN(CASE DW WHEN 4 THEN LPAD(D,2,0) END) WED
+				     , MIN(CASE DW WHEN 5 THEN LPAD(D,2,0) END) THU
+				     , MIN(CASE DW WHEN 6 THEN LPAD(D,2,0) END) FRI
+				     , MIN(CASE DW WHEN 7 THEN LPAD(D,2,0) END) SAT
 				  FROM (SELECT date_format(DT,'%Y%m') YM
 				             , Week(DT) WEEKNUM
 				             , Day(DT) D
@@ -207,5 +207,21 @@
 				 GROUP BY YM, WEEKNUM
 	    ]]> 	
     </select>
+    
+    <select  id="callCalenDay" resultType="DataMap">
+    <![CDATA[
+    	SELECT 
+		C.SCALL_NO, C.SCALL_DT, C.SCALL_GBN_NM,
+		(SELECT OUTLET_NM FROM T_VENDOR_M WHERE VENDOR_NO = C.VENDOR_NO) VENDOR_NM,
+		C.VENDOR_NO, C.SCALL_PURPOSE_CD,
+		(SELECT CMM_CD_NM FROM T_CMM_CD_M WHERE CMM_CD_GRP_ID ='00018' AND CMM_CD = C.SCALL_PURPOSE_CD) SCALL_PURPOSE_NM
+		FROM T_SALES_CALL_M C
+		WHERE C.SCALL_DT = #{day}
+		AND C.SCALL_GBN_NM = #{gbnNm}
+		AND C.EMP_NO = #{empNo}
+    ]]> 	
+    </select>
+    
+    
     
 </mapper>
