@@ -19,3 +19,13 @@
 		<td>${i.USE_YN}</td>
 	</tr>
 </c:forEach>
+<tr>
+	<td colspan="5" style="text-align: center">
+		<div>
+			<paging:paging var="skw3" currentPageNo="${paging.page}"
+				recordsPerPage="${paging.pageLine}"
+				numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+			${skw3.printBtPaging()}
+		</div>
+	</td>
+</tr>

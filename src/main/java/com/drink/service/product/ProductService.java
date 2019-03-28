@@ -63,6 +63,10 @@ public class ProductService {
 		}
 		
 		param = gdi.selectList("Product.getProductList",map.getMap());
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Brand.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+			}
 		
 		return param;
 	}

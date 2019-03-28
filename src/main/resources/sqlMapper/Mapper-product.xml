@@ -3,6 +3,9 @@
 
 <mapper namespace="Product">
     
+    <select id="selectTotalRecords" resultType="int">
+        SELECT FOUND_ROWS();
+    </select>
     
     <update id="productInsert">
     	<![CDATA[
@@ -16,7 +19,7 @@
     <select id="getProductList" resultType="DataMap">
     	<if test="bsearch == '' or bsearch == null">
     	<![CDATA[
-    		SELECT P.PROD_NO, P.BRAND_ID, B.BRAND_NM, SB.SUB_BRAND_ID, SB.SUB_BRAND_NM,
+    		SELECT SQL_CALC_FOUND_ROWS P.PROD_NO, P.BRAND_ID, B.BRAND_NM, SB.SUB_BRAND_ID, SB.SUB_BRAND_NM,
     					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00017' AND E.CMM_CD = P.PROD_ML_CD) AS PROD_ML_NM, 
     					P.PROD_ML_CD, 
     					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00015' AND E.CMM_CD = SB.LIQ_KD_CD) AS LIQ_KD_NM,
@@ -31,6 +34,11 @@
 			AND B.BRAND_ID IN
        	]]>
 			<foreach collection="brandId" item="var" open="(" close=")" separator=",">#{var}</foreach>
+			<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
 		</if>
 		<if test="bsearch != '' and bsearch != null">
 			<![CDATA[
