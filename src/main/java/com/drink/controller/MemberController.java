@@ -96,13 +96,17 @@ public class MemberController {
 		 
 		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 		paramMap.put("perPageNum", paging.getRecordsPerPage());
-		paramMap.put("Query","Member.getEmpMListCnt");
-		int totalCnt = teamService.GetTotalCnt(paramMap);
+		//paramMap.put("Query","Member.getEmpMListCnt");
+		//int totalCnt = teamService.GetTotalCnt(paramMap);
 		
 		
 		List<DataMap> rtnMpa0 = memberService.getDeptList(paramMap);
 		
+		
+		
 		List<DataMap> rtnMap = memberService.getEmpMList(paramMap);
+		
+		int totalCnt = paramMap.getInt("TotalCnt");
 		
 		paging.makePaging();
 		HashMap<String, Object> pagingMap = new HashMap<>();

@@ -30,9 +30,9 @@
     </select>
     
     <select id="getEmpMList" resultType="DataMap" parameterType="hashmap">
-    	<include refid="Common.pagingHeaderSql"/>
+    	
     	<![CDATA[
-    		SELECT 
+    		SELECT SQL_CALC_FOUND_ROWS 
 				(SELECT c.TEAMNM FROM T_DEPT_M c WHERE c.DEPT_NO = a.DEPT_NO) AS TEAMNM,
 				a.EMP_NO,a.EMP_NM,a.LOGIN_ID,a.EMP_GRD_CD, IF(a.USE_YN = 'Y', "재직자","퇴사자")USE_YN_NM, a.USE_YN
 			FROM T_EMP_M a
@@ -44,8 +44,9 @@
 			</if>
 		<![CDATA[			
 			ORDER BY a.DATA_REG_DTM desc
+			LIMIT #{pageStart}, #{perPageNum}
        	]]>
-       	<include refid="Common.pagingFooterSql"/>
+       	
     </select>
     
     <select id="duplicateIDCheck" resultType="DataMap">

@@ -87,9 +87,9 @@ public class TeamController {
 		paramMap.put("perPageNum", paging.getRecordsPerPage());
 		paramMap.put("Query","Team.getDeptListCnt");
 		
-		int totalCnt = teamService.GetTotalCnt(paramMap);
+		//int totalCnt = teamService.GetTotalCnt(paramMap);
 		List<DataMap> rtnMap = teamService.DeptList(paramMap);
-		
+		int totalCnt = paramMap.getInt("TotalCnt");
 		
 		logger.debug("rtnMap :: " + rtnMap);
 		logger.debug("totalCnt=="+totalCnt);

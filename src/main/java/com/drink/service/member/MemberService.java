@@ -44,11 +44,14 @@ public class MemberService {
 		
 		return param;
 	}
-	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List getEmpMList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		logger.debug("map===" + map.getMap());
 		param = gdi.selectList("Member.getEmpMList",map.getMap());
+
+		int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);	
 		
 		return param;
 	}

@@ -15,6 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
@@ -43,14 +45,15 @@ public class TeamService {
 		totalCnt = param.getInt("TotalCNT"); 
 		return totalCnt;
 	}
-	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List DeptList(RequestMap map) throws DrinkException {
 		
 		logger.debug("map===" + map.toString());
 		
 		List<DataMap> param = new ArrayList<>();
 		param = gdi.selectList("Team.getDeptList", map.getMap());
-				
+		int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);		
 		return param;
 	}
 

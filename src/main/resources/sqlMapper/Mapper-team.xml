@@ -11,16 +11,22 @@
     </select>
    
    
-    <select id="getDeptList" resultType="DataMap" parameterType="hashmap">
-    	<include refid="Common.pagingHeaderSql"/>
+    <select id="getDeptList" resultType="DataMap" >
+    	
     	<![CDATA[
-    		SELECT DEPT_NO, TEAMNM, IF(USE_YN = 'Y', "사용","사용안함")USE_YN_NM, SORT_ORD, USE_YN
+    		SELECT SQL_CALC_FOUND_ROWS  DEPT_NO, TEAMNM, IF(USE_YN = 'Y', "사용","사용안함")USE_YN_NM, SORT_ORD, USE_YN
 			FROM T_DEPT_M
 			ORDER BY SORT_ORD
+			LIMIT #{pageStart}, #{perPageNum}
        	]]>
-       	<include refid="Common.pagingFooterSql"/>
+       	
     </select>
-      
+    
+     <select id="selectTotalRecords" resultType="int">
+        SELECT FOUND_ROWS();
+    </select>
+
+  
     <select id="checkTeam" resultType="DataMap">
     	<![CDATA[
     	SELECT COUNT(DEPT_NO) AS CNT
