@@ -13,9 +13,9 @@
        	]]>
     </select>
     
-    <select id="getVendorList" resultType="DataMap">
-    	<![CDATA[
-    		SELECT A.VENDOR_NO, A.OUTLET_NM, (SELECT D.TEAMNM FROM T_DEPT_M D WHERE D.DEPT_NO= C.DEPT_NO) AS TEAMNM,
+    <select id="getVendorList" resultType="DataMap" parameterType="hashmap">
+    	<![CDATA[ 
+    		SELECT SQL_CALC_FOUND_ROWS A.VENDOR_NO, A.OUTLET_NM, (SELECT D.TEAMNM FROM T_DEPT_M D WHERE D.DEPT_NO= C.DEPT_NO) AS TEAMNM,
 			  C.EMP_NM, A.VENDOR_TEL_NO, A.VENDOR_ADDR, 
 			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00005' AND E.CMM_CD = A.MARKET_DIVS_CD) AS MARKGET_NM,
 			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00006' AND E.CMM_CD = A.VENDOR_SGMT_DIVS_CD) AS SGMT_NM,
@@ -36,7 +36,7 @@
 				AND C.DEPT_NO = #{dept_no}
 			]]> 
 		</if>
-		<if test="emp_nm != null">
+		<if test="emp_nm != null and emp_nm !=''" >
 			<![CDATA[
 				AND C.EMP_NM like  CONCAT('%',#{emp_nm},'%')
 			]]> 
@@ -74,6 +74,11 @@
 		</if>
 		<if test="emp_grd_cd == '0002'">
 			    AND C.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND  EFF_END_DT ='99991231' AND EMP_DEPT_REL_GBN_CD ='0002')
+		</if>
+		<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
 		</if>
     </select>
 

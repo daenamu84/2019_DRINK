@@ -19,5 +19,15 @@
 									<td>${i.SCALL_PURPOSE_CD_NM}</td>
 									<td>${i.SCALL_PFR_NM}</td>
 								</tr>
-							</c:forEach>
+							</c:forEach>	
+							<tr>
+									<td colspan="8">
+										<div class="col-xs-3">
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPageSub" />
+										${skw3.printBtPaging()}
+										</div>
+									</td>
+								</tr>
 						 

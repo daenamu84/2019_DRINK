@@ -8,7 +8,8 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
 	
-						  	<c:forEach items="${vendorList}" var="f" varStatus="status">	
+						  	<c:forEach items="${vendorList}" var="f" varStatus="status">
+						  		<input type="hidden"  name="vendorSearch" id="vendorSearch" value="Y"/>	
 						  		<tr>
 									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.OUTLET_NM}</a></td>
 									<td>${f.TEAMNM}</td>
@@ -23,4 +24,14 @@
 									<td>수정</td>
 								</tr>
 						  	</c:forEach>
+						  		<tr>
+						  			<td colspan="11">
+						  				<div class="col-xs-3">
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPageSub" />
+										${skw3.printBtPaging()}
+									</div>
+						  			</td>
+						  		</tr>
 						 

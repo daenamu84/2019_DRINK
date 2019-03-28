@@ -8,7 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
 	<script type="text/javascript">
-	
+	var nowUrl = "/callList";
 	var ajaxFlag = false;
 	$(document).on("click","i[name='dateRangeIcon']",function() {
 	      $(this).parent().find(".dateRange").click();
@@ -171,13 +171,15 @@
 			var scallEndDt = $("#scallEndDt").val();
 			var scall_gbn_nm = $("#scall_gbn_nm option:selected").val();
 			var scall_rslt_cd = $("#scall_rslt_cd option:selected").val();
+			var scall_purpose_cd 	= $("#scall_purpose_cd option:selected").val();
+			
 			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
 			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&outlet_nm="+outlet_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
-			    +"&scall_rslt_cd="+scall_rslt_cd,
+			    +"&scall_rslt_cd="+scall_rslt_cd +"&scall_purpose_cd="+scall_purpose_cd,
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
@@ -371,6 +373,16 @@
 									<td>${i.SCALL_PFR_NM}</td>
 								</tr>
 							</c:forEach>
+								<tr>
+									<td colspan="8">
+										<div class="col-xs-3">
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+										${skw3.printBtPaging()}
+										</div>
+									</td>
+								</tr>
 						  </tbody>
 						</table>
 					</div>
@@ -397,7 +409,7 @@
 
 
 
-   <script>
+<script>
 //조회화면에 추가 하자 
 $(function() {
 	dataRangeOptions.singleDatePicker =  true;
@@ -411,3 +423,53 @@ $(function() {
 	
 });
 </script>
+
+<script>
+		function goPage(pages, pageLine) {
+			var url = nowUrl;
+			if (url.indexOf('?') > -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "page=" + pages + "&pageLine=" + pageLine + "&deptno="
+					+ $("#deptno option:selected").val();
+			location.href = url;
+		}
+		
+		function goPageSub(pages, pageLine) {
+			
+			var deptno = $("#deptno option:selected").val();
+			var empno = $("#empno").val();
+			
+			var temp = $("#empno option:selected").val();
+			
+			 if(typeof temp == "undefined"){
+				 temp = "";
+			 } 
+			
+			var outlet_nm = $("#outlet_nm").val();
+			var scallStaDt = $("#scallStaDt").val();
+			var scallEndDt = $("#scallEndDt").val();
+			var scall_gbn_nm = $("#scall_gbn_nm option:selected").val();
+			var scall_rslt_cd = $("#scall_rslt_cd option:selected").val();
+			var scall_purpose_cd 	= $("#scall_purpose_cd option:selected").val();
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&outlet_nm="+outlet_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
+			    +"&scall_rslt_cd="+scall_rslt_cd+"&scall_purpose_cd="+scall_purpose_cd+"&page=" + pages + "&pageLine=" + pageLine,
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#callSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		}
+	</script>

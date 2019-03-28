@@ -31,8 +31,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.vendor.VendorService;
@@ -52,6 +54,9 @@ public class VendorController {
 	private static final Logger logger = LogManager.getLogger(VendorController.class);
 	
 	@Autowired
+	private Paging paging;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -64,9 +69,10 @@ public class VendorController {
 	private SessionUtils sessionUtils;
 	
 	@RequestMapping(value = "/vendorList")
-	public ModelAndView main(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+	public ModelAndView main(Locale locale, Model model, RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
 		
-		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -77,6 +83,11 @@ public class VendorController {
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
+		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
 		
 		List<DataMap> rtnMap = vendorService.getTeamList(paramMap);
 		
@@ -103,10 +114,15 @@ public class VendorController {
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
 		List<DataMap> rtnVendrMap = vendorService.getVendorList(paramMap);
-//		
-//		logger.debug("rtnMap :: " + rtnMpa0);
-//		logger.debug("rtnMap :: " + rtnMap);
-//		
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown03","active");		
 		mav.addObject("deptMMList", rtnMap);
 		mav.addObject("vendorList", rtnVendrMap);
 		mav.addObject("commonList", commonMap);		
@@ -426,9 +442,16 @@ public class VendorController {
 			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
 		}
 		
+		String page = (String) param.get("page");
+		String pageLine = (String) param.get("pageLine");
+		
 		try {
 			ModelAndView mav = new ModelAndView();
 			
+			paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+			param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+			param.put("perPageNum", paging.getRecordsPerPage());
 			
 			
 			param.put("emp_grd_cd", loginSession.getEmp_grd_cd());
@@ -436,7 +459,13 @@ public class VendorController {
 			param.put("deptno", loginSession.getDept_no());
 			
 			List<DataMap> rtnVendrMap = vendorService.getVendorList(param);
-			
+			int totalCnt = param.getInt("TotalCnt");
+			HashMap<String, Object> pagingMap = new HashMap<>();
+			pagingMap.put("page", page);
+			pagingMap.put("pageLine", paging.getRecordsPerPage());
+			pagingMap.put("totalCnt", totalCnt);
+			mav.addObject("paging", pagingMap);
+			mav.addObject("dropdown03","active");	
 			mav.addObject("vendorList", rtnVendrMap);
 			mav.setViewName("nobody/vendor/vendorSearch");
 			

@@ -37,8 +37,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.call.CallService;
@@ -63,6 +65,9 @@ public class CallController {
 	private static final Logger logger = LogManager.getLogger(CallController.class);
 	
 	@Autowired
+	private Paging paging;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -78,7 +83,10 @@ public class CallController {
 	private SessionUtils sessionUtils;
 	
 	@RequestMapping(value = "/callList")
-	public ModelAndView main(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+	public ModelAndView callList(Locale locale, Model model, RequestMap rtMap, HttpServletRequest req) throws DrinkException {
+		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -108,7 +116,20 @@ public class CallController {
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
 		List<DataMap> rtnCallMap = callService.getCallList(paramMap);
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown02","active");
 		
 		mav.addObject("CallList", rtnCallMap);
 		mav.addObject("deptList", rtnMngMap);
@@ -253,6 +274,10 @@ public class CallController {
 	@RequestMapping(value = "/callSearch")
 	public ModelAndView callSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
 		
+		String page = (String) param.get("page");
+		String pageLine = (String) param.get("pageLine");
+		
+		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
 		
@@ -269,8 +294,21 @@ public class CallController {
 			
 			logger.debug("param==" + param.toString());	
 			
+			paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+			param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+			param.put("perPageNum", paging.getRecordsPerPage());
+			
 			List<DataMap> rtnVendrMap = callService.getCallList(param);
 			
+			int totalCnt = param.getInt("TotalCnt");
+			paging.makePaging();
+			HashMap<String, Object> pagingMap = new HashMap<>();
+			pagingMap.put("page", page);
+			pagingMap.put("pageLine", paging.getRecordsPerPage());
+			pagingMap.put("totalCnt", totalCnt);
+			mav.addObject("paging", pagingMap);
+			mav.addObject("dropdown02","active");
 			mav.addObject("CallList", rtnVendrMap);
 			mav.setViewName("nobody/call/callSearch");
 			

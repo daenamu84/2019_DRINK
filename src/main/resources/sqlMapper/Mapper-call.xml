@@ -13,9 +13,9 @@
     </select>
    
    
-   <select id="getCallList" resultType="DataMap">
+   <select id="getCallList" resultType="DataMap" parameterType="hashmap">
     	<![CDATA[
-    		SELECT A.SCALL_NO, A.SCALL_DT, 
+    		SELECT SQL_CALC_FOUND_ROWS A.SCALL_NO, A.SCALL_DT, 
 			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00012' AND E.CMM_CD = A.SCALL_GBN_NM) SCALL_GBN_NM_M
 			 ,A.SCALL_GBN_NM
 			 ,C.OUTLET_NM
@@ -33,7 +33,7 @@
 				AND C.OUTLET_NM like  CONCAT('%',#{outlet_nm},'%')
 			]]> 
 		</if>
-		<if test="deptno != null and deptno !='ALL' and emp_grd_cd != '0001' ">
+		<if test="deptno != null and deptno !='ALL' and emp_grd_cd != '0001' and emp_grd_cd != '0002' ">
 			<![CDATA[
 				AND B.DEPT_NO = #{deptno}
 			]]> 
@@ -81,6 +81,11 @@
 		<![CDATA[
 		ORDER BY A.DATA_REG_DTM DESC
 		]]> 
+		<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
     </select>
    
    

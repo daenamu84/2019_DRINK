@@ -400,7 +400,5 @@ function goPageSub(pages, pageLine) {
 	        ajaxFlag=false;
 	    }  
 	});
-    
-    
 }
 </script>

@@ -11,7 +11,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 	<script type="text/javascript">
-	
+	var nowUrl = "/vendorList";
 	$(function(){
 
 		//  var source = ['난누군가','또여긴어딘가','누가날불러?'];
@@ -155,6 +155,9 @@
 												</td>
 												<td style="padding-left:20px;">Segmentation</td>
 												<td style="padding-left:20px;" id="segList">
+													<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
+												  		<option value="ALL">전체</option>
+													</select>
 													
 												</td>
 												<td style="padding-left:20px;">거래처상태</td>
@@ -230,6 +233,16 @@
 									<td>수정</td>
 								</tr>
 						  	</c:forEach>
+						  		<tr>
+						  			<td colspan="11">
+						  				<div class="col-xs-3">
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+										${skw3.printBtPaging()}
+										</div>
+						  			</td>
+						  		</tr>
 						  </tbody>
 						</table>
 					</div>
@@ -246,4 +259,45 @@
 	 		alert("저장하였습니다.");
 		</c:if>
 	</script>
-	
+	<script>
+		function goPage(pages, pageLine) {
+			var url = nowUrl;
+			if (url.indexOf('?') > -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "page=" + pages + "&pageLine=" + pageLine + "&deptno="
+					+ $("#deptno option:selected").val();
+			location.href = url;
+		}
+		
+		function goPageSub(pages, pageLine) {
+			
+			var outlet_nm = $("#outlet_nm").val();
+			var dept_no = $("#dept_no option:selected").val();
+			var emp_nm = $("#emp_nm").val();
+			var market_divs_cd = $("#market_divs_cd option:selected").val();
+			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
+			var vendor_stat_cd = $("#vendor_stat_cd option:selected").val();
+			var wholesale_yn = $("#wholesale_yn option:selected").val();
+			var vendor_grd_cd = $("#vendor_grd_cd option:selected").val();
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/vendorSearch?outlet_nm="+outlet_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
+			    +"&vendor_stat_cd="+vendor_stat_cd+"&wholesale_yn="+wholesale_yn+"&vendor_grd_cd="+vendor_grd_cd+"&page=" + pages + "&pageLine=" + pageLine,
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#vendorSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		}
+	</script>

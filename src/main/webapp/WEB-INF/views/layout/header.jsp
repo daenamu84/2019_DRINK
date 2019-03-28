@@ -33,17 +33,17 @@
 		</c:if>
 		</div>
 		<ul class="navbar-nav">
-			<li class="nav-item">
+			<li class="nav-item ${dropdown01}">
 				<a class="nav-link dropdown-toggle" href="/proPosalList" id="dropdown01" aria-haspopup="true" aria-expanded="false">프로모션 관리</a>
 			</li>
-			<li class="nav-item dropdown">
+			<li class="nav-item ${dropdown02} dropdown">
 				<a class="nav-link dropdown-toggle" href="/callList" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업무조회</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown02">
 					<a class="dropdown-item" href="/callList">콜 목록</a> 
 					<a class="dropdown-item" href="javascript:alert('작업중입니다.')">콜 (Calendar)</a>
 				</div>
 			</li>
-			<li class="nav-item dropdown">
+			<li class="nav-item ${dropdown03} dropdown">
 				<a class="nav-link dropdown-toggle" href="/vendorList" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업소관리</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown03">
 					<a class="dropdown-item" href="/vendorList">거래처목록</a> 
