@@ -95,4 +95,8 @@
 			</tbody>
 			</table>
 	</div>
+	<div style="margin-right: auto;margin-left: auto">
+				<paging:paging var="skw3" currentPageNo="${paging.page}" recordsPerPage="${paging.pageLine}" numberOfRecords="${paging.totalCnt}" jsFunc="goPageSub" />
+		${skw3.printBtPaging()}
+			</div>
 </div>

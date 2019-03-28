@@ -160,31 +160,48 @@ public class BrandController {
 	public ModelAndView Submain(Locale locale, Model model, RequestMap param) throws DrinkException {
 		
 		try {
+			String page = (String) param.get("page");
+			String pageLine = (String) param.get("pageLine");
 			
-		ModelAndView mav = new ModelAndView();
-		
-		RequestMap paramMap = new RequestMap();
-		List<DataMap> rtnMap = brandService.BrandSubList(param);
-		
-		logger.debug("rtnMap :: " + rtnMap);
-		
-		mav.addObject("masterBrandId", param.getString("masterBrandId"));
-		mav.addObject("brandSubList", rtnMap);
-		
+			ModelAndView mav = new ModelAndView();
 
-		RequestMap map = new RequestMap();
-		map.put("cmm_cd_grp_id", "00015"); // 주류유형코드
-		List<DataMap> liqKdCdList = vendorService.getCommonCode(map);
-		mav.addObject("liqKdCdList", liqKdCdList);
-		
-		map = new RequestMap();
-		map.put("cmm_cd_grp_id", "00016"); // STCASE
-		List<DataMap> stcaseCdList = vendorService.getCommonCode(map);
-		mav.addObject("stcaseCdList", stcaseCdList);
-		
-		mav.setViewName("nobody/brand/subMain");
-		return mav;
-		
+			RequestMap paramMap = new RequestMap();
+
+			paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+			param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+			param.put("perPageNum", paging.getRecordsPerPage());
+			param.put("Query","Brand.getBrandSubListCount");
+			
+			int totalCnt = teamService.GetTotalCnt(param);
+
+			List<DataMap> rtnMap = brandService.BrandSubList(param);
+
+			logger.debug("rtnMap :: " + rtnMap);
+
+			paging.makePaging();
+			HashMap<String, Object> pagingMap = new HashMap<>();
+			pagingMap.put("page", page);
+			pagingMap.put("pageLine", paging.getRecordsPerPage());
+			pagingMap.put("totalCnt", totalCnt);
+			
+			mav.addObject("masterBrandId", param.getString("masterBrandId"));
+			mav.addObject("brandSubList", rtnMap);
+
+			RequestMap map = new RequestMap();
+			map.put("cmm_cd_grp_id", "00015"); // 주류유형코드
+			List<DataMap> liqKdCdList = vendorService.getCommonCode(map);
+			mav.addObject("liqKdCdList", liqKdCdList);
+
+			map = new RequestMap();
+			map.put("cmm_cd_grp_id", "00016"); // STCASE
+			List<DataMap> stcaseCdList = vendorService.getCommonCode(map);
+			mav.addObject("stcaseCdList", stcaseCdList);
+			
+			mav.addObject("paging", pagingMap);
+			mav.setViewName("nobody/brand/subMain");
+			return mav;
+
 		} catch (Exception e) {
 			logger.debug("brandSubList err :: " + e);
 			throw new DrinkException(new String[]{"nobody/common/error","서브 브랜드 조회중 에러가 발생 하였습니다."});

@@ -20,8 +20,18 @@
        	]]>
        	<include refid="Common.pagingFooterSql"/>
     </select>
-
-    <select id="getBrandSubList" resultType="DataMap">
+	
+	<select id="getBrandSubListCount" resultType="DataMap">
+    	<![CDATA[
+    		SELECT COUNT(BRAND_ID)  AS TotalCNT
+			 FROM T_SUB_BRAND_M
+			 WHERE BRAND_ID = #{masterBrandId}
+			 ORDER BY SORT_ORD
+       	]]>
+    </select>
+    
+    <select id="getBrandSubList" resultType="DataMap" parameterType="hashmap">
+    	<include refid="Common.pagingHeaderSql"/>
     	<![CDATA[
     		SELECT 
 				BRAND_ID, SUB_BRAND_ID, SUB_BRAND_NM, 
@@ -34,6 +44,7 @@
 			 WHERE BRAND_ID = #{masterBrandId}
 			 ORDER BY SORT_ORD
        	]]>
+       	<include refid="Common.pagingFooterSql"/>
     </select>
     
     <select id="getBrandCnt" resultType="DataMap">

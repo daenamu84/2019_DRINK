@@ -384,4 +384,23 @@ function goPage(pages, pageLine) {
     url += "page=" + pages + "&pageLine=" + pageLine;
     location.href = url;
 }
+
+function goPageSub(pages, pageLine) {
+	
+    $.ajax({      
+	    type:"GET",  
+	    url:"/brandSubList?masterBrandId="+$("#masterBrandId").val()+"&page=" + pages + "&pageLine=" + pageLine,      
+	    dataType:"html",
+	    traditional:true,
+	    success:function(args){   
+	    	$("#subLayer").html(args);
+	        ajaxFlag=false;
+	    },   
+	    error:function(xhr, status, e){  
+	        ajaxFlag=false;
+	    }  
+	});
+    
+    
+}
 </script>
