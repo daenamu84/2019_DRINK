@@ -31,8 +31,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
+import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.code.CodeService;
+import com.drink.service.team.TeamService;
 
 /** 
 * @ ClassName: BrandController 
@@ -45,17 +51,47 @@ import com.drink.service.code.CodeService;
 public class CodeController {
 	private static final Logger logger = LogManager.getLogger(CodeController.class);
 	
+	@Autowired
+	private Paging paging;
+
+	@Autowired
+	private SessionUtils sessionUtils;
+	
+	@Autowired
+	private TeamService teamService;
+	
+	@Autowired
+	private ConfigUtils configUtils;
+	
 	@Autowired 
 	private CodeService codeService;
 	
 	@RequestMapping(value = "/codeList")
-	public ModelAndView main(Locale locale, Model model) throws DrinkException {
+	public ModelAndView codeList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		ModelAndView mav = new ModelAndView();
-		
 		RequestMap paramMap = new RequestMap();
 		
+
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		paramMap.put("Query","Code.getCodeListCnt");
+		int totalCnt = teamService.GetTotalCnt(paramMap);
+		
 		List<DataMap> rtnMap = codeService.CodeList(paramMap);
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown05","active");
 		
 		mav.addObject("codeList", rtnMap);
 
@@ -71,12 +107,18 @@ public class CodeController {
 
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		
 		RequestMap dt = new RequestMap();
 		dt.put("cmm_cd_grp_id", vts.get("cmm_cd_grp_id"));
 		dt.put("cmm_cd_grp_nm", vts.get("cmm_cd_grp_nm"));
 		dt.put("cmm_cd_grp_cntn", vts.get("cmm_cd_grp_cntn"));
 		dt.put("use_yn", vts.get("use_yn"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		codeService.CodeInsert(dt);
 		
@@ -142,12 +184,19 @@ public class CodeController {
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
 		RequestMap dt = new RequestMap();
 		dt.put("cmm_cd_grp_id", vts.get("mcmm_cd_grp_id"));
 		dt.put("cmm_cd", vts.get("cmm_cd"));
 		dt.put("cmm_cd_nm", vts.get("cmm_cd_nm"));
 		dt.put("cmm_cd_cntn", vts.get("cmm_cd_cntn"));
 		dt.put("sub_use_yn", vts.get("sub_use_yn"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		
 		codeService.CodeSubInsert(dt);

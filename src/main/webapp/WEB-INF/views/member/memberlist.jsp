@@ -8,7 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
 	<script type="text/javascript">
-	
+	var nowUrl = "/memberList";
 	var ajaxFlag = false;
 	
 	$(document).ready(function(){
@@ -16,7 +16,7 @@
 		$("#memberSearch").click(function(){
 			if(ajaxFlag)return;
 			
-			var deptno = $("#deptno").val();
+			var deptno = $("#deptno option:selected").val();;
 			var empno = $("#empno").val();
 			
 			
@@ -86,32 +86,21 @@
 					<div class="row">			
 						<div class="col">
 							<div class="container border" style="padding: 5px;">
-								
-								<div class="row " style="padding-left:20px;">
-									<table class="table-borderless">
-										<thead>
-											<tr>
-												<td>팀</td>
-												<td style="padding-left:20px;">
-												<select name="deptno" class="form-control" id="deptno" onchange="showEmpList()" >
-													<option value="ALL">전체</option>
-													<c:forEach items="${deptMMList}" var="i">
-														<option value="${i.DEPT_NO}">${i.TEAMNM} </option>
-													</c:forEach>
-												</select></td>
-												<td style="padding-left:20px;display:none" id="EmpListNM" >사원</td>
-												<td style="padding-left:20px;" id="EmpListLayer">
-													
-												</td>
-												<td>
-													<input class="btn btn-dark" type="button" value="검색" id="memberSearch"/>
-													<input class="btn btn-dark" type="button" value="등록" id="memberForm"/>
-												</td>
-											</tr>
-										</thead>
-									</table>
+								<div class="row"style="padding-left:20px;">
+									<div class="col-sm-3  my-auto" style="text-align:center">팀</div>
+									<div class="col-sm-4">
+										<select name="deptno" class="form-control" id="deptno" onchange="showEmpList()">
+												<option value="ALL">전체</option>
+												<c:forEach items="${deptMMList}" var="i">
+													<option value="${i.DEPT_NO}">${i.TEAMNM}</option>
+												</c:forEach>
+										</select>
+									</div>
+									<div class="col-sm-2 ">
+									<input class="btn btn-dark" type="button" value="검색" id="memberSearch"/>
+									<input class="btn btn-dark" type="button" value="등록" id="memberForm"/>
+									</div>
 								</div>
-								
 							</div>
 						</div>
 					</div>
@@ -136,7 +125,17 @@
 									<td>${i.USE_YN_NM}</td>
 								</tr>
 							</c:forEach>
-						  </tbody>
+							<tr>
+								<td colspan="5">
+									<div>
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+										${skw3.printBtPaging()}
+									</div>
+								</td>
+							</tr>
+						</tbody>
 						</table>
 					</div>
 				</div>
@@ -148,5 +147,38 @@
 		<input type="hidden" name="gubun"/> 
 	</form>
 
-
+<script>
+function goPage(pages, pageLine) {
+	
+	if($("#deptno option:selected").val()!='ALL'){
+		if(ajaxFlag)return;
+		
+		var deptno = $("#deptno option:selected").val();;
+		var empno = $("#empno").val();
+		
+		
+		$.ajax({
+			type:"GET",  
+		    url:"/memberSearch?deptno="+deptno+"&page=" + pages + "&pageLine=" + pageLine,
+		    type:"GET",  
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#memberSearchLayer").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+	}else{
+		var url = nowUrl;
+		if(url.indexOf('?')  >-1){url += "&";}else{url +="?";}
+	    url += "page=" + pages + "&pageLine=" + pageLine+ "&deptno="+$("#deptno option:selected").val();
+	    location.href = url;
+	}
+	
+	
+}
+</script>
    

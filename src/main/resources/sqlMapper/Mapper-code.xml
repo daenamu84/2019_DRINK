@@ -2,14 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Code">
+    
+     <select id="getCodeListCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COUNT(CMM_CD_GRP_ID) AS TotalCNT 
+			 FROM T_CMM_CD_GRP_M
+			 
+       	]]>
+    </select>
       
-    <select id="getCodeList" resultType="DataMap">
+    <select id="getCodeList" resultType="DataMap" parameterType="hashmap">
+    	<include refid="Common.pagingHeaderSql"/>
     	<![CDATA[
     		SELECT 
 				CMM_CD_GRP_ID , CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
 			 FROM T_CMM_CD_GRP_M
+			 ORDER BY CMM_CD_GRP_ID DESC
 			 
        	]]>
+       	<include refid="Common.pagingFooterSql"/>
     </select>
 	
 	<select id="getMasterCodeCnt" resultType="DataMap">
@@ -25,7 +37,7 @@
     	<![CDATA[
     	INSERT INTO T_CMM_CD_GRP_M
 			(CMM_CD_GRP_ID, CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{cmm_cd_grp_id}, #{cmm_cd_grp_nm}, #{ cmm_cd_grp_cntn}, #{use_yn}, now(), '0', now(), '0')
+			VALUES ( #{cmm_cd_grp_id}, #{cmm_cd_grp_nm}, #{ cmm_cd_grp_cntn}, #{use_yn}, now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -45,7 +57,7 @@
     			 	CMM_CD_GRP_CNTN =   #{cmm_cd_grp_cntn},
     				  USE_YN = #{use_yn},
     				  DATA_UPD_DTM = NOW(),
-    				  DATA_UPD_ID = 'hoyairis'
+    				  DATA_UPD_ID = #{regId}
     	    WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
     	]]>
     </update>
@@ -83,7 +95,7 @@
     	<![CDATA[
     	INSERT INTO T_CMM_CD_M
 			(CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM, CMM_CD_CNTN, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{cmm_cd_grp_id},#{cmm_cd}, #{cmm_cd_nm},  #{cmm_cd_cntn}, #{sort_ord}, #{sub_use_yn}, now(), '0', now(), '0')
+			VALUES ( #{cmm_cd_grp_id},#{cmm_cd}, #{cmm_cd_nm},  #{cmm_cd_cntn}, #{sort_ord}, #{sub_use_yn}, now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -104,7 +116,7 @@
     				  CMM_CD_CNTN = #{cmm_cd_cntn},
     				  USE_YN = #{sub_use_yn},
     				  DATA_UPD_DTM = NOW(),
-    				  DATA_UPD_ID = 'hoyairis'
+    				  DATA_UPD_ID = #{regId}
     	    WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
 			 AND CMM_CD = #{cmm_cd}
     	]]>

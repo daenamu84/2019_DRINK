@@ -8,7 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
 	<script type="text/javascript">
-	
+	var nowUrl = "/teamList";
 	var ajaxFlag = false;
 	
 	$(document).ready(function(){
@@ -19,6 +19,7 @@
 			var deptno = $("#deptno").val();
 			var teamnm = $("#teamnm").val();
 			var use_yn = $("#use_yn").val();
+			
 			
 			if(teamnm.replace(/^\s*/,"") ==""){
 				alert("팀명을 입력하세요");
@@ -73,27 +74,19 @@
 					<div class="row">			
 						<div class="col">
 							<div class="container border" style="padding: 5px;">
-								<form name="Frm" method="post">
 								<div class="row"style="padding-left:20px;">
-									<table class="table-borderless ">
-										<thead>
-											<tr>
-												<td>팀명</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="teamnm" id="teamnm"></td>
-												<td style="padding-left:20px;">사용여부</td>
-												<td style="padding-left:20px;"><select name="use_yn" class="form-control" id="use_yn">
-													<option value="Y">사용</option>
-													<option value="N">사용안함</option>
-												</select></td>
-												<td>
-													<input type="hidden" name="deptno" id="deptno"/>
-													<input class="btn btn-dark" type="button" value="등록" id="deptInsert"/>
-												</td>
-											</tr>
-										</thead>
-									</table>
+									<div class="col-sm-1 my-auto">팀명</div>
+									<div class="col-sm-2"><input type="text" class="form-control" name="teamnm" id="teamnm"/></div>
+									<div class="col-sm-2 my-auto">사용여부</div>
+									<div class="col-sm-2">
+										<select name="use_yn" class="form-control" id="use_yn">
+											<option value="Y">사용</option>
+											<option value="N">사용안함</option>
+										</select>
+									</div>
+									<input type="hidden" name="deptno" id="deptno" />
+									<input class="btn btn-dark" type="button" value="등록" id="deptInsert"/>
 								</div>
-								</form>
 							</div>
 						</div>
 					</div>
@@ -116,11 +109,23 @@
 							</c:forEach>
 						  </tbody>
 						</table>
+							<div style="margin-right: auto;margin-left: auto">
+								<paging:paging var="skw3" currentPageNo="${paging.page}" recordsPerPage="${paging.pageLine}" numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+		${skw3.printBtPaging()}
+							</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+<script>
+function goPage(pages, pageLine) {
+	var url = nowUrl;
+	if(url.indexOf('?')  >-1){url += "&";}else{url +="?";}
+    url += "page=" + pages + "&pageLine=" + pageLine;
+    location.href = url;
+}
+</script>
 
 
 

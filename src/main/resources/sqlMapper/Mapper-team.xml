@@ -3,13 +3,22 @@
 
 <mapper namespace="Team">
     
-    <select id="getDeptList" resultType="DataMap">
+     <select id="getDeptListCnt" resultType="DataMap">
     	<![CDATA[
-    		SELECT 
-			DEPT_NO, TEAMNM, IF(USE_YN = 'Y', "사용","사용안함")USE_YN_NM, SORT_ORD, USE_YN
+    		 SELECT COUNT(DEPT_NO) TotalCNT 
 			FROM T_DEPT_M
-			ORDER BY SORT_ORD       
        	]]>
+    </select>
+   
+   
+    <select id="getDeptList" resultType="DataMap" parameterType="hashmap">
+    	<include refid="Common.pagingHeaderSql"/>
+    	<![CDATA[
+    		SELECT DEPT_NO, TEAMNM, IF(USE_YN = 'Y', "사용","사용안함")USE_YN_NM, SORT_ORD, USE_YN
+			FROM T_DEPT_M
+			ORDER BY SORT_ORD
+       	]]>
+       	<include refid="Common.pagingFooterSql"/>
     </select>
       
     <select id="checkTeam" resultType="DataMap">
@@ -31,7 +40,7 @@
     	<![CDATA[
     	INSERT INTO T_DEPT_M
 			(TEAMNM ,SORT_ORD ,UP_DEPT_NO ,USE_YN ,DATA_REG_DTM ,DATA_REG_ID ,DATA_UPD_DTM ,DATA_UPD_ID) 
-			VALUES (#{teamnm}, #{sort_ord}, 9999, #{use_yn}, now(),'hoyairis', now(), 'hoyaiirs')
+			VALUES (#{teamnm}, #{sort_ord}, 9999, #{use_yn}, now(),#{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -41,7 +50,7 @@
     			SET TEAMNM =   #{teamnm},
     				  USE_YN = #{use_yn},
     				  DATA_UPD_DTM = NOW(),
-    				  DATA_UPD_ID = '1'
+    				  DATA_UPD_ID = #{regId}
     	    WHERE DEPT_NO = #{deptno}
     	]]>
     </update>

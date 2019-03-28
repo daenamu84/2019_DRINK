@@ -39,7 +39,7 @@ public class BrandService {
 	public List BrandList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
-		param = gdi.selectList("Brand.getBrandList",param);
+		param = gdi.selectList("Brand.getBrandList",map.getMap());
 		
 		return param;
 	}

@@ -67,6 +67,10 @@
 			});
 		});
 		
+		$("#memberList").click(function(){
+			location.href="/memberList";
+		});
+		
 		
 		$("#memberWork").click(function(){
 			if(ajaxFlag)return;
@@ -247,13 +251,13 @@
 	 
 	</script>
 	
-	<div class="title"> <%if(request.getParameter("gubun")==null){ %>◈  사원등록<%}else{ %>◈  사원수정<%} %></div>
 	<div class="container " style="max-width:100%;">
 		<div class="row">
 			<div class="col">
 				<div class="container" style="max-width:100%;">
 					<div class="row">			
 						<div class="col">
+							<div class="container" style="padding: 15px;"> <%if(request.getParameter("gubun")==null){ %>◈  사원등록<%}else{ %>◈  사원수정<%} %> </div>
 							<div class="container border" style="padding: 15px;">
 								<form name="Form"   method="post">
                                 <div class="form-group row">
@@ -340,7 +344,7 @@
                                     </div>
                                 </div>
                                  <div class="form-group row">
-                                    <label for="use_yn" class="col-md-2 col-form-label text-md-left">급무여부</label>
+                                    <label for="use_yn" class="col-md-2 col-form-label text-md-left">근무여부</label>
                                     <div class="col-md-6">
                                     	<input type="checkbox" name="use_yn" id="use_yn"  value= "${data.USE_YN}" <c:if test="${data.USE_YN eq 'Y'}">checked</c:if>/>근무중
                                     </div>
@@ -360,6 +364,7 @@
 
 								<div class="text-md-right">
 										<input type="hidden" name="gubun" value="${gubun}">
+										<input class="btn btn-dark" type="button" value="목록" id="memberList">
 										<input class="btn btn-dark" type="button" value="등록" id="memberWork">
                                 </div>
 								</form>

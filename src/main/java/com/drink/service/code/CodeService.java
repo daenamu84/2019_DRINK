@@ -39,7 +39,7 @@ public class CodeService {
 	public List CodeList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
-		param = gdi.selectList("Code.getCodeList",param);
+		param = gdi.selectList("Code.getCodeList",map.getMap());
 		
 		return param;
 	}

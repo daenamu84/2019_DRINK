@@ -95,10 +95,23 @@
 			    }  
 			});
 		});
+		
 		//등록 
 		$("#proposalInsert").click(function(){
 			location.href="/proPosalForm";
 		});
+	});
+	
+	$("#proposalClean").click(function(){
+		$("#outlet_nm").val("");
+		$("#outlet_no").val("");
+		$("#deptno option:eq(0)").prop("selected", true);
+		$("#prps_purpose_cd option:eq(0)").prop("selected", true);
+		$("#prsp_status option:eq(0)").prop("selected", true);
+		$("#prps_str_dt").val("");
+		$("#prps_end_dt").val("");
+		
+		
 	});
 	
 	function getTeamList() {
@@ -219,6 +232,7 @@
 							<input class="btn btn-primary" type="button" id="proposalInsert" value="PROPOSAL 등록">
 						</div>
 						<div class="col-12 col-sm-6 text-right">
+							<input class="btn btn-primary" type="button" id="proposalClean" value="초기화">
 							<input class="btn btn-primary" type="button" id="proposalSearch" value="조회">
 						</div>
 					</div>
@@ -247,7 +261,7 @@
 							<td>${i.TEAMNM}</td>
 							<td>${i.EMP_NM}</td>
 							<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
-							<td>${i.PRPS_NM}</td>
+							<td><a href="javascript:setView('${i.PRPS_ID}','update')">${i.PRPS_NM}</a></td>
 							<td>${i.VD_NM}</td>
 							<td>${i.PRPS_PURPOSE_CD_NM}</td>
 							<td>${i.ACT_PLAN_CD_NM}</td>

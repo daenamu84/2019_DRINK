@@ -33,12 +33,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.login.LoginService;
 import com.drink.service.member.MemberService;
+import com.drink.service.team.TeamService;
 import com.drink.service.vendor.VendorService;
 
 
@@ -56,6 +59,9 @@ public class MemberController {
 	private static final Logger logger = LogManager.getLogger(MemberController.class);
 	
 	@Autowired
+	private Paging paging;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -65,28 +71,96 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@Autowired
+	private TeamService teamService;
+	
+	@Autowired
 	private SessionUtils sessionUtils;
 	
 	
 	@RequestMapping(value = "/memberList")
-	public ModelAndView main(Locale locale, Model model) throws DrinkException {
+	public ModelAndView memberList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
+		
+		
 		
 		ModelAndView mav = new ModelAndView();
-		
 		RequestMap paramMap = new RequestMap();
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		 
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		paramMap.put("Query","Member.getEmpMListCnt");
+		int totalCnt = teamService.GetTotalCnt(paramMap);
 		
 		
 		List<DataMap> rtnMpa0 = memberService.getDeptList(paramMap);
 		
 		List<DataMap> rtnMap = memberService.getEmpMList(paramMap);
 		
-		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
 		mav.addObject("deptMMList", rtnMpa0);
 		mav.addObject("empMList", rtnMap);
-		
+		mav.addObject("dropdown05","active");
 		mav.setViewName("member/memberlist");
 		return mav;
+	}
+	
+	@RequestMapping(value = "/memberSearch")
+	public ModelAndView memberSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			
+			String page = (String) param.get("page");
+			String pageLine = (String) param.get("pageLine");
+			
+			ModelAndView mav = new ModelAndView();
+			
+			
+			paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+			param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+			param.put("perPageNum", paging.getRecordsPerPage());
+			param.put("Query","Member.getEmpMListCnt");
+			
+			int totalCnt = teamService.GetTotalCnt(param);
+			
+			List<DataMap> rtnMap = memberService.getEmpMList(param);
+			
+			paging.makePaging();
+			HashMap<String, Object> pagingMap = new HashMap<>();
+			pagingMap.put("page", page);
+			pagingMap.put("pageLine", paging.getRecordsPerPage());
+			pagingMap.put("totalCnt", totalCnt);
+			mav.addObject("paging", pagingMap);
+			mav.addObject("empList", rtnMap);
+			mav.addObject("dropdown05","active");
+			mav.setViewName("nobody/member/memberSearch");
+			
+			return mav;
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
+			}
 	}
 	
 	@RequestMapping(value = "/memberForm")
@@ -105,7 +179,7 @@ public class MemberController {
 		logger.debug("rtnMap :: " + rtnMpa0);
 		mav.addObject("deptMMList", rtnMpa0);
 		mav.addObject("commonList", commonMap);
-		
+		mav.addObject("dropdown05","active");
 		mav.setViewName("member/memberfrom");
 		return mav;
 	}
@@ -142,6 +216,8 @@ public class MemberController {
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		
 		RequestMap dt = new RequestMap();
 		dt.put("emp_nm", vts.get("emp_nm"));
 		dt.put("emp_hp_no", vts.get("emp_hp_no"));
@@ -155,6 +231,7 @@ public class MemberController {
 		dt.put("emp_grd_cd", vts.get("emp_grd_cd"));
 		dt.put("deptno", vts.get("deptno"));
 		dt.put("mng_dept_no", vts.get("mng_dept_no"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		memberService.memberWork(dt);
 		
@@ -211,6 +288,7 @@ public class MemberController {
 	public HashMap<String, Object> memberUpdate(Locale locale,   ModelMap model,  @RequestBody Map<String, Object> vts, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		
 		RequestMap dt = new RequestMap();
 		dt.put("emp_nm", vts.get("emp_nm"));
@@ -227,6 +305,7 @@ public class MemberController {
 		dt.put("deptno", vts.get("deptno"));
 		dt.put("ex_dept_no", vts.get("ex_dept_no"));
 		dt.put("mng_dept_no", vts.get("mng_dept_no"));
+		dt.put("regId", loginSession.getLgin_id());
 		
 		memberService.memberupdate(dt);
 		
@@ -238,31 +317,7 @@ public class MemberController {
 		return rtnMap;
 	}
 	
-	@RequestMapping(value = "/memberSearch")
-	public ModelAndView memberSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
-		
-		SessionDto loginSession = sessionUtils.getLoginSession(req);
-		logger.debug("==loginSession=" + loginSession.getLgin_id());
-		logger.debug("param==" + param.toString());
-		if(loginSession == null || (loginSession.getLgin_id()== null)){
-			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
-		}
-		
-		try {
-			ModelAndView mav = new ModelAndView();
-			List<DataMap> rtnMap = memberService.getEmpMList(param);
-			
-			mav.addObject("empList", rtnMap);
-			mav.setViewName("nobody/member/memberSearch");
-			
-			return mav;
-			
-			
-			} catch (Exception e) {
-				logger.debug("brandSubList err :: " + e);
-				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
-			}
-	}
+	
 	
 	@RequestMapping(value = "/EmpSearchPop")
 	public ModelAndView EmpSearchPop(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {

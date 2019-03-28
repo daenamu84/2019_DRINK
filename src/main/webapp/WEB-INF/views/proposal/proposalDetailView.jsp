@@ -16,7 +16,7 @@ var ajaxFlag = false;
 	});		
 
 	$(document).ready(function(){
-		$("#goToTop").click(function(){
+		$("button[name='goToTop']").click(function(){
 			$( 'html, body' ).animate( { scrollTop : 0 }, 400 );
 			
 		});
@@ -161,7 +161,7 @@ var ajaxFlag = false;
 					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
 					<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','01','update')"/>
 					</c:if>
-					<button type="button" name="goToTop" class="btn btn-secondary btn-sm">TOP</button>
+					<button type="button" name="goToTop" id="goToTop" class="btn btn-secondary btn-sm">TOP</button>
 				</div>
 			</div>
 			<div id="productView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
@@ -198,7 +198,7 @@ var ajaxFlag = false;
 				<c:if test="${'0001' eq data.PRPS_STUS_CD}">
 					<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','02','update')"/>
 				</c:if>
-				<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
+				<button type="button" name="goToTop" id="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
 				</div>		
 			</div>
 			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
@@ -249,7 +249,7 @@ var ajaxFlag = false;
 					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
 						<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','03','update')"/>
 					</c:if>
-					<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
+					<button type="button" name="goToTop" id="goToTop"  class="btn btn-secondary btn-sm float-right">TOP</button>
 				</div>	
 			</div>
 			<div id="monthActualtView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
@@ -316,7 +316,7 @@ var ajaxFlag = false;
 						<input type="button" class="btn btn-secondary btn-sm" value="등록" onClick="viewStep('${data.PRPS_ID}','04','')"/>
 					</c:if>
 					</c:if>
-					<button type="button" name="goToTop" class="btn btn-secondary btn-sm float-right">TOP</button>
+					<button type="button" name="goToTop" id="goToTop"  class="btn btn-secondary btn-sm float-right">TOP</button>
 				</div>	
 				
 			</div>

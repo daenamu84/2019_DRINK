@@ -7,16 +7,25 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
-	
-			    <c:forEach items="${empList}" var="i" varStatus="status">
-					<tr>
-						<td>${i.TEAMNM}</td>
-						<td><a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a></td>
-						<td>${i.LOGIN_ID}</td>
-						<td>${i.EMP_GRD_CD}</td>
-						<td>${i.USE_YN_NM}</td>
-					</tr>
-				</c:forEach>
-						
 
-   
+<c:forEach items="${empList}" var="i" varStatus="status">
+	<tr>
+		<td>${i.TEAMNM}</td>
+		<td><a href="javascript:memberView('${i.EMP_NO}','update')">${i.EMP_NM}</a></td>
+		<td>${i.LOGIN_ID}</td>
+		<td>${i.EMP_GRD_CD}</td>
+		<td>${i.USE_YN_NM}</td>
+	</tr>
+</c:forEach>
+<tr>
+	<td colspan="5" style="text-align: center">
+		<div>
+			<paging:paging var="skw3" currentPageNo="${paging.page}"
+				recordsPerPage="${paging.pageLine}"
+				numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+			${skw3.printBtPaging()}
+		</div>
+	</td>
+</tr>
+
+

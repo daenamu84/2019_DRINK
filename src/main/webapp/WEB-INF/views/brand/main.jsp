@@ -9,11 +9,12 @@
 
 
 <script>
+var nowUrl = "/brandList";
 var ajaxFlag = false;
 
 	$(document).ready(function(){
 		
-		$("#brandInsert" ,"#brandUpdate").click(function(){
+		$("#brandInsert,#brandUpdate").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			var blank_pattern = /[\s]/g;
@@ -349,6 +350,10 @@ var ajaxFlag = false;
 					</c:forEach>
 			  </tbody>
 			</table>
+			<div style="margin-right: auto;margin-left: auto">
+				<paging:paging var="skw3" currentPageNo="${paging.page}" recordsPerPage="${paging.pageLine}" numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+		${skw3.printBtPaging()}
+			</div>
 		</div>
 	</div>
 	
@@ -372,3 +377,11 @@ var ajaxFlag = false;
 	</div>
 <!-- modal  end  -->
 </div>
+<script>
+function goPage(pages, pageLine) {
+	var url = nowUrl;
+	if(url.indexOf('?')  >-1){url += "&";}else{url +="?";}
+    url += "page=" + pages + "&pageLine=" + pageLine;
+    location.href = url;
+}
+</script>

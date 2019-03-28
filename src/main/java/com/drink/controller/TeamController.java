@@ -32,10 +32,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
-import com.drink.service.login.LoginService;
+import com.drink.commonHandler.util.Paging;
+import com.drink.commonHandler.util.SessionUtils;
+import com.drink.dto.model.session.SessionDto;
 import com.drink.service.team.TeamService;
+
 
 /** 
 * @ ClassName: BrandController 
@@ -51,6 +55,9 @@ public class TeamController {
 	private static final Logger logger = LogManager.getLogger(TeamController.class);
 	
 	@Autowired
+	private Paging paging;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -59,18 +66,42 @@ public class TeamController {
 	@Autowired
 	private TeamService teamService;
 	
+	@Autowired
+	private SessionUtils sessionUtils;
+	
 	@RequestMapping(value = "/teamList")
-	public ModelAndView main(Locale locale, Model model) throws DrinkException {
+	public ModelAndView main(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
 		
-		ModelAndView mav = new ModelAndView();
+		logger.debug("map :: " + rtMap.toString());
+		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		RequestMap paramMap = new RequestMap();
+		ModelAndView mav = new ModelAndView();
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		 
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		paramMap.put("Query","Team.getDeptListCnt");
+		
+		int totalCnt = teamService.GetTotalCnt(paramMap);
 		List<DataMap> rtnMap = teamService.DeptList(paramMap);
 		
-		logger.debug("rtnMap :: " + rtnMap);
 		
+		logger.debug("rtnMap :: " + rtnMap);
+		logger.debug("totalCnt=="+totalCnt);
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
 		mav.addObject("deptList", rtnMap);
+		mav.addObject("dropdown05","active");
 		mav.setViewName("team/teamlist");
 		return mav;
 	}
@@ -79,13 +110,25 @@ public class TeamController {
 	@ResponseBody
 	public HashMap<String, Object> teamWork(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
 		logger.debug("vts :: " + vts.toString());
 		logger.debug("map :: " + rtMap.toString());
+
 		
 		RequestMap map = new RequestMap();
 		map.put("deptno", vts.get("deptno"));
 		map.put("teamnm", vts.get("teamnm"));
 		map.put("use_yn", vts.get("use_yn"));
+		
+		map.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		map.put("emp_no", loginSession.getEmp_no());
+		map.put("regId", loginSession.getLgin_id());
+		
 		
 		teamService.checkTeam(map);
 		

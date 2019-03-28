@@ -9,10 +9,28 @@
     		SELECT DEPT_NO, TEAMNM
 			FROM T_DEPT_M
 			WHERE USE_YN ='Y'
+			ORDER BY SORT_ORD
        	]]>
     </select>
     
-    <select id="getEmpMList" resultType="DataMap">
+    <select id="getEmpMListCnt" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				COUNT(a.EMP_NO) AS TotalCNT
+			FROM T_EMP_M a
+		]]>
+			<if test="deptno != null and deptno !='ALL'">
+			<![CDATA[
+			WHERE a.DEPT_NO =#{deptno}
+			]]> 
+			</if>
+		<![CDATA[			
+			ORDER BY a.DATA_REG_DTM desc
+       	]]>
+    </select>
+    
+    <select id="getEmpMList" resultType="DataMap" parameterType="hashmap">
+    	<include refid="Common.pagingHeaderSql"/>
     	<![CDATA[
     		SELECT 
 				(SELECT c.TEAMNM FROM T_DEPT_M c WHERE c.DEPT_NO = a.DEPT_NO) AS TEAMNM,
@@ -24,14 +42,10 @@
 			WHERE a.DEPT_NO =#{deptno}
 			]]> 
 			</if>
-			<if test="empno != null and empno !='ALL'">
-			<![CDATA[
-				AND a.EMP_NO =#{empno}
-			]]> 
-			</if>
 		<![CDATA[			
 			ORDER BY a.DATA_REG_DTM desc
        	]]>
+       	<include refid="Common.pagingFooterSql"/>
     </select>
     
     <select id="duplicateIDCheck" resultType="DataMap">
@@ -47,7 +61,7 @@
     	<![CDATA[
     	INSERT INTO T_EMP_M
 			( EMP_NM, EMP_HP_NO, LOGIN_ID, LOGIN_PWD, ENTCO_DT, ZIP_CD, EMP_ADDR, EMP_BIRTH, USE_YN, EMP_GRD_CD, DEPT_NO, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{emp_nm}, #{emp_hp_no}, #{login_id}, (HEX(AES_ENCRYPT(#{login_pwd}, 'tb_sms'))), #{entco_dt}, #{zip_cd}, #{emp_addr}, #{emp_birth}, #{use_yn}, #{emp_grd_cd}, #{deptno}, now(), '0', now(), '0')
+			VALUES ( #{emp_nm}, #{emp_hp_no}, #{login_id}, (HEX(AES_ENCRYPT(#{login_pwd}, 'tb_sms'))), #{entco_dt}, #{zip_cd}, #{emp_addr}, #{emp_birth}, #{use_yn}, #{emp_grd_cd}, #{deptno}, now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -64,7 +78,7 @@
     	<![CDATA[
     	INSERT INTO T_DEPT_EMP_REL_D
 			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( '0001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+			VALUES ( '0001', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -72,7 +86,7 @@
     	<![CDATA[
     	INSERT INTO T_DEPT_EMP_REL_D
 			(EMP_DEPT_REL_GBN_CD, EFF_END_DT, EMP_NO, DEPT_NO, EFF_STR_DT, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( '0002', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), '0', now(), '0')
+			VALUES ( '0002', '99991231', #{emp_no}, #{deptno}, DATE_FORMAT(now(), '%Y%m%d'), now(), #{regId}, now(), #{regId})
     	]]>
     </update>
     
@@ -149,7 +163,9 @@
     				  EMP_ADDR =  #{emp_addr},
     				  USE_YN = #{use_yn},
     				  EMP_GRD_CD =  #{emp_grd_cd},
-    				  DEPT_NO =  #{deptno}
+    				  DEPT_NO =  #{deptno},
+    				  DATA_UPD_DTM = NOW(),
+    				  DATA_UPD_ID = #{regId}
     	    WHERE EMP_NO = #{emp_no}
     	]]>
     </update>
@@ -159,7 +175,7 @@
     		UPDATE T_DEPT_EMP_REL_D
     			SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
     				  DATA_UPD_DTM = now(),
-    				  DATA_UPD_ID =  '0'
+    				  DATA_UPD_ID =  #{regId}
     	    WHERE EMP_NO = #{emp_no}
     	    AND EMP_DEPT_REL_GBN_CD ='0001'
     	    AND DEPT_NO = #{ex_dept_no} 
@@ -173,7 +189,7 @@
     		UPDATE T_DEPT_EMP_REL_D
     			SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
     				  DATA_UPD_DTM = now(),
-    				  DATA_UPD_ID =  '0'
+    				  DATA_UPD_ID =  #{regId}
     	    WHERE EMP_NO = #{emp_no}
     	    AND EMP_DEPT_REL_GBN_CD ='0002'
     	    AND EFF_END_DT = '99991231'

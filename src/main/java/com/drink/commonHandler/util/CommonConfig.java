@@ -17,7 +17,7 @@ package com.drink.commonHandler.util;
 */
 public class CommonConfig {
 	public enum Paging {
-		RECORDSPERPAGE(10), CURRENTPAGENO(1), SIZEOFPAGE(5);
+		RECORDSPERPAGE(5), CURRENTPAGENO(1), SIZEOFPAGE(5);
 
 		private int value;
 

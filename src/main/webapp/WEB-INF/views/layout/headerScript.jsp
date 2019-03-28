@@ -9,6 +9,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/common/common.js?${globalTimeStamp}"></script>
 <script src="${pageContext.request.contextPath}/resources/js/common/dateUtil.js?${globalTimeStamp}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/default.css?${globalTimeStamp}">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css?${globalTimeStamp}">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-reboot.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.css">
@@ -18,7 +19,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery/jquery-3.2.1.min.js"></script >
 <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <!-- script src="http://code.jquery.com/jquery-1.8.0.min.js"></script -->
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap/moment-width-locales.js"></script> 
+<script src="${pageContext.request.contextPath}/resources/js/bootstrap/moment-width-locales.js"></script>
+<script src="https://unpkg.com/popper.js"></script> 
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>

@@ -5,7 +5,7 @@
 * @ Author: Daenamu
 * @ Date: 2019. 2. 18. 오전 11:50:18 
 * @ Version V0.0 
-*/ 
+*/
 package com.drink.service.team;
 
 import java.util.ArrayList;
@@ -21,52 +21,63 @@ import com.drink.commonHandler.bind.RequestMap;
 import com.drink.commonHandler.util.DataMap;
 import com.drink.dao.GenericMapperImpl;
 
-/** 
-* @ ClassName: MainService 
-* @ Description: 
-* @ Author: Daenamu
-* @ Date: 2019. 2. 18. 오전 11:50:18 
-*  
-*/
+/**
+ * @ ClassName: MainService @ Description: @ Author: Daenamu @ Date: 2019. 2.
+ * 18. 오전 11:50:18
+ * 
+ */
 @Service("TeamService")
 public class TeamService {
 	private static final Logger logger = LogManager.getLogger(TeamService.class);
 	@Autowired
 	GenericMapperImpl<Object, Object> gdi;
 
-	public List DeptList(RequestMap map) throws DrinkException{
-		List<DataMap> param = new ArrayList<>();
+	public int  GetTotalCnt(RequestMap map) throws DrinkException {
 		
-		param = gdi.selectList("Team.getDeptList",param);
+		logger.debug("map===" + map.toString());
 		
-		return param;
+		DataMap param = new DataMap();
+		int totalCnt = 0;
+		param = (DataMap) gdi.selectOne(map.getString("Query"), map.getMap());
+		
+		totalCnt = param.getInt("TotalCNT"); 
+		return totalCnt;
 	}
 	
-	
-	public void checkTeam(RequestMap map) throws DrinkException{
-		logger.debug("map==="+ map.toString());
+	public List DeptList(RequestMap map) throws DrinkException {
 		
-		if(!map.getString("deptno").equals("")){
+		logger.debug("map===" + map.toString());
+		
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Team.getDeptList", map.getMap());
+				
+		return param;
+	}
+
+	public void checkTeam(RequestMap map) throws DrinkException {
+		logger.debug("map===" + map.toString());
+
+		if (!map.getString("deptno").equals("")) {
 			int rtCnt = gdi.update("Team.masterUpdate", map.getMap());
-			if(rtCnt < 1){
-				throw new DrinkException(new String[]{"messageError","수정에 실패 하였습니다."});
+			if (rtCnt < 1) {
+				throw new DrinkException(new String[] { "messageError", "수정에 실패 하였습니다." });
 			}
-		}else {
+		} else {
 			DataMap param = new DataMap();
-			param = (DataMap) gdi.selectOne("Team.checkTeam",map.getMap());
-			
-			if(param.getInt("CNT")==0){
-				param = (DataMap) gdi.selectOne("Team.getT_DEPT_M_Cnt",map.getMap());
-				map.put("sort_ord", param.getInt("CNT")+1);
-				
-				//logger.debug("map==="+ map.toString());
-				
+			param = (DataMap) gdi.selectOne("Team.checkTeam", map.getMap());
+
+			if (param.getInt("CNT") == 0) {
+				param = (DataMap) gdi.selectOne("Team.getT_DEPT_M_Cnt", map.getMap());
+				map.put("sort_ord", param.getInt("CNT") + 1);
+
+				// logger.debug("map==="+ map.toString());
+
 				int rtCnt = gdi.update("Team.masterInsert", map.getMap());
-				if(rtCnt < 1){
-					throw new DrinkException(new String[]{"messageError","저장에 실패 하였습니다."});
+				if (rtCnt < 1) {
+					throw new DrinkException(new String[] { "messageError", "저장에 실패 하였습니다." });
 				}
-			}else {
-				throw new DrinkException(new String[]{"messageError","중복된 팀명 존재합니다."});
+			} else {
+				throw new DrinkException(new String[] { "messageError", "중복된 팀명 존재합니다." });
 			}
 		}
 	}

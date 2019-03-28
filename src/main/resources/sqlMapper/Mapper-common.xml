@@ -4,13 +4,11 @@
 <mapper namespace="Common">
 	
 	<sql id="pagingHeaderSql">
-	SELECT   T.*
-	  FROM   (SELECT   ROWNUM AS RNUM, COUNT(1) OVER() AS TOTCNT, CEIL((COUNT(1) OVER())/#{recordsPerPage}) AS TOTPAGE, XtP.*
-	            FROM   (
+		SELECT  A.* FROM (
 	</sql>
 	<sql id="pagingFooterSql">
-	) XtP) T
-	 WHERE   T.RNUM BETWEEN ( #{recordsPerPage} * #{currentPageNo} ) - ( #{recordsPerPage}-1 ) AND (#{recordsPerPage} * #{currentPageNo})
+		LIMIT 18446744073709551615
+		) A LIMIT #{pageStart}, #{perPageNum}
 	</sql>   
 	
 	<select id="getSysDate" resultType="DataMap">

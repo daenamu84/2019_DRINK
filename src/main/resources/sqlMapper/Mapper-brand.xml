@@ -2,14 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Brand">
+    
+    <select id="getBrandListCount" resultType="DataMap">
+    	<![CDATA[
+    		SELECT COUNT(BRAND_ID) AS TotalCNT 
+			 FROM T_BRAND_M
+       	]]>
+    </select>
       
-    <select id="getBrandList" resultType="DataMap">
+    <select id="getBrandList" resultType="DataMap" parameterType="hashmap">
+    	<include refid="Common.pagingHeaderSql"/>
     	<![CDATA[
     		SELECT 
-				BRAND_ID, BRAND_NM, ORCO_BRAND_YN, ORCO_BRAND_YN, IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
+				BRAND_ID, BRAND_NM, ORCO_BRAND_YN,  IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
 			 FROM T_BRAND_M
 			 ORDER BY SORT_ORD
        	]]>
+       	<include refid="Common.pagingFooterSql"/>
     </select>
 
     <select id="getBrandSubList" resultType="DataMap">
@@ -95,7 +104,7 @@
     	<![CDATA[
     	INSERT INTO T_SUB_BRAND_M
 			(BRAND_ID, SUB_BRAND_ID,SUB_BRAND_NM, LIQ_KD_CD, STCASE_CD, SORT_ORD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES ( #{masterBrandId},#{subBrandId}, #{subBrandNm}, #{liqKdCd}, #{stcaseCd}, #{subSortOrd},  #{subUseYn}, #{regId}, '0', now(), #{regId})
+			VALUES ( #{masterBrandId},#{subBrandId}, #{subBrandNm}, #{liqKdCd}, #{stcaseCd}, #{subSortOrd},  #{subUseYn}, now(), #{regId},  now(), #{regId})
     	]]>
     </update>
     

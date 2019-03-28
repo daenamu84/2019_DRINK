@@ -31,10 +31,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
+import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.brand.BrandService;
+import com.drink.service.team.TeamService;
 import com.drink.service.vendor.VendorService;
 
 /** 
@@ -57,12 +61,30 @@ public class BrandController {
 	@Autowired
 	private SessionUtils sessionUtils;
 	
+	@Autowired
+	private Paging paging;
+
+	@Autowired
+	private ConfigUtils configUtils;
+
+	@Autowired
+	private TeamService teamService;
+	
 	@RequestMapping(value = "/brandList")
-	public ModelAndView main(Locale locale, Model model) throws DrinkException {
+	public ModelAndView main(Locale locale, Model model,  RequestMap rtMap) throws DrinkException {
+		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		paramMap.put("Query","Brand.getBrandListCount");
+		int totalCnt = teamService.GetTotalCnt(paramMap);
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
 		
@@ -70,9 +92,15 @@ public class BrandController {
 		map.put("cmm_cd_grp_id", "00014"); // 자사/경쟁사
 		List<DataMap> sgmtMap = vendorService.getCommonCode(map);
 		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown05","active");
 		mav.addObject("brandList", rtnMap);
 		mav.addObject("cd00014", sgmtMap);
-
 		mav.setViewName("brand/main");
 		
 		

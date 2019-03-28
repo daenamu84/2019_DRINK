@@ -79,6 +79,7 @@ public class ProductController {
 		
 		List<DataMap> mBrandCd = brandService.BrandMCdList(paramMap);
 		mav.addObject("mBrandCd", mBrandCd);
+		mav.addObject("dropdown05","active");
 		//List<DataMap> sBrandCd = brandService.BrandSCdList(paramMap);
 		//mav.addObject("sBrandCd", sBrandCd);
 

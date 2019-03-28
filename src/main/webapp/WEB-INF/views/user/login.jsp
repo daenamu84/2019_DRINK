@@ -17,55 +17,115 @@
 <c:if test="${!empty errorResult.notEqualPasswd}">
 	<spring:message var="notEqualPasswd" code="${errorResult.notEqualPasswd}"/>
 </c:if>
+<style>
+	body {
+		font-family: "Lato", sans-serif;
+	}
+	
+	.main-head {
+		height: 150px;
+		background: #FFF;
+	}
+	
+	.sidenav {
+		height: 100%;
+		background-color: #d4cece;
+		overflow-x: hidden;
+		padding-top: 20px;
+	}
+	
+	.main {
+		padding: 0px 10px;
+	}
+	
+	@media screen and (max-height: 450px) {
+		.sidenav {
+			padding-top: 15px;
+		}
+	}
+	
+	@media screen and (max-width: 450px) {
+		.login-form {
+			margin-top: 10%;
+		}
+		.register-form {
+			margin-top: 10%;
+		}
+	}
+	
+	@media screen and (min-width: 768px) {
+		.main {
+			margin-left: 40%;
+		}
+		.sidenav {
+			width: 37%;
+			position: fixed;
+			z-index: 1;
+			top: 0;
+			left: 0;
+		}
+		.login-form {
+			margin-top: 80%;
+		}
+		.register-form {
+			margin-top: 20%;
+		}
+	}
+	
+	.login-main-text {
+		margin-top: 40%;
+		padding: 60px;
+		color: #fff;
+	}
+	
+	.login-main-text h2 {
+		font-weight: 300;
+	}
+	
+	.btn-black {
+		background-color: #000 !important;
+		color: #fff;
+	}
+</style>
 <div class="container">
-	<c:if test="${configProp['sever.statement'] eq 'DEV'}">
-   		<div style="float:right;color:#ffffff;">개발</div>
-   	</c:if> 
-    <div class="row">
-    	<div class="col-md-4 offset-4 new-wrap">
-    		<div class="panel panel-default">
-			  	<div class="panel-heading">해당 서비스는 이용자만<span class="br-block"></span> 가능합니다.</div>
-			  	<div class="panel-body">
-			    	<form name="loginForm" method="post"  action="/logInProcess">
-                    <fieldset>
-			    	  	<div class="form-group">
-			    		    <input class="form-control" placeholder="UserID" name="loginId" id="loginId"  type="text">
-							<%-- 
-							<%
-								if( notNullId != null && "".equals(notNullId) ){
-							%>
-									<p class="regColor"><%=notNullId %></p>
-							<%
-								}
-							%>
-							 --%>
-			    		</div>
-			    		<div class="form-group">
-			    			<input class="form-control" placeholder="Password" name="passwd" id="passwd" type="password" value="">
-			    			<c:if test="${!empty notNullId}">
-								<p class="regColor">${notNullId}</p>
-							</c:if>
-							<c:if test="${!empty notEqualId}">
-								<p class="regColor">${notEqualId}</p>
-							</c:if>
-			    			<c:if test="${!empty notNullPasswd}">
-								<p class="regColor">${notNullPasswd}</p>
-							</c:if>
-							<c:if test="${!empty notEqualPasswd}">
-								<p class="regColor">${notEqualPasswd}</p>
-							</c:if>
-			    		</div>
-			    		<input class="btn btn-lg btn-success btn-block" type="button" onclick="goLogin();"  value="로그인">
-			    		<input type="hidden" name="returnURL" value="${returnURL}">
-			    	</fieldset>
-			      	</form>
-			    </div>
+	<div class="sidenav" style="background-image:URL(${pageContext.request.contextPath}/resources/image/TB_LOGO1.png);background-repeat: no-repeat;">
+		<div class="login-main-text">
+			<h2>Login or register from here to access.</h2>
+		</div>
+	</div>
+	<div class="main">
+		<div class="col-md-6 col-sm-12">
+			<div class="login-form">
+				<form name="loginForm" method="post"  action="/logInProcess">
+					<div class="form-group">
+						<label>User Name</label> 
+						<input class="form-control" placeholder="UserID" name="loginId" id="loginId"  type="text">
+					</div>
+					<div class="form-group">
+						<label>Password</label> 
+						<input class="form-control" placeholder="Password" name="passwd" id="passwd" type="password" value="">
+						<c:if test="${!empty notNullId}">
+							<p class="regColor">${notNullId}</p>
+						</c:if>
+						<c:if test="${!empty notEqualId}">
+							<p class="regColor">${notEqualId}</p>
+						</c:if>
+						<c:if test="${!empty notNullPasswd}">
+							<p class="regColor">${notNullPasswd}</p>
+						</c:if>
+						<c:if test="${!empty notEqualPasswd}">
+							<p class="regColor">${notEqualPasswd}</p>
+						</c:if>
+					</div>
+					<input type="button"  class="btn btn-black" onclick="goLogin();" value="Login" id="login">
+					<input type="hidden" name="returnURL" value="${returnURL}">
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
 <script>
-	function goLogin(){
+	function goLogin() {
 		loginForm.submit();
 	}
 </script>
