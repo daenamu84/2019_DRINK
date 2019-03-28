@@ -285,7 +285,7 @@ var ajaxFlag = false;
 					<div class="container-fluid">
 						<div class="row"  style="padding: 5px 0px;">			
 							<div class="col-sm-3">브랜드</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<select class="custom-select" id="iBrandId">
 									<option value="">선택하세요.</option>
 									<c:forEach var="i" items="${mBrandCd}" varStatus="status">
@@ -296,7 +296,7 @@ var ajaxFlag = false;
 						</div>
 						<div class="row"  style="padding: 5px 0px;">			
 							<div class="col-sm-3">서브 브랜드</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<select class="custom-select" id="iSubBrandId">
 							  </select>
 						  </div>

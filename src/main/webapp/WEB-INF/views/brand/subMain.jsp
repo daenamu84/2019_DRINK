@@ -68,23 +68,27 @@
 			</div>
 		</div>
 	</div>
-	<div class="row" style="padding-top:10px;overflow-x:auto;">	
+	<div class="row" style="padding-top:10px;overflow-x:auto;">
 		<table class="table">
-			  <thead>
-			    <tr>
-			      <th scope="col">코드</th>
-			      <th scope="col">서브브랜드명</th>
-			      <th scope="col">주류유형코드</th>
-			      <th scope="col">사용</th>
-			      <th scope="col">STCASE코드</th>
-			      <th scope="col">순위</th>
-			    </tr>
-			  </thead>
-			  <tbody>
+			<thead>
+				<tr>
+					<th scope="col">코드</th>
+					<th scope="col">서브브랜드명</th>
+					<th scope="col">주류유형코드</th>
+					<th scope="col">사용</th>
+					<th scope="col">STCASE코드</th>
+					<th scope="col">순위</th>
+				</tr>
+			</thead>
+			<tbody>
 				<c:forEach items="${brandSubList}" var="i" varStatus="status">
 					<tr>
-						<td><a href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"class="text-decoration-none">${i.SUB_BRAND_ID}</a></td>
-						<td><a href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"class="text-decoration-none">${i.SUB_BRAND_NM}</a></td>
+						<td><a
+							href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"
+							class="text-decoration-none">${i.SUB_BRAND_ID}</a></td>
+						<td><a
+							href="javascript:subListView('${masterBrandId}','${i.SUB_BRAND_ID}');"
+							class="text-decoration-none">${i.SUB_BRAND_NM}</a></td>
 						<td>${i.LIQ_KD_NM}</td>
 						<td>${i.USE_YN}</td>
 						<td>${i.STCASE_NM}</td>
@@ -93,10 +97,11 @@
 				</c:forEach>
 
 			</tbody>
-			</table>
-	</div>
-	<div style="margin-right: auto;margin-left: auto">
+		</table>
+		<div style="margin-right: auto;margin-left: auto">
 				<paging:paging var="skw3" currentPageNo="${paging.page}" recordsPerPage="${paging.pageLine}" numberOfRecords="${paging.totalCnt}" jsFunc="goPageSub" />
 		${skw3.printBtPaging()}
 			</div>
+	</div>
+	
 </div>

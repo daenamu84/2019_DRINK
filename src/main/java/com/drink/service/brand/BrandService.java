@@ -48,11 +48,14 @@ public class BrandService {
 		}
 		return param;
 	}
-
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List BrandSubList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
 		param = gdi.selectList("Brand.getBrandSubList",map.getMap());
+		
+		int TotalCnt = (int) gdi.selectOne("Brand.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);		
 		
 		return param;
 	}
