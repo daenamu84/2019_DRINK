@@ -170,11 +170,9 @@ public class BrandController {
 			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
 			param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 			param.put("perPageNum", paging.getRecordsPerPage());
-			param.put("Query","Brand.getBrandSubListCount");
 			
-			int totalCnt = teamService.GetTotalCnt(param);
-
 			List<DataMap> rtnMap = brandService.BrandSubList(param);
+			int totalCnt = param.getInt("TotalCnt");
 
 			logger.debug("rtnMap :: " + rtnMap);
 
