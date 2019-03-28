@@ -218,7 +218,7 @@ public class Paging {
 	public String printBtPaging() {
 		StringBuilder pageTag = new StringBuilder();
 
-		pageTag.append("<ul class=\"pagination\">");
+		pageTag.append("<ul class=\"pagination justify-content-center\">");
 
 		if (this.getCurrentPageNo() > this.getSizeOfPage()) {
 			pageTag.append("<li class=\"page-item\">");

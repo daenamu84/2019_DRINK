@@ -127,7 +127,7 @@
 							</c:forEach>
 							<tr>
 								<td colspan="5" >
-									<div class="col-xs-3" style="margin-right: auto;margin-left: auto;width:20%">
+									<div class="col-xs-3">
 										<paging:paging var="skw3" currentPageNo="${paging.page}"
 											recordsPerPage="${paging.pageLine}"
 											numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
