@@ -141,6 +141,7 @@
     		SELECT BRAND_ID, BRAND_NM FROM T_BRAND_M
 			WHERE ORCO_BRAND_YN ='Y'
 			AND USE_YN = 'Y'
+			ORDER BY SORT_ORD
        	]]>
     </select>
      
