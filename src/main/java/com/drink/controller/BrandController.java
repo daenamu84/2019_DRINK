@@ -83,10 +83,9 @@ public class BrandController {
 		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
 		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 		paramMap.put("perPageNum", paging.getRecordsPerPage());
-		paramMap.put("Query","Brand.getBrandListCount");
-		int totalCnt = teamService.GetTotalCnt(paramMap);
 		
 		List<DataMap> rtnMap = brandService.BrandList(paramMap);
+		int totalCnt = paramMap.getInt("TotalCnt");
 		
 		RequestMap map = new RequestMap();
 		map.put("cmm_cd_grp_id", "00014"); // 자사/경쟁사

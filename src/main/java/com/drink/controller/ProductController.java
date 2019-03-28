@@ -31,7 +31,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.brand.BrandService;
@@ -61,8 +63,11 @@ public class ProductController {
 	@Autowired
 	private SessionUtils sessionUtils;
 	
+	@Autowired
+	private Paging paging;
+	
 	@RequestMapping(value = "/productManager")
-	public ModelAndView productManager(Locale locale, Model model) throws DrinkException {
+	public ModelAndView productManager(Locale locale, Model model,RequestMap rtMap) throws DrinkException {
 		
 		ModelAndView mav = new ModelAndView();
 		
