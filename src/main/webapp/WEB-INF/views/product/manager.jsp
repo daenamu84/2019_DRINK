@@ -287,6 +287,7 @@ var ajaxFlag = false;
 							<div class="col-sm-3">브랜드</div>
 							<div class="col-sm-4">
 								<select class="custom-select" id="iBrandId">
+									<option value="">선택하세요.</option>
 									<c:forEach var="i" items="${mBrandCd}" varStatus="status">
 										<option value="${i.BRAND_ID}">${i.BRAND_NM}</option>
 									</c:forEach>
