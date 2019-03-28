@@ -122,4 +122,14 @@ public class CallService {
 		
 		return param;
 	}
+	
+	public List callCalenDay(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Call.callCalenDay",map.getMap());
+		
+		return param;
+	}
+	
 }

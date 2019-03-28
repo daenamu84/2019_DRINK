@@ -11,9 +11,11 @@ package com.drink.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -438,24 +440,228 @@ public class CallController {
 		ModelAndView mav = new ModelAndView();
 		RequestMap paramMap = new RequestMap();
 		
-		paramMap.put("year", "2019");
-		paramMap.put("yearDt", "201903");
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		
+		mav.addObject("deptMngList", rtnMngMap);
+		
+		mav.setViewName("call/callCalendar");
+		mav.addObject("deptno", loginSession.getDept_no());
+		mav.addObject("emp_no", loginSession.getEmp_no());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/callCalendarView")
+	public ModelAndView callCalendarView(Locale locale, Model model, HttpServletRequest req, RequestMap rtMap) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		ModelAndView mav = new ModelAndView();
+		RequestMap paramMap = new RequestMap();
+		if(rtMap.getString("_pStaDt").length() != 6 || rtMap.getString("empNo").equals("")){
+			throw new DrinkException(new String[]{"nobody/common/error","필수 데이터가 잘못 되었습니다.."});
+		}
+		
+		paramMap.put("year", rtMap.getString("_pStaDt").substring(0,4));
+		paramMap.put("yearDt", rtMap.getString("_pStaDt"));
 		List<DataMap> callCalendar = callService.getCallCalendar(paramMap);
 		
 		for (int i = 0; i < callCalendar.size(); i++) {
 			DataMap dm = callCalendar.get(i);
-			logger.debug("1 "+dm.get("SUN"));
-			logger.debug("1 ?",dm.get("SUN"));
-			logger.debug("2 "+dm.get("MON"));
-			logger.debug("3 "+dm.get("TUE"));
-			logger.debug("4 "+dm.get("WED"));
-			logger.debug("5 "+dm.get("THU"));
-			logger.debug("6 "+dm.get("FRI"));
-			logger.debug("7 "+dm.get("SAT"));
+			if(dm.get("SUN") !=null){
+				logger.debug("1  :: "+ paramMap.getString("yearDt")+dm.get("SUN"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SUN"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SUN"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("SUN")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLANP", dayASet);
+			}
+			if(dm.get("MON") !=null){
+				logger.debug("2  :: "+ paramMap.getString("yearDt")+dm.get("MON"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("MON"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("MON")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("MON")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("MON"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("MON")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("MON")+"PLANP", dayASet);
+			}
+			if(dm.get("TUE") !=null){
+				logger.debug("3  :: "+ paramMap.getString("yearDt")+dm.get("TUE"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("TUE"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("TUE")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("TUE")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("TUE"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("TUE")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("TUE")+"PLANP", dayASet);
+			}
+			if(dm.get("WED") !=null){
+				logger.debug("4  :: "+ paramMap.getString("yearDt")+dm.get("WED"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("WED"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("WED")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("WED")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("WED"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("WED")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("WED")+"PLANP", dayASet);
+			}
+			if(dm.get("THU") !=null){
+				logger.debug("5  :: "+ paramMap.getString("yearDt")+dm.get("THU"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("THU"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("THU")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("THU")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("THU"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("THU")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("THU")+"PLANP", dayASet);
+			}
+			if(dm.get("FRI") !=null){
+				logger.debug("6  :: "+ paramMap.getString("yearDt")+dm.get("FRI"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("FRI"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("FRI")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("FRI")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("FRI"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("FRI")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("FRI")+"PLANP", dayASet);
+			}
+			if(dm.get("SAT") !=null){
+				logger.debug("7  :: "+ paramMap.getString("yearDt")+dm.get("SAT"));
+				RequestMap dayParam = new RequestMap();
+				dayParam.put("gbnNm", "P");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SAT"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayPView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("SAT")+"PLAN", dayPView);
+				Set<String> dayPSet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayPSet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("SAT")+"PLANP", dayPSet);
+				
+				dayParam = new RequestMap();
+				dayParam.put("gbnNm", "A");
+				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SAT"));
+				dayParam.put("empNo", rtMap.getString("empNo"));
+				List<DataMap> dayAView = callService.callCalenDay(dayParam);
+				dm.put(dm.get("YM")+""+dm.get("SAT")+"ACUT", dayAView);
+				Set<String> dayASet = new HashSet<>();
+				for(int x= 0; x<dayPView.size();x++){
+					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				}
+				dm.put(dm.get("YM")+""+dm.get("SAT")+"PLANP", dayASet);
+			}
+			logger.debug("DM  :: "+dm);
 			
 		}
-		
-		mav.setViewName("call/callCalendar");
+		mav.setViewName("nobody/call/callCalendarView");
+		mav.addObject("_pStaDt",rtMap.getString("_pStaDt"));
+		mav.addObject("deptNo",rtMap.getString("deptNo"));
+		mav.addObject("_pStaDt",rtMap.getString("_pStaDt"));
+		mav.addObject("empNo",rtMap.getString("empNo"));
 		mav.addObject("callCalendar",callCalendar);
 		return mav;
 	}
