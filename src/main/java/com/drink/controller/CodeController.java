@@ -80,11 +80,11 @@ public class CodeController {
 		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
 		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 		paramMap.put("perPageNum", paging.getRecordsPerPage());
-		paramMap.put("Query","Code.getCodeListCnt");
-		int totalCnt = teamService.GetTotalCnt(paramMap);
+		//paramMap.put("Query","Code.getCodeListCnt");
+		//int totalCnt = teamService.GetTotalCnt(paramMap);
 		
 		List<DataMap> rtnMap = codeService.CodeList(paramMap);
-		
+		int totalCnt = paramMap.getInt("TotalCnt");
 		paging.makePaging();
 		HashMap<String, Object> pagingMap = new HashMap<>();
 		pagingMap.put("page", page);

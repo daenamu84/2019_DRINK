@@ -13,15 +13,15 @@
     </select>
       
     <select id="getCodeList" resultType="DataMap" parameterType="hashmap">
-    	<include refid="Common.pagingHeaderSql"/>
+    	
     	<![CDATA[
-    		SELECT 
+    		SELECT SQL_CALC_FOUND_ROWS
 				CMM_CD_GRP_ID , CMM_CD_GRP_NM, CMM_CD_GRP_CNTN, IF(USE_YN = 'Y', "사용","사용안함") USE_YN_NM 
 			 FROM T_CMM_CD_GRP_M
 			 ORDER BY CMM_CD_GRP_ID DESC
-			 
+			 LIMIT #{pageStart}, #{perPageNum}
        	]]>
-       	<include refid="Common.pagingFooterSql"/>
+       	
     </select>
 	
 	<select id="getMasterCodeCnt" resultType="DataMap">
