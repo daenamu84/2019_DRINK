@@ -224,7 +224,32 @@ var ajaxFlag = false;
 	}
 	
 		
-	
+	function goPage(pages, pageLine) {
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		$.ajax({      
+		    type:"POST",  
+		    url:"/productBrandSearch",      
+		    data: {"brandId":$("#_pBrandId").val(),"page":pages,"pageLine":pageLine},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		        $("#productList").empty();
+		        $("#productList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }  
+		});
+	}
 
 </script>
 

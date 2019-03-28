@@ -55,6 +55,7 @@ public class ProductService {
 		}
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List productList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
@@ -105,10 +106,14 @@ public class ProductService {
 		return param;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List prdSearchView(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		param = gdi.selectList("Product.getProdSearchView",map.getMap());
-		
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Brand.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+		}
 		return param;
 	}
 

@@ -217,32 +217,32 @@ public class Paging {
 	
 	public String printBtPaging() {
 		StringBuilder pageTag = new StringBuilder();
-
-		pageTag.append("<ul class=\"pagination justify-content-center\">");
-
-		if (this.getCurrentPageNo() > this.getSizeOfPage()) {
-			pageTag.append("<li class=\"page-item\">");
-			pageTag.append("<a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + (this.getStartPageNo()-1) + ", " + this.getRecordsPerPage() + ")\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span><span class=\"sr-only\">Previous</span></a>");
-			pageTag.append("</li>");
-		}
-
-		for (int i = this.getStartPageNo(); i <= this.getEndPageNo(); i++) {
-			if (i == this.getCurrentPageNo()) {
-				pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + i + ", " + this.getRecordsPerPage() + ")\">"+i+"</a></li>");
-			} else {
-				pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + i + ", " + this.getRecordsPerPage() + ")\"><font style=\"color:#808080;\">"+i+"</font></a></li>");
-
+		if(this.getEndPageNo() > 0){
+			pageTag.append("<ul class=\"pagination justify-content-center\">");
+	
+			if (this.getCurrentPageNo() > this.getSizeOfPage()) {
+				pageTag.append("<li class=\"page-item\">");
+				pageTag.append("<a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + (this.getStartPageNo()-1) + ", " + this.getRecordsPerPage() + ")\" aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span><span class=\"sr-only\">Previous</span></a>");
+				pageTag.append("</li>");
 			}
+			for (int i = this.getStartPageNo(); i <= this.getEndPageNo(); i++) {
+				if (i == this.getCurrentPageNo()) {
+					pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + i + ", " + this.getRecordsPerPage() + ")\">"+i+"</a></li>");
+				} else {
+					pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + i + ", " + this.getRecordsPerPage() + ")\"><font style=\"color:#808080;\">"+i+"</font></a></li>");
+	
+				}
+			}
+	
+			if (this.getEndPageNo() < this.getFinalPageNo()) {
+				pageTag.append("<li class=\"page-item\">");
+				pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + (this.getEndPageNo()+1) + ", " + this.getRecordsPerPage() + ")\" aria-label=\"Next\"><span aria-hidden=\"true\">&raquo;</span><span class=\"sr-only\">Next</span></a></li>");
+				pageTag.append("</li>");
+				
+			}
+	
+			pageTag.append("</ul>");
 		}
-
-		if (this.getEndPageNo() < this.getFinalPageNo()) {
-			pageTag.append("<li class=\"page-item\">");
-			pageTag.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:goPageMethod(" + jsFunc + ", " + (this.getEndPageNo()+1) + ", " + this.getRecordsPerPage() + ")\" aria-label=\"Next\"><span aria-hidden=\"true\">&raquo;</span><span class=\"sr-only\">Next</span></a></li>");
-			pageTag.append("</li>");
-			
-		}
-
-		pageTag.append("</ul>");
 		return pageTag.toString();
 
 	}

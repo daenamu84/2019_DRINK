@@ -32,8 +32,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.product.ProductService;
@@ -69,6 +71,9 @@ public class ProdMenuController {
 	
 	@Autowired
 	private SessionUtils sessionUtils;
+	
+	@Autowired
+	private Paging paging;
 	
 	@RequestMapping(value = "/ProdMenuAdd")
 	public ModelAndView main(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
@@ -167,8 +172,29 @@ public class ProdMenuController {
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
-		List<DataMap> rtnMap = productService.prdSearchView(param);
+		String page = (String) param.get("page");
+		String pageLine = (String) param.get("pageLine");
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		 
+		param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		param.put("perPageNum", paging.getRecordsPerPage());
 		
+		List<DataMap> rtnMap = productService.prdSearchView(param);
+		int totalCnt = param.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+
+		mav.addObject("_pgVendorId", param.getString("vendorId"));
+		mav.addObject("_pgStaDt", param.getString("staDt"));
+		mav.addObject("_pgEndDt", param.getString("endDt"));
+		mav.addObject("_pgDeptNo", param.getString("deptNo"));
+		mav.addObject("_pgEmpNo", param.getString("empNo"));
 		
 		mav.addObject("prodVendorList", rtnMap);
 		

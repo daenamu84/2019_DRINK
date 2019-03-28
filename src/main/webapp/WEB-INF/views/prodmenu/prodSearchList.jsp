@@ -24,3 +24,18 @@
 		<td><a href="javascript:prodUpdateView('${i.VENDOR_NO}','${i.PROD_NO}');"class="text-decoration-none">수정</a></td>
 	</tr>
 </c:forEach>
+<tr>
+	<td colspan="9" style="text-align: center">
+		<div>
+			<paging:paging var="skw3" currentPageNo="${paging.page}"
+				recordsPerPage="${paging.pageLine}"
+				numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+			${skw3.printBtPaging()}
+		</div>
+	</td>
+</tr>
+<input type="hidden" id="_pgVendorId" value="${_pgVendorId}">
+<input type="hidden" id="_pgStaDt" value="${_pgStaDt}">
+<input type="hidden" id="_pgEndDt" value="${_pgEndDt}">
+<input type="hidden" id="_pgDeptNo" value="${_pgDeptNo}">
+<input type="hidden" id="_pgEmpNo" value="${_pgEmpNo}">
