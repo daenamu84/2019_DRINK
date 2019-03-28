@@ -11,14 +11,21 @@
     </select>
       
     <select id="getBrandList" resultType="DataMap" parameterType="hashmap">
-    	<include refid="Common.pagingHeaderSql"/>
     	<![CDATA[
     		SELECT 
-				BRAND_ID, BRAND_NM, ORCO_BRAND_YN,  IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
+				SQL_CALC_FOUND_ROWS BRAND_ID, BRAND_NM, ORCO_BRAND_YN,  IF(ORCO_BRAND_YN = 'Y', "자사","경쟁사") ORCO_BRAND_NM, SORT_ORD, USE_YN
 			 FROM T_BRAND_M
 			 ORDER BY SORT_ORD
        	]]>
-       	<include refid="Common.pagingFooterSql"/>
+       	<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
+    </select>
+    
+    <select id="selectTotalRecords" resultType="int">
+        SELECT FOUND_ROWS();
     </select>
 	
 	<select id="getBrandSubListCount" resultType="DataMap">

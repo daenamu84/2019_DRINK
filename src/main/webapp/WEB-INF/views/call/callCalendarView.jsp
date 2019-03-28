@@ -73,13 +73,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -88,13 +88,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -103,13 +103,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -118,13 +118,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -133,13 +133,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -148,13 +148,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border  ">
@@ -163,13 +163,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 			</tr>
@@ -254,13 +254,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -269,13 +269,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -284,13 +284,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -299,13 +299,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -314,13 +314,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border border-right-0  ">
@@ -329,13 +329,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 				<td class="border  ">
@@ -344,13 +344,13 @@
 					<div class="">
 						<c:forEach items="${i[PlanKey]}" var="j" varStatus="js">
 							<c:if test="${breakFlag}">
-								<c:if test="${!js.last }"><label>${j.VENDOR_NM},&nbsp;</label></c:if>
-								<c:if test="${js.last}"><label>${j.VENDOR_NM}</label></c:if>
+								<c:if test="${!js.last }"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM},&nbsp;</label></a></c:if>
+								<c:if test="${js.last}"><a href="javascript:callView('${j.SCALL_NO}')"><label>${j.VENDOR_NM}</label></a></c:if>
 								<c:if test="${js.count == 3}"> 
 								<c:set var="breakFlag" value="false"/></c:if> 
 							</c:if>
 						</c:forEach>
-						<c:if test="${fn:length(i[PlanKey]) > 3}">...</c:if>
+						<c:if test="${fn:length(i[PlanKey]) > 3}"><a href="javascript:passCallList()">...</a></c:if>
 					</div>
 				</td>
 			</tr>

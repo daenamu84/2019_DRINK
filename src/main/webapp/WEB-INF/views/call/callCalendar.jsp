@@ -63,7 +63,7 @@ var ajaxFlag = false;
 		
 		$("i[name='_pDateRangeIcon']").click(function (){
 			$('._pDateRange').datepicker("show");
-		});
+		}); 
 	});
 	
 	$(document).ready(function(){
@@ -162,6 +162,119 @@ var ajaxFlag = false;
 		});
 	}
 	
+function callView(scall_no){
+		
+		var _scall_no = scall_no;
+		
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		$("#subLayer").empty();
+		$("#popLayer").modal("show");
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/callView?scall_no="+scall_no,      
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#subLayer").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+		
+	}
+	
+$(document).on("click","#callupdate", function(){
+	if (ajaxFlag)
+		return;
+	ajaxFlag = true;
+	
+	var scall_no  			= $("#scall_no").val();
+	var scall_purpose_cd_u 	= $("#scall_purpose_cd_u option:selected").val();
+	var scall_pfr_nm_u		= $("#scall_pfr_nm_u option:selected").val();
+	var scall_rslt_cd_u		= $("#scall_rslt_cd_u option:selected").val();
+	var scall_sale_cntn_u = $("#scall_sale_cntn_u").val();
+	var scall_cprt_cntn_u = $("#scall_cprt_cntn_u").val();
+	
+	$.ajax({      
+	    type:"POST",  
+	    url:"/callUpdate",      
+	    data: JSON.stringify({"scall_no":scall_no,"scall_purpose_cd_u":scall_purpose_cd_u,"scall_pfr_nm_u":scall_pfr_nm_u,"scall_rslt_cd_u":scall_rslt_cd_u,"scall_sale_cntn_u" :scall_sale_cntn_u,"scall_cprt_cntn_u" :scall_cprt_cntn_u  }),
+	    dataType:"json",
+	    contentType:"application/json;charset=UTF-8",
+	    traditional:true,
+	    success:function(args){   
+	        if(args.returnCode == "0000"){
+	        	alert(args.message.replace(/<br>/gi,"\n"));
+	        	//location.reload();
+	        	$("#popLayer").modal("hide");
+	        }else{
+	        	alert(args.message.replace(/<br>/gi,"\n"));
+	        	//location.reload();
+	        	$("#popLayer").modal("hide");
+	        }
+	        ajaxFlag=false;
+	    },   
+	    error:function(xhr, status, e){  
+	        if(xhr.status == 403){
+	        	alert("로그인이 필요한 메뉴 입니다.");
+	        	location.replace("/logIn");
+	        }else{
+	        	alert("처리중 에러가 발생 하였습니다.");
+	        	location.reload();
+	        }
+	        ajaxFlag=false;
+	    }  
+	});
+});
+
+$(document).on("click","#callviewdelete", function(){
+	if (ajaxFlag)
+		return;
+	ajaxFlag = true;
+	
+	var scall_no  			= $("#scall_no").val();
+	$.ajax({      
+	    type:"POST",  
+	    url:"/callviewdelete",      
+	    data: JSON.stringify({"scall_no":scall_no }),
+	    dataType:"json",
+	    contentType:"application/json;charset=UTF-8",
+	    traditional:true,
+	    success:function(args){   
+	        if(args.returnCode == "0000"){
+	        	alert(args.message.replace(/<br>/gi,"\n"));
+	        	//location.reload();
+	        	$("#popLayer").modal("hide");
+	        }else{
+	        	alert(args.message.replace(/<br>/gi,"\n"));
+	        	//location.reload();
+	        	$("#popLayer").modal("hide");
+	        }
+	        ajaxFlag=false;
+	    },   
+	    error:function(xhr, status, e){  
+	        if(xhr.status == 403){
+	        	alert("로그인이 필요한 메뉴 입니다.");
+	        	location.replace("/logIn");
+	        }else{
+	        	alert("처리중 에러가 발생 하였습니다.");
+	        	location.reload();
+	        }
+	        ajaxFlag=false;
+	    }  
+	});
+});
+	
+function passCallList(){
+	
+	location.href="/callList";
+//	location.href="/callList?scallStaDt=&scallEndDt=";
+}
+	
 </script>
 
 <div class="">
@@ -203,6 +316,20 @@ var ajaxFlag = false;
 					<div class="calendar" id="viewCalendar">
 						
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="popLayer" class="modal fade" role="dialog" >
+		<div class="modal-dialog modal-xl" style="max-width: 1540px">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body" id="subLayer">
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
