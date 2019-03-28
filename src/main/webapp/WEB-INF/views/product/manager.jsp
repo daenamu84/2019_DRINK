@@ -238,7 +238,7 @@ var ajaxFlag = false;
 								<c:forEach items="${brandList}" var="i" varStatus="status">
 									<c:if test="${status.index eq 0 || (status.index%5) eq 0}">
 									</c:if>
-											<div class="col-sm"><label><input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if></label></div>
+											<div class="col-sm-2"><label class="form-check-inline"><input type="checkbox" name="brandChk" value="${i.BRAND_ID}"/>${i.BRAND_NM}<c:if test="${i.USE_YN ne 'Y'}">(중지)</c:if></label></div>
 									<c:if test="${status.last || (status.index%5) eq 4}">
 									</c:if>
 								</c:forEach>
