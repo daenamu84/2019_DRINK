@@ -20,7 +20,7 @@
 	</tr>
 </c:forEach>
 <tr>
-	<td colspan="5" style="text-align: center">
+	<td colspan="7" style="text-align: center">
 		<div>
 			<paging:paging var="skw3" currentPageNo="${paging.page}"
 				recordsPerPage="${paging.pageLine}"
@@ -29,3 +29,4 @@
 		</div>
 	</td>
 </tr>
+<input type="hidden" id="_pBrandId" value="${_pBrandId}">

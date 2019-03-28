@@ -100,7 +100,7 @@ public class ProductController {
 		try{
 		ModelAndView mav = new ModelAndView();
 		logger.debug("rtMap :: " + rtMap);
-		
+		String _pBrandId = rtMap.getString("brandId");
 		String page = (String) rtMap.get("page");
 		String pageLine = (String) rtMap.get("pageLine");
 		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
@@ -117,6 +117,7 @@ public class ProductController {
 		pagingMap.put("page", page);
 		pagingMap.put("pageLine", paging.getRecordsPerPage());
 		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("_pBrandId", _pBrandId);
 		
 		mav.addObject("productList", rtnMap);
 		if(rtMap.getString("bsearch").equals("")) {

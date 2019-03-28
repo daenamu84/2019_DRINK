@@ -227,6 +227,29 @@ var ajaxFlag = false;
 		});
 		
 	}
+	
+	
+	function goPage(){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/prodSearchList?="+$("#_sVendorNm").val(),
+		    data: {"deptNo":$("#_pgDeptNo").val(),"empNo":$("#_pgEmpNo").val(),"staDt":$("#_pgStaDt").val(),"endDt":$("#_pgEndDt").val(),"vendorId":$("#_pgVendorId").val()},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#productList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+		
+		
+	}
 </script>
 
 <div class="">
