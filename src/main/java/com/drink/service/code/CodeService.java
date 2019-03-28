@@ -35,11 +35,14 @@ public class CodeService {
 	private static final Logger logger = LogManager.getLogger(CodeService.class);
 	@Autowired
 	GenericMapperImpl<Object, Object> gdi;
-
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List CodeList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
 		param = gdi.selectList("Code.getCodeList",map.getMap());
+		int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);	
 		
 		return param;
 	}

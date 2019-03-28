@@ -104,7 +104,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row table-responsive" style="padding-top:10px;">	
+					<div class="row table-responsive text-center" style="padding-top:10px;">	
 						<table class="table ">
 						  <thead>
 						    <tr>
@@ -126,8 +126,8 @@
 								</tr>
 							</c:forEach>
 							<tr>
-								<td colspan="5">
-									<div>
+								<td colspan="5" >
+									<div class="col-xs-3" style="margin-right: auto;margin-left: auto;width:20%">
 										<paging:paging var="skw3" currentPageNo="${paging.page}"
 											recordsPerPage="${paging.pageLine}"
 											numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
