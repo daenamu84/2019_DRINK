@@ -516,6 +516,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SUN"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -528,6 +529,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SUN"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SUN")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -542,6 +544,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("MON"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("MON")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -554,6 +557,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("MON"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("MON")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -568,6 +572,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("TUE"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("TUE")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -580,6 +585,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("TUE"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("TUE")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -594,6 +600,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("WED"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("WED")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -606,6 +613,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("WED"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("WED")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -620,6 +628,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("THU"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("THU")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -632,6 +641,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("THU"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("THU")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -646,6 +656,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("FRI"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("FRI")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -658,6 +669,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("FRI"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("FRI")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
@@ -672,6 +684,7 @@ public class CallController {
 				dayParam.put("gbnNm", "P");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SAT"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SAT")+"PLAN", dayPView);
 				Set<String> dayPSet = new HashSet<>();
@@ -684,6 +697,7 @@ public class CallController {
 				dayParam.put("gbnNm", "A");
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SAT"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
+				dayParam.put("deptNo", rtMap.getString("deptNo"));
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SAT")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
