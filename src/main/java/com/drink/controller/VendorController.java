@@ -503,9 +503,35 @@ public class VendorController {
 	@RequestMapping(value = "/vendorLedger", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView vendorLedger(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
-		logger.debug("map :: " + rtMap.toString());
-		logger.debug("map2 :: " + model.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		ModelAndView mav = new ModelAndView();
+
+		RequestMap paramMap = new RequestMap();
+		paramMap = new RequestMap();
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
+		mav.addObject("vendorList", vendorList);
 		
+		mav.addObject("dropdown03","active");		
+		
+		mav.setViewName("vendor/vendorLedger");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/vendorLedgerSearch", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView vendorLedgerSearch(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
 		ModelAndView mav = new ModelAndView();
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
@@ -516,17 +542,16 @@ public class VendorController {
 		List<DataMap> rtnVenderCallMap = vendorService.getCallLedgerList(rtMap);
 		int VenderCalltotalCnt = rtMap.getInt("TotalCnt");
 		
+		
 		mav.addObject("vendorView", vendorView);
 		mav.addObject("vendorProposalList", rtnVendrMap);
 		mav.addObject("ProposaltotalCnt", ProposaltotalCnt);
 		mav.addObject("vendorCallList", rtnVenderCallMap);
 		mav.addObject("VenderCalltotalCnt", VenderCalltotalCnt);
 		
-		mav.addObject("dropdown03","active");		
 		
 		mav.addObject("vendorView", vendorView);
-		mav.setViewName("vendor/vendorLedger");
+		mav.setViewName("nobody/vendor/vendorLedgerSearch");
 		return mav;
-		
 	}
 }
