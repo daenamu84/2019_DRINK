@@ -228,17 +228,15 @@
 	    AND D.EMP_NO = B.EMP_NO 
 		AND C.SCALL_DT = #{day}
 		AND C.SCALL_GBN_NM = #{gbnNm}
-		AND B.DEPT_NO = #{deptNo} 
-		AND C.EMP_NO = #{empNo}
     ]]>
    	 	<if test="deptNo != null and deptNo !='ALL' and emp_grd_cd != '0001' and emp_grd_cd != '0002' ">
 			<![CDATA[
-				AND B.DEPT_NO = #{deptno}
+				AND B.DEPT_NO = #{deptNo}
 			]]> 
 		</if>
 		<if test="empNo != null and empNo != ''">
 			<![CDATA[
-				AND B.EMP_NO =  #{empno}
+				AND C.EMP_NO =  #{empNo}
 			]]> 
 		</if>
 		<if test="emp_grd_cd == '0004'">
@@ -248,7 +246,7 @@
 		</if>
 		<if test="emp_grd_cd == '0003'">
 			<![CDATA[
-			    AND B.DEPT_NO=  #{deptno}
+			    AND B.DEPT_NO=  #{deptNo}
 			]]> 
 		</if>
 		<if test="emp_grd_cd == '0002'">

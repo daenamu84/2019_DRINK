@@ -76,17 +76,7 @@ var ajaxFlag = false;
 			ajaxFlag = true;
 			
 			var deptNo = $("#deptno").val();
-			if(deptNo =="" || deptNo == undefined){
-				alert("팀을 선택하세요");
-				ajaxFlag = false;
-				return;
-			}
 			var empNo = $("#empno").val();
-			if(empNo =="" || empNo == undefined){
-				alert("팀원을 선택하세요");
-				ajaxFlag = false;
-				return;
-			}
 			var _pStaDt = $("#_pStaDt").val();
 			if(_pStaDt =="" || _pStaDt == undefined){
 				alert("월을 선택하세요");
@@ -287,6 +277,7 @@ function passCallList(){
 						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>
 						<div class="col-12 col-sm-2">
 							<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
+								<option value="ALL">전체</option>
 								<c:forEach items="${deptMngList}" var="a">
 								<option value="${a.DEPT_NO}" <c:if test="${a.DEPT_NO eq data.DEPT_NO or a.DEPT_NO eq deptno}">selected</c:if>>${a.TEAMNM} </option>
 								</c:forEach>
