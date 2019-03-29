@@ -13,7 +13,7 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
-
+var nowUrl = "/proPosalList";
 	$(document).on("click","i[name='dateRangeIcon']",function() {
 	    $(this).parent().find("._pDateRange").click();
 	});
@@ -268,6 +268,16 @@
 							<td>${i.PRPS_STUS_CD_NM}</td>							
 						</tr>
 					</c:forEach>
+					<tr>
+						<td colspan="9">
+							<div class="col-xs-3">
+								<paging:paging var="skw3" currentPageNo="${paging.page}"
+									recordsPerPage="${paging.pageLine}"
+									numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+								${skw3.printBtPaging()}
+							</div>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -277,3 +287,50 @@
 	<input type="hidden" name="prps_id" /> 
 	<input type="hidden" name="gubun" />
 </form>
+
+<script>
+		function goPage(pages, pageLine) {
+			var url = nowUrl;
+			if (url.indexOf('?') > -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "page=" + pages + "&pageLine=" + pageLine + "&deptno="
+					+ $("#deptno option:selected").val();
+			location.href = url;
+		}
+		
+		function goPageSub(pages, pageLine) {
+			var outlet_no = $("#outlet_no").val();
+			var deptno = $("#deptno option:selected").val();
+			var empno = $("#empno").val();
+			var temp = $("#empno option:selected").val();
+			
+			 if(typeof temp == "undefined"){
+				 temp = "";
+			 } 
+			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val();
+			var act_plan_cd = $("#act_plan_cd option:selected").val();
+			var prsp_status = $("#prsp_status option:selected").val();
+			 
+			var prps_str_dt = $("#prps_str_dt").val();
+			var prps_end_dt = $("#prps_end_dt").val();
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status+"&page=" + pages + "&pageLine=" + pageLine,     
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#proposalList").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		}
+	</script>

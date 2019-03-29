@@ -85,6 +85,9 @@ public class CallController {
 	@RequestMapping(value = "/callList")
 	public ModelAndView callList(Locale locale, Model model, RequestMap rtMap, HttpServletRequest req) throws DrinkException {
 		
+		logger.debug("mobile=="+req.getHeader("user-agent"));
+		
+		
 		String page = (String) rtMap.get("page");
 		String pageLine = (String) rtMap.get("pageLine");
 		

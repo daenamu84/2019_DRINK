@@ -37,12 +37,17 @@ public class ProposalService {
 	@Autowired
 	GenericMapperImpl<Object, Object> gdi;
 	
-	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List getProPosalList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
 		logger.debug("map---"+ map.getMap());
 		param = gdi.selectList("Proposal.getProPosalList",map.getMap());
+		
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+		}
 		
 		return param;
 	}

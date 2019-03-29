@@ -279,4 +279,29 @@ public class VendorService {
 		return param;
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List getProPosalLedgerList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Proposal.getProPosalLedgerList",map.getMap());
+		
+		int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List getCallLedgerList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Call.getCallLedgerList",map.getMap());
+		
+		int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+		map.put("TotalCnt", TotalCnt);
+		
+		return param;
+	}
 }

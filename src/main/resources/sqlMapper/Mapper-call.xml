@@ -227,6 +227,26 @@
     ]]> 	
     </select>
     
-    
+    <select id="getCallLedgerList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+    		  A.SCALL_NO, A.SCALL_DT, 
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00012' AND E.CMM_CD = A.SCALL_GBN_NM) SCALL_GBN_NM_M
+			 ,A.SCALL_GBN_NM
+			 ,(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00018' AND E.CMM_CD = A.SCALL_PURPOSE_CD) SCALL_PURPOSE_CD_NM
+			 ,(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00013' AND E.CMM_CD = A.SCALL_PFR_NM) SCALL_PFR_NM
+			FROM T_SALES_CALL_M A 
+			WHERE  A.VENDOR_NO = #{outlet_no}
+		]]>	
+			<if test="str_dt !=null and str_dt!='' and end_dt !=null and end_dt!=''">
+			<![CDATA[
+				AND A.SCALL_DT BETWEEN #{str_dt} AND #{end_dt}
+			]]> 
+		</if>
+		<![CDATA[
+			ORDER BY A.DATA_REG_DTM DESC
+		]]> 
+		
+    </select>
     
 </mapper>

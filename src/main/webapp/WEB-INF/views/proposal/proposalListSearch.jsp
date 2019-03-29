@@ -19,3 +19,14 @@
 		<td>${i.PRPS_STUS_CD_NM}</td>
 	</tr>
 </c:forEach>
+
+<tr>
+	<td colspan="9">
+		<div class="col-xs-3">
+			<paging:paging var="skw3" currentPageNo="${paging.page}"
+				recordsPerPage="${paging.pageLine}"
+				numberOfRecords="${paging.totalCnt}" jsFunc="goPageSub" />
+			${skw3.printBtPaging()}
+		</div>
+	</td>
+</tr>

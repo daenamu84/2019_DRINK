@@ -36,8 +36,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
+import com.drink.commonHandler.util.CommonConfig;
 import com.drink.commonHandler.util.ConfigUtils;
 import com.drink.commonHandler.util.DataMap;
+import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.service.brand.BrandService;
@@ -58,6 +60,9 @@ import com.drink.service.vendor.VendorService;
 @Controller
 public class ProposalController {
 	private static final Logger logger = LogManager.getLogger(ProposalController.class);
+	
+	@Autowired
+	private Paging paging;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -267,8 +272,10 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value = "/proPosalList")
-	public ModelAndView proPosalList(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
+	public ModelAndView proPosalList(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -303,7 +310,21 @@ public class ProposalController {
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		
 		List<DataMap> rtnProPosalMap = proposalService.getProPosalList(paramMap);
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown01","active");
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
@@ -317,8 +338,10 @@ public class ProposalController {
 	}
 	
 	@RequestMapping(value = "/proPosalListSearch")
-	public ModelAndView proPosalListSearch(Locale locale, Model model , HttpServletRequest req, RequestMap param) throws DrinkException {
+	public ModelAndView proPosalListSearch(Locale locale, Model model , RequestMap rtMap, HttpServletRequest req, RequestMap param) throws DrinkException {
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -335,7 +358,21 @@ public class ProposalController {
 		
 		logger.debug("param==" + param.toString());	
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		param.put("perPageNum", paging.getRecordsPerPage());
 		List<DataMap> rtnProPosalMap = proposalService.getProPosalList(param);
+		
+		int totalCnt = param.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("dropdown01","active");
 		
 		mav.addObject("ProPosalList", rtnProPosalMap);
 		mav.setViewName("nobody/proposal/proposalListSearch");

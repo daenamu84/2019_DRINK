@@ -69,7 +69,7 @@ public class VendorController {
 	private SessionUtils sessionUtils;
 	
 	@RequestMapping(value = "/vendorList")
-	public ModelAndView main(Locale locale, Model model, RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+	public ModelAndView vendorList(Locale locale, Model model, RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
 		
 		String page = (String) rtMap.get("page");
 		String pageLine = (String) rtMap.get("pageLine");
@@ -136,7 +136,7 @@ public class VendorController {
 	}
 	
 	@RequestMapping(value = "/vendorForm")
-	public ModelAndView memberForm(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+	public ModelAndView vendorForm(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -498,4 +498,34 @@ public class VendorController {
 		}
 	}
 	
+	
+	@RequestMapping(value = "/vendorLedger", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView vendorLedger(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("map :: " + rtMap.toString());
+		logger.debug("map2 :: " + model.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		DataMap vendorView =  vendorService.vendorView(rtMap);
+		
+		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
+		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
+		
+		List<DataMap> rtnVenderCallMap = vendorService.getCallLedgerList(rtMap);
+		int VenderCalltotalCnt = rtMap.getInt("TotalCnt");
+		
+		mav.addObject("vendorView", vendorView);
+		mav.addObject("vendorProposalList", rtnVendrMap);
+		mav.addObject("ProposaltotalCnt", ProposaltotalCnt);
+		mav.addObject("vendorCallList", rtnVenderCallMap);
+		mav.addObject("VenderCalltotalCnt", VenderCalltotalCnt);
+		
+		mav.addObject("dropdown03","active");		
+		
+		mav.addObject("vendorView", vendorView);
+		mav.setViewName("vendor/vendorLedger");
+		return mav;
+		
+	}
 }
