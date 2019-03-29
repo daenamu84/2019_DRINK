@@ -51,9 +51,6 @@
 					<a class="dropdown-item" href="javascript:alert('작업중입니다.')">거래처 원장</a>
 				</div>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="javascript:alert('작업중입니다.')">리포트1</a>
-			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">
 			<li class="nav-item ${dropdown05} dropdown">
 				<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리

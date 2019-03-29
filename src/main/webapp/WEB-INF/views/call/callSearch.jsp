@@ -11,7 +11,7 @@
 						  	 <c:forEach items="${CallList}" var="i" varStatus="status">
 								<tr>
 									<td><input type="checkbox" name="checkDeal" value="${i.SCALL_NO}"></td>
-									<td><a href="javascript:fnCopy('${i.SCALL_NO}')">${i.SCALL_GBN_NM_M}</a></td>
+									<td><a href="javascript:callView('${i.SCALL_NO}')">${i.SCALL_GBN_NM_M}</a></td>
 									<td>${i.SCALL_DT}</td>
 									<td>${i.OUTLET_NM}</td>
 									<td>${i.TEAMNM}</td>

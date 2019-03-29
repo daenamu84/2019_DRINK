@@ -38,7 +38,7 @@
             var id_check = $(this).attr("id");
             console.log(id_check);
             //$("#outlet_nm1").val(ui.item.label);
-            $("#vendor_no"+id_check).val(ui.item.code);
+            $("#vendor_no").val(ui.item.code);
         }},
 	  
 	    $('.temp')[0]);
@@ -141,7 +141,7 @@
 		var scall_gbn_nm = $("select[name='scall_gbn_nm']");
 		var vendor_no = $("input[name='vendor_no']");
 		var scall_purpose_cd = $("select[name='scall_purpose_cd']");
-		var scall_rslt_cd = $("select[name='scall_rslt_cd']");
+		var scall_rslt_cd = $("input[name='scall_rslt_cd']");
 		var scall_pfr_nm = $("select[name='scall_pfr_nm']");
 		var scall_sale_cntn = $("input[name='scall_sale_cntn']");
 		var scall_cprt_cntn = $("input[name='scall_cprt_cntn']");
@@ -236,74 +236,68 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="vendor_tel_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 날짜 </font></label>
+                                    <label for="scallStaDt" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 날짜 </label>
                                     <div class="col-md-6">
-                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off" readonly/>
+                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off"/>
+                                    	<i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
                                     </div>
                                 </div>
-                            </div>
-                           <div class="border" style="padding:15px;width:90;margin-top:30px">
-								<table class="table-borderless" style="border-spacing: 0 5px;border-collapse: separate;width:100%">
-									<thead>
-										<tr class="text-md-center">
-											<td width="10%">구분</td>
-											<td width="10%">거래처</td>
-											<td width="10%">방문목적</td>
-											<td width="10%">방문결과</td>
-											<td width="10%">선호도</td>
-											<td width="25%">상담내용</td>
-											<td width="25%">협조사항</td>
-										</tr>
-									</thead>
-									<tbody>
-										<% for(int i=1; i< 11; i++){ %>
-										<tr>
-											<td>
-												<select name="scall_gbn_nm" class="form-control" id="scall_gbn_nm<%=i%>" >
-													<c:forEach items="${scallgbNmList}" var="b">
-														<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
-													</c:forEach>
-												</select>
-											</td>
-											<td>
-												<input type="text" class="form-control temp" name="outlet_nm" id="<%=i%>">
-												<input type="hidden" class="form-control" name="vendor_no" id="vendor_no<%=i%>">
-											</td>
-											<td>
-												<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd<%=i%>" >
-													<c:forEach items="${scallpurposeCdList}" var="c">
-														<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
-													</c:forEach>
-												</select>
-											</td>
-											<td>
-												<select name="scall_rslt_cd" class="form-control" id="scall_rslt_cd<%=i%>" >
-												<option value=""></option>
-													<c:forEach items="${scallrsltcdList}" var="d">
-														<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
-													</c:forEach>
-												</select>
-											</td>
-											<td>
-												<select name="scall_pfr_nm" class="form-control" id="scall_pfr_nm<%=i%>" >
-													<c:forEach items="${scallpfrNmList}" var="e">
-														<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
-													</c:forEach>
-												</select>
-											</td>
-											<td><input type="text" class="form-control" name="scall_sale_cntn" id="scall_sale_cntn<%=i%>"></td>
-											<td><input type="text" class="form-control" name="scall_cprt_cntn" id="scall_cprt_cntn<%=i%>"></td>
-										</tr>
-										<%} %>
-									</tbody> 
-								</table>
-								<div class="text-md-right">
+                                <div class="form-group row">
+                                    <label for="scall_gbn_nm" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 구분 </label>
+                                    <div class="col-md-6">
+										<select name="scall_gbn_nm" class="form-control" id="scall_gbn_nm">
+											<c:forEach items="${scallgbNmList}" var="b">
+												<option value="${b.CMM_CD}">${b.CMM_CD_NM}</option>
+											</c:forEach>
+										</select>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="vendor_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 거래처</label>
+                                    <div class="col-md-6">
+										<input type="text" class="form-control temp" name="outlet_nm" id=1>
+										<input type="hidden" class="form-control" name="vendor_no" id="vendor_no">
+										<input type="hidden" class="form-control" name="scall_rslt_cd" id="scall_rslt_cd">
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="scall_purpose_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 방문목적</label>
+                                    <div class="col-md-6">
+										<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd" >
+											<c:forEach items="${scallpurposeCdList}" var="c">
+												<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="scall_pfr_nm" class="col-md-2 col-form-label text-md-left">선호도</label>
+                                    <div class="col-md-6">
+										<select name="scall_pfr_nm" class="form-control" id="scall_pfr_nm" >
+											<c:forEach items="${scallpfrNmList}" var="e">
+												<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="scall_sale_cntn" class="col-md-2 col-form-label text-md-left">상담내용</label>
+                                    <div class="col-md-6">
+										<input type="text" class="form-control" name="scall_sale_cntn" id="scall_sale_cntn">
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="scall_cprt_cntn" class="col-md-2 col-form-label text-md-left">협조사항</label>
+                                    <div class="col-md-6">
+										<input type="text" class="form-control" name="scall_cprt_cntn" id="scall_cprt_cntn">
+									</div>
+                                </div>
+                                <div class="text-md-right">
 								<input type="hidden" name="gubun" value="${gubun}" id="gubun">
 								<input class="btn btn-dark" type="button" value="목록" id="callList">
 								<input class="btn btn-dark" type="button" value="등록" id="callInsert">
                             	</div>
-							</div>
-							
+                            </div>
                             </form>
 						</div>
 					</div>

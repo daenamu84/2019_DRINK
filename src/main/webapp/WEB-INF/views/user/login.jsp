@@ -90,7 +90,7 @@
 <div class="container">
 	<div class="sidenav" style="background-image:URL(${pageContext.request.contextPath}/resources/image/TB_LOGO1.png);background-repeat: no-repeat;">
 		<div class="login-main-text">
-			<h2>Login or register from here to access.</h2>
+			Login from here to access.
 		</div>
 	</div>
 	<div class="main">

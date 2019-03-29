@@ -197,7 +197,7 @@ public class VendorController {
 			List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
 
 			mav.addObject("EmpList", rtnMap);
-			mav.addObject("emp_no", rtMap.get("empno"));
+			mav.addObject("emp_no", loginSession.getEmp_no());
 			mav.setViewName("nobody/vendor/vendorTeamList");
 			return mav;
 		}catch (Exception e) {
@@ -535,6 +535,9 @@ public class VendorController {
 		ModelAndView mav = new ModelAndView();
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
+		
+		rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		rtMap.put("emp_no", loginSession.getEmp_no());
 		
 		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
 		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
