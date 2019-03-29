@@ -231,7 +231,7 @@
     	]]>
     </update>
     
-    <update id="detailupdate">
+    <update id="detailUpdate">
     	<![CDATA[
     		UPDATE T_VENDOR_EMP_D
     		SET EFF_END_DT = DATE_FORMAT(now() -interval 1 day, '%Y%m%d'),
@@ -304,6 +304,7 @@
 		          A.PAYMENT_TERM, B.EMP_NO, (SELECT DEPT_NO FROM T_EMP_M D WHERE D.EMP_NO = B.EMP_NO) AS DEPT_NO
 		  FROM T_VENDOR_M A , T_VENDOR_EMP_D B
 		  WHERE A.VENDOR_NO = B.VENDOR_NO
+		  AND B.EFF_END_DT = '99991231'
 		  AND A.VENDOR_NO =#{vendor_no} 
        	]]>
     </select>
