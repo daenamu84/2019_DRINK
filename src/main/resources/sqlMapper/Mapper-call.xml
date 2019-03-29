@@ -230,7 +230,32 @@
 		AND C.SCALL_GBN_NM = #{gbnNm}
 		AND B.DEPT_NO = #{deptNo} 
 		AND C.EMP_NO = #{empNo}
-    ]]> 	
+    ]]>
+   	 	<if test="deptNo != null and deptNo !='ALL' and emp_grd_cd != '0001' and emp_grd_cd != '0002' ">
+			<![CDATA[
+				AND B.DEPT_NO = #{deptno}
+			]]> 
+		</if>
+		<if test="empNo != null and empNo != ''">
+			<![CDATA[
+				AND B.EMP_NO =  #{empno}
+			]]> 
+		</if>
+		<if test="emp_grd_cd == '0004'">
+			<![CDATA[
+				AND C.EMP_NO =#{emp_no}
+			]]> 
+		</if>
+		<if test="emp_grd_cd == '0003'">
+			<![CDATA[
+			    AND B.DEPT_NO=  #{deptno}
+			]]> 
+		</if>
+		<if test="emp_grd_cd == '0002'">
+			<![CDATA[
+			    AND B.DEPT_NO IN (SELECT DEPT_NO  FROM T_DEPT_EMP_REL_D WHERE EMP_NO =#{emp_no} AND EMP_DEPT_REL_GBN_CD ='0002')
+			]]> 			    
+		</if> 	
     </select>
     
     <select id="getCallLedgerList" resultType="DataMap">
@@ -244,7 +269,7 @@
 			FROM T_SALES_CALL_M A 
 			WHERE  A.VENDOR_NO = #{outlet_no}
 		]]>	
-			<if test="str_dt !=null and str_dt!='' and end_dt !=null and end_dt!=''">
+		<if test="str_dt !=null and str_dt!='' and end_dt !=null and end_dt!=''">
 			<![CDATA[
 				AND A.SCALL_DT BETWEEN #{str_dt} AND #{end_dt}
 			]]> 
