@@ -85,7 +85,7 @@ public class CallController {
 	@RequestMapping(value = "/callList")
 	public ModelAndView callList(Locale locale, Model model, RequestMap rtMap, HttpServletRequest req) throws DrinkException {
 		
-		logger.debug("mobile=="+req.getHeader("user-agent"));
+		
 		
 		
 		String page = (String) rtMap.get("page");
@@ -146,6 +146,26 @@ public class CallController {
 	@RequestMapping(value = "/callForm")
 	public ModelAndView callForm(Locale locale, Model model , HttpServletRequest req) throws DrinkException {
 		
+		String browser = req.getHeader("User-Agent");
+		
+		boolean browser_result = false;
+		String mobile_connect = "";
+
+		if (browser != null && !"".equals(browser)) {
+
+			if (browser.indexOf("Android") > 0) { // 안드로이드로 접속했다면 결과값 true
+				browser_result = true;
+			} else if (browser.indexOf("iPhone") > 0) { // 아이폰으로 접속했다면 결과값 true
+				browser_result = true;
+			}
+		}
+
+		if (browser_result == true) {
+			mobile_connect =  "Yes";
+		} else {
+			mobile_connect =  "No";
+		}
+
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
 		if(loginSession == null || (loginSession.getLgin_id()== null)){
@@ -184,7 +204,11 @@ public class CallController {
 		mav.addObject("scallpfrNmList", scallpfrNmMap);
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
-		mav.setViewName("call/callfrom");
+		if(mobile_connect.equals("No")) {
+			mav.setViewName("call/callfrom");
+		}else {
+			mav.setViewName("call/callMfrom");	
+		}
 		return mav;
 	}
 	

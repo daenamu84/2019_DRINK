@@ -272,75 +272,67 @@
 							<div class="container border" style="padding: 5px;">
 								<form name="Frm" method="post">
 								<div class="row"style="padding-left:20px;">
-									<table class="table-borderless ">
-										<thead>
-											<tr>
-												<td style="padding-left:20px;">팀</td>
-												<td style="padding-left:20px;" colspan="2">
-													<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
-														<option value="ALL">전체</option>
-														<c:forEach items="${deptList}" var="a">
-															<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
-														</c:forEach>
-													</select>
-													<input type="hidden" name="empno1" id="empno1"/>
-												</td>
-												<td style="padding-left:20px;">팀원</td>
-												<td style="padding-left:20px;"  id="empList">
-													
-												</td>
-												<td style="padding-left:20px;">거래처</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control" name="outlet_nm" id="outlet_nm"></td>
-											</tr>
-											<tr>
-												<td style="padding-left:20px;">기간</td>
-												<td style="padding-left:20px;">
-													<input type="text" class="dateRange" name="scallStaDt" id="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~
-												</td>
-												<td>	
-													<input type="text" class="dateRange" name="scallEndDt" id="scallEndDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
-												</td>
-												<td style="padding-left:20px;">구분</td>
-												<td style="padding-left:20px;">
-													<select name="scall_gbn_nm" class="form-control" id="scall_gbn_nm">
-														<option value="ALL">전체</option>
-														<c:forEach items="${scallgbNmList}" var="c">
-															<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
-														</c:forEach>
-													</select>
-												</td>
-												<td style="padding-left:20px;">콜 방문결과</td>
-												<td style="padding-left:20px;">
-													<select name="scall_rslt_cd" class="form-control" id="scall_rslt_cd">
-														<option value="ALL">전체</option>
-														<c:forEach items="${scallrsltcdList}" var="d">
-															<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
-														</c:forEach>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td style="padding-left:20px;">콜 방문목적</td>
-												<td style="padding-left:20px;">
-													<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd">
-														<option value="ALL">전체</option>
-														<c:forEach items="${scallpurposeCdList}" var="e">
-															<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
-														</c:forEach>
-													</select>
-												</td>
-												<td colspan="5"></td>
-											</tr>
-											<tr>
-												<td style="padding-left:20px;" colspan="7" class="text-right">
-													<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
-													<input class="btn btn-dark" type="button" value="검색" id="callSearch"/>
-													<input class="btn btn-dark" type="button" value="등록" id="callForm"/>
-													<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadCallExcel"/>
-												</td>
-											</tr>
-										</thead>
-									</table>
+										<div class="col-sm-1 my-auto">팀</div>
+										<div class="col-sm-2">
+											<select name="deptno" class="form-control" id="deptno" onchange="getTeamList();">
+												<option value="ALL">전체</option>
+												<c:forEach items="${deptList}" var="a">
+													<option value="${a.DEPT_NO}">${a.TEAMNM} </option>
+												</c:forEach>
+											</select>
+											<input type="hidden" name="empno1" id="empno1"/>
+										</div>
+										<div class="col-sm-1 my-auto">팀원</div>
+										<div class="col-sm-2"  id="empList"></div>
+										<div class="col-sm-1 my-auto">거래처</div>
+										<div class="col-sm-2">
+											<input type="text" class="form-control" name="outlet_nm" id="outlet_nm">
+										</div>
+								</div>
+								<div class="row"style="padding-left:20px;margin-top:10px">
+									<div class="col-sm-1 my-auto">기간</div>
+									<div class="col-sm-5">
+										<span> <input type="text" class="dateRange"
+											name="scallStaDt" id="scallStaDt" value="" autocomplete="off" />
+											~
+										</span> <span><input type="text" class="dateRange"
+											name="scallEndDt" id="scallEndDt" value="" autocomplete="off" /></span>
+									</div>
+									<div class="col-sm-1 my-auto">구분</div>
+									<div class="col-sm-2">
+										<select name="scall_gbn_nm" class="form-control" id="scall_gbn_nm">
+											<option value="ALL">전체</option>
+											<c:forEach items="${scallgbNmList}" var="c">
+												<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="row"style="padding-left:20px;margin-top:10px">
+									<div class="col-sm-1 my-auto">방문목적</div>
+									<div class="col-sm-2">
+										<select name="scall_purpose_cd" class="form-control" id="scall_purpose_cd">
+											<option value="ALL">전체</option>
+											<c:forEach items="${scallpurposeCdList}" var="e">
+												<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="col-sm-1 my-auto">방문결과</div>
+									<div class="col-sm-2">
+										<select name="scall_rslt_cd" class="form-control" id="scall_rslt_cd">
+											<option value="ALL">전체</option>
+											<c:forEach items="${scallrsltcdList}" var="d">
+												<option value="${d.CMM_CD}">${d.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="col-sm-5">
+										<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
+										<input class="btn btn-dark" type="button" value="검색" id="callSearch"/>
+										<input class="btn btn-dark" type="button" value="등록" id="callForm"/>
+										<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadCallExcel"/>
+									</div>
 								</div>
 								</form>
 							</div>
