@@ -511,6 +511,7 @@ public class CallController {
 		
 		mav.addObject("deptMngList", rtnMngMap);
 		
+		mav.addObject("dropdown02","active");
 		mav.setViewName("call/callCalendar");
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
