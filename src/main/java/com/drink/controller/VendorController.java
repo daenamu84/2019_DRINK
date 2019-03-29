@@ -487,6 +487,7 @@ public class VendorController {
 		
 		List<DataMap> sgmtMap = vendorService.VendorSegList(rtMap);
 		
+		mav.addObject("_pVendor_sgmt_divs_cd", rtMap.get("_pVendor_sgmt_divs_cd"));
 		mav.addObject("gubun", rtMap.get("gubun"));
 		mav.addObject("sgmtMap", sgmtMap);
 		

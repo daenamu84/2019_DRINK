@@ -220,11 +220,12 @@
 			var market_divs_cd = "";
 			
 			market_divs_cd = $("#market_divs_cd option:selected").val();
+			var  vendor_sgmt_divs_cd= "${data.VENDOR_SGMT_DIVS_CD}";
 			var gubun="new";
 			$.ajax({
 				type : "POST",
 				url : "/VendorSegList",
-				data : {"market_divs_cd" : market_divs_cd, "gubun" : gubun},
+				data : {"market_divs_cd" : market_divs_cd, "gubun" : gubun,"_pVendor_sgmt_divs_cd":vendor_sgmt_divs_cd},
 				dataType : "html",
 				traditional : true,
 				success : function(args) {
@@ -287,6 +288,7 @@
 	    }).embed(element_wrap);
 	    element_wrap.style.display = 'block';
 	}
+	
 	</script>
 	
 	<div class="container " style="max-width:100%;">
@@ -627,9 +629,14 @@
 	$("#wholesale_vendor_area").show(); 
 	</c:if>
 	
-	<%if(request.getParameter("gubun") !=null){ %>
-	getTeamList();
-	<%}%>
+	$(document).ready(function(){
+		<%if(request.getParameter("gubun") !=null){ %>
+		getTeamList();
+		<%}%>
+		ajaxFlag = false;
+		getSegment();
+		
+	});
 	
 	<c:if test="${returnCode eq '0000'}">
  		alert("수정 하였습니다.");

@@ -13,7 +13,7 @@
 						  		<option value="ALL">전체</option>
 								</c:if>
 								<c:forEach items="${sgmtMap}" var="c">
-									<option value="${c.CMM_CD}">${c.CMM_CD_NM} </option>
+									<option value="${c.CMM_CD}" <c:if test="${c.CMM_CD eq _pVendor_sgmt_divs_cd}">selected</c:if>>${c.CMM_CD_NM} </option>
 								</c:forEach>
 							</select>
 						 
