@@ -503,12 +503,17 @@ public class VendorController {
 	@RequestMapping(value = "/vendorLedger", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView vendorLedger(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		
 		logger.debug("map :: " + rtMap.toString());
 		logger.debug("map2 :: " + model.toString());
 		
 		ModelAndView mav = new ModelAndView();
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
+		
+		rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		rtMap.put("emp_no", loginSession.getEmp_no());
 		
 		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
 		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
