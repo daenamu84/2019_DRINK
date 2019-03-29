@@ -293,10 +293,10 @@
 									<div class="col-sm-1 my-auto">기간</div>
 									<div class="col-sm-5">
 										<span> <input type="text" class="dateRange"
-											name="scallStaDt" id="scallStaDt" value="" autocomplete="off" />
+											name="scallStaDt" id="scallStaDt" value="" autocomplete="off" readonly/>
 											~
 										</span> <span><input type="text" class="dateRange"
-											name="scallEndDt" id="scallEndDt" value="" autocomplete="off" /></span>
+											name="scallEndDt" id="scallEndDt" value="" autocomplete="off" readonly/></span>
 									</div>
 									<div class="col-sm-1 my-auto">구분</div>
 									<div class="col-sm-2">

@@ -238,7 +238,7 @@
                                 <div class="form-group row">
                                     <label for="vendor_tel_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 날짜 </font></label>
                                     <div class="col-md-6">
-                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>
+                                    	<input type="text" class="dateRange" name="scallStaDt" value="" autocomplete="off" readonly/>
                                     </div>
                                 </div>
                             </div>
