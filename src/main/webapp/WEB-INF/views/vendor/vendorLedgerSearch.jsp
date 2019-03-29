@@ -54,11 +54,11 @@
 		  		<td class="border">우편번호</td>
 		  		<td class="border" colspan="3">${vendorView.VENDOR_ZIP_NO}</td>
 		  		<td class="border">거래처상태</td>
-		  		<td class="border">${vendorView.VENDOR_ADDR}</td>
+		  		<td class="border">${vendorView.VENDOR_STAT_CD_NM}</td>
 		  	</tr>
 		  	<tr>
 		  		<td class="border">주소</td>
-		  		<td class="border" colspan="5">${vendorView.VENDOR_RRNO}</td>
+		  		<td class="border" colspan="5">${vendorView.VENDOR_ADDR}</td>
 		  	</tr>
 		  </tbody>
 		</table>
@@ -81,14 +81,15 @@
 	  <tbody>
 	  	<c:forEach items="${vendorProposalList}" var="i" varStatus="status">
 		  	<tr class="bg-white text-body">
-		  		<td >거래처명</td>
-		  		<td >xxxx</td>
-		  		<td >관리팀</td>
-		  		<td >xxxx</td>
-		  		<td >관리담당자</td>
-		  		<td >xxxx</td>
-		  		<td >xxxx</td>
-		  		<td >xxxx</td>
+		  		<td >${i.IDPRPS_ID }</td>
+		  		<td >${i.TEAMNM }</td>
+		  		<td >${i.EMP_NM }</td>
+		  		<td >${i.PRPS_STR_DT }</td>
+		  		<td >${i.PRPS_END_DT }</td>
+		  		<td >${i.PRPS_NM }</td>
+		  		<td >${i.VM_NM }</td>
+		  		<td >${i.PRPS_PURPOSE_CD_NM }</td>
+		  		<td >${i.ACT_PLAN_CD_NM }</td>
 		  	</tr>
 	  	</c:forEach>
 	  </tbody>
