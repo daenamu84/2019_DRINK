@@ -8,6 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
 
+
 <script>
 var ajaxFlag = false;
 
@@ -24,6 +25,7 @@ var ajaxFlag = false;
 			var _iSubBrandId = $("#iSubBrandId option:selected").val();
 			var _iProdMlCd = $("#iProdMlCd option:selected").val();
 			var _iUseYn = $("#iUseYn option:selected").val();
+			var _caserate_amt = $("#caserate_amt").val();
 
 			if(_iBrandId =="" || _iBrandId == undefined){
 				alert("브랜드를 선택하세요.");
@@ -41,11 +43,17 @@ var ajaxFlag = false;
 				ajaxFlag=false;
 				return;
 			}
+			if(_caserate_amt =="" || _caserate_amt == undefined){
+				alert("case rate을 입력하세요");
+				ajaxFlag=false;
+				return;
+			}
+			
 			
 			$.ajax({      
 			    type:"POST",  
 			    url:"/productInsert",      
-			    data: JSON.stringify({"brandId":_iBrandId,"subBrandId":_iSubBrandId,"prodMlCd":_iProdMlCd ,"useYn":_iUseYn}),
+			    data: JSON.stringify({"brandId":_iBrandId,"subBrandId":_iSubBrandId,"prodMlCd":_iProdMlCd ,"useYn":_iUseYn,"caserate_amt":_caserate_amt}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
 			    traditional:true,
@@ -120,6 +128,7 @@ var ajaxFlag = false;
 		var _uProdNo = $("#uProdNo").val();
 		var _uProdMlCd = $("#uProdMlCd option:selected").val();
 		var _uUseYn = $("#uUseYn option:selected").val();
+		var _ucaserate_amt = $("#ucaserate_amt").val();
 		
 		if(_uProdNo=="" || _uProdNo== undefined){
 			alert("제품번호가 없습니다.  다시 시도해주세요.");
@@ -137,13 +146,17 @@ var ajaxFlag = false;
 			 ajaxFlag=false;
 			 return;
 		}
-		
+		if(_ucaserate_amt =="" || _ucaserate_amt == undefined){
+			alert("case rate을 입력하세요");
+			ajaxFlag=false;
+			return;
+		}
 		
 		
 		$.ajax({      
 		    type:"POST",  
 		    url:"/productUpdate",      
-		    data: JSON.stringify({"prodNo":_uProdNo,"prodMlCd":_uProdMlCd ,"useYn":_uUseYn}),
+		    data: JSON.stringify({"prodNo":_uProdNo,"prodMlCd":_uProdMlCd ,"useYn":_uUseYn,"caserate_amt":_ucaserate_amt}),
 		    dataType:"json",
 		    contentType:"application/json;charset=UTF-8",
 		    traditional:true,
@@ -285,6 +298,7 @@ var ajaxFlag = false;
 			      <th scope="col">브랜드</th>
 			      <th scope="col">서브브랜드</th>
 			      <th scope="col">용량</th>
+			      <th scope="col">CASE RATE</th>
 			      <th scope="col">주류유형</th>
 			      <th scope="col">당사/경쟁사</th>
 			      <th scope="col">활성화</th>
@@ -343,6 +357,12 @@ var ajaxFlag = false;
 								    <option value="Y" selected>Y</option>
 								    <option value="N">N</option>
 							  </select>
+							</div>
+						</div>
+						<div class="row"  style="padding: 5px 0px;">	
+							<div class="col-sm-3">CASE RATE</div>
+							<div class="col-sm-4">
+								<input type="number"  name="caserate_amt" id="caserate_amt"/>
 							</div>
 						</div>
 					</div>

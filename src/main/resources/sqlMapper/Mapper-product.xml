@@ -10,8 +10,8 @@
     <update id="productInsert">
     	<![CDATA[
 		INSERT INTO T_PROD_M
-			(BRAND_ID, SUB_BRAND_ID, PROD_ML_CD, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
-			VALUES (#{brandId}, #{subBrandId}, #{prodMlCd}, #{useYn},  now(), #{regId}, now(), #{regId})    	
+			(BRAND_ID, SUB_BRAND_ID, PROD_ML_CD, CASERATE_AMT, USE_YN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES (#{brandId}, #{subBrandId}, #{prodMlCd}, #{caserate_amt}, #{useYn},  now(), #{regId}, now(), #{regId})    	
     	]]>
     </update>
     
@@ -26,6 +26,7 @@
     					SB.LIQ_KD_CD,
     					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00014' AND E.CMM_CD = B.ORCO_BRAND_YN) AS ORCO_BRAND_NM,
     					B.ORCO_BRAND_YN, 
+    					P.CASERATE_AMT,
     					P.USE_YN
 			FROM T_PROD_M P, T_BRAND_M B, T_SUB_BRAND_M SB
 			WHERE P.BRAND_ID = B.BRAND_ID
@@ -49,6 +50,7 @@
 	    					SB.LIQ_KD_CD,
 	    					(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00014' AND E.CMM_CD = B.ORCO_BRAND_YN) AS ORCO_BRAND_NM,
 	    					B.ORCO_BRAND_YN, 
+	    					P.CASERATE_AMT,
 	    					P.USE_YN
 				FROM T_PROD_M P, T_BRAND_M B, T_SUB_BRAND_M SB
 				WHERE P.BRAND_ID  = #{BrandId}
@@ -62,7 +64,7 @@
 
     <select id="getProductDetail" resultType="DataMap">
     	<![CDATA[
-    		SELECT P.PROD_NO, P.BRAND_ID, B.BRAND_NM, SB.SUB_BRAND_ID, SB.SUB_BRAND_NM, P.PROD_ML_CD, SB.LIQ_KD_CD, B.ORCO_BRAND_YN, P.USE_YN
+    		SELECT P.PROD_NO, P.BRAND_ID, B.BRAND_NM, SB.SUB_BRAND_ID, SB.SUB_BRAND_NM, P.PROD_ML_CD, SB.LIQ_KD_CD, B.ORCO_BRAND_YN,P.CASERATE_AMT, P.USE_YN
 			FROM T_PROD_M P, T_BRAND_M B, T_SUB_BRAND_M SB
 			WHERE P.BRAND_ID = B.BRAND_ID
 			AND P.SUB_BRAND_ID = SB.SUB_BRAND_ID
@@ -76,6 +78,7 @@
     	<![CDATA[
 		UPDATE T_PROD_M
 			SET PROD_ML_CD = #{prodMlCd},
+				CASERATE_AMT = #{caserate_amt},
 				  USE_YN = #{useYn},
 				  DATA_UPD_DTM = NOW(),
     			  DATA_UPD_ID = #{regId}

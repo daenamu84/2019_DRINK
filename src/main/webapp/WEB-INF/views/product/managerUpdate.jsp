@@ -41,4 +41,10 @@
 							  </select>
 							</div>
 						</div>
+						<div class="row">	
+							<div class="col-sm-3">CASE RATE</div>
+							<div class="col-sm-4">
+								<input type="number"  name="ucaserate_amt" id="ucaserate_amt" value="${productList.CASERATE_AMT}"/>
+							</div>
+						</div>
 					</div>

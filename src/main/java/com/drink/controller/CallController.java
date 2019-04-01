@@ -544,6 +544,7 @@ public class CallController {
 				dayParam.put("day", paramMap.getString("yearDt")+dm.get("SUN"));
 				dayParam.put("empNo", rtMap.getString("empNo"));
 				dayParam.put("deptNo", rtMap.getString("deptNo"));
+				dayParam.put("emp_no", loginSession.getEmp_no());
 				dayParam.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 				List<DataMap> dayPView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLAN", dayPView);

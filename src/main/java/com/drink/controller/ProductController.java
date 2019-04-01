@@ -148,6 +148,7 @@ public class ProductController {
 		dt.put("subBrandId", vts.get("subBrandId"));
 		dt.put("prodMlCd", vts.get("prodMlCd"));
 		dt.put("useYn", vts.get("useYn"));
+		dt.put("caserate_amt", vts.get("caserate_amt"));
 		dt.put("regId", loginSession.getLgin_id());
 		
 		productService.productInsert(dt);
@@ -195,6 +196,7 @@ public class ProductController {
 		RequestMap dt = new RequestMap();
 		dt.put("prodNo", vts.get("prodNo"));
 		dt.put("prodMlCd", vts.get("prodMlCd"));
+		dt.put("caserate_amt", vts.get("caserate_amt"));
 		dt.put("useYn", vts.get("useYn"));
 		dt.put("regId", loginSession.getLgin_id());
 		

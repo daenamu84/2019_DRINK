@@ -130,17 +130,6 @@
 			var market_divs_cd = $("#market_divs_cd").val();
 			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd").val();
 			
-			var budg_amt = $("#budg_amt").val();
-			var base_prps_amt = $("#base_prps_amt").val();
-			var last_prps_amt = $("#last_prps_amt").val();
-			if (last_prps_amt == "") {
-				alert("최종제안금액  입력하세요");
-				ajaxFlag = false;
-				return;
-			}
-			
-			var caserate_amt = $("#caserate_amt").val();
-			
 			$('textarea[name="prps_cntn"]').html($('.summernote').summernote("code"));
 			
 			var prps_cntn = $('textarea[name="prps_cntn"]').html();
@@ -159,7 +148,7 @@
 			 $.ajax({      
 				    type:"POST",  
 				    url:url,      
-				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"budg_amt":budg_amt,"base_prps_amt":base_prps_amt,"last_prps_amt":last_prps_amt,"caserate_amt":caserate_amt,"prps_cntn":prps_cntn }),
+				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"prps_cntn":prps_cntn }),
 				    dataType:"json",
 				    contentType:"application/json;charset=UTF-8",
 				    traditional:true,
@@ -208,12 +197,15 @@
 		
 	});
 	
- 	function setVendorId(outlet_no, outlet_nm, wholesale_vendor_no,market_divs_cd,vendor_sgmt_divs_cd){
+ 	function setVendorId(outlet_no, outlet_nm, wholesale_vendor_no,market_divs_cd,vendor_sgmt_divs_cd, markget_nm, sgmt_nm){
 		$("#outlet_no").val(outlet_no);
 		$("#outlet_nm").val(outlet_nm);
 		$("#wholesale_vendor_no").val(wholesale_vendor_no);
 		$("#market_divs_cd").val(market_divs_cd);
 		$("#vendor_sgmt_divs_cd").val(vendor_sgmt_divs_cd);
+		$("#markget_nm").val(markget_nm);
+		$("#sgmt_nm").val(sgmt_nm);
+		
 		$("#popLayer").modal("hide");
 
 	}
@@ -256,7 +248,7 @@
                                 	
                                 </div>
                                 <div class="form-group row">
-                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">제안목적</label>
+                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">행사목적</label>
                                     <div class="col-md-4">
                                     	<select name="prps_purpose_cd" class="form-control" id="prps_purpose_cd">
                                     		<option value="">선택하세요</option>
@@ -276,7 +268,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">제안기간</label>
+                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">행사기간</label>
                                     <div class="col-md-4">
                                     	<div style="float:left"><input type="text" class="dateRange" name="prps_str_dt" id="prps_str_dt" value="${data.PRPS_STR_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~</div>
                                     	<div ><input type="text" class="dateRange" name="prps_end_dt" id="prps_end_dt" value="${data.PRPS_END_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></div>
@@ -291,23 +283,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">예산금액</label>
+                                    <label for="market" class="col-md-2 col-form-label text-md-left">Market</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="budg_amt" class="form-control" name="budg_amt"   value="${data.BUDG_AMT}">
+                                    	<input type="text" id="markget_nm" class="form-control" name="markget_nm" readonly >
                                     </div>
-                                    <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">제안금액</label>
+                                    <label for="Segmentation" class="col-md-2 col-form-label text-md-left">Segmentation</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="base_prps_amt" class="form-control" name="base_prps_amt"  value="${data.BASE_PRPS_AMT}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">최종금액</label>
-                                    <div class="col-md-4">
-                                    	<input type="text" id="last_prps_amt" class="form-control" name="last_prps_amt"   value="${data.LAST_PRPS_AMT}">
-                                    </div>
-                                    <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">CASERATE</label>
-                                    <div class="col-md-4">
-                                    	<input type="text" id="caserate_amt" class="form-control" name="caserate_amt"   value="${data.CASERATE_AMT}">
+                                    	<input type="text" id="sgmt_nm" class="form-control" name="sgmt_nm" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -373,9 +355,9 @@
 							<c:forEach items="${vendorList}" var="i" varStatus="status">
 								<tr>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD},'${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}');" class="text-decoration-none">${i.OUTLET_NM}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}','${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.OUTLET_NM}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>

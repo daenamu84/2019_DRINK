@@ -216,17 +216,23 @@
 	});
 	
 	var popListObj = null;
+	var temp_cnt = null;
 	$(document).on("click","input[id='productInsertLayer']",function() {
 		$("#popLayer").modal("show");
 		popListObj = this;
 	});
 
 	
-	
-	function setValueDate(arg1, arg2){
+	function temp (a){
+		temp_cnt = a;
+	}
+	function setValueDate(arg1, arg2,arg3){
+		
 		var obj = popListObj;
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
+		$('input[name="caserate_amt"]').eq(temp_cnt).val(arg3);
+		
 		$("#popLayer").modal("hide");
 	}
 </script>
@@ -272,15 +278,18 @@
 			</div>
 		</div>
 		<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
-			<div class="title"> 제안제품</div> 
+			<div class="title"> 인센티브</div> 
 			<table class="table">
 			  <thead>
 			    <tr>
-			      <th scope="col" width="30%">제품명</th>
-			      <th scope="col" width="20%">출고수량</th>
-			      <th scope="col" width="20%">출고단가</th>
-			      <th scope="col" width="20%">할인률</th>
-			      <th scope="col" width="10%">최종출고금액</th>
+			      <th scope="col">제품명</th>
+			      <th scope="col">제품CASE RATE</th>
+			      <th scope="col">출고수량</th>
+			      <th scope="col">CASE(9L)</th>
+			      <th scope="col">STD CASE RATE</th>
+			      <th scope="col">인센티브 병당가격</th>
+			      <th scope="col">인센티브</th>
+			      <th scope="col">VS STD</th>
 			    </tr>
 			  </thead>
 			  <tbody id="view1">
@@ -291,10 +300,43 @@
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
-			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer" onClick="temp(0)"/>
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td>
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer" onClick="temp(1)"/>
+			  			</span>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
+			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
+			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  	</tr>
+			  	<tr>
+			  		<td>
+			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
+			  			</span>
+			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
+			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer" onClick="temp(2)"/>
+			  			</span>
+			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
+			  		</td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
@@ -310,6 +352,7 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
@@ -325,36 +368,7 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
-			  			</span>
-			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
-			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
-			  			</span>
-			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
-			  		</td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
-			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
-			  			</span>
-			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
-			  			<input class="btn btn-dark" type="button" value="검색" id="productInsertLayer"/>
-			  			</span>
-			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
-			  		</td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
 			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
 			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
@@ -373,6 +387,7 @@
 				  			</span>
 				  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="${i.PROD_NO_SITEM_NM}">
 				  		</td>
+				  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly value="${i.CASERATE_AMT}"/></td>
 				  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value="${i.DELIVERY_CNT}"></td>
 				  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value="${i.DELIVERY_AMT}"></td>
 				  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value="${i.DC_RATE}"></td>
@@ -488,7 +503,7 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색1</h5>
+					<h5 class="modal-title" id="exampleModalLabel">TB 제품검색</h5>
 					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span
 						aria-hidden="true">&times;</span></a>
 				</div>

@@ -6,7 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:forEach items="${productList}" var="i" varStatus="status">
 	<tr>
@@ -14,6 +14,11 @@
 		<td>${i.BRAND_NM}</td>
 		<td>${i.SUB_BRAND_NM}</td>
 		<td><a href="javascript:productDetail('${i.PROD_NO}');"class="text-decoration-none">${i.PROD_ML_NM}</a></td>
+		<td>
+			<c:if test="${i.CASERATE_AMT ne null }">
+			<fmt:formatNumber value="${i.CASERATE_AMT}" pattern="#,###" />원
+			</c:if>
+		</td>
 		<td>${i.LIQ_KD_NM}</td>
 		<td>${i.ORCO_BRAND_NM}</td>
 		<td>${i.USE_YN}</td>

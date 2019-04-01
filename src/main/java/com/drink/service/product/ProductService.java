@@ -47,7 +47,9 @@ public class ProductService {
 		if(map.getString("useYn").equals("")){
 			throw new DrinkException(new String[]{"messageError","활성화는 필수 값 입니다."});
 		}
-		
+		if(map.getString("caserate_amt").equals("")){
+			throw new DrinkException(new String[]{"messageError","caserate는  필수 값 입니다."});
+		}
 		logger.debug("service :: " + map.toString());
 		int rtCnt = gdi.update("Product.productInsert", map.getMap());
 		if(rtCnt < 1){
