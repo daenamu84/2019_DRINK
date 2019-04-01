@@ -232,8 +232,13 @@
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
 		$('input[name="caserate_amt"]').eq(temp_cnt).val(arg3);
-		
 		$("#popLayer").modal("hide");
+	}
+	
+	function case9l_calcul (index, d_cnt){
+		var v_case9l= null;
+		v_case9l = Math.ceil(d_cnt.value / 12);
+		$('input[name="case9l"]').eq(index).val(v_case9l);
 	}
 </script>
 	
@@ -305,8 +310,8 @@
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(0,this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
@@ -321,8 +326,8 @@
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(1, this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l"  readonly></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
@@ -337,8 +342,8 @@
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
+			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(2, this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
 			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
 			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
 			  	</tr>
