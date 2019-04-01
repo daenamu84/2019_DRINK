@@ -54,17 +54,17 @@
 		  		<td class="border">우편번호</td>
 		  		<td class="border" colspan="3">${vendorView.VENDOR_ZIP_NO}</td>
 		  		<td class="border">거래처상태</td>
-		  		<td class="border">${vendorView.VENDOR_ADDR}</td>
+		  		<td class="border">${vendorView.VENDOR_STAT_CD_NM}</td>
 		  	</tr>
 		  	<tr>
 		  		<td class="border">주소</td>
-		  		<td class="border" colspan="5">${vendorView.VENDOR_RRNO}</td>
+		  		<td class="border" colspan="5">${vendorView.VENDOR_ADDR}</td>
 		  	</tr>
 		  </tbody>
 		</table>
 </div>
 <div class="row" style="overflow-x:auto;overflow-y: hidden;padding: 0 15px;margin-top: 15px;">
-	<div class="title">프로포셜 리스트 (총 56회)</div> 
+	<div class="title">프로포셜 리스트 (총 ${ProposaltotalCnt}회)</div> 
 	<table class="table table-bordered table-dark"" style="width:100%;">
 	  <thead >
 	    <tr class="">
@@ -81,21 +81,21 @@
 	  <tbody>
 	  	<c:forEach items="${vendorProposalList}" var="i" varStatus="status">
 		  	<tr class="bg-white text-body">
-		  		<td >거래처명</td>
-		  		<td >xxxx</td>
-		  		<td >관리팀</td>
-		  		<td >xxxx</td>
-		  		<td >관리담당자</td>
-		  		<td >xxxx</td>
-		  		<td >xxxx</td>
-		  		<td >xxxx</td>
+		  		<td >${i.PRPS_ID }</td>
+		  		<td >${i.TEAMNM }</td>
+		  		<td >${i.EMP_NM }</td>
+		  		<td >${i.PRPS_STR_DT }~${i.PRPS_END_DT }</td>
+		  		<td >${i.PRPS_NM }</td>
+		  		<td >${i.VD_NM }</td>
+		  		<td >${i.PRPS_PURPOSE_CD_NM }</td>
+		  		<td >${i.ACT_PLAN_CD_NM }</td>
 		  	</tr>
 	  	</c:forEach>
 	  </tbody>
 	</table>
 </div>
 <div class="row" style="overflow-x:auto;overflow-y: hidden;padding: 0 15px;margin-top: 15px;">
-	<div class="title">콜 리스트 (총 102회)</div> 
+	<div class="title">콜 리스트 (총 ${VenderCalltotalCnt }회)</div> 
 	<table class="table table-bordered table-dark"" style="width:100%;">
 	  <thead >
 	    <tr class="">
@@ -106,12 +106,14 @@
 	    </tr>
 	  </thead>
 	  <tbody>
-	  	<tr class="bg-white text-body">
-	  		<td >거래처명</td>
-	  		<td >xxxx</td>
-	  		<td >관리팀</td>
-	  		<td >xxxx</td>
-	  	</tr>
+		  <c:forEach items="${vendorCallList}" var="i" varStatus="status">
+		  	<tr class="bg-white text-body">
+		  		<td >${i.SCALL_DT }</td>
+		  		<td >${i.SCALL_PURPOSE_CD_NM }</td>
+		  		<td >${i.SCALL_RSLT_CD_NM }</td>
+		  		<td ></td>   
+		  	</tr>
+		  </c:forEach>
 	  </tbody>
 	</table>
 </div>

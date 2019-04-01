@@ -323,7 +323,7 @@
 				A.PRPS_REG_DT, A.PRPS_STUS_CD, A.VENDOR_SGMT_DIVS_CD
 			FROM T_PROPOSAL_M A , T_EMP_M B
 			WHERE A.EMP_NO = B.EMP_NO
-			AND A.OUTLET_NO = #{outlet_no}
+			AND A.OUTLET_NO = #{vendor_no}
 			]]> 
 			<if test="str_dt !=null and str_dt!='' and end_dt !=null and end_dt!=''">
 			<![CDATA[

@@ -48,7 +48,7 @@
 				<div class="dropdown-menu" aria-labelledby="dropdown03">
 					<a class="dropdown-item" href="/vendorList">거래처목록</a> 
 					<a class="dropdown-item" href="/ProdMenuList">거래처메뉴</a> 
-					<a class="dropdown-item" href="javascript:alert('작업중입니다.')">거래처 원장</a>
+					<a class="dropdown-item" href="/vendorLedger">거래처 원장</a>
 				</div>
 			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">
