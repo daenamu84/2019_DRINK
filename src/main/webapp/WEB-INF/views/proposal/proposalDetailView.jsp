@@ -8,6 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <script>
 var ajaxFlag = false;
@@ -168,28 +169,97 @@ var ajaxFlag = false;
 				<div class="title"><b>STEP02. PROPOSAL 제품/지원품목</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
-						<table class="table">
+						인센티브
+						<table class="table border">
 						  <thead>
 						    <tr>
-						      <th scope="col" width="20%">제품명</th>
-						      <th scope="col" width="10%">구분</th>
-						      <th scope="col" width="15%">출고수량</th>
-						      <th scope="col" width="20%">출고단가</th>
-						      <th scope="col" width="15%">할인률</th>
-						      <th scope="col" width="20%">최종출고금액</th>
+						      <th scope="col" style="width:auto">제품명</th>
+						      <th scope="col" width="10%">제품CASE RATE</th>
+						      <th scope="col" width="7%">출고수량</th>
+						      <th scope="col" width="5%">CASE(9L)</th>
+						      <th scope="col" width="10%">STD CASE RATE</th>
+						      <th scope="col" width="20%">인센티브 병당가격</th>
+						      <th scope="col" width="10%">인센티브</th>
+						      <th scope="col" width="10%">VS STD</th>
 						    </tr>
 						  </thead>
-						  <tbody id="view1">
-								<c:forEach items="${ProPosalDList}" var="i" varStatus="status">
+						  <tbody>
+								<c:forEach items="${ProPosalIList}" var="i" varStatus="status">
 									<tr>
-										<td>${i.PROD_NO_SITEM_NM}</td>
-										<td>${i.PROD_SITEM_DIVS_NM}</td>
+										<td>${i.PROD_NO_SITEM_NM2}</td>
+										<td><fmt:formatNumber value="${i.CASERATE_AMT}" pattern="#,###" />원</td>
 										<td>${i.DELIVERY_CNT}</td>
-										<td>${i.DELIVERY_AMT}</td>
-										<td>${i.DC_RATE}</td>
-										<td>${i.LAST_DELIVER_AMT}</td>
-								</tr>
+										<td><fmt:formatNumber value="${i.CASE9L}"/></td>
+										<td><fmt:formatNumber value="${i.STD_CASE}" pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${i.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${i.INCENTIVE_AMT}" pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${i.VS_STD}" pattern="#,###" />원</td>
+									</tr>
 								</c:forEach>
+						  </tbody>
+						</table>
+						<table class="table border">
+							<tr>
+								<th scope="col" style="width: auto">SUBTOTAL</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.CASERATE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="7%">${ProPosalISum.DELIVERY_CNT}</th>
+								<th scope="col" width="5%"><fmt:formatNumber value="${ProPosalISum.CASE9L}" /></th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.STD_CASE}" pattern="#,###" />원</th>
+								<th scope="col" width="20%"><fmt:formatNumber value="${ProPosalISum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.INCENTIVE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.VS_STD}" pattern="#,###" />원</th>
+							</tr>
+						</table><br/>
+						A&P
+						<table class="table border">
+						  <thead>
+						    <tr>
+						      <th scope="col"  width="30%">품목명</th>
+						      <th scope="col"  width="10%">개당 금액</th>
+						      <th scope="col"  width="10%">수량</th>
+						      <th scope="col"  width="20%">총금액</th>
+						      <th scope="col"  width="30%">REMARK</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+								<c:forEach items="${ProPosalAList}" var="j" varStatus="status">
+									<tr>
+										<td>${j.PROD_NO_SITEM_NM}</td>
+										<td><fmt:formatNumber value="${j.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</td>
+										<td>${j.DELIVERY_CNT}</td>
+										<td><fmt:formatNumber value="${j.INCENTIVE_AMT}"  pattern="#,###" />원</td>
+										<td>${j.RMK_CNTN}</td>
+									</tr>
+								</c:forEach>
+						  </tbody>
+						</table>
+						<table class="table border">
+							<tr>
+								<th scope="col" style="width: auto">SUBTOTAL</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalASum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="10%">${ProPosalASum.DELIVERY_CNT}</th>
+								<th scope="col" width="20%"><fmt:formatNumber value="${ProPosalASum.INCENTIVE_AMT}" />원</th>
+								<th scope="col" width="30%">&nbsp;</th>
+							</tr>
+						</table>
+						<table class="table border">
+						  <thead>
+						    <tr>
+						      <th scope="col"  width="30%">TTL AMOUNT</th>
+						      <th scope="col"  width="10%">VOLUME</th>
+						      <th scope="col"  width="10%">인센티브</th>
+						      <th scope="col"  width="20%">A&P</th>
+						      <th scope="col"  width="30%">AVERAGE</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+								<tr>
+									<td>TOTAL</td>
+									<td>${ProPosalTTLSum.CASE9L}</td>
+									<td><fmt:formatNumber value="${ProPosalTTLSum.INCENTIVE_AMT}"  pattern="#,###" />원</td>
+									<td><fmt:formatNumber value="${ProPosalTTLSum.A_INCENTIVE_AMT}"  pattern="#,###" />원</td>
+									<td><fmt:formatNumber value="${ProPosalTTLSum.AVERAGE}"  pattern="#,###" />원</td>
+								</tr>
 						  </tbody>
 						</table>
 					</div>
@@ -202,7 +272,7 @@ var ajaxFlag = false;
 				</div>		
 			</div>
 			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title"><b>STEP03. PROPOSAL 제품/지원품목 출고계획 등록</b></div> 
+				<div class="title"><b>STEP03. PROPOSAL 인센티브 출고계획 등록</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">
@@ -210,7 +280,7 @@ var ajaxFlag = false;
 						    <tr>
 						      <th class="border text-center" scope="col" width="60%">제품명(제안수량)</th>
 						      <th class="border text-center" scope="col" width="20%">출고월</th>
-						      <th class="border text-center" scope="col" width="20%">출고계획수량</th>
+						      <th class="border text-center" scope="col" width="20%">CASE 출고계획수량</th>
 						    </tr>
 						  </thead>
 						  <tbody>
@@ -218,7 +288,7 @@ var ajaxFlag = false;
 							  	<tr>
 							  		<td class="border">
 							  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
-										    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+										    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.CASE9L})</span>
 										</c:if>
 										<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
 										    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
@@ -253,7 +323,7 @@ var ajaxFlag = false;
 				</div>	
 			</div>
 			<div id="monthActualtView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title">PROPOSAL 제품/지원품목 ACTUAL 등록</div> 
+				<div class="title">PROPOSAL 인센티브 ACTUAL 등록</div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">
@@ -261,7 +331,7 @@ var ajaxFlag = false;
 						    <tr>
 						      <th class="border text-center" scope="col" width="40%">제품명(제안수량)</th>
 						      <th class="border text-center" scope="col" width="15%">출고월</th>
-						      <th class="border text-center" scope="col" width="15%">출고계획수량</th>
+						      <th class="border text-center" scope="col" width="15%">CASE 출고계획수량</th>
 						      <th class="border text-center" scope="col" width="15%">실출고수량</th>
 						      <th class="border text-center" scope="col" width="15%">비고</th>
 						    </tr>

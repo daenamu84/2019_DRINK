@@ -64,33 +64,57 @@
 		</table>
 </div>
 <div class="row" style="overflow-x:auto;overflow-y: hidden;padding: 0 15px;margin-top: 15px;">
-	<div class="title">프로포셜 리스트 (총 ${ProposaltotalCnt}회)</div> 
-	<table class="table table-bordered table-dark"" style="width:100%;">
+	<div class="title">인센티브 ACTUAL 리스트 </div> 
+	<table class="table table-bordered" style="width:100%;">
 	  <thead >
 	    <tr class="">
-	      <th scope="col">프로포셜 </th>
-	      <th scope="col">담당팀</th>
-	      <th scope="col">담당자</th>
-	      <th scope="col">제안기간</th>
-	      <th scope="col">제안명</th>
-	      <th scope="col">거래처</th>
-	      <th scope="col">제안목적</th>
-	      <th scope="col">액티비티계획</th>
+	       	 <th class="border text-center" scope="col" width="40%">제품명(제안수량)</th>
+		     <th class="border text-center" scope="col" width="15%">출고월</th>
+		     <th class="border text-center" scope="col" width="15%">CASE 출고계획수량</th>
+		     <th class="border text-center" scope="col" width="15%">실출고수량</th>
+		     <th class="border text-center" scope="col" width="15%">비고</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	  	<c:forEach items="${vendorProposalList}" var="i" varStatus="status">
-		  	<tr class="bg-white text-body">
-		  		<td >${i.PRPS_ID }</td>
-		  		<td >${i.TEAMNM }</td>
-		  		<td >${i.EMP_NM }</td>
-		  		<td >${i.PRPS_STR_DT }~${i.PRPS_END_DT }</td>
-		  		<td >${i.PRPS_NM }</td>
-		  		<td >${i.VD_NM }</td>
-		  		<td >${i.PRPS_PURPOSE_CD_NM }</td>
-		  		<td >${i.ACT_PLAN_CD_NM }</td>
+	  	<c:forEach items="${listStep03}" var="i" varStatus="status">
+		  	<tr>
+		  		<td class="border">
+		  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
+					    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+					</c:if>
+					<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
+					    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
+					</c:if>
+		  			<input type="hidden" id="prpsdId"name="prpsdId" value="${i.PRPSD_ID}">
+		  			<input type="hidden" id="prpsId"name="prpsId" value="${i.PRPS_ID}">
+		  			<input type="hidden" id="prodSitemDivsCd"name="prodSitemDivsCd" value="${i.PROD_SITEM_DIVS_CD}">
+		  			<input type="hidden" id="prodNoSitemNm"name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM}">
+		  			<input type="hidden" id="deliveryCnt"name="deliveryCnt" value="${i.DELIVERY_CNT}">
+		  		</td>
+		  		<td class="border">
+		  			<c:forEach items="${i.dateList}" var="d">
+		  				<input type="text" id="deliDate" class="form-control" name="deliDate" style="margin-bottom:3px;" value="${d.deliDate}" readonly>
+		  			</c:forEach>
+		  		</td>
+		  		<td class="border">
+		  		<% int i = 0; %>
+		  			<c:forEach items="${i.dateList}" var="d">
+		  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" readonly value="${d.PLAN_DELIVERY_CNT}">
+		  				
+		  			</c:forEach>
+		  		</td>
+		  		<td class="border">
+		  			<c:forEach items="${i.dateList}" var="d">
+		  				<input type="number" min="0" id="planCnt" class="form-control" name="planCnt" data-prpsdid="${i.PRPSD_ID}" data-deliverycnt="${i.DELIVERY_CNT}" style="margin-bottom:3px;" readonly value="${d.REAL_DELIVERY_CNT}">
+		  			</c:forEach>
+		  		</td>
+		  		<td class="border">
+		  			<c:forEach items="${i.dateList}" var="d">
+		  				<input type="text" min="0" id="planCnt" class="form-control" name="planCnt"  style="margin-bottom:3px;" readonly value="${d.REAL_DELIVERY_CNTN}">
+		  			</c:forEach>
+		  		</td>
 		  	</tr>
-	  	</c:forEach>
+		</c:forEach>
 	  </tbody>
 	</table>
 </div>

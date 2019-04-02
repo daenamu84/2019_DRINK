@@ -151,9 +151,9 @@ public class ProposalController {
 		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
 		if(rtMap.getString("gubun").equals("update")) {
-			List<DataMap> rtnProPosalDMap1 = proposalService.proposalView2_1(rtMap);
+			List<DataMap> rtnProPosalDMap1 = proposalService.ProPosalProdD_DViewI(rtMap);
 			mav.addObject("ProPosalDList1", rtnProPosalDMap1);
-			List<DataMap> rtnProPosalDMap2 = proposalService.proposalView2_2(rtMap);
+			List<DataMap> rtnProPosalDMap2 = proposalService.ProPosalProdD_DViewA(rtMap);
 			mav.addObject("ProPosalDList2", rtnProPosalDMap2);
 		}
 		
@@ -303,6 +303,10 @@ public class ProposalController {
 		List<DataMap> cd00020List = vendorService.getCommonCode(map);
 		mav.addObject("cd00020List", cd00020List);
 
+		map.clear();
+		map.put("cmm_cd_grp_id", "00005"); // 마켓코드
+		List<DataMap> marketMap = vendorService.getCommonCode(map);
+		
 		List<DataMap> teamList = vendorService.getTeamList(paramMap);
 		mav.addObject("teamList", teamList);
 		
@@ -320,6 +324,7 @@ public class ProposalController {
 		
 		paging.makePaging();
 		HashMap<String, Object> pagingMap = new HashMap<>();
+		mav.addObject("marketMap", marketMap);
 		pagingMap.put("page", page);
 		pagingMap.put("pageLine", paging.getRecordsPerPage());
 		pagingMap.put("totalCnt", totalCnt);
@@ -392,9 +397,18 @@ public class ProposalController {
 		}
 		
 		ModelAndView mav = new ModelAndView();
-		
+		// STEP 1
 		DataMap proPosalView =  proposalService.proposalView(rtMap);
-		List<DataMap> rtnProPosalDMap = proposalService.proposalView2(rtMap);
+		
+		//STEMP2 인센티브
+		List<DataMap> rtnProPosalIMap = proposalService.ProPosalProdD_DViewI(rtMap);
+		DataMap rtnProPosalISumMap =  proposalService.ProPosalProdD_DViewI_Sum(rtMap);
+		
+		//STEP2 A&P
+		List<DataMap> rtnProPosalAMap = proposalService.ProPosalProdD_DViewA(rtMap);
+		DataMap rtnProPosalASumMap =  proposalService.ProPosalProdD_DViewA_Sum(rtMap);
+		
+		DataMap rtnProPosalTTL_AMOUNTMap =  proposalService.ProPosalProdD_TTL_AMOUNT(rtMap);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
@@ -436,7 +450,11 @@ public class ProposalController {
 		}
 		mav.addObject("d_cnt", j);
 		mav.addObject("data",proPosalView);
-		mav.addObject("ProPosalDList", rtnProPosalDMap);
+		mav.addObject("ProPosalIList", rtnProPosalIMap);
+		mav.addObject("ProPosalISum", rtnProPosalISumMap);
+		mav.addObject("ProPosalAList", rtnProPosalAMap);
+		mav.addObject("ProPosalASum", rtnProPosalASumMap);
+		mav.addObject("ProPosalTTLSum", rtnProPosalTTL_AMOUNTMap);
 		mav.addObject("listStep03", listStep03);
 		mav.setViewName("proposal/proposalDetailView");
 		

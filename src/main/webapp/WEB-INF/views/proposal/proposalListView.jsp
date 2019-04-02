@@ -79,11 +79,14 @@ var nowUrl = "/proPosalList";
 			var prps_str_dt = $("#prps_str_dt").val();
 			var prps_end_dt = $("#prps_end_dt").val();
 			
+			var market_divs_cd = $("#market_divs_cd option:selected").val();
+			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
+			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status,     
+			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd,     
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
@@ -159,6 +162,38 @@ var nowUrl = "/proPosalList";
 		document.viewForm.submit();
 	}
 	
+	function getSegment() {
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var market_divs_cd = "";
+		
+		market_divs_cd = $("#market_divs_cd option:selected").val();
+		var gubun="list";
+		$.ajax({
+			type : "POST",
+			url : "/VendorSegList",
+			data : {"market_divs_cd" : market_divs_cd, "gubun" : gubun},
+			dataType : "html",
+			traditional : true,
+			success : function(args) {
+				$("#segList").empty();
+				$("#segList").html(args);
+				ajaxFlag = false;
+			},
+			error : function(xhr, status, e) {
+				if (xhr.status == 403) {
+					alert("로그인이 필요한 메뉴 입니다.");
+					location.replace("/logIn");
+				} else {
+					alert("처리중 에러가 발생 하였습니다.");
+					location.reload();
+				}
+				ajaxFlag = false;
+			}
+		});
+	}
+	
 	
 </script>
 
@@ -214,6 +249,23 @@ var nowUrl = "/proPosalList";
 								<c:forEach items="${cd00020List}" var="b">
 									<option value="${b.CMM_CD}">${b.CMM_CD_NM}</option>
 								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="row" style="padding: 5px 0px;">
+						<div class="col-12 col-sm-2">Market</div>
+						<div class="col-12 col-sm-2">
+							<select name="market_divs_cd" class="form-control" id="market_divs_cd"  onchange="getSegment();">
+								<option value="ALL">전체</option>
+								<c:forEach items="${marketMap}" var="b">
+									<option value="${b.CMM_CD}">${b.CMM_CD_NM} </option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-12 col-sm-2">Segmentation</div>
+						<div class="col-12 col-sm-2" id="segList">
+							<select name="vendor_sgmt_divs_cd" class="form-control" id="vendor_sgmt_divs_cd">
+						  		<option value="ALL">전체</option>
 							</select>
 						</div>
 					</div>
@@ -317,11 +369,14 @@ var nowUrl = "/proPosalList";
 			var prps_str_dt = $("#prps_str_dt").val();
 			var prps_end_dt = $("#prps_end_dt").val();
 			
+			var market_divs_cd = $("#market_divs_cd option:selected").val();
+			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
+			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status+"&page=" + pages + "&pageLine=" + pageLine,     
+			    url:"/proPosalListSearch?deptno="+deptno+"&empno="+temp+"&outlet_no="+outlet_no+"&prps_str_dt="+prps_str_dt+"&prps_end_dt="+prps_end_dt+"&prps_purpose_cd="+prps_purpose_cd+"&act_plan_cd="+act_plan_cd+"&prsp_status="+prsp_status+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd+"&page=" + pages + "&pageLine=" + pageLine,     
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   

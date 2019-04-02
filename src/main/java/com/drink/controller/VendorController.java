@@ -9,6 +9,9 @@
 package com.drink.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +40,7 @@ import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
+import com.drink.service.proposal.ProposalService;
 import com.drink.service.vendor.VendorService;
 
 
@@ -64,6 +68,9 @@ public class VendorController {
 	
 	@Autowired
 	private VendorService vendorService;
+	
+	@Autowired
+	private ProposalService proposalService;
 	
 	@Autowired
 	private SessionUtils sessionUtils;
@@ -539,16 +546,57 @@ public class VendorController {
 		rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		rtMap.put("emp_no", loginSession.getEmp_no());
 		
-		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
-		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
+//		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
+		DataMap vendorProposal  = vendorService.getProPosalLedger(rtMap);
+//		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+		rtMap.put("prps_id", vendorProposal.getString("PRPS_ID"));
+		int j =  1;
+		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
+		try {
+			
+			for(int i=0; i<listStep03.size(); i++){
+				DataMap dm = listStep03.get(i);
+				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
+				List<Object> dateList = new ArrayList<>();
+				
+				for(int x=0; x<=dm.getInt("monthCnt");x++){
+					cal.add(Calendar.MONTH, x);
+					DataMap paramDm = new DataMap();
+					paramDm.put("prpsId", dm.getString("PRPS_ID"));
+					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+					paramDm.put("deliDate", sdf.format(cal.getTime()));
+					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					if(dtList==null) {
+						dtList = new DataMap();
+						j = 0;
+					}
+					dtList.put("deliDate", sdf.format(cal.getTime()));
+					dateList.add(dtList);
+					
+				}
+				
+				dm.put("dateList", dateList);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+		}
+		mav.addObject("d_cnt", j);
+		
 		
 		List<DataMap> rtnVenderCallMap = vendorService.getCallLedgerList(rtMap);
 		int VenderCalltotalCnt = rtMap.getInt("TotalCnt");
 		
 		
 		mav.addObject("vendorView", vendorView);
-		mav.addObject("vendorProposalList", rtnVendrMap);
-		mav.addObject("ProposaltotalCnt", ProposaltotalCnt);
+		mav.addObject("listStep03", listStep03);
+//		mav.addObject("vendorProposalList", rtnVendrMap);
+//		mav.addObject("ProposaltotalCnt", ProposaltotalCnt);
 		mav.addObject("vendorCallList", rtnVenderCallMap);
 		mav.addObject("VenderCalltotalCnt", VenderCalltotalCnt);
 		

@@ -61,32 +61,51 @@ public class ProposalService {
 		return param;
 	}
 	
-	public List proposalView2(RequestMap map) throws DrinkException{
+	public List ProPosalProdD_DViewI(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
 		logger.debug("map==="+ map.toString());
-		param =  gdi.selectList("Proposal.ProPosalProdD_DView",map.getMap());
+		param =  gdi.selectList("Proposal.ProPosalProdD_DViewI",map.getMap());
 		
 		return param;
 	}
 	
-	public List proposalView2_1(RequestMap map) throws DrinkException{
-		List<DataMap> param = new ArrayList<>();
-		
+	public DataMap ProPosalProdD_DViewI_Sum(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
 		logger.debug("map==="+ map.toString());
-		param =  gdi.selectList("Proposal.ProPosalProdD_DView2_1",map.getMap());
+		
+		param = (DataMap) gdi.selectOne("Proposal.ProPosalProdD_DViewI_Sum",map.getMap());
 		
 		return param;
 	}
 	
-	public List proposalView2_2(RequestMap map) throws DrinkException{
+	public List ProPosalProdD_DViewA(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
 		logger.debug("map==="+ map.toString());
-		param =  gdi.selectList("Proposal.ProPosalProdD_DView2_2",map.getMap());
+		param =  gdi.selectList("Proposal.ProPosalProdD_DViewA",map.getMap());
 		
 		return param;
 	}
+	
+	public DataMap ProPosalProdD_DViewA_Sum(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		logger.debug("map==="+ map.toString());
+		
+		param = (DataMap) gdi.selectOne("Proposal.ProPosalProdD_DViewA_Sum",map.getMap());
+		
+		return param;
+	}
+	
+	public DataMap ProPosalProdD_TTL_AMOUNT(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		logger.debug("map==="+ map.toString());
+		
+		param = (DataMap) gdi.selectOne("Proposal.ProPosalProdD_TTL_AMOUNT",map.getMap());
+		
+		return param;
+	}
+
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public DataMap proposalWork(Map<String, Object> map) throws DrinkException{
@@ -146,10 +165,13 @@ public class ProposalService {
 			 svMap.put("prps_id", prps_id);
 			 svMap.put("prod_sitem_divs_cd", "01");
 			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
-			 svMap.put("delivery_cnt", svMap.get("deliveryCnt"));
-			 svMap.put("delivery_amt", svMap.get("deliveryAmt"));
-			 svMap.put("dc_rate", Float.valueOf((String)svMap.get("dcRate")));
-			 svMap.put("last_deliver_amt", svMap.get("lastDeliverAmt"));
+			 svMap.put("caserate_amt", svMap.get("caserate_amt"));
+			 svMap.put("delivery_cnt", svMap.get("delivery_cnt"));
+			 svMap.put("case9l", svMap.get("case9l"));
+			 svMap.put("std_case", svMap.get("std_case"));
+			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt"));
+			 svMap.put("incentive_amt", svMap.get("incentive_amt"));
+			 svMap.put("vs_std", svMap.get("vs_std"));
 			 svMap.put("login_id", map.get("regId"));
 			 
 			 gdi.update("Proposal.subInsert",svMap);
@@ -162,10 +184,14 @@ public class ProposalService {
 			 svMap.put("prps_id", prps_id);
 			 svMap.put("prod_sitem_divs_cd", "02");
 			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemNm1"));
-			 svMap.put("delivery_cnt", svMap.get("deliveryCnt1"));
-			 svMap.put("delivery_amt", svMap.get("deliveryAmt1"));
-			 svMap.put("dc_rate", Float.valueOf((String)svMap.get("dcRate1")));
-			 svMap.put("last_deliver_amt", svMap.get("lastDeliverAmt1"));
+			 svMap.put("caserate_amt", "0");
+			 svMap.put("delivery_cnt", svMap.get("delivery_cnt1"));
+			 svMap.put("case9l", "0");
+			 svMap.put("std_case", "0");
+			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt1"));
+			 svMap.put("incentive_amt", svMap.get("incentive_amt1"));
+			 svMap.put("vs_std", "0");
+			 svMap.put("rmk_cntn", svMap.get("rmk_cntn1"));
 			 svMap.put("login_id", map.get("regId"));
 			 
 			 gdi.update("Proposal.subInsert",svMap);

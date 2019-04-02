@@ -293,6 +293,16 @@ public class VendorService {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public DataMap getProPosalLedger(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		
+		logger.debug("map---"+ map.getMap());
+		param = (DataMap) gdi.selectOne("Proposal.getProPosalLedger",map.getMap());
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List getCallLedgerList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		

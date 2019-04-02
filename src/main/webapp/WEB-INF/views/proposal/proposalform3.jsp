@@ -72,11 +72,7 @@
 					sumCnt = Number(sumCnt) + Number(planIdx.value);
 					_addParam.push({"prpsId":$("input[name='prpsId']")[i].value,"prodSitemDivsCd":$("input[name='prodSitemDivsCd']")[i].value,"prodNoSitemNm":$("input[name='prodNoSitemNm']")[i].value,"deliDate":$("input[name='deliDate']")[j].value,"planCnt":planIdx.value});
 				}
-				if(tCnt !=0 && sumCnt != 0 &&  sumCnt != tCnt){
-					alert("출고계획수량은 제안수량과 동일해야 합니다.");
-					ajaxFlag=false;
-					return;
-				}
+			
 				if(tCnt ==0 && sumCnt == 0 ){
 					alert("데이터에 에러가 발생 하였습니다.");
 					ajaxFlag=false;
@@ -158,7 +154,7 @@
 			    <tr>
 			      <th class="border text-center" scope="col" width="60%">제품명(제안수량)</th>
 			      <th class="border text-center" scope="col" width="20%">출고월</th>
-			      <th class="border text-center" scope="col" width="20%">출고계획수량</th>
+			      <th class="border text-center" scope="col" width="20%">CASE 출고계획수량</th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -166,7 +162,7 @@
 				  	<tr>
 				  		<td class="border">
 				  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
-							    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.DELIVERY_CNT})</span>
+							    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.CASE9L})</span>
 							</c:if>
 							<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
 							    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
