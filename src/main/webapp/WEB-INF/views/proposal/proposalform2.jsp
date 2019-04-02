@@ -231,7 +231,7 @@
 		var obj = popListObj;
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
-		$('input[name="caserate_amt"]').eq(temp_cnt).val(arg3);
+		$(obj).parent().parent().parent().find('input[name="caserate_amt"]').val(arg3);   
 		$("#popLayer").modal("hide");
 	}
 	
