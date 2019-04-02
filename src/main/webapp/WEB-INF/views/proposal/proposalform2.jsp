@@ -223,35 +223,45 @@
 	});
 
 	
-	function temp (a){
-		temp_cnt = a;
-	}
 	function setValueDate(arg1, arg2,arg3){
 		
 		var obj = popListObj;
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
-		$('input[name="caserate_amt"]').eq(temp_cnt).val(arg3);
+		$(obj).parent().parent().parent().find('input[name="caserate_amt"]').val(arg3);   
 		$("#popLayer").modal("hide");
 	}
 	
-	function case9l_calcul (index, d_cnt){
-		var v_case9l= null;
+	// 1.case 9l(기준) 계산
+	// 출고수량 / 12
+	function case9l_calcul(index, d_cnt) {
+		var v_case9l = null;
 		v_case9l = Math.ceil(d_cnt.value / 12);
 		$('input[name="case9l"]').eq(index).val(v_case9l);
-		
+		stdcaserate_calcul();
 		var fileValue = $("input[name='caserate_amt']").length;
-		console.log("fileValue="+fileValue);
+		console.log("fileValue=" + fileValue);
 		var fileData = new Array(fileValue);
-	    for(var i=0; i<fileValue; i++){                          
-	         fileData[i] = $("input[name='caserate_amt']")[i].value;
-	         
-	    }
+		for (var i = 0; i < fileValue; i++) {
+			fileData[i] = $("input[name='caserate_amt']")[i].value;
 
-
-
-		
+		}
 	}
+	
+	//2.STD caserate 계산
+	// 제품caser ate * case(9l) 
+	function stdcaserate_calcul(){
+		var fileValue = $("input[name='caserate_amt']").length;
+		console.log("fileValue=" + fileValue);
+		var fileData = new Array(fileValue);
+		for (var i = 0; i < fileValue; i++) {
+			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
+			$("input[name='std_case']")[i].value = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value;
+
+		}
+	}
+	
+	
 </script>
 	
 	
