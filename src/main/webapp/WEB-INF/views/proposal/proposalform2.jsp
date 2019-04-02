@@ -239,6 +239,18 @@
 		var v_case9l= null;
 		v_case9l = Math.ceil(d_cnt.value / 12);
 		$('input[name="case9l"]').eq(index).val(v_case9l);
+		
+		var fileValue = $("input[name='caserate_amt']").length;
+		console.log("fileValue="+fileValue);
+		var fileData = new Array(fileValue);
+	    for(var i=0; i<fileValue; i++){                          
+	         fileData[i] = $("input[name='caserate_amt']")[i].value;
+	         
+	    }
+
+
+
+		
 	}
 </script>
 	
@@ -246,7 +258,7 @@
 <div class="">
 	<div class="container-fluid">
 		<div class="row">			
-			<div class="title col col-12  col-sm-5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 제품/지원목록 등록</div> 
+			<div class="title col col-12  col-sm-;5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 제품/지원목록 등록</div> 
 			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">제안제품수</label>
 			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
 					<select name="productCnt" class="form-control" id="productCnt">
@@ -312,8 +324,10 @@
 			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
 			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(0,this)"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
+			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" ></td>
+			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
 			  		<td>
@@ -326,10 +340,12 @@
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
 			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
-			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(1, this)"></td>
-			  		<td><input type="text" id="case9l" class="form-control" name="case9l"  readonly></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(1,this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
+			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
+			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" ></td>
+			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
 			  		<td>
@@ -341,11 +357,13 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
-			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(2, this)"></td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(2,this)"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
+			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" ></td>
+			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
 			  		<td>
@@ -357,11 +375,13 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(3,this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
+			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
+			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" ></td>
+			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
 			  		<td>
@@ -373,11 +393,13 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly/></td>
-			  		<td><input type="text" id="deliveryCnt" class="form-control" name="deliveryCnt" value=""></td>
-			  		<td><input type="text" id="deliveryAmt" class="form-control" name="deliveryAmt" value=""></td>
-			  		<td><input type="text" id="dcRate" class="form-control" name="dcRate" value=""></td>
-			  		<td><input type="text" id="lastDeliverAmt" class="form-control" name="lastDeliverAmt" value=""></td>
+			  		<td><input type="number" id="caserate_amt" name="caserate_amt" readonly /></td>
+			  		<td><input type="number" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul(4,this)"></td>
+			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
+			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
+			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" ></td>
+			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  </c:if>
 			  <c:if test="${gubun eq 'update' }">
