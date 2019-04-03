@@ -224,15 +224,6 @@ var nowUrl = "/proPosalList";
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
-						<div class="col-12 col-sm-2">제안목적</div>
-						<div class="col-12 col-sm-2">
-							<select class="custom-select" name="prps_purpose_cd" id="prps_purpose_cd">
-									<option value="ALL">전체</option>
-									<c:forEach items="${cd00021List}" var="a">
-									<option value="${a.CMM_CD}">${a.CMM_CD_NM} </option>
-									</c:forEach>
-						  </select>
-						</div>
 						<div class="col-12 col-sm-2">엑티비티계획</div>
 						<div class="col-12 col-sm-2">
 							<select class="custom-select" name="act_plan_cd" id="act_plan_cd">

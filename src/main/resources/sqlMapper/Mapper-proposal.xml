@@ -101,7 +101,16 @@
 				(SELECT D.OUTLET_NM FROM T_VENDOR_M D WHERE D.VENDOR_NO = A.OUTLET_NO) AS VD_NM,  A.OUTLET_NO,
 				A.WHOLESALE_VENDOR_NO, A.MARKET_DIVS_CD, A.VENDOR_SGMT_DIVS_CD,
 				A.BUDG_AMT,A.BASE_PRPS_AMT, A.LAST_PRPS_AMT, A.CASERATE_AMT, A.PRPS_CNTN, A.PRPS_STUS_CD,
-				(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00020' AND E.CMM_CD = A.PRPS_STUS_CD) AS PRPS_STUS_CD_NM
+				(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00020' AND E.CMM_CD = A.PRPS_STUS_CD) AS PRPS_STUS_CD_NM,
+				( SELECT  GROUP_CONCAT(E.CMM_CD_NM) 
+				  FROM T_PROPOSAL_PURPOSE_M B,T_CMM_CD_M E  
+				  WHERE E.CMM_CD_GRP_ID='00021'
+          			AND B.PRPS_ID =A.PRPS_ID 
+          			AND E.CMM_CD = B.PRPS_PURPOSE_CD
+          			GROUP BY PRPS_ID ) PRPS_PURPOSE_CD_NM, 
+          		(SELECT GROUP_CONCAT(C.PRPS_PURPOSE_CD) 
+           		FROM T_PROPOSAL_PURPOSE_M C
+           		WHERE C.PRPS_ID = A.PRPS_ID)  PRPS_PURPOSE_CD
 			FROM T_PROPOSAL_M A, T_EMP_M B
 			WHERE A.EMP_NO = B.EMP_NO
 			AND A.PRPS_ID = #{prps_id}
@@ -228,6 +237,12 @@
     	]]>
     </update>
     
+     <update id="purposemasterDelete">
+    	<![CDATA[
+    		DELETE FROM T_PROPOSAL_PURPOSE_M WHERE PRPS_ID = #{prps_id}
+    	]]>
+    </update>
+    
     
     <update id="masterUpdate">
     	<![CDATA[
@@ -237,10 +252,6 @@
 			  ,PRPS_END_DT = #{prps_end_dt}
 			  ,PRPS_NM = #{prps_nm}
 			  ,ACT_PLAN_CD =#{act_plan_cd}
-			  ,BASE_PRPS_AMT = #{base_prps_amt}
-			  ,LAST_PRPS_AMT = #{last_prps_amt}
-			  ,BUDG_AMT = #{ budg_amt}
-			  ,CASERATE_AMT = #{caserate_amt}
 			  ,PRPS_STUS_CD = #{prps_stus_cd}
 			  ,PRPS_CNTN = #{prps_cntn}
 			  ,DATA_UPD_DTM =  now()

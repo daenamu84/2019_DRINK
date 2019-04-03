@@ -135,7 +135,18 @@ public class ProposalService {
 		if(rtCnt < 1){
 			throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
 		}
-			
+	
+		gdi.update("Proposal.purposemasterDelete",map);
+		
+		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addParam");
+		
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("prps_id", map.get("prps_id"));
+			 gdi.update("Proposal.purposemasterInsert",svMap);
+		}
+		
 	}
 	
 	public List getProPosal03List(RequestMap map) throws DrinkException{

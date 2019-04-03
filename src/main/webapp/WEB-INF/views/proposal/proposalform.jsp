@@ -254,7 +254,7 @@
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">행사목적</label>
                                     <div class="col-md-4">
                                     	<c:forEach items="${p_purposeList}" var="i" varStatus="status">
-                                    		<input type="checkbox" name="prps_purpose_cd" value="${i.CMM_CD}"/>&nbsp;${i.CMM_CD_NM}<br>
+                                    		<input type="checkbox" name="prps_purpose_cd" value="${i.CMM_CD}" <c:if test="${fn:indexOf(data.PRPS_PURPOSE_CD, i.CMM_CD) != -1}">checked="checked"</c:if>/>&nbsp;${i.CMM_CD_NM}<br>
                                     	</c:forEach>
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">액티비티계획</label>
