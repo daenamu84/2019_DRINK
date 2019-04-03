@@ -301,7 +301,6 @@ var nowUrl = "/proPosalList";
 			      <th scope="col">제안기간</th>
 			      <th scope="col">제안명</th>
 			      <th scope="col">거래처명</th>
-			      <th scope="col">제안목적</th>
 			      <th scope="col">엑티비티계획</th>
 			      <th scope="col">제안상태</th>
 			    </tr>
@@ -315,7 +314,6 @@ var nowUrl = "/proPosalList";
 							<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
 							<td><a href="javascript:setView('${i.PRPS_ID}','update')">${i.PRPS_NM}</a></td>
 							<td>${i.VD_NM}</td>
-							<td>${i.PRPS_PURPOSE_CD_NM}</td>
 							<td>${i.ACT_PLAN_CD_NM}</td>
 							<td>${i.PRPS_STUS_CD_NM}</td>							
 						</tr>

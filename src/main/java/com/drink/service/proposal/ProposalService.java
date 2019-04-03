@@ -115,6 +115,16 @@ public class ProposalService {
 		gdi.update("Proposal.masterInsert",map);
 		param = (DataMap) gdi.selectOne("Proposal.getPRPS_ID",map);
 		
+		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addParam");
+		
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("prps_id", param.getString("PRPS_ID"));
+			 gdi.update("Proposal.purposemasterInsert",svMap);
+		}
+		
+		
 		return param;
 	}
 	

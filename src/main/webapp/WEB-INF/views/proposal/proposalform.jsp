@@ -77,14 +77,17 @@
 				return;
 			}
 			
-			
-			if ($("#prps_purpose_cd option:selected").val() == "") {
+			if(!$("input:checkbox[name='prps_purpose_cd']").is(":checked")){
 				alert("제안목적을  선택 하세요");
 				ajaxFlag = false;
 				return;
-			}
+			} 
+
+			var _addParam = [];
 			
-			var prps_purpose_cd = $("#prps_purpose_cd option:selected").val() ;
+			$('input:checkbox[name=prps_purpose_cd]:checked').each(function () {
+				_addParam.push({"prps_purpose_cd":$(this).val()});
+			});
 			
 			
 			var prps_stus_cd = "";
@@ -148,7 +151,7 @@
 			 $.ajax({      
 				    type:"POST",  
 				    url:url,      
-				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"prps_purpose_cd":prps_purpose_cd,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"prps_cntn":prps_cntn }),
+				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"_addParam":_addParam,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"prps_cntn":prps_cntn }),
 				    dataType:"json",
 				    contentType:"application/json;charset=UTF-8",
 				    traditional:true,
@@ -250,12 +253,9 @@
                                 <div class="form-group row">
                                     <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">행사목적</label>
                                     <div class="col-md-4">
-                                    	<select name="prps_purpose_cd" class="form-control" id="prps_purpose_cd">
-                                    		<option value="">선택하세요</option>
-											<c:forEach items="${p_purposeList}" var="a">
-											<option value="${a.CMM_CD}" <c:if test="${a.CMM_CD eq data.PRPS_PURPOSE_CD}">selected</c:if>>${a.CMM_CD_NM} </option>
-											</c:forEach>
-										</select>
+                                    	<c:forEach items="${p_purposeList}" var="i" varStatus="status">
+                                    		<input type="checkbox" name="prps_purpose_cd" value="${i.CMM_CD}"/>&nbsp;${i.CMM_CD_NM}<br>
+                                    	</c:forEach>
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">액티비티계획</label>
                                     <div class="col-md-4">
@@ -268,7 +268,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="prps_purpose_cd" class="col-md-2 col-form-label text-md-left">행사기간</label>
+                                    <label for="prps_str_dt" class="col-md-2 col-form-label text-md-left">행사기간</label>
                                     <div class="col-md-4">
                                     	<div style="float:left"><input type="text" class="dateRange" name="prps_str_dt" id="prps_str_dt" value="${data.PRPS_STR_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i>~</div>
                                     	<div ><input type="text" class="dateRange" name="prps_end_dt" id="prps_end_dt" value="${data.PRPS_END_DT}" autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></div>
