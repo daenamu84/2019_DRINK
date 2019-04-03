@@ -510,13 +510,23 @@ public class VendorController {
 	@RequestMapping(value = "/vendorLedger", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView vendorLedger(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
+		logger.debug("map :: " + rtMap.toString());
+		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
 		if(loginSession == null || (loginSession.getLgin_id()== null)){
 			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
 		ModelAndView mav = new ModelAndView();
-
+		
+		String vendor_no = "";
+		String outlet_nm = "";
+		
+		if(rtMap.getString("vendor_no") !=""  && rtMap.getString("vendor_no") !=null  ) {
+			DataMap vendorView =  vendorService.vendorView(rtMap);
+			vendor_no = vendorView.getString("VENDOR_NO");
+			outlet_nm = vendorView.getString("OUTLET_NM");
+		}
 		RequestMap paramMap = new RequestMap();
 		paramMap = new RequestMap();
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
@@ -524,9 +534,9 @@ public class VendorController {
 		paramMap.put("deptno", loginSession.getDept_no());
 		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 		mav.addObject("vendorList", vendorList);
-		
-		mav.addObject("dropdown03","active");		
-		
+		mav.addObject("dropdown03","active");
+		mav.addObject("vendor_no",vendor_no);
+		mav.addObject("outlet_nm",outlet_nm);
 		mav.setViewName("vendor/vendorLedger");
 		return mav;
 	}
@@ -548,45 +558,50 @@ public class VendorController {
 		
 //		List<DataMap> rtnVendrMap = vendorService.getProPosalLedgerList(rtMap);
 		DataMap vendorProposal  = vendorService.getProPosalLedger(rtMap);
+		logger.debug("vendorProposal=="+vendorProposal);
+		List<DataMap> listStep03 = new ArrayList();
 //		int ProposaltotalCnt = rtMap.getInt("TotalCnt");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
-		Calendar cal = Calendar.getInstance();
-		rtMap.put("prps_id", vendorProposal.getString("PRPS_ID"));
-		int j =  1;
-		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
-		try {
-			
-			for(int i=0; i<listStep03.size(); i++){
-				DataMap dm = listStep03.get(i);
-				cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
-				List<Object> dateList = new ArrayList<>();
+		if(vendorProposal !=null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+			Calendar cal = Calendar.getInstance();
+			rtMap.put("prps_id", vendorProposal.getString("PRPS_ID"));
+			int j =  1;
+			listStep03 = proposalService.getProPosal03List(rtMap);
+			try {
 				
-				for(int x=0; x<=dm.getInt("monthCnt");x++){
-					cal.add(Calendar.MONTH, x);
-					DataMap paramDm = new DataMap();
-					paramDm.put("prpsId", dm.getString("PRPS_ID"));
-					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
-					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
-					paramDm.put("deliDate", sdf.format(cal.getTime()));
-					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
-					if(dtList==null) {
-						dtList = new DataMap();
-						j = 0;
-					}
-					dtList.put("deliDate", sdf.format(cal.getTime()));
-					dateList.add(dtList);
+				for(int i=0; i<listStep03.size(); i++){
+					DataMap dm = listStep03.get(i);
+					cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
+					List<Object> dateList = new ArrayList<>();
 					
+					for(int x=0; x<=dm.getInt("monthCnt");x++){
+						cal.add(Calendar.MONTH, x);
+						DataMap paramDm = new DataMap();
+						paramDm.put("prpsId", dm.getString("PRPS_ID"));
+						paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+						paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+						paramDm.put("deliDate", sdf.format(cal.getTime()));
+						DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+						if(dtList==null) {
+							dtList = new DataMap();
+							j = 0;
+						}
+						dtList.put("deliDate", sdf.format(cal.getTime()));
+						dateList.add(dtList);
+						
+					}
+					
+					dm.put("dateList", dateList);
 				}
 				
-				dm.put("dateList", dateList);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+			mav.addObject("d_cnt", j);
+		
 		}
-		mav.addObject("d_cnt", j);
 		
 		
 		List<DataMap> rtnVenderCallMap = vendorService.getCallLedgerList(rtMap);

@@ -116,6 +116,22 @@
 		});
 	}
 	
+	function ProPosalsetView(prps_id, gubun){
+		document.ProposalviewForm.prps_id.value=prps_id;
+		document.ProposalviewForm.gubun.value=gubun;
+		
+		document.ProposalviewForm.action="/proPosalView";
+		document.ProposalviewForm.submit();
+	}
+	
+	function vendorViewLedger(vendor_no, gubun){
+		document.viewForm.vendor_no.value=vendor_no;
+		document.viewForm.gubun.value=gubun;
+		
+		document.viewForm.action="/vendorLedger";
+		document.viewForm.submit();
+	}
+	
 	</script>
 	<div class="title"> ◈  거래처 관리</div>
 	<div class="container" style="max-width:100%;">
@@ -228,9 +244,13 @@
 									<td>${f.MARKGET_NM}</td>
 									<td>${f.SGMT_NM}</td>
 									<td>${f.STAT_NM}</td>
-									<td>원장보기</td>
-									<td>메뉴보기</td>
-									<td>수정</td>
+									<td><a href="javascript:vendorViewLedger('${f.VENDOR_NO}','update')">원장보기</a></td>
+									<td>
+										<c:if test="${f.PRPS_ID ne null }">
+										<a href="javascript:ProPosalsetView('${f.PRPS_ID}','update')">Proposal 보기</a>
+										</c:if>
+									</td>
+									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">수정</a></td>
 								</tr>
 						  	</c:forEach>
 						  		<tr>
@@ -254,6 +274,11 @@
 		<input type="hidden" name="vendor_no"/>
 		<input type="hidden" name="gubun"/> 
 	</form>
+	<form name="ProposalviewForm" method="post">
+		<input type="hidden" name="prps_id" /> 
+		<input type="hidden" name="gubun" />
+	</form>
+
 	<script>
 		<c:if test="${returnCode eq '0000'}">
 	 		alert("저장하였습니다.");

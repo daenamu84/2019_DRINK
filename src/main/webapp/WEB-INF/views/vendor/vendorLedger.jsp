@@ -67,8 +67,8 @@
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">거래처명</span></div>
 						<div class="col-12 col-sm-2">
-							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly autocomplete="off"/>
-							<input type="hidden" name="vendorId" id="vendorId" class="form-control" />
+							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly value="${outlet_nm}" autocomplete="off"/>
+							<input type="hidden" name="vendorId" id="vendorId" class="form-control" value="${vendor_no}"/>
 						</div>
 						<div class="col-12 col-sm-1"><span class="align-middle">기간</span></div>
 						<div class="col-12 col-sm-2">
