@@ -258,7 +258,7 @@
 		var fileData = new Array(fileValue);
 		for (var i = 0; i < fileValue; i++) {
 			if ($("input[name='delivery_cnt']")[i].value != "") {
-				$("input[name='case9l']")[i].value = Math.ceil($("input[name='delivery_cnt']")[i].value / 12);
+				$("input[name='case9l']")[i].value = $("input[name='delivery_cnt']")[i].value / 12;
 				stdcaserate_calcul();
 				incentive_amt_calcul();
 			}
@@ -291,7 +291,7 @@
 			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
 			if ($("input[name='unit_incentive_amt']")[i].value != "") {
 				$("input[name='incentive_amt']")[i].value = numberWithCommas($("input[name='delivery_cnt']")[i].value * getNumString($("input[name='unit_incentive_amt']")[i].value));
-				$("input[name='unit_incentive_amt']")[i].value =  numberWithCommas(getNumString($("input[name='unit_incentive_amt']")[i].value));
+				//$("input[name='unit_incentive_amt']")[i].value =  numberWithCommas(getNumString($("input[name='unit_incentive_amt']")[i].value));
 				vs_std_calcul();
 			}
 		}
@@ -413,7 +413,7 @@
 			      <th scope="col" style="width:auto">제품명</th>
 			      <th scope="col" width="10%">제품CASE RATE</th>
 			      <th scope="col" width="7%">출고수량</th>
-			      <th scope="col" width="5%">CASE(9L)</th>
+			      <th scope="col" width="10%">CASE(9L)</th>
 			      <th scope="col" width="10%">STD CASE RATE</th>
 			      <th scope="col" width="10%">인센티브 병당가격</th>
 			      <th scope="col" width="10%">인센티브</th>

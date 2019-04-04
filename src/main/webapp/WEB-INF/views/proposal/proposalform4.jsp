@@ -60,6 +60,7 @@
 				var sumCnt = 0;
 				for(var j = 0; j<deliveryCntObj.length; j++){
 					var planIdx = deliveryCntObj[j];
+					/*
 					if(!Number(planIdx.value) ){
 						alert("숫자만 입력 가능 합니다.");
 						ajaxFlag=false;
@@ -70,11 +71,13 @@
 						ajaxFlag=false;
 						return;
 					}
+					*/
 					tCnt = $(planIdx).data("deliverycnt");
 					sumCnt = Number(sumCnt) + Number(planIdx.value);
 					_addParam.push({"prpsId":$("input[name='prpsId']")[i].value,"prodSitemDivsCd":$("input[name='prodSitemDivsCd']")[i].value,"prodNoSitemNm":$("input[name='prodNoSitemNm']")[i].value,"deliDate":$("input[name='deliDate']")[j].value,"planCnt":planCntObj[j].value,"real_delivery_cnt":planIdx.value,"real_delivery_cntn":real_deliveryCntnObj[j].value});
 					
 				}
+				/*
 				if(tCnt !=0 && sumCnt != 0 &&  sumCnt != tCnt){
 					alert("실출고 수량은 제안수량과 동일해야 합니다.");
 					ajaxFlag=false;
@@ -85,6 +88,7 @@
 					ajaxFlag=false;
 					return;
 				}
+				*/
 			}
 			
 			var prps_id = $("#prps_id").val();

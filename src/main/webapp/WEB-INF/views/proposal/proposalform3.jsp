@@ -58,6 +58,7 @@
 				var sumCnt = 0;
 				for(var j = 0; j<planCntObj.length; j++){
 					var planIdx = planCntObj[j];
+					/*
 					if(!Number(planIdx.value) ){
 						alert("숫자만 입력 가능 합니다.");
 						ajaxFlag=false;
@@ -68,6 +69,7 @@
 						ajaxFlag=false;
 						return;
 					}
+					*/
 					tCnt = $(planIdx).data("deliverycnt");
 					sumCnt = Number(sumCnt) + Number(planIdx.value);
 					_addParam.push({"prpsId":$("input[name='prpsId']")[i].value,"prodSitemDivsCd":$("input[name='prodSitemDivsCd']")[i].value,"prodNoSitemNm":$("input[name='prodNoSitemNm']")[i].value,"deliDate":$("input[name='deliDate']")[j].value,"planCnt":planIdx.value});
