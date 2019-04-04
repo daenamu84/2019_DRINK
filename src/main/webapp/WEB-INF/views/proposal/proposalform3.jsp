@@ -164,10 +164,10 @@
 				  	<tr>
 				  		<td class="border">
 				  			<c:if test="${i.PROD_SITEM_DIVS_CD eq '01'}">
-							    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(수량 ${i.CASE9L})</span>
+							    <span>${i.BRAND_NM}&nbsp;${i.SUB_BRAND_NM}&nbsp;${i.PROD_ML_NM}&nbsp;(CASE 9L 수량: ${i.CASE9L} / Bottle 수량:  ${i.DELIVERY_CNT})</span>
 							</c:if>
 							<c:if test="${i.PROD_SITEM_DIVS_CD eq '02'}">
-							    <span>${i.PROD_NO_SITEM_NM} (수량 ${i.DELIVERY_CNT})</span>
+							    <span>${i.PROD_NO_SITEM_NM} (CASE 9L: 수량 / )</span>
 							</c:if>
 				  			<input type="hidden" id="prpsdId"name="prpsdId" value="${i.PRPSD_ID}">
 				  			<input type="hidden" id="prpsId"name="prpsId" value="${i.PRPS_ID}">
