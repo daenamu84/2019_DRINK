@@ -165,6 +165,11 @@ public class VendorController {
 		List<DataMap> vendorareacdMap = vendorService.getCommonCode(paramMap);
 		
 		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00024"); // 	행정구역 시도 구분
+		List<DataMap> vendorarea2cdMap = vendorService.getCommonCode(paramMap);
+		
+		
+		paramMap.clear();
 		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
 		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
 		
@@ -178,6 +183,7 @@ public class VendorController {
 		mav.addObject("marketMap", marketMap);
 		mav.addObject("sgmtMap", sgmtMap);
 		mav.addObject("relrdivscdMap", relrdivscdMap);
+		mav.addObject("vendorarea2cdMap", vendorarea2cdMap);
 		mav.addObject("vendorareacdMap", vendorareacdMap);
 		mav.addObject("deptMngList", rtnMngMap);
 		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
@@ -185,6 +191,38 @@ public class VendorController {
 		mav.setViewName("vendor/vendorfrom");
 		return mav;
 	}
+	
+	@RequestMapping(value = "/areaSearch")
+	public ModelAndView areaSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			param.put("cmm_cd_grp_id", "00009"); // 거래처 지역 코드
+			param.put("search_value", param.getString("area2"));
+			List<DataMap> vendorareacdMap = vendorService.getCommonCode(param);
+			
+			mav.addObject("VENDOR_AREA_CD", param.getString("area1"));
+			mav.addObject("vendorareacdMap", vendorareacdMap);
+			mav.setViewName("nobody/vendor/vendorareaSearch");
+			
+			return mav;
+			
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
+			}
+	}
+	
 	
 	@RequestMapping(value = "/Dept_EmpList")
 	public ModelAndView DeptEmpList(Locale locale, Model model, RequestMap rtMap, HttpServletRequest req) throws DrinkException {
@@ -295,6 +333,11 @@ public class VendorController {
 		paramMap.put("cmm_cd_grp_id", "00001"); // 거래처 상태 코드
 		List<DataMap> vendorstatcdMap = vendorService.getCommonCode(paramMap);
 		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00024"); // 	행정구역 시도 구분
+		List<DataMap> vendorarea2cdMap = vendorService.getCommonCode(paramMap);
+
+		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
 		
@@ -338,6 +381,7 @@ public class VendorController {
 		mav.addObject("data",vendorView);
 		mav.addObject("marketMap", marketMap);
 		mav.addObject("sgmtMap", sgmtMap);
+		mav.addObject("vendorarea2cdMap", vendorarea2cdMap);
 		mav.addObject("relrdivscdMap", relrdivscdMap);
 		mav.addObject("vendorareacdMap", vendorareacdMap);
 		mav.addObject("deptMngList", rtnMngMap);

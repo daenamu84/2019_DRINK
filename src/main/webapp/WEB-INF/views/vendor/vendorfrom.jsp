@@ -60,6 +60,7 @@
 
 		
 		function getTeamList() {
+			
 			if (ajaxFlag)
 				return;
 			ajaxFlag = true;
@@ -246,6 +247,44 @@
 			});
 		}
 		
+		function search_area() {
+			if (ajaxFlag)
+				return;
+			ajaxFlag = true;
+			var area1 = "";
+			var area2 = "";
+			var gubun = "<%=request.getParameter("gubun")%>";
+				
+			area2 = $("#vendor_area_cd2 option:selected").val();
+			
+			$.ajax({
+				type : "POST",
+				url : "/areaSearch",
+				data : {
+					"gubun" : gubun,
+					"area2" : area2,
+					"area1" : area1
+				},
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#vendor_area_cdMap").empty();
+					$("#vendor_area_cdMap").html(args);
+					ajaxFlag = false;
+				},
+				error : function(xhr, status, e) {
+					if (xhr.status == 403) {
+						alert("로그인이 필요한 메뉴 입니다.");
+						location.replace("/logIn");
+					} else {
+						alert("처리중 에러가 발생 하였습니다.");
+						location.reload();
+					}
+					ajaxFlag = false;
+				}
+			});
+		}
+		
 	</script>
 	<script>
 	//daum 주소
@@ -344,12 +383,17 @@
                                  <div class="form-group row">
                                     <label for="vendor_area_cd" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처 지역</label>
                                     <div class="col-md-6">
-                                    	<select name="vendor_area_cd" class="form-control" id="vendor_area_cd" >
+                                    	<select name="vendor_area_cd2" class="form-control  float-left" id="vendor_area_cd2" style="width:150px" onchange="search_area();">
 											<option value="">선택하세요</option>
-											<c:forEach items="${vendorareacdMap}" var="b">
-											<option value="${b.CMM_CD}" <c:if test="${b.CMM_CD eq data.VENDOR_AREA_CD}">selected</c:if>>${b.CMM_CD_NM} </option>
+											<c:forEach items="${vendorarea2cdMap}" var="b">
+											<option value="${b.CMM_CD}" <c:if test="${b.CMM_CD eq data.VENDOR_AREA_CD2}">selected</c:if>>${b.CMM_CD_NM} </option>
 											</c:forEach>
 										</select>
+										<div id='vendor_area_cdMap'>
+											<select name="vendor_area_cd" class="form-control  " id="vendor_area_cd" style="width:150px">
+												<option value="">선택하세요</option>
+											</select>
+										</div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -632,6 +676,8 @@
 	$(document).ready(function(){
 		<%if(request.getParameter("gubun") !=null){ %>
 		getTeamList();
+		ajaxFlag = false;
+		searchu_area();
 		<%}%>
 		ajaxFlag = false;
 		getSegment();
@@ -641,6 +687,45 @@
 	<c:if test="${returnCode eq '0000'}">
  		alert("수정 하였습니다.");
 	</c:if>
-
+	function searchu_area(){
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var area1 = "";
+		var area2 = "";
+		var gubun = "<%=request.getParameter("gubun")%>";
+		
+		area1 = '${data.VENDOR_AREA_CD}';
+		area2 = '${data.VENDOR_AREA_CD2}';
+		
+		$.ajax({
+			type : "POST",
+			url : "/areaSearch",
+			data : {
+				"gubun" : gubun,
+				"area2" : area2,
+				"area1" : area1
+			},
+			dataType : "html",
+			traditional : true,
+			success : function(args) {
+				$("#vendor_area_cdMap").empty();
+				$("#vendor_area_cdMap").html(args);
+				ajaxFlag = false;
+			},
+			error : function(xhr, status, e) {
+				if (xhr.status == 403) {
+					alert("로그인이 필요한 메뉴 입니다.");
+					location.replace("/logIn");
+				} else {
+					alert("처리중 에러가 발생 하였습니다.");
+					location.reload();
+				}
+				ajaxFlag = false;
+			}
+		});
+	}
+	
+	
    </script>
    

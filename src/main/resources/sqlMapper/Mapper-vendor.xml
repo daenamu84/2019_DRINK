@@ -259,6 +259,13 @@
     	]]>
     </update>
     
+     <update id="vendor_userdelete">
+    	<![CDATA[
+    		DELETE FROM T_VENDOR_USER_D
+    		WHERE VENDOR_NO = #{vendor_no}			
+    	]]>
+    </update>
+    
     <update id="vendor_userUpdate">
     	<![CDATA[
     		UPDATE T_VENDOR_USER_D
@@ -298,6 +305,7 @@
     <select id="getVendorView" resultType="DataMap">
     	<![CDATA[
 		 SELECT A.VENDOR_NO, A.OUTLET_NM, A.VENDOR_STAT_CD, A.VENDOR_GRD_CD, A.VENDOR_AREA_CD,
+		 		substring(A.VENDOR_AREA_CD, 1,INSTR( A.VENDOR_AREA_CD, '-')-1) AS VENDOR_AREA_CD2,
 		   		 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00001' AND E.CMM_CD = A.VENDOR_STAT_CD) VENDOR_STAT_NM, 
 		          A.VENDOR_ZIP_NO, A.VENDOR_ADDR, A.VENDOR_TEL_NO, A.VENDOR_URL, A.MARKET_DIVS_CD, 
 		          A.VENDOR_SGMT_DIVS_CD, A.VENDOR_BRNO, CAST(AES_DECRYPT(UNHEX(A.VENDOR_RRNO), 'tb_sms')  as char(100)) as VENDOR_RRNO , A.WHOLESALE_YN, A.WHOLESALE_VENDOR_NO, 
