@@ -111,7 +111,7 @@
 		
 		function  goStep03(prps_id){
 			$("#prps_id").val(prps_id);
-			document.insert02.action = "/proPosalForm03";
+			document.insert02.action = "/proPosalForm02-1";
 			document.insert02.submit();
 		}
 		
@@ -137,7 +137,7 @@
 			var rmk_cntn1 = $("input[name='rmk_cntn1']");
 			
 			var _addParam = [];
-			var _addParam1 = [];
+			
 			
 			
 			for (var i = 0; i < prodNoSitemNm.length; i++) {
