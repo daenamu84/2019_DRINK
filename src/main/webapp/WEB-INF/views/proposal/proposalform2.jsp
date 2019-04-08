@@ -488,12 +488,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="${i.PROD_NO_SITEM_NM}">
 			  		</td>
-			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate"  value="<fmt:formatNumber value="${i.std_case_rate}" pattern="#,###" />" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate"  value="<fmt:formatNumber value="${i.STD_CASE_RATE}" pattern="#,###" />" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt"  value="${i.DELIVERY_CNT}" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" value="${i.CASE9L}"  readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt"  value="<fmt:formatNumber value="${i.UNIT_INCENTIVE_AMT}" pattern="#,###" />" onkeyup="javascript:incentive_amt_calcul()"  ></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" value="<fmt:formatNumber value="${i.INCENTIVE_AMT}" pattern="#,###" />" readonly></td>
-			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" value="<fmt:formatNumber value="${i.case_rate}" pattern="#,###" />" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" value="<fmt:formatNumber value="${i.CASE_RATE}" pattern="#,###" />" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" value="<fmt:formatNumber value="${i.VS_STD}" pattern="#,###" />" readonly></td>
 			  	</tr>
 				</c:forEach>
