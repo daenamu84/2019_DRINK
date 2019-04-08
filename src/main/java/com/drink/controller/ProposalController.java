@@ -164,6 +164,37 @@ public class ProposalController {
 		mav.setViewName("proposal/proposalform2");
 		return mav;
 	}
+
+	@RequestMapping(value = "/proPosalForm02-1")
+	public ModelAndView proPosalForm02_1(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		logger.debug("==rtMap=="+ rtMap.toString());
+		
+		ModelAndView mav = new ModelAndView();
+		
+		List<DataMap> rtnMap = brandService.BrandList(rtMap);
+		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
+		
+		if(rtMap.getString("gubun").equals("update")) {
+			List<DataMap> rtnProPosalDMap1 = proposalService.ProPosalProdD_DViewI(rtMap);
+			mav.addObject("ProPosalDList1", rtnProPosalDMap1);
+			List<DataMap> rtnProPosalDMap2 = proposalService.ProPosalProdD_DViewA(rtMap);
+			mav.addObject("ProPosalDList2", rtnProPosalDMap2);
+		}
+		
+		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.addObject("prps_id", rtMap.getString("prps_id"));
+		mav.addObject("brandList", rtnMap);
+		mav.addObject("mBrandCd", mBrandCd);
+		mav.setViewName("proposal/proposalform2-1");
+		return mav;
+	}
 	
 	@RequestMapping(value = "/proPosalForm03")
 	public ModelAndView proPosalForm03(Locale locale, Model model , RequestMap rtMap,  HttpServletRequest req) throws DrinkException {
