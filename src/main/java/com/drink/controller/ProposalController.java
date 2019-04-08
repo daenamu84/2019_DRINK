@@ -181,13 +181,9 @@ public class ProposalController {
 		List<DataMap> rtnMap = brandService.BrandList(rtMap);
 		List<DataMap> mBrandCd = brandService.BrandMCdList(rtMap);
 		
-		if(rtMap.getString("gubun").equals("update")) {
-			List<DataMap> rtnProPosalDMap1 = proposalService.ProPosalProdD_DViewI(rtMap);
-			mav.addObject("ProPosalDList1", rtnProPosalDMap1);
-			List<DataMap> rtnProPosalDMap2 = proposalService.ProPosalProdD_DViewA(rtMap);
-			mav.addObject("ProPosalDList2", rtnProPosalDMap2);
-		}
+		List<DataMap> rtnProPosalDMap1 = proposalService.ProPosalProdD_DViewI(rtMap);
 		
+		mav.addObject("ProPosalDList1", rtnProPosalDMap1);
 		mav.addObject("gubun",rtMap.get("gubun"));
 		mav.addObject("prps_id", rtMap.getString("prps_id"));
 		mav.addObject("brandList", rtnMap);
