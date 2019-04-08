@@ -174,12 +174,12 @@ var ajaxFlag = false;
 						  <thead>
 						    <tr>
 						      <th scope="col" style="width:auto">제품명</th>
-						      <th scope="col" width="10%">제품CASE RATE</th>
+						      <th scope="col" width="10%">STD CASE RATE</th>
 						      <th scope="col" width="7%">출고수량</th>
 						      <th scope="col" width="5%">CASE(9L)</th>
-						      <th scope="col" width="10%">STD CASE RATE</th>
 						      <th scope="col" width="20%">인센티브 병당가격</th>
 						      <th scope="col" width="10%">인센티브</th>
+						      <th scope="col" width="10%">CASE RATE</th>
 						      <th scope="col" width="10%">VS STD</th>
 						    </tr>
 						  </thead>
@@ -187,26 +187,27 @@ var ajaxFlag = false;
 								<c:forEach items="${ProPosalIList}" var="i" varStatus="status">
 									<tr>
 										<td>${i.PROD_NO_SITEM_NM2}</td>
-										<td><fmt:formatNumber value="${i.CASERATE_AMT}" pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${i.STD_CASE_RATE}" pattern="#,###" />원</td>
 										<td>${i.DELIVERY_CNT}</td>
 										<td><fmt:formatNumber value="${i.CASE9L}"/></td>
-										<td><fmt:formatNumber value="${i.STD_CASE}" pattern="#,###" />원</td>
 										<td><fmt:formatNumber value="${i.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</td>
 										<td><fmt:formatNumber value="${i.INCENTIVE_AMT}" pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${i.CASE_RATE}" pattern="#,###" />원</td>
 										<td><fmt:formatNumber value="${i.VS_STD}" pattern="#,###" />원</td>
 									</tr>
 								</c:forEach>
 						  </tbody>
 						</table>
+						
 						<table class="table border">
 							<tr>
 								<th scope="col" style="width: auto">SUBTOTAL</th>
-								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.CASERATE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.STD_CASE_RATE}" pattern="#,###" />원</th>
 								<th scope="col" width="7%">${ProPosalISum.DELIVERY_CNT}</th>
 								<th scope="col" width="5%"><fmt:formatNumber value="${ProPosalISum.CASE9L}" /></th>
-								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.STD_CASE}" pattern="#,###" />원</th>
 								<th scope="col" width="20%"><fmt:formatNumber value="${ProPosalISum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.INCENTIVE_AMT}" pattern="#,###" />원</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.CASE_RATE}" pattern="#,###" />원</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.VS_STD}" pattern="#,###" />원</th>
 							</tr>
 						</table><br/>
