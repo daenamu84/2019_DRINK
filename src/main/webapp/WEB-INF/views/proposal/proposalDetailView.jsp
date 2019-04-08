@@ -204,7 +204,7 @@ var ajaxFlag = false;
 								<th scope="col" style="width: auto">SUBTOTAL</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.STD_CASE_RATE}" pattern="#,###" />원</th>
 								<th scope="col" width="7%">${ProPosalISum.DELIVERY_CNT}</th>
-								<th scope="col" width="5%"><fmt:formatNumber value="${ProPosalISum.CASE9L}" /></th>
+								<th scope="col" width="6%"><fmt:formatNumber value="${ProPosalISum.CASE9L}" /></th>
 								<th scope="col" width="20%"><fmt:formatNumber value="${ProPosalISum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.INCENTIVE_AMT}" pattern="#,###" />원</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalISum.CASE_RATE}" pattern="#,###" />원</th>
