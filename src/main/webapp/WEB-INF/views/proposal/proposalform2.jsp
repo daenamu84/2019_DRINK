@@ -33,8 +33,6 @@
 			 var productCnt = $("#productCnt").val();
 			 var supplyCnt = $("#supplyCnt").val();
 			 var productLayer = $("#view1 > tr");
-			 var supplyLayer = $("#view2 > tr");
-			 
 			 
 			 if(productLayer.length > productCnt){
 				 for(var i = 0; i< productLayer.length; i++){
@@ -45,22 +43,12 @@
 			 }else if(productLayer.length < productCnt){
 				 for(var y= 0; y< productCnt - productLayer.length ; y++){
 				 	//$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\"></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
-				 	$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"caserate_amt\" class=\"form-control\" name=\"caserate_amt\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"std_case\" class=\"form-control\" name=\"std_case\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
+				 	//$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
+					 $("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
 				 }
 			 }
 			 
-			 if(supplyLayer.length > supplyCnt){
-				 for(var i = 0; i< supplyLayer.length; i++){
-					 if(supplyCnt  <=  i){
-						 $($("#view2 > tr")[supplyCnt]).remove()
-					 }
-				 }
-			 }else if(supplyLayer.length < supplyCnt){
-				 for(var y= 0; y< supplyCnt - supplyLayer.length ; y++){
-					 	//$("#view2").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm1\" class=\"form-control\" name=\"prodNoSitemNm1\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd1\" class=\"form-control\" name=\"prodNoSitemCd1\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt1\" class=\"form-control\" name=\"deliveryCnt1\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt1\" class=\"form-control\" name=\"deliveryAmt1\" value=\"\"></td><td><input type=\"text\" id=\"dcRate1\" class=\"form-control\" name=\"dcRate1\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt1\" class=\"form-control\" name=\"lastDeliverAmt1\" value=\"\"></td></tr>");
-					 	$("#view2").append("<tr><td><input type=\"text\" id=\"prodNoSitemNm1\" class=\"form-control\" name=\"prodNoSitemNm1\" value=\"\"><input type=\"hidden\" id=\"prodNoSitemCd1\" class=\"form-control\" name=\"prodNoSitemCd1\" value=\"\"></td><td><input type=\"text\" id=\"unit_incentive_amt1\" class=\"form-control\" name=\"unit_incentive_amt1\"></td><td><input type=\"text\" id=\"delivery_cnt1\" class=\"form-control\" name=\"delivery_cnt1\" onkeyup=\"javascript:incentive_amt1_calcul()\"></td><td><input type=\"text\" id=\"incentive_amt1\" class=\"form-control\" name=\"incentive_amt1\" readonly></td><td><input type=\"text\" id=\"rmk_cntn1\" class=\"form-control\" name=\"rmk_cntn1\" ></td></tr>");
-					 }
-			 }
+			 
 			 vs_std_calcul();
 			 incentive_amt1_calcul();
 		});
@@ -133,10 +121,10 @@
 			var prps_id = $("#prps_id").val();
 			var prodNoSitemNm = $("input[name='prodNoSitemNm']");
 			var prodNoSitemCd = $("input[name='prodNoSitemCd']");
-			var caserate_amt = $("input[name='caserate_amt']");
+			var std_case_rate = $("input[name='std_case_rate']");
 			var delivery_cnt = $("input[name='delivery_cnt']");
 			var case9l = $("input[name='case9l']");
-			var std_case = $("input[name='std_case']");
+			var case_rate = $("input[name='case_rate']");
 			var unit_incentive_amt = $("input[name='unit_incentive_amt']");
 			var incentive_amt = $("input[name='incentive_amt']");
 			var vs_std = $("input[name='vs_std']");
@@ -157,16 +145,7 @@
 					continue;
 				}
 				
-				_addParam.push({"prodNoSitemNm":prodNoSitemNm[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"caserate_amt":getNumString(caserate_amt[i].value),"delivery_cnt":delivery_cnt[i].value,"case9l":case9l[i].value,"std_case":getNumString(std_case[i].value),"unit_incentive_amt":getNumString(unit_incentive_amt[i].value),"incentive_amt":getNumString(incentive_amt[i].value),"vs_std":getNumString(vs_std[i].value)});
-			}
-			
-			
-			for (var i = 0; i < prodNoSitemNm1.length; i++) {
-				if(prodNoSitemNm1[i].value ==""){
-					continue;
-				}
-				
-				_addParam1.push({"prodNoSitemNm1":prodNoSitemNm1[i].value,"prodNoSitemCd1":prodNoSitemCd1[i].value,"unit_incentive_amt1":getNumString(unit_incentive_amt1[i].value),"delivery_cnt1":delivery_cnt1[i].value,"incentive_amt1":getNumString(incentive_amt1[i].value),"rmk_cntn1":rmk_cntn1[i].value});
+				_addParam.push({"prodNoSitemNm":prodNoSitemNm[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"std_case_rate":getNumString(std_case_rate[i].value),"delivery_cnt":delivery_cnt[i].value,"case9l":case9l[i].value,"case_rate":getNumString(case_rate[i].value),"unit_incentive_amt":getNumString(unit_incentive_amt[i].value),"incentive_amt":getNumString(incentive_amt[i].value),"vs_std":getNumString(vs_std[i].value)});
 			}
 			
 			var gubun = $("#gubun").val();
@@ -181,7 +160,7 @@
 			$.ajax({      
 			    type:"POST",  
 			    url:url,
-			    data: JSON.stringify({"_addPram":_addParam,"_addPram1":_addParam1,"prps_id":prps_id}),
+			    data: JSON.stringify({"_addPram":_addParam,"prps_id":prps_id}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
 			    traditional:true,
@@ -238,12 +217,11 @@
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
 		
-		var caserate_amt = numberWithCommas(arg3);
-		console.log(caserate_amt);
-		$(obj).parent().parent().parent().find('input[name="caserate_amt"]').val(caserate_amt);   
+		var std_case_rate = numberWithCommas(arg3);
+		console.log(std_case_rate);
+		$(obj).parent().parent().parent().find('input[name="std_case_rate"]').val(std_case_rate);   
 		if(arg3!=""){
 			case9l_calcul();
-			stdcaserate_calcul();
 			vs_std_calcul();
 		}
 		$("#popLayer").modal("hide");
@@ -259,24 +237,23 @@
 		for (var i = 0; i < fileValue; i++) {
 			if ($("input[name='delivery_cnt']")[i].value != "") {
 				$("input[name='case9l']")[i].value = $("input[name='delivery_cnt']")[i].value / 12;
-				stdcaserate_calcul();
 				incentive_amt_calcul();
 			}
 
 		}
 	}
 
-	//2.STD caserate 계산 (std_case)
+	//2.STD caserate 계산 (case_rate)
 	// 제품caser ate * case(9l) 
-	// caserate_amt *case9l
+	// std_case_rate *case9l
 	function stdcaserate_calcul() {
-		var fileValue = $("input[name='caserate_amt']").length;
+		var fileValue = $("input[name='std_case_rate']").length;
 		//console.log("fileValue=" + fileValue);
 		var fileData = new Array(fileValue);
 		for (var i = 0; i < fileValue; i++) {
-			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
+			//fileData[i] = $("input[name='std_case_rate']")[i].value * $("input[name='case9l']")[i].value);
 			if ($("input[name='case9l']")[i].value != "") {
-				$("input[name='std_case']")[i].value = numberWithCommas(getNumString($("input[name='caserate_amt']")[i].value) * $("input[name='case9l']")[i].value);
+				$("input[name='case_rate']")[i].value = numberWithCommas(getNumString($("input[name='std_case_rate']")[i].value) * $("input[name='case9l']")[i].value);
 			}
 		}
 	}
@@ -288,10 +265,11 @@
 		var fileValue = $("input[name='unit_incentive_amt']").length;
 		var fileData = new Array(fileValue);
 		for (var i = 0; i < fileValue; i++) {
-			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
+			//fileData[i] = $("input[name='std_case_rate']")[i].value * $("input[name='case9l']")[i].value);
 			if ($("input[name='unit_incentive_amt']")[i].value != "") {
 				$("input[name='incentive_amt']")[i].value = numberWithCommas($("input[name='delivery_cnt']")[i].value * getNumString($("input[name='unit_incentive_amt']")[i].value));
 				//$("input[name='unit_incentive_amt']")[i].value =  numberWithCommas(getNumString($("input[name='unit_incentive_amt']")[i].value));
+				$("input[name='case_rate']")[i].value = numberWithCommas(getNumString($("input[name='incentive_amt']")[i].value) / $("input[name='case9l']")[i].value);
 				vs_std_calcul();
 			}
 		}
@@ -299,13 +277,13 @@
 	
 	//4.vs STD  계산 vs_std
 	// STD caserate - 인센티브
-	// std_case - incentive_amt
+	// case_rate - incentive_amt
 	function vs_std_calcul() {
 		var fileValue = $("input[name='incentive_amt']").length;
-		var v_caserate_amt = 0;
+		var v_std_case_rate = 0;
 		var v_delivery_cnt = 0;
 		var v_case9l = 0;
-		var v_std_case = 0;
+		var v_case_rate = 0;
 		var v_unit_incentive_amt = 0;
 		var v_incentive_amt = 0;
 		var v_vs_std = 0;
@@ -313,21 +291,21 @@
 		
 		var fileData = new Array(fileValue);
 		for (var i = 0; i < fileValue; i++) {
-			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
+			//fileData[i] = $("input[name='std_case_rate']")[i].value * $("input[name='case9l']")[i].value);
 			if ($("input[name='incentive_amt']")[i].value != "") {
-				$("input[name='vs_std']")[i].value = numberWithCommas(getNumString($("input[name='std_case']")[i].value) - getNumString($("input[name='incentive_amt']")[i].value));
-				v_caserate_amt 	=  Number(v_caserate_amt) + getNumString($("input[name='caserate_amt']")[i].value);
+				$("input[name='vs_std']")[i].value = numberWithCommas(getNumString($("input[name='std_case_rate']")[i].value) - getNumString($("input[name='case_rate']")[i].value));
+				v_std_case_rate 	=  Number(v_std_case_rate) + getNumString($("input[name='std_case_rate']")[i].value);
 				v_delivery_cnt 	=  Number(v_delivery_cnt) + getNumString($("input[name='delivery_cnt']")[i].value);
 				v_case9l		=  Number(v_case9l) + getNumString($("input[name='case9l']")[i].value);
-				v_std_case 		=  Number(v_std_case) + getNumString($("input[name='std_case']")[i].value);
+				v_case_rate 		=  Number(v_case_rate) + getNumString($("input[name='case_rate']")[i].value);
 				v_unit_incentive_amt =  Number(v_unit_incentive_amt) + getNumString($("input[name='unit_incentive_amt']")[i].value);
 				v_incentive_amt =  Number(v_incentive_amt) + getNumString($("input[name='incentive_amt']")[i].value);
 				v_vs_std 		=  Number(v_vs_std) + getNumString($("input[name='vs_std']")[i].value);
 				
-				$("#sum_caserate_amt").val(numberWithCommas(v_caserate_amt));
+				$("#sum_std_case_rate").val(numberWithCommas(v_std_case_rate));
 				$("#sum_delivery_cnt").val(numberWithCommas(v_delivery_cnt));
 				$("#sum_case9l").val(numberWithCommas(v_case9l));
-				$("#sum_std_case").val(numberWithCommas(v_std_case));
+				$("#sum_case_rate").val(numberWithCommas(v_case_rate));
 				$("#sum_unit_incentive_amt").val(numberWithCommas(v_unit_incentive_amt));
 				$("#sum_incentive_amt").val(numberWithCommas(v_incentive_amt));
 				$("#sum_vs_std").val(numberWithCommas(v_vs_std));
@@ -346,7 +324,7 @@
 		var fileValue = $("input[name='unit_incentive_amt1']").length;
 		var fileData = new Array(fileValue);
 		for (var i = 0; i < fileValue; i++) {
-			//fileData[i] = $("input[name='caserate_amt']")[i].value * $("input[name='case9l']")[i].value);
+			//fileData[i] = $("input[name='std_case_rate']")[i].value * $("input[name='case9l']")[i].value);
 			if ($("input[name='delivery_cnt1']")[i].value != "") {
 				
 				$("input[name='incentive_amt1']")[i].value = numberWithCommas(getNumString($("input[name='unit_incentive_amt1']")[i].value) * $("input[name='delivery_cnt1']")[i].value);
@@ -385,21 +363,6 @@
 								<option value="10" <c:if test="${fn:length(ProPosalDList1) eq '10'}">selected </c:if>>10</option>
 					</select>
 			</div>
-			<label class="col col-12 col-sm-1" style="padding: 1px 0px;">지원품목수</label>
-			<div class="col col-12 col-sm-2" style="padding: 1px 0px;">
-					<select name="supplyCnt" class="form-control" id="supplyCnt">
-								<option value="1" <c:if test="${fn:length(ProPosalDList2) eq '1'}">selected </c:if>>1</option>
-								<option value="2" <c:if test="${fn:length(ProPosalDList2) eq '2'}">selected </c:if>>2</option>
-								<option value="3" <c:if test="${fn:length(ProPosalDList2) eq '3'}">selected </c:if>>3</option>
-								<option value="4" <c:if test="${fn:length(ProPosalDList2) eq '4'}">selected </c:if>>4</option>
-								<option value="5" <c:if test="${fn:length(ProPosalDList2) eq '5'}">selected </c:if><c:if test="${gubun ne 'update'}">selected </c:if>>5</option>
-								<option value="6" <c:if test="${fn:length(ProPosalDList2) eq '6'}">selected </c:if>>6</option>
-								<option value="7" <c:if test="${fn:length(ProPosalDList2) eq '7'}">selected </c:if>>7</option>
-								<option value="8" <c:if test="${fn:length(ProPosalDList2) eq '8'}">selected </c:if>>8</option>
-								<option value="9" <c:if test="${fn:length(ProPosalDList2) eq '9'}">selected </c:if>>9</option>
-								<option value="10" <c:if test="${fn:length(ProPosalDList2) eq '10'}">selected </c:if>>10</option>
-					</select>
-			</div>
 			<div class="col col-12 col-sm-1" style="padding: 1px 0px;">
 					<input class="btn btn-primary" type="button" id="cntUpdate" value="변경">
 					<input type="hidden" id="prps_id" name="prps_id" value="${prps_id}">
@@ -411,12 +374,12 @@
 			  <thead>
 			    <tr>
 			      <th scope="col" style="width:auto">제품명</th>
-			      <th scope="col" width="10%">제품CASE RATE</th>
+			      <th scope="col" width="10%">STD CASE RATE</th>
 			      <th scope="col" width="7%">출고수량</th>
 			      <th scope="col" width="10%">CASE(9L)</th>
-			      <th scope="col" width="10%">STD CASE RATE</th>
 			      <th scope="col" width="10%">인센티브 병당가격</th>
 			      <th scope="col" width="10%">인센티브</th>
+			      <th scope="col" width="10%">CASE RATEE</th>
 			      <th scope="col" width="10%">VS STD</th>
 			    </tr>
 			  </thead>
@@ -432,12 +395,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" onkeyup="javascript:incentive_amt_calcul()"  ></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
@@ -450,12 +413,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" onkeyup="javascript:incentive_amt_calcul()"></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
@@ -468,12 +431,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" onkeyup="javascript:incentive_amt_calcul()"></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
@@ -486,12 +449,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" onkeyup="javascript:incentive_amt_calcul()"></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  	<tr>
@@ -504,12 +467,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt" onkeyup="javascript:incentive_amt_calcul()"></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" readonly></td>
 			  	</tr>
 			  </c:if>
@@ -525,12 +488,12 @@
 			  			</span>
 			  			<input type="hidden" id="prodNoSitemCd" class="form-control" name="prodNoSitemCd" value="${i.PROD_NO_SITEM_NM}">
 			  		</td>
-			  		<td><input type="text" id="caserate_amt" class="form-control" name="caserate_amt"  value="<fmt:formatNumber value="${i.CASERATE_AMT}" pattern="#,###" />" readonly /></td>
+			  		<td><input type="text" id="std_case_rate" class="form-control" name="std_case_rate"  value="<fmt:formatNumber value="${i.std_case_rate}" pattern="#,###" />" readonly /></td>
 			  		<td><input type="text" id="delivery_cnt" class="form-control" name="delivery_cnt"  value="${i.DELIVERY_CNT}" onkeyup="javascript:case9l_calcul()"></td>
 			  		<td><input type="text" id="case9l" class="form-control" name="case9l" value="${i.CASE9L}"  readonly></td>
-			  		<td><input type="text" id="std_case" class="form-control" name="std_case" value="<fmt:formatNumber value="${i.STD_CASE}" pattern="#,###" />" readonly></td>
 			  		<td><input type="text" id="unit_incentive_amt" class="form-control" name="unit_incentive_amt"  value="<fmt:formatNumber value="${i.UNIT_INCENTIVE_AMT}" pattern="#,###" />" onkeyup="javascript:incentive_amt_calcul()"  ></td>
 			  		<td><input type="text" id="incentive_amt" class="form-control" name="incentive_amt" value="<fmt:formatNumber value="${i.INCENTIVE_AMT}" pattern="#,###" />" readonly></td>
+			  		<td><input type="text" id="case_rate" class="form-control" name="case_rate" value="<fmt:formatNumber value="${i.case_rate}" pattern="#,###" />" readonly></td>
 			  		<td><input type="text" id="vs_std" class="form-control" name="vs_std" value="<fmt:formatNumber value="${i.VS_STD}" pattern="#,###" />" readonly></td>
 			  	</tr>
 				</c:forEach>
@@ -540,110 +503,18 @@
 			<table class="table border">
 				<tr>
 					<th scope="col" style="width: auto">SUBTOTAL</th>
-					<th scope="col" width="10%"><input type="text" id="sum_caserate_amt" class="form-control" name="sum_caserate_amt" readonly /></th>
+					<th scope="col" width="10%"><input type="text" id="sum_std_case_rate" class="form-control" name="sum_std_case_rate" readonly /></th>
 					<th scope="col" width="7%"><input type="text" id="sum_delivery_cnt" class="form-control" name="sum_delivery_cnt" readonly /></th>
-					<th scope="col" width="5%"><input type="text" id="sum_case9l" class="form-control" name="sum_case9l" readonly /></th>
-					<th scope="col" width="10%"><input type="text" id="sum_std_case" class="form-control" name="sum_std_case" readonly /></th>
+					<th scope="col" width="10%"><input type="text" id="sum_case9l" class="form-control" name="sum_case9l" readonly /></th>
 					<th scope="col" width="10%"><input type="text" id="sum_unit_incentive_amt" class="form-control" name="sum_unit_incentive_amt" readonly /></th>
 					<th scope="col" width="10%"><input type="text" id="sum_incentive_amt" class="form-control" name="sum_incentive_amt" readonly /></th>
+					<th scope="col" width="10%"><input type="text" id="sum_case_rate" class="form-control" name="sum_case_rate" readonly /></th>
 					<th scope="col" width="10%"><input type="text" id="sum_vs_std" class="form-control" name="sum_vs_std" readonly /></th>
 				</tr>
 			</table>
 
 		</div>
-		<div class="row" style="padding-top:10px; overflow-x:auto;width:90%;text-align: center; margin: 0 auto;">
-			<div class="title">A&P</div> 
-			<table class="table">
-			  <thead>
-			    <tr>
-			      <th scope="col"  width="30%">품목명</th>
-			      <th scope="col"  width="10%">개당 금액</th>
-			      <th scope="col"  width="10%">수량</th>
-			      <th scope="col"  width="20%">총금액</th>
-			      <th scope="col"  width="30%">REMARK</th>
-			    </tr>
-			  </thead>
-			  <tbody id="view2">
-			  	 <c:if test="${gubun ne 'update'}">
-			  	<tr>
-			  		<td>
-			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-			  		</td>
-			  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"></td>
-			  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" onkeyup="javascript:incentive_amt1_calcul()"></td>
-			  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1" readonly></td>
-			  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" ></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-			  		</td>
-			  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"></td>
-			  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" onkeyup="javascript:incentive_amt1_calcul()"></td>
-			  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1" readonly></td>
-			  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" ></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-			  		</td>
-			  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"></td>
-			  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" onkeyup="javascript:incentive_amt1_calcul()"></td>
-			  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1" readonly></td>
-			  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" ></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-			  		</td>
-			  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"></td>
-			  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" onkeyup="javascript:incentive_amt1_calcul()"></td>
-			  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1" readonly></td>
-			  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" ></td>
-			  	</tr>
-			  	<tr>
-			  		<td>
-			  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1" value="">
-			  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-			  		</td>
-			  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"></td>
-			  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" onkeyup="javascript:incentive_amt1_calcul()"></td>
-			  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1" readonly></td>
-			  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" ></td>
-			  	</tr>
-			  	</c:if>
-			  	 <c:if test="${gubun eq 'update' }">
-				  	<c:forEach items="${ProPosalDList2}" var="i" varStatus="status">
-						<tr>
-							<td>
-					  			<input type="text" id="prodNoSitemNm1" class="form-control" name="prodNoSitemNm1"  value="${i.PROD_NO_SITEM_NM}">
-					  			<input type="hidden" id="prodNoSitemCd1" class="form-control" name="prodNoSitemCd1" value="">
-					  		</td>
-					  		<td><input type="text" id="unit_incentive_amt1" class="form-control" name="unit_incentive_amt1"  value="<fmt:formatNumber value="${i.UNIT_INCENTIVE_AMT}" pattern="#,###" />"></td>
-					  		<td><input type="text" id="delivery_cnt1" class="form-control" name="delivery_cnt1" value="${i.DELIVERY_CNT}" onkeyup="javascript:incentive_amt1_calcul()"></td>
-					  		<td><input type="text" id="incentive_amt1" class="form-control" name="incentive_amt1"  value="<fmt:formatNumber value="${i.INCENTIVE_AMT}" pattern="#,###" />" readonly></td>
-					  		<td><input type="text" id="rmk_cntn1" class="form-control" name="rmk_cntn1" value="${i.RMK_CNTN}"></td>
-					  	</tr>
-					</c:forEach>
-				  </c:if>
-			  </tbody>
-			</table>
-			<table class="table border">
-			  <thead>
-			    <tr>
-			      <th scope="col"  width="30%">SUBTOTAL</th>
-			      <th scope="col"  width="10%"><input type="text" class="form-control" name="s_unit_incentive_amt1" id="s_unit_incentive_amt1" readonly/></th>
-			      <th scope="col"  width="10%"><input type="text" class="form-control" name="s_delivery_cnt1" id="s_delivery_cnt1" readonly/></th>
-			      <th scope="col"  width="20%"><input type="text" class="form-control" name="s_incentive_amt1" id="s_incentive_amt1" readonly/></th>
-			      <th scope="col"  width="30%">&nbsp;</th>
-			    </tr>
-			  </thead>
-			</table>
-		</div>
+		
 		<div class="row" style="padding: 5px 0px;">
 			<div class="col-12 col-sm-6 text-left">
 				<input class="btn btn-light" type="button" id="proposalList" value="목록">

@@ -324,12 +324,12 @@
      <update id="subInsert">
     	<![CDATA[
     	INSERT INTO T_PROPOSAL_PROD_D(
-   			PRPS_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, CASERATE_AMT,  DELIVERY_CNT,
-   			CASE9L, STD_CASE, UNIT_INCENTIVE_AMT, INCENTIVE_AMT, VS_STD,
+   			PRPS_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, STD_CASE_RATE,  DELIVERY_CNT,
+   			CASE9L, CASE_RATE, UNIT_INCENTIVE_AMT, INCENTIVE_AMT, VS_STD,
   			RMK_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID
   		)VALUES (
-			#{prps_id}, #{prod_sitem_divs_cd}, #{prod_no_sitem_nm}, #{caserate_amt}, #{delivery_cnt}, 
-			#{case9l}, #{std_case}, #{unit_incentive_amt}, #{incentive_amt}, #{vs_std},
+			#{prps_id}, #{prod_sitem_divs_cd}, #{prod_no_sitem_nm}, #{std_case_rate}, #{delivery_cnt}, 
+			#{case9l}, #{case_rate}, #{unit_incentive_amt}, #{incentive_amt}, #{vs_std},
 			#{rmk_cntn},  now(), #{login_id}, now(), #{login_id}
 		 )
     	]]>

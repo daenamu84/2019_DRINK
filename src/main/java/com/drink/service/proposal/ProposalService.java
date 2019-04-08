@@ -186,10 +186,10 @@ public class ProposalService {
 			 svMap.put("prps_id", prps_id);
 			 svMap.put("prod_sitem_divs_cd", "01");
 			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
-			 svMap.put("caserate_amt", svMap.get("caserate_amt"));
+			 svMap.put("std_case_rate", svMap.get("std_case_rate"));
 			 svMap.put("delivery_cnt", svMap.get("delivery_cnt"));
 			 svMap.put("case9l", svMap.get("case9l"));
-			 svMap.put("std_case", svMap.get("std_case"));
+			 svMap.put("case_rate", svMap.get("case_rate"));
 			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt"));
 			 svMap.put("incentive_amt", svMap.get("incentive_amt"));
 			 svMap.put("vs_std", svMap.get("vs_std"));
@@ -197,27 +197,7 @@ public class ProposalService {
 			 
 			 gdi.update("Proposal.subInsert",svMap);
 		}
-		
-		List<Map<String, Object>> data1 = (List<Map<String, Object>>) map.get("_addPram1");
-		for(int j=0; j< data1.size();j++){
-			 logger.debug(j+" :: " + data1.get(j).toString());
-			 Map<String, Object> svMap = (Map<String, Object>) data1.get(j);
-			 svMap.put("prps_id", prps_id);
-			 svMap.put("prod_sitem_divs_cd", "02");
-			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemNm1"));
-			 svMap.put("caserate_amt", "0");
-			 svMap.put("delivery_cnt", svMap.get("delivery_cnt1"));
-			 svMap.put("case9l", "0");
-			 svMap.put("std_case", "0");
-			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt1"));
-			 svMap.put("incentive_amt", svMap.get("incentive_amt1"));
-			 svMap.put("vs_std", "0");
-			 svMap.put("rmk_cntn", svMap.get("rmk_cntn1"));
-			 svMap.put("login_id", map.get("regId"));
-			 
-			 gdi.update("Proposal.subInsert",svMap);
-		}
-		
+			
 	}
 	
 	
