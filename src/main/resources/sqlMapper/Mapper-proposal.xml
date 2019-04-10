@@ -508,7 +508,9 @@
     
     <update id="subnotExistDelete">
     	<![CDATA[
-    		DELETE  FROM  T_PROPOSAL_PROD_D WHERE  PRPS_ID = #{prps_id} AND PRPSD_ID  NOT IN
+    		DELETE  FROM  T_PROPOSAL_PROD_D WHERE  PRPS_ID = #{prps_id} 
+    		AND PROD_SITEM_DIVS_CD ='01'
+    		AND PRPSD_ID  NOT IN
     	]]> <foreach collection="prpsd_id" item="var" open="(" close=")" separator=",">#{var}</foreach>
     	
     </update>
