@@ -44,7 +44,8 @@
 				 for(var y= 0; y< productCnt - productLayer.length ; y++){
 				 	//$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\"></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"deliveryCnt\" class=\"form-control\" name=\"deliveryCnt\" value=\"\"></td><td><input type=\"text\" id=\"deliveryAmt\" class=\"form-control\" name=\"deliveryAmt\" value=\"\"></td><td><input type=\"text\" id=\"dcRate\" class=\"form-control\" name=\"dcRate\" value=\"\"></td><td><input type=\"text\" id=\"lastDeliverAmt\" class=\"form-control\" name=\"lastDeliverAmt\" value=\"\"></td></tr>");
 				 	//$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
-					 $("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
+					 //$("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");
+					 $("#view1").append("<tr><td><span class=\"col-12 col-md-9 float-left\" style=\"padding:0px;\"><input type=\"hidden\" id=\"prpsd_id\" name=\"prpsd_id\"><input type=\"text\" id=\"prodNoSitemNm\" class=\"form-control float-right\" name=\"prodNoSitemNm\" value=\"\" readonly></span><span class=\"col-12 col-md-3 float-left\" style=\"padding:0px;\"><input class=\"btn btn-dark\" type=\"button\" value=\"검색\" id=\"productInsertLayer\"/></span><input type=\"hidden\" id=\"prodNoSitemCd\" class=\"form-control\" name=\"prodNoSitemCd\" value=\"\"></td><td><input type=\"text\" id=\"std_case_rate\" class=\"form-control\" name=\"std_case_rate\" readonly /></td><td><input type=\"text\" id=\"delivery_cnt\" class=\"form-control\" name=\"delivery_cnt\" onkeyup=\"javascript:case9l_calcul()\"></td><td><input type=\"text\" id=\"case9l\" class=\"form-control\" name=\"case9l\" readonly></td><td><input type=\"text\" id=\"unit_incentive_amt\" class=\"form-control\" name=\"unit_incentive_amt\" onkeyup=\"javascript:incentive_amt_calcul()\"  ></td><td><input type=\"text\" id=\"incentive_amt\" class=\"form-control\" name=\"incentive_amt\" readonly></td><td><input type=\"text\" id=\"case_rate\" class=\"form-control\" name=\"case_rate\" readonly></td><td><input type=\"text\" id=\"vs_std\" class=\"form-control\" name=\"vs_std\" readonly></td></tr>");					 
 				 }
 			 }
 			 
@@ -119,6 +120,7 @@
 		$("#saveWork2").click(function(){			
 			if(ajaxFlag)return;
 			var prps_id = $("#prps_id").val();
+			var prpsd_id = $("input[name='prpsd_id']");
 			var prodNoSitemNm = $("input[name='prodNoSitemNm']");
 			var prodNoSitemCd = $("input[name='prodNoSitemCd']");
 			var std_case_rate = $("input[name='std_case_rate']");
@@ -145,7 +147,7 @@
 					continue;
 				}
 				
-				_addParam.push({"prodNoSitemNm":prodNoSitemNm[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"std_case_rate":getNumString(std_case_rate[i].value),"delivery_cnt":delivery_cnt[i].value,"case9l":case9l[i].value,"case_rate":getNumString(case_rate[i].value),"unit_incentive_amt":getNumString(unit_incentive_amt[i].value),"incentive_amt":getNumString(incentive_amt[i].value),"vs_std":getNumString(vs_std[i].value)});
+				_addParam.push({"prpsd_id":prpsd_id[i].value,"prodNoSitemNm":prodNoSitemNm[i].value,"prodNoSitemCd":prodNoSitemCd[i].value,"std_case_rate":getNumString(std_case_rate[i].value),"delivery_cnt":delivery_cnt[i].value,"case9l":case9l[i].value,"case_rate":getNumString(case_rate[i].value),"unit_incentive_amt":getNumString(unit_incentive_amt[i].value),"incentive_amt":getNumString(incentive_amt[i].value),"vs_std":getNumString(vs_std[i].value)});
 			}
 			
 			var gubun = $("#gubun").val();
@@ -388,6 +390,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
@@ -481,6 +484,7 @@
 				<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id"  value="${i.PRPSD_ID}" >
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="${i.PROD_NO_SITEM_NM2}" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">

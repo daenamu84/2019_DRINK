@@ -638,7 +638,7 @@ public class ProposalController {
 		
 		logger.debug("map :: " + rtMap.toString());
 		
-		proposalService.proposalDelete2(vts);
+		//proposalService.proposalDelete2(vts);
 		
 		proposalService.proposalWork2(vts);
 		

@@ -188,26 +188,67 @@ public class ProposalService {
 		String prps_id = (String) map.get("prps_id");
 		
 		
+		
 		List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("_addPram");
+		List Temp = new ArrayList();
+		for(int i=0; i< data.size();i++){
+			 logger.debug(i+" :: " + data.get(i).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
+			 svMap.put("prpsd_id", svMap.get("prpsd_id"));
+			 DataMap countMap = (DataMap) gdi.selectOne("Proposal.getT_PROPOSAL_PROD_D_Count",  svMap);
+			 
+			 logger.debug("countMap=="+countMap);
+			 if(countMap.getInt("TotalCNT") != 0 ){
+				 svMap.put("prps_id", prps_id);
+				 svMap.put("prod_sitem_divs_cd", "01");
+				 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
+				 svMap.put("std_case_rate", svMap.get("std_case_rate"));
+				 svMap.put("delivery_cnt", svMap.get("delivery_cnt"));
+				 svMap.put("case9l", svMap.get("case9l"));
+				 svMap.put("case_rate", svMap.get("case_rate"));
+				 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt"));
+				 svMap.put("incentive_amt", svMap.get("incentive_amt"));
+				 svMap.put("vs_std", svMap.get("vs_std"));
+				 svMap.put("login_id", map.get("regId"));
+				 
+				 gdi.update("Proposal.subUpdate",svMap);
+				 
+				 
+				 Temp.add(svMap.get("prpsd_id"));
+			}
+		}//end of for
+		
+		DataMap map1 = new DataMap();
+		logger.debug("Temp==--"+Temp);
+		map1.put("prpsd_id", Temp);
+		map1.put("prps_id", prps_id);
+		gdi.update("Proposal.subnotExistDelete",map1);
+		
 		
 		for(int i=0; i< data.size();i++){
 			 logger.debug(i+" :: " + data.get(i).toString());
 			 Map<String, Object> svMap = (Map<String, Object>) data.get(i);
-			 svMap.put("prps_id", prps_id);
-			 svMap.put("prod_sitem_divs_cd", "01");
-			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
-			 svMap.put("std_case_rate", svMap.get("std_case_rate"));
-			 svMap.put("delivery_cnt", svMap.get("delivery_cnt"));
-			 svMap.put("case9l", svMap.get("case9l"));
-			 svMap.put("case_rate", svMap.get("case_rate"));
-			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt"));
-			 svMap.put("incentive_amt", svMap.get("incentive_amt"));
-			 svMap.put("vs_std", svMap.get("vs_std"));
-			 svMap.put("login_id", map.get("regId"));
+			 svMap.put("prpsd_id", svMap.get("prpsd_id"));
+			 DataMap countMap = (DataMap) gdi.selectOne("Proposal.getT_PROPOSAL_PROD_D_Count",  svMap);
 			 
-			 gdi.update("Proposal.subInsert",svMap);
-		}
-			
+			 logger.debug("countMap=="+countMap);
+			 if(countMap.getInt("TotalCNT") == 0 ){
+				 svMap.put("prps_id", prps_id);
+				 svMap.put("prod_sitem_divs_cd", "01");
+				 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemCd"));
+				 svMap.put("std_case_rate", svMap.get("std_case_rate"));
+				 svMap.put("delivery_cnt", svMap.get("delivery_cnt"));
+				 svMap.put("case9l", svMap.get("case9l"));
+				 svMap.put("case_rate", svMap.get("case_rate"));
+				 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt"));
+				 svMap.put("incentive_amt", svMap.get("incentive_amt"));
+				 svMap.put("vs_std", svMap.get("vs_std"));
+				 svMap.put("login_id", map.get("regId"));
+				 
+				 gdi.update("Proposal.subInsert",svMap);
+			}
+		}//end of for
+	
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

@@ -472,4 +472,45 @@
 			]]> 
     </select>
     
+    <select id="getT_PROPOSAL_PROD_D_Count" resultType="DataMap">
+    	<![CDATA[
+    		SELECT COUNT(PRPSD_ID) AS TotalCNT 
+			 FROM T_PROPOSAL_PROD_D
+			 WHERE PRPSD_ID = #{prpsd_id}
+       	]]>
+    </select>
+    
+    <select id="getT_PROPOSAL_PROD_D_TCount" resultType="DataMap">
+    	<![CDATA[
+    		SELECT COUNT(PRPSD_ID) AS TotalCNT 
+			 FROM T_PROPOSAL_PROD_D
+			 WHERE PRPS_ID = #{prps_id}
+       	]]>
+    </select>
+    
+    <update id="subUpdate">
+    	<![CDATA[
+    		UPDATE T_PROPOSAL_PROD_D
+			SET 
+			   PROD_NO_SITEM_NM =  #{prod_no_sitem_nm}
+			  ,STD_CASE_RATE = #{std_case_rate}
+			  ,DELIVERY_CNT =  #{delivery_cnt}
+			  ,CASE9L = #{case9l}
+			  ,CASE_RATE = #{case_rate}
+			  ,UNIT_INCENTIVE_AMT = #{unit_incentive_amt}
+			  ,INCENTIVE_AMT = #{incentive_amt}
+			  ,VS_STD = #{vs_std}
+			  ,DATA_UPD_DTM =  now()
+			  ,DATA_UPD_ID =  #{login_id}
+			WHERE PRPSD_ID =  #{prpsd_id}
+    	]]>
+    </update>
+    
+    <update id="subnotExistDelete">
+    	<![CDATA[
+    		DELETE  FROM  T_PROPOSAL_PROD_D WHERE  PRPS_ID = #{prps_id} AND PRPSD_ID  NOT IN
+    	]]> <foreach collection="prpsd_id" item="var" open="(" close=")" separator=",">#{var}</foreach>
+    	
+    </update>
+    
 </mapper>
