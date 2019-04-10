@@ -266,9 +266,13 @@ var ajaxFlag = false;
 							<tr>
 								<th scope="col" style="width: auto">SUBTOTAL</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalASum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
-								<th scope="col" width="10%">${ProPosalASum.DELIVERY_CNT}</th>
-								<th scope="col" width="20%"><fmt:formatNumber value="${aTotIncentiveAmt}" />원</th>
-								<th scope="col" width="30%">&nbsp;</th>
+								<th scope="col" width="7%">${ProPosalASum.DELIVERY_CNT}</th>
+								<th scope="col" width="10%"><fmt:formatNumber value="${aTotIncentiveAmt}" />원</th>
+								<th scope="col" width="7%">&nbsp;</th>
+								<th scope="col"  width="10%">&nbsp;</th>
+						        <th scope="col"  width="10%">&nbsp;</th>
+						        <th scope="col"  width="10%">&nbsp;</th>
+						        <th scope="col"  width="13%">&nbsp;</th>
 							</tr>
 						</table>
 						<table class="table border">
