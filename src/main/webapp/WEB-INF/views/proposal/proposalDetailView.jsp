@@ -215,22 +215,50 @@ var ajaxFlag = false;
 						<table class="table border">
 						  <thead>
 						    <tr>
-						      <th scope="col"  width="30%">품목명</th>
+						      <th scope="col"  style="width:auto;">품목명</th>
 						      <th scope="col"  width="10%">개당 금액</th>
-						      <th scope="col"  width="10%">수량</th>
-						      <th scope="col"  width="20%">총금액</th>
-						      <th scope="col"  width="30%">REMARK</th>
+						      <th scope="col"  width="7%">수량</th>
+						      <th scope="col"  width="10%">총금액</th>
+						      <th scope="col"  width="7%">CASE(9L)</th>
+						      <th scope="col"  width="10%">인센티브</th>
+						      <th scope="col"  width="10%">CASE RATE</th>
+						      <th scope="col"  width="10%">VS STD</th>
+						      <th scope="col"  width="13%">REMARK</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-								<c:forEach items="${ProPosalAList}" var="j" varStatus="status">
-									<tr>
-										<td>${j.PROD_NO_SITEM_NM}</td>
-										<td><fmt:formatNumber value="${j.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</td>
-										<td>${j.DELIVERY_CNT}</td>
-										<td><fmt:formatNumber value="${j.INCENTIVE_AMT}"  pattern="#,###" />원</td>
-										<td>${j.RMK_CNTN}</td>
-									</tr>
+						  		<c:set var="aTotIncentiveAmt"  value="0" ></c:set>
+						  		<c:forEach items="${ProPosalIList}" var="i" varStatus="status">
+						  			<c:set var="aNpSize"  value="0" ></c:set>
+						  			<c:set var="aRowspan"  value="0" ></c:set>
+						  			<tr>
+								  		<td colspan="9" class="text-left">${i.PROD_NO_SITEM_NM2}
+								  		</td>
+								  	</tr>
+									<c:forEach items="${ProPosalAList}" var="j" varStatus="status">
+										<c:if test="${i.PRPSD_ID eq j.UP_PRPSD_ID}">
+										<tr>
+											<td>${j.PROD_NO_SITEM_NM}</td>
+											<td><fmt:formatNumber value="${j.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</td>
+											<td>${j.DELIVERY_CNT}</td>
+											<c:if test="${aNpSize eq 0}">
+											<c:forEach items="${ProPosalAList}" var="x" varStatus="xStatus">
+												<c:if test="${i.PRPSD_ID eq x.UP_PRPSD_ID}">
+													<c:set var="aRowspan"  value="${aRowspan+1}" ></c:set>
+												</c:if>
+											</c:forEach>
+											<c:set var="aTotIncentiveAmt"  value="${aTotIncentiveAmt+j.INCENTIVE_AMT}" ></c:set>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.INCENTIVE_AMT}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE9L}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${i.INCENTIVE_AMT}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE_RATE}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.VS_STD}"  pattern="#,###" />원</td>
+											</c:if>
+											<td>${j.RMK_CNTN}</td>
+										</tr>
+										<c:set var="aNpSize"  value="${aNpSize+1}" ></c:set>
+										</c:if>
+									</c:forEach>
 								</c:forEach>
 						  </tbody>
 						</table>
@@ -239,7 +267,7 @@ var ajaxFlag = false;
 								<th scope="col" style="width: auto">SUBTOTAL</th>
 								<th scope="col" width="10%"><fmt:formatNumber value="${ProPosalASum.UNIT_INCENTIVE_AMT}" pattern="#,###" />원</th>
 								<th scope="col" width="10%">${ProPosalASum.DELIVERY_CNT}</th>
-								<th scope="col" width="20%"><fmt:formatNumber value="${ProPosalASum.INCENTIVE_AMT}" />원</th>
+								<th scope="col" width="20%"><fmt:formatNumber value="${aTotIncentiveAmt}" />원</th>
 								<th scope="col" width="30%">&nbsp;</th>
 							</tr>
 						</table>
@@ -258,8 +286,8 @@ var ajaxFlag = false;
 									<td>TOTAL</td>
 									<td>${ProPosalTTLSum.CASE9L}</td>
 									<td><fmt:formatNumber value="${ProPosalTTLSum.INCENTIVE_AMT}"  pattern="#,###" />원</td>
-									<td><fmt:formatNumber value="${ProPosalTTLSum.A_INCENTIVE_AMT}"  pattern="#,###" />원</td>
-									<td><fmt:formatNumber value="${ProPosalTTLSum.AVERAGE}"  pattern="#,###" />원</td>
+									<td><fmt:formatNumber value="${aTotIncentiveAmt}"  pattern="#,###" />원</td>
+									<td><fmt:formatNumber value="${(ProPosalTTLSum.INCENTIVE_AMT + aTotIncentiveAmt) / ProPosalTTLSum.CASE9L}"  pattern="#,###" />원</td>
 								</tr>
 						  </tbody>
 						</table>
