@@ -167,6 +167,16 @@ public class ProposalService {
 		String prps_id = (String) map.get("prps_id");
 		gdi.update("Proposal.subDelete",map);
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void  proposalDelete2_1 ( Map<String, Object> map) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		List<DataMap> param = new ArrayList<>();
+		
+		String prps_id = (String) map.get("prps_id");
+		gdi.update("Proposal.subDelete2",map);
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void proposalWork2 ( Map<String, Object> map) throws DrinkException{
@@ -198,6 +208,39 @@ public class ProposalService {
 			 gdi.update("Proposal.subInsert",svMap);
 		}
 			
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void proposalWork2_1 ( Map<String, Object> map) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		List<DataMap> param = new ArrayList<>();
+		
+		
+		String prps_id = (String) map.get("prps_id");
+		
+		
+		List<Map<String, Object>> data1 = (List<Map<String, Object>>) map.get("_addPram");
+		for(int j=0; j< data1.size();j++){
+			 logger.debug(j+" :: " + data1.get(j).toString());
+			 Map<String, Object> svMap = (Map<String, Object>) data1.get(j);
+			 svMap.put("prps_id", prps_id);
+			 svMap.put("up_prpsd_id", svMap.get("up_prpsd_id"));
+			 svMap.put("prod_sitem_divs_cd", "02");
+			 svMap.put("prod_no_sitem_nm", svMap.get("prodNoSitemNm1"));
+			 svMap.put("unit_incentive_amt", svMap.get("unit_incentive_amt1"));
+			 svMap.put("delivery_cnt", svMap.get("delivery_cnt1"));
+			 svMap.put("case9l", svMap.get("up_case9l"));
+			 svMap.put("case_rate", svMap.get("case_rate1"));
+			 svMap.put("incentive_amt", svMap.get("incentive_amt1"));
+			 svMap.put("vs_std", svMap.get("vs_std1"));
+			 svMap.put("std_case_rate", svMap.get("std_case_rate1"));
+			 svMap.put("rmk_cntn", svMap.get("rmk_cntn1"));
+			 svMap.put("login_id", map.get("regId"));
+			 
+			 gdi.update("Proposal.subInsert2",svMap);
+		}
+		
 	}
 	
 	

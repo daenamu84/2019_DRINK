@@ -164,7 +164,7 @@
      <select id="ProPosalProdD_DViewA" resultType="DataMap">
     	<![CDATA[
     		SELECT 
-				TPPD.PRPSD_ID, TPPD.PRPS_ID, TPPD.PROD_SITEM_DIVS_CD, 'A&P' AS PROD_SITEM_DIVS_NM, TPPD.PROD_NO_SITEM_NM, 
+				TPPD.PRPSD_ID, TPPD.PRPS_ID, TPPD.UP_PRPSD_ID, TPPD.PROD_SITEM_DIVS_CD, 'A&P' AS PROD_SITEM_DIVS_NM, TPPD.PROD_NO_SITEM_NM, 
 				TPPD.STD_CASE_RATE ,
 				TPPD.DELIVERY_CNT  ,
 				TPPD.CASE9L  , 
@@ -335,9 +335,29 @@
     	]]>
     </update>
     
+     <update id="subInsert2">
+    	<![CDATA[
+    	INSERT INTO T_PROPOSAL_PROD_D(
+   			PRPS_ID, UP_PRPSD_ID, PROD_SITEM_DIVS_CD, PROD_NO_SITEM_NM, STD_CASE_RATE,  DELIVERY_CNT,
+   			CASE9L, CASE_RATE, UNIT_INCENTIVE_AMT, INCENTIVE_AMT, VS_STD,
+  			RMK_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID
+  		)VALUES (
+			#{prps_id},#{up_prpsd_id}, #{prod_sitem_divs_cd}, #{prod_no_sitem_nm}, #{std_case_rate}, #{delivery_cnt}, 
+			#{case9l}, #{case_rate}, #{unit_incentive_amt}, #{incentive_amt}, #{vs_std},
+			#{rmk_cntn},  now(), #{login_id}, now(), #{login_id}
+		 )
+    	]]>
+    </update>
+    
      <update id="subDelete">
     	<![CDATA[
-    		DELETE FROM T_PROPOSAL_PROD_D WHERE PRPS_ID = #{prps_id}
+    		DELETE FROM T_PROPOSAL_PROD_D WHERE PRPS_ID = #{prps_id} AND PROD_SITEM_DIVS_CD ='01'
+    	]]>
+    </update>
+
+     <update id="subDelete2">
+    	<![CDATA[
+    		DELETE FROM T_PROPOSAL_PROD_D WHERE PRPS_ID = #{prps_id} AND PROD_SITEM_DIVS_CD ='02'
     	]]>
     </update>
     
