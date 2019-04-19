@@ -11,7 +11,7 @@
 						  	<c:forEach items="${vendorList}" var="f" varStatus="status">
 						  		<input type="hidden"  name="vendorSearch" id="vendorSearch" value="Y"/>	
 						  		<tr>
-									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.OUTLET_NM}</a></td>
+									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.VENDOR_NM}</a></td>
 									<td>${f.TEAMNM}</td>
 									<td>${f.EMP_NM}</td>
 									<td>${f.VENDOR_TEL_NO}</td>

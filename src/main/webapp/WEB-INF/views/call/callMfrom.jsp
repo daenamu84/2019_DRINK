@@ -37,7 +37,7 @@
             console.log(ui.item);
             var id_check = $(this).attr("id");
             console.log(id_check);
-            //$("#outlet_nm1").val(ui.item.label);
+            //$("#vendor_nm1").val(ui.item.label);
             $("#vendor_no").val(ui.item.code);
         }},
 	  
@@ -255,7 +255,7 @@
                                 <div class="form-group row">
                                     <label for="vendor_no" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 거래처</label>
                                     <div class="col-md-6">
-										<input type="text" class="form-control temp" name="outlet_nm" id=1>
+										<input type="text" class="form-control temp" name="vendor_nm" id=1>
 										<input type="hidden" class="form-control" name="vendor_no" id="vendor_no">
 										<input type="hidden" class="form-control" name="scall_rslt_cd" id="scall_rslt_cd">
 									</div>

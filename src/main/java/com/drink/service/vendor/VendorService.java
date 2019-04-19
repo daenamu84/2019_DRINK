@@ -11,6 +11,9 @@ package com.drink.service.vendor;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.http.HttpRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +76,22 @@ public class VendorService {
 		
 		return param;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List getCommonCodeListPage(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		logger.debug("map==="+map);
+		param = gdi.selectList("Code.getCommonCodeListPage",map.getMap());
+		
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+		}
+		
+		return param;
+	}
+	
+	
 	
 	public List getDeptEmpList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
@@ -226,39 +245,39 @@ public class VendorService {
 			
 			
 			gdi.update("Vendor.vendor_userdelete", map.getMap());
+			logger.debug("111");
 			
-			String[] relr_divs_cd =  (String[]) map.get("relr_divs_cd");
-			String[] relr_nm =  (String[]) map.get("relr_nm");
-			String[] relr_postion_nm =  (String[]) map.get("relr_postion_nm");
-			String[] relr_dept_nm =  (String[]) map.get("relr_dept_nm");
-			String[] relr_tel_no =  (String[]) map.get("relr_tel_no");
-			String[] relr_email =  (String[]) map.get("relr_email");
-			String[] relr_anvs_dt =  (String[]) map.get("relr_anvs_dt");
-			String[] etc =  (String[]) map.get("etc");
 			
-			if(relr_nm.length > 0) {
-				for(int k=0; k< relr_nm.length ; k++) {
-					if(relr_nm[k] != "") {
-						map.put("relr_divs_cd", relr_divs_cd[k]);
-						map.put("relr_nm", relr_nm[k]);
-						map.put("relr_postion_nm", relr_postion_nm[k]);
-						map.put("relr_dept_nm", relr_dept_nm[k]);
-						map.put("relr_tel_no", relr_tel_no[k]);
-						map.put("relr_email", relr_email[k]);
-						map.put("relr_anvs_dt", relr_anvs_dt[k]);
-						map.put("etc", etc[k]);
-						gdi.update("Vendor.vendor_userInsert", map.getMap());
+			
+			logger.debug("2222");
+			System.out.println(1);
+			HttpServletRequest rq = map.getRequest();
+			String[] relr_divs_cd =  rq.getParameterValues("relr_divs_cd");
+			String[] relr_nm =  rq.getParameterValues("relr_nm");
+//			String[] relr_nm =  (String[]) map.get("relr_nm");
+			String[] relr_postion_nm =  rq.getParameterValues("relr_postion_nm");
+			String[] relr_dept_nm =  rq.getParameterValues("relr_dept_nm");
+			String[] relr_tel_no =  rq.getParameterValues("relr_tel_no");
+			String[] relr_email =  rq.getParameterValues("relr_email");
+			String[] relr_anvs_dt =  rq.getParameterValues("relr_anvs_dt");
+			String[] etc =  rq.getParameterValues("etc");
+			if(relr_nm!=null) {
+				if(relr_nm.length > 0) {
+					for(int k=0; k< relr_nm.length ; k++) {
+						if(relr_nm[k] != "") {
+							map.put("relr_divs_cd", relr_divs_cd[k]);
+							map.put("relr_nm", relr_nm[k]);
+							map.put("relr_postion_nm", relr_postion_nm[k]);
+							map.put("relr_dept_nm", relr_dept_nm[k]);
+							map.put("relr_tel_no", relr_tel_no[k]);
+							map.put("relr_email", relr_email[k]);
+							map.put("relr_anvs_dt", relr_anvs_dt[k]);
+							map.put("etc", etc[k]);
+							gdi.update("Vendor.vendor_userInsert", map.getMap());
+						}
 					}
 				}
 			}
-			
-//			int rtCntUser = gdi.update("Vendor.vendor_userUpdate", map.getMap()); 
-//			
-//			if(rtCntUser < 1){
-//				throw new DrinkException(new String[]{"messageError"," 거래처 담당자 정보 수정에 실패 했습니다."});
-//			}
-			
-			
 			
 		}
 		

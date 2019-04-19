@@ -37,7 +37,7 @@
             console.log(ui.item);
             var id_check = $(this).attr("id");
             console.log(id_check);
-            //$("#outlet_nm1").val(ui.item.label);
+            //$("#vendor_nm1").val(ui.item.label);
             $("#vendor_no"+id_check).val(ui.item.code);
         }},
 	  
@@ -266,7 +266,7 @@
 												</select>
 											</td>
 											<td>
-												<input type="text" class="form-control temp" name="outlet_nm" id="<%=i%>">
+												<input type="text" class="form-control temp" name="vendor_nm" id="<%=i%>">
 												<input type="hidden" class="form-control" name="vendor_no" id="vendor_no<%=i%>">
 											</td>
 											<td>

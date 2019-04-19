@@ -45,7 +45,7 @@
 		      $(this).parent().find(".dateRange").click();
 		});
 		
-		$("#outlet_nm").click(function(){
+		$("#vendor_nm").click(function(){
 			$("#popLayer").modal("show");
 		});
 		
@@ -129,7 +129,7 @@
 			}
 			
 			var outlet_no = $("#outlet_no").val();
-			var wholesale_vendor_no = $("#wholesale_vendor_no").val();
+			
 			var market_divs_cd = $("#market_divs_cd").val();
 			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd").val();
 			
@@ -151,7 +151,7 @@
 			 $.ajax({      
 				    type:"POST",  
 				    url:url,      
-				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"_addParam":_addParam,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"wholesale_vendor_no":wholesale_vendor_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"prps_cntn":prps_cntn }),
+				    data: JSON.stringify({"prps_id":prps_id, "prps_stus_cd":prps_stus_cd, "prps_nm":prps_nm,"_addParam":_addParam,"act_plan_cd":act_plan_cd,"prps_str_dt":prps_str_dt,"prps_end_dt":prps_end_dt,"outlet_no":outlet_no,"market_divs_cd":market_divs_cd,"vendor_sgmt_divs_cd":vendor_sgmt_divs_cd,"prps_cntn":prps_cntn }),
 				    dataType:"json",
 				    contentType:"application/json;charset=UTF-8",
 				    traditional:true,
@@ -200,10 +200,9 @@
 		
 	});
 	
- 	function setVendorId(outlet_no, outlet_nm, wholesale_vendor_no,market_divs_cd,vendor_sgmt_divs_cd, markget_nm, sgmt_nm){
+ 	function setVendorId(outlet_no, vendor_nm, market_divs_cd,vendor_sgmt_divs_cd, markget_nm, sgmt_nm){
 		$("#outlet_no").val(outlet_no);
-		$("#outlet_nm").val(outlet_nm);
-		$("#wholesale_vendor_no").val(wholesale_vendor_no);
+		$("#vendor_nm").val(vendor_nm);
 		$("#market_divs_cd").val(market_divs_cd);
 		$("#vendor_sgmt_divs_cd").val(vendor_sgmt_divs_cd);
 		$("#markget_nm").val(markget_nm);
@@ -275,9 +274,8 @@
                                     </div>
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">거래처</label>
                                     <div class="col-md-4">
-                                    	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VD_NM}">
+                                    	<input type="text" id="vendor_nm" class="form-control" name="vendor_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VD_NM}">
                                     	<input type="hidden" id="outlet_no"  name="outlet_no" value="${data.OUTLET_NO}"/>
-                                    	<input type="hidden" id="wholesale_vendor_no"  name="wholesale_vendor_no" value="${data.WHOLESALE_VENDOR_NO}"/>
                                     	<input type="hidden" id="market_divs_cd"  name="market_divs_cd" value="${data.MARKET_DIVS_CD}"/>
                                     	<input type="hidden" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd" value="${data.VENDOR_SGMT_DIVS_CD}"/>
                                     </div>
@@ -355,9 +353,9 @@
 							<c:forEach items="${vendorList}" var="i" varStatus="status">
 								<tr>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD},'${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD},'${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}','${i.WHOLESALE_VENDOR_NO}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}','${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.OUTLET_NM}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}','${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>

@@ -271,7 +271,7 @@ public class VendorController {
 		String relr_anvs_dt[] = req.getParameterValues("relr_anvs_dt");
 		String etc[] = req.getParameterValues("etc");
 		
-		rtMap.put("wholesale_vendor_no", rtMap.getInt("wholesale_vendor_no"));
+		rtMap.put("wholesale_cd", rtMap.getString("wholesale_cd"));
 		
 		rtMap.put("relr_divs_cd", relr_divs_cd);
 		rtMap.put("relr_nm", relr_nm);
@@ -397,7 +397,11 @@ public class VendorController {
 	}
 	
 	@RequestMapping(value = "/wholesaleVendorList")
-	public ModelAndView wholesaleVendorList(Locale locale, Model model, HttpServletRequest req) throws DrinkException {
+	public ModelAndView wholesaleVendorList(Locale locale, Model model, HttpServletRequest req, RequestMap rtMap) throws DrinkException {
+		
+		logger.debug("rtMap==="+rtMap);
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -409,12 +413,76 @@ public class VendorController {
 		
 		RequestMap paramMap = new RequestMap();
 		
-		List<DataMap> rtnVendrMap = vendorService.getWholesaleVendorList(paramMap);
+		paramMap.clear();
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		paramMap.put("cmm_cd_grp_id", "00025"); // 	도매장 목록
+		List<DataMap> vendorarea2cdMap = vendorService.getCommonCodeListPage(paramMap);
+		int totalCnt = paramMap.getInt("TotalCnt");
 		
-		mav.addObject("WholesaleVendorList", rtnVendrMap);
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		
+		//List<DataMap> rtnVendrMap = vendorService.getWholesaleVendorList(paramMap);
+		
+		mav.addObject("WholesaleVendorList", vendorarea2cdMap);
 		mav.setViewName("nobody/vendor/wholesaleVendorList");
 		
 		return mav;
+	}
+	
+	@RequestMapping(value = "/wholesaleVendorSearch")
+	public ModelAndView wholesaleVendorSearch(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		logger.debug("rtMap==="+param);
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		logger.debug("param==" + param.toString());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		String page = (String) param.get("page");
+		String pageLine = (String) param.get("pageLine");
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			RequestMap paramMap = new RequestMap();
+			paramMap.clear();
+			paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+			paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+			paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+			paramMap.put("perPageNum", paging.getRecordsPerPage());
+			paramMap.put("search_value", param.getString("search_value"));
+			paramMap.put("cmm_cd_grp_id", "00025"); // 	도매장 목록
+			List<DataMap> vendorarea2cdMap = vendorService.getCommonCodeListPage(paramMap);
+			int totalCnt = paramMap.getInt("TotalCnt");
+			
+			paging.makePaging();
+			HashMap<String, Object> pagingMap = new HashMap<>();
+			pagingMap.put("page", page);
+			pagingMap.put("pageLine", paging.getRecordsPerPage());
+			pagingMap.put("totalCnt", totalCnt);
+			mav.addObject("paging", pagingMap);
+			
+			//List<DataMap> rtnVendrMap = vendorService.getWholesaleVendorList(paramMap);
+			
+			mav.addObject("WholesaleVendorList", vendorarea2cdMap);
+			mav.setViewName("nobody/vendor/wholesaleVendorSearch");
+			
+			return mav;
+			
+			
+			} catch (Exception e) {
+				logger.debug("brandSubList err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","검섹중 에러가 발생 하였습니다."});
+			}
 	}
 	
 	@RequestMapping(value = "/vendorUpdate")
@@ -426,7 +494,7 @@ public class VendorController {
 		
 		logger.debug("map :: " + rtMap.toString());
 		
-		rtMap.put("wholesale_vendor_no", rtMap.getInt("wholesale_vendor_no"));
+		rtMap.put("wholesale_cd", rtMap.getString("wholesale_cd"));
 		vendorService.VendorInsert(rtMap);
 		
 		HashMap<String, Object> rtnMap = new HashMap<>();
@@ -468,7 +536,7 @@ public class VendorController {
 			paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 			paramMap.put("emp_no", loginSession.getEmp_no());
 			paramMap.put("deptno", loginSession.getDept_no());
-			paramMap.put("outlet_nm", param.getString("vendorNm"));
+			paramMap.put("vendor_nm", param.getString("vendorNm"));
 			List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 			
 			
@@ -564,12 +632,12 @@ public class VendorController {
 		ModelAndView mav = new ModelAndView();
 		
 		String vendor_no = "";
-		String outlet_nm = "";
+		String vendor_nm = "";
 		
 		if(rtMap.getString("vendor_no") !=""  && rtMap.getString("vendor_no") !=null  ) {
 			DataMap vendorView =  vendorService.vendorView(rtMap);
 			vendor_no = vendorView.getString("VENDOR_NO");
-			outlet_nm = vendorView.getString("OUTLET_NM");
+			vendor_nm = vendorView.getString("VENDOR_NM");
 		}
 		RequestMap paramMap = new RequestMap();
 		paramMap = new RequestMap();
@@ -580,7 +648,7 @@ public class VendorController {
 		mav.addObject("vendorList", vendorList);
 		mav.addObject("dropdown03","active");
 		mav.addObject("vendor_no",vendor_no);
-		mav.addObject("outlet_nm",outlet_nm);
+		mav.addObject("vendor_nm",vendor_nm);
 		mav.setViewName("vendor/vendorLedger");
 		return mav;
 	}

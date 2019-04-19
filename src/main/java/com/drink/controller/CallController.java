@@ -227,7 +227,7 @@ public class CallController {
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
-		paramMap.put("outlet_nm", term);
+		paramMap.put("vendor_nm", term);
 		
 		List<DataMap> rtnVendrMap = vendorService.getVendorList(paramMap);
 		
@@ -242,8 +242,8 @@ public class CallController {
 			for(int i=0;i < rtnVendrMap.size();i++) {
 				sg = new JsonObject();
 				DataMap map1 = rtnVendrMap.get(i);
-				sg.addProperty("label", map1.getString("OUTLET_NM"));
-				sg.addProperty("code", map1.getString("OUTLET_NM"));
+				sg.addProperty("label", map1.getString("VENDOR_NM"));
+				sg.addProperty("code", map1.getString("VENDOR_NM"));
 				sg.addProperty("value", map1.getString("VENDOR_NO"));
 				
 				gonarray.add(sg);

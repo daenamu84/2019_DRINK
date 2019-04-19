@@ -409,6 +409,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
@@ -427,6 +428,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
@@ -445,6 +447,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">
@@ -463,6 +466,7 @@
 			  	<tr>
 			  		<td>
 			  			<span class="col-12 col-md-9 float-left" style="padding:0px;">
+			  			<input type="hidden" id="prpsd_id" name="prpsd_id">
 			  			<input type="text" id="prodNoSitemNm" class="form-control float-right" name="prodNoSitemNm" value="" readonly>
 			  			</span>
 			  			<span class="col-12 col-md-3 float-left" style="padding:0px;">

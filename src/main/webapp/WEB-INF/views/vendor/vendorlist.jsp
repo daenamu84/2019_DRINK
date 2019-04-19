@@ -40,21 +40,20 @@
 		
 		$("#vendorSearch").click(function(){
 			
-			var outlet_nm = $("#outlet_nm").val();
+			var vendor_nm = $("#vendor_nm").val();
 			var dept_no = $("#dept_no option:selected").val();
 			var emp_nm = $("#emp_nm").val();
 			var market_divs_cd = $("#market_divs_cd option:selected").val();
 			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
 			var vendor_stat_cd = $("#vendor_stat_cd option:selected").val();
-			var wholesale_yn = $("#wholesale_yn option:selected").val();
 			var vendor_grd_cd = $("#vendor_grd_cd option:selected").val();
 			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/vendorSearch?outlet_nm="+outlet_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
-			    +"&vendor_stat_cd="+vendor_stat_cd+"&wholesale_yn="+wholesale_yn+"&vendor_grd_cd="+vendor_grd_cd,
+			    url:"/vendorSearch?vendor_nm="+vendor_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
+			    +"&vendor_stat_cd="+vendor_stat_cd+"&vendor_grd_cd="+vendor_grd_cd,
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
@@ -146,7 +145,7 @@
 										<thead>
 											<tr>
 												<td>거래처명</td>
-												<td style="padding-left:20px;"><input type="text" class="form-control temp" name="outlet_nm" id="outlet_nm"></td>
+												<td style="padding-left:20px;"><input type="text" class="form-control temp" name="vendor_nm" id="vendor_nm"></td>
 												<td style="padding-left:20px;">팀</td>
 												<td style="padding-left:20px;">
 													<select name="dept_no" class="form-control" id="dept_no">
@@ -187,15 +186,7 @@
 												</td>
 											</tr>
 											<tr >
-												<td>도매장여부</td>
-												<td style="padding-left:20px;">
-													<select name="wholesale_yn" class="form-control" id="wholesale_yn">
-														<option value="ALL">전체</option>
-														<option value="Y">Y</option>
-														<option value="N">N</option>
-													</select>
-												</td>
-												<td style="padding-left:20px;">거래처등급</td>
+												<td>거래처등급</td>
 												<td style="padding-left:20px;">
 													<select name="vendor_grd_cd" class="form-control" id="vendor_grd_cd">
 														<option value="ALL">전체</option>
@@ -203,6 +194,10 @@
 															<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
 														</c:forEach>
 													</select>
+												</td>
+												<td></td>
+												<td style="padding-left:20px;">
+													
 												</td>
 												<td style="padding-left:20px;" colspan="2" class="text-right">
 													<input class="btn btn-dark" type="button" value="검색" id="vendorSearch"/>
@@ -236,7 +231,7 @@
 						  <tbody id="vendorSeachLayer">	
 						  	<c:forEach items="${vendorList}" var="f" varStatus="status">	
 						  		<tr>
-									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.OUTLET_NM}</a></td>
+									<td><a href="javascript:vendorView('${f.VENDOR_NO}','update')">${f.VENDOR_NM}</a></td>
 									<td>${f.TEAMNM}</td>
 									<td>${f.EMP_NM}</td>
 									<td>${f.VENDOR_TEL_NO}</td>
@@ -299,21 +294,20 @@
 		
 		function goPageSub(pages, pageLine) {
 			
-			var outlet_nm = $("#outlet_nm").val();
+			var vendor_nm = $("#vendor_nm").val();
 			var dept_no = $("#dept_no option:selected").val();
 			var emp_nm = $("#emp_nm").val();
 			var market_divs_cd = $("#market_divs_cd option:selected").val();
 			var vendor_sgmt_divs_cd = $("#vendor_sgmt_divs_cd option:selected").val();
 			var vendor_stat_cd = $("#vendor_stat_cd option:selected").val();
-			var wholesale_yn = $("#wholesale_yn option:selected").val();
 			var vendor_grd_cd = $("#vendor_grd_cd option:selected").val();
 			
 			if(ajaxFlag)return;
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/vendorSearch?outlet_nm="+outlet_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
-			    +"&vendor_stat_cd="+vendor_stat_cd+"&wholesale_yn="+wholesale_yn+"&vendor_grd_cd="+vendor_grd_cd+"&page=" + pages + "&pageLine=" + pageLine,
+			    url:"/vendorSearch?vendor_nm="+vendor_nm+"&dept_no="+dept_no+"&emp_nm="+emp_nm+"&market_divs_cd="+market_divs_cd+"&vendor_sgmt_divs_cd="+vendor_sgmt_divs_cd
+			    +"&vendor_stat_cd="+vendor_stat_cd+"&vendor_grd_cd="+vendor_grd_cd+"&page=" + pages + "&pageLine=" + pageLine,
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   

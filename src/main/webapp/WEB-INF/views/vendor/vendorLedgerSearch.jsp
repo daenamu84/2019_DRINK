@@ -22,7 +22,7 @@
 		  <tbody>
 		  	<tr>
 		  		<td class="border">거래처명</td>
-		  		<td class="border">${vendorView.OUTLET_NM}</td>
+		  		<td class="border">${vendorView.VENDOR_NM}</td>
 		  		<td class="border">관리팀</td>
 		  		<td class="border">${vendorView.DEPT_NM}</td>
 		  		<td class="border">관리담당자</td>
@@ -47,8 +47,8 @@
 		  	<tr>
 		  		<td class="border">도매장명</td>
 		  		<td class="border" colspan="3">${vendorView.WHOLESALE_VENDOR_NM}</td>
-		  		<td class="border">도매장여부</td>
-		  		<td class="border">${vendorView.WHOLESALE_YN}</td>
+		  		<td class="border"></td>
+		  		<td class="border"></td>
 		  	</tr>
 		  	<tr>
 		  		<td class="border">우편번호</td>

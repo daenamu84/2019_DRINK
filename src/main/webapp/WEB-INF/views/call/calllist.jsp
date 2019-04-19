@@ -166,7 +166,7 @@
 				 temp = "";
 			 } 
 			
-			var outlet_nm = $("#outlet_nm").val();
+			var vendor_nm = $("#vendor_nm").val();
 			var scallStaDt = $("#scallStaDt").val();
 			var scallEndDt = $("#scallEndDt").val();
 			var scall_gbn_nm = $("#scall_gbn_nm option:selected").val();
@@ -178,7 +178,7 @@
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&outlet_nm="+outlet_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
+			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&vendor_nm="+vendor_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
 			    +"&scall_rslt_cd="+scall_rslt_cd +"&scall_purpose_cd="+scall_purpose_cd,
 			    dataType:"html",
 			    traditional:true,
@@ -286,7 +286,7 @@
 										<div class="col-sm-2"  id="empList"></div>
 										<div class="col-sm-1 my-auto">거래처</div>
 										<div class="col-sm-2">
-											<input type="text" class="form-control" name="outlet_nm" id="outlet_nm">
+											<input type="text" class="form-control" name="vendor_nm" id="vendor_nm">
 										</div>
 								</div>
 								<div class="row"style="padding-left:20px;margin-top:10px">
@@ -358,7 +358,7 @@
 									<td><input type="checkbox" name="checkdelete" value="${i.SCALL_NO}"></td>
 									<td><a href="javascript:callView('${i.SCALL_NO}')">${i.SCALL_GBN_NM_M}</a></td>
 									<td>${i.SCALL_DT}</td>
-									<td>${i.OUTLET_NM}</td>
+									<td>${i.VENDOR_NM}</td>
 									<td>${i.TEAMNM}</td>
 									<td>${i.EMP_NM}</td>
 									<td>${i.SCALL_PURPOSE_CD_NM}</td>
@@ -440,7 +440,7 @@ $(function() {
 				 temp = "";
 			 } 
 			
-			var outlet_nm = $("#outlet_nm").val();
+			var vendor_nm = $("#vendor_nm").val();
 			var scallStaDt = $("#scallStaDt").val();
 			var scallEndDt = $("#scallEndDt").val();
 			var scall_gbn_nm = $("#scall_gbn_nm option:selected").val();
@@ -451,7 +451,7 @@ $(function() {
 			ajaxFlag=true;
 			$.ajax({      
 			    type:"GET",  
-			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&outlet_nm="+outlet_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
+			    url:"/callSearch?deptno="+deptno+"&empno="+temp+"&vendor_nm="+vendor_nm+"&scallStaDt="+scallStaDt+"&scallEndDt="+scallEndDt+"&scall_gbn_nm="+scall_gbn_nm
 			    +"&scall_rslt_cd="+scall_rslt_cd+"&scall_purpose_cd="+scall_purpose_cd+"&page=" + pages + "&pageLine=" + pageLine,
 			    dataType:"html",
 			    traditional:true,

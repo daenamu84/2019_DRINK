@@ -41,7 +41,7 @@ var nowUrl = "/proPosalList";
             console.log(ui.item);
             var id_check = $(this).attr("id");
             console.log(id_check);
-            //$("#outlet_nm1").val(ui.item.label);
+            //$("#vendor_nm1").val(ui.item.label);
             $("#outlet_no").val(ui.item.code);
         }},
 	  
@@ -106,7 +106,7 @@ var nowUrl = "/proPosalList";
 	});
 	
 	$("#proposalClean").click(function(){
-		$("#outlet_nm").val("");
+		$("#vendor_nm").val("");
 		$("#outlet_no").val("");
 		$("#deptno option:eq(0)").prop("selected", true);
 		$("#prps_purpose_cd option:eq(0)").prop("selected", true);
@@ -206,7 +206,7 @@ var nowUrl = "/proPosalList";
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">거래처명</span></div>
 						<div class="col-12 col-sm-2">
-							<input type="text" class="form-control temp" name="outlet_nm" id="outlet_nm">
+							<input type="text" class="form-control temp" name="vendor_nm" id="vendor_nm">
 							<input type="hidden" class="form-control" name="outlet_no" id="outlet_no">
 						</div>
 						<div class="col-12 col-sm-2"><span class="align-middle">팀</span></div>

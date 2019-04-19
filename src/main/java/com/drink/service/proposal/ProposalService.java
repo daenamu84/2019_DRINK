@@ -220,9 +220,11 @@ public class ProposalService {
 		
 		DataMap map1 = new DataMap();
 		logger.debug("Temp==--"+Temp);
-		map1.put("prpsd_id", Temp);
-		map1.put("prps_id", prps_id);
-		gdi.update("Proposal.subnotExistDelete",map1);
+		if(Temp.size() > 0){
+			map1.put("prpsd_id", Temp);
+			map1.put("prps_id", prps_id);
+			gdi.update("Proposal.subnotExistDelete",map1);
+		}
 		
 		
 		for(int i=0; i< data.size();i++){

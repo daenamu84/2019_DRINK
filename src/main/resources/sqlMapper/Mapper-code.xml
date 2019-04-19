@@ -139,4 +139,27 @@
        	]]>
     </select>
     
+      <select id="getCommonCodeListPage" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				SQL_CALC_FOUND_ROWS  CMM_CD_GRP_ID, CMM_CD, CMM_CD_NM 
+			 FROM T_CMM_CD_M
+			 WHERE CMM_CD_GRP_ID = #{cmm_cd_grp_id}
+			 AND USE_YN = 'Y'
+		]]>			 
+		<if test="search_value != null">
+			AND CMM_CD_NM like  CONCAT ('%',#{search_value},'%')
+		</if>
+		<![CDATA[
+			 ORDER BY SORT_ORD
+       	]]>
+       	<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
+    </select>
+    
+    
+    
 </mapper>

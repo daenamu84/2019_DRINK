@@ -13,7 +13,7 @@
 		<tbody>
 			<tr>
 				<td>거래처</td>
-				<td>${data.OUTLET_NM}</td>
+				<td>${data.VENDOR_NM}</td>
 				<td>Cell Data</td>
 				<td>${data.SCALL_DT}</td>
 			</tr>

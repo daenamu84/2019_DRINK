@@ -12,6 +12,68 @@
 	
 	<script type="text/javascript">
 		var ajaxFlag = false;
+		function goPage(pages, pageLine) {
+			
+			$("#subLayer").empty();
+			$("#popLayer").modal("show");
+
+			$.ajax({
+				type : "GET",
+				url : "/wholesaleVendorList?page=" + pages + "&pageLine=" + pageLine,
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#subLayer").html(args);
+				},
+				error : function(xhr, status, e) {
+
+				}
+			});
+		}
+		
+		function goPageSub(pages, pageLine) {
+			var _wholesale_cd_nm = $("#_wholesale_cd_nm").val();
+			
+			$("#subLayer").empty();
+			$("#popLayer").modal("show");
+			
+
+			$.ajax({
+				type : "GET",
+				url : "/wholesaleVendorList?page=" + pages + "&pageLine=" + pageLine+"&search_value="+_wholesale_cd_nm,
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#subLayer").html(args);
+				},
+				error : function(xhr, status, e) {
+
+				}
+			});
+		}
+		
+		function seachWholesale() {
+			var _wholesale_cd_nm = $("#_wholesale_cd_nm").val();
+			alert(_wholesale_cd_nm);
+			$("#subLayer").empty();
+			$("#popLayer").modal("show");
+			
+			$.ajax({      
+			    type:"GET",  
+			    url:"/wholesaleVendorSearch?search_value="+_wholesale_cd_nm,     
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#subLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		}
+		
+		
 		// 한글입력막기 스크립트
 		$( function(){
 			$("#login_id" ).on("blur keyup", function() {
@@ -101,18 +163,7 @@
 			});
 		}
 
-		function wholesalevendo(e) {
-
-			if (e.value == 'N') {
-				$("#wholesale_vendor_area").show();
-			}
-			if (e.value == 'Y') {
-				$("#wholesale_vendor_area").hide();
-				$("#wholesale_vendor_no").val("");
-				$("#wholesale_vendor_nm").val("");
-			}
-		}
-
+		
 		$(document).on("click", "#vendorList", function() {
 			window.location.href = "/vendorList";
 		});
@@ -123,7 +174,7 @@
 				return;
 			ajaxFlag = true;
 
-			if ($("#outlet_nm").val() == "") {
+			if ($("#vendor_nm").val() == "") {
 				alert("거래처명을 입력하세요");
 				ajaxFlag = false;
 				return;
@@ -162,12 +213,7 @@
 				return;
 			}
 			
-			if ($("#wholesale_yn option:selected").val() == "") {
-				alert("도매장여부 선택 하세요");
-				ajaxFlag = false;
-				return;
-			}
-
+			
 			if ($("#gov_rel_d option:selected").val() == "") {
 				alert("공직자관련여부  선택 하세요");
 				ajaxFlag = false;
@@ -184,7 +230,7 @@
 			document.Form.submit();
 		});
 
-		$(document).on("click", "#wholesale_vendor_no", function() {
+		$(document).on("click", "#wholesale_cd_nm", function() {
 			console.log("도매장 검색");
 			if (ajaxFlag)
 				return;
@@ -208,9 +254,10 @@
 
 		});
 
-		function subListView(vendor_no, outlet_nm) {
-			$("#wholesale_vendor_no").val(vendor_no);
-			//$("#wholesale_vendor_nm").val(outlet_nm);
+		function subListView(vendor_no, vendor_nm) {
+			$("#wholesale_cd").val(vendor_no);
+			$("#wholesale_cd_nm").val(vendor_nm);
+			//$("#wholesale_vendor_nm").val(vendor_nm);
 			$("#popLayer").modal('hide');
 		}
 		
@@ -340,9 +387,9 @@
 							<div class="container" style="padding: 15px;"> <%if(request.getParameter("gubun")==null){ %>◈  거래처 기본 정보 등록 <%}else{ %>◈  ◈  거래처 기본 정보 수정 <%} %></div>
 							<div class="container border" style="padding: 15px;">
 								<div class="form-group row">
-                                	<label for="outlet_nm" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처명 </label>
+                                	<label for="vendor_nm" class="col-md-2 col-form-label text-md-left"><font color="red">*</font>거래처명 </label>
                                     <div class="col-md-6">
-                                    	<input type="text" id="outlet_nm" class="form-control" name="outlet_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.OUTLET_NM}">
+                                    	<input type="text" id="vendor_nm" class="form-control" name="vendor_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_NM}">
                                     	
                                     	<%if(request.getParameter("gubun")!=null){ %>
                                     		<input type="hidden" name="vendor_no" id="vendor_no"  value="${data.VENDOR_NO}"/>
@@ -464,20 +511,11 @@
                                     <label for="vendor_rrno" class="col-md-2 col-form-label text-md-left">주민번호</label>
                                     <div class="col-md-6"><input type="text" id="vendor_rrno" class="form-control" name="vendor_rrno"  value="${data.VENDOR_RRNO}"></div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="wholesale_yn" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 도매장여부</label>
+                                <div class="form-group row" id="wholesale_vendor_area">
+                                    <label for="wholesale_cd" class="col-md-2 col-form-label text-md-left">도매장</label>
                                     <div class="col-md-6">
-                                    	<select name="wholesale_yn" id="wholesale_yn" onchange="wholesalevendo(this)" <%if(request.getParameter("gubun")!=null){ %> disabled <%} %> >
-                                    		<option value="">선택하세요</option>
-                                    		<option value="Y" <c:if test="${'Y' eq data.WHOLESALE_YN}">selected</c:if>>Y</option>
-                                    		<option value="N" <c:if test="${'N' eq data.WHOLESALE_YN}">selected</c:if>>N</option>
-                                    	</select>
-                                    </div>
-                                </div>
-                                <div class="form-group row" id="wholesale_vendor_area" style="display:none">
-                                    <label for="wholesale_vendor_no" class="col-md-2 col-form-label text-md-left">도매장</label>
-                                    <div class="col-md-6">
-                                    	<input type="text" id="wholesale_vendor_no" class="form-control" readonly name="wholesale_vendor_no"  value="${data.WHOLESALE_VENDOR_NO}" >
+                                    	<input type="hidden" id="wholesale_cd" class="form-control" readonly name="wholesale_cd"  value="${data.WHOLESALE_CD}" >
+                                    	<input type="text" id="wholesale_cd_nm" class="form-control" readonly name="wholesale_cd_nm"  value="${data.WHOLESALE_CD_NM}" >
                                     </div>
                                 </div>
                                  <div class="form-group row">
@@ -669,9 +707,7 @@
 	</form>
 
    <script>
-    <c:if test="${'N' eq data.WHOLESALE_YN}">
-	$("#wholesale_vendor_area").show(); 
-	</c:if>
+    
 	
 	$(document).ready(function(){
 		<%if(request.getParameter("gubun") !=null){ %>

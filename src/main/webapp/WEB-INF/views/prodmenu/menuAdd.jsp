@@ -293,9 +293,9 @@ var ajaxFlag = false;
 							<c:forEach items="${vendorList}" var="i" varStatus="status">
 								<tr>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
 									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.OUTLET_NM}');" class="text-decoration-none">${i.OUTLET_NM}</a></td>
+										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
 								</tr>
 							</c:forEach>
 						</tbody>

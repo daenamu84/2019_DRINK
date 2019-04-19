@@ -44,7 +44,7 @@
 	  				<div class="col-xs-3">
 					<paging:paging var="skw3" currentPageNo="${paging.page}"
 						recordsPerPage="${paging.pageLine}"
-						numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+						numberOfRecords="${paging.totalCnt}" jsFunc="goPageSearch" />
 					${skw3.printBtPaging()}
 					</div>
 	  			</td>
