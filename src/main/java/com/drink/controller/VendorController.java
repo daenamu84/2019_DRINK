@@ -622,6 +622,9 @@ public class VendorController {
 	@RequestMapping(value = "/vendorLedger", method = {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView vendorLedger(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
+		
 		logger.debug("map :: " + rtMap.toString());
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
@@ -639,12 +642,29 @@ public class VendorController {
 			vendor_no = vendorView.getString("VENDOR_NO");
 			vendor_nm = vendorView.getString("VENDOR_NM");
 		}
+		
 		RequestMap paramMap = new RequestMap();
 		paramMap = new RequestMap();
+		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
 		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
+		
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		
 		mav.addObject("vendorList", vendorList);
 		mav.addObject("dropdown03","active");
 		mav.addObject("vendor_no",vendor_no);

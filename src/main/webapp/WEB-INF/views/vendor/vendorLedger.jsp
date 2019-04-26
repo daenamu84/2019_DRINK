@@ -11,6 +11,37 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	
 	<script type="text/javascript">
+	
+		function goPage(pages, pageLine) {
+			
+			$("#subLayer").empty();
+			$("#popLayer").modal("show");
+
+			$.ajax({
+				type : "GET",
+				url : "/vendorLedger?page=" + pages + "&pageLine=" + pageLine,
+				dataType : "html",
+				traditional : true,
+				success : function(args) {
+					$("#subLayer").html(args);
+				},
+				error : function(xhr, status, e) {
+
+				}
+			});
+			
+			
+			var url = "/";
+			if (url.indexOf('?') > -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "page=" + pages + "&pageLine=" + pageLine + "&deptno="
+					+ $("#deptno option:selected").val();
+			location.href = url;
+		}
+		
 		var ajaxFlag = false;
 		// 한글입력막기 스크립트
 		$( function(){
@@ -65,7 +96,7 @@
 			<div class="col">
 				<div class="container-fluid border" style="padding: 5px;">
 					<div class="row" style="padding: 5px 0px;">
-						<div class="col-12 col-sm-2"><span class="align-middle">거래처명</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">거래처명1</span></div>
 						<div class="col-12 col-sm-2">
 							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly value="${vendor_nm}" autocomplete="off"/>
 							<input type="hidden" name="vendorId" id="vendorId" class="form-control" value="${vendor_no}"/>
@@ -97,7 +128,7 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
+				<h5 class="modal-title" id="exampleModalLabel">거래처 조회1</h5>
 				<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 			</div>
 			<div class="modal-body">
@@ -130,6 +161,12 @@
 									href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
 							</tr>
 						</c:forEach>
+						<tr><td colspan="2">
+							<paging:paging var="skw3" currentPageNo="${paging.page}"
+									recordsPerPage="${paging.pageLine}"
+									numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+								${skw3.printBtPaging()}
+								</td></tr>
 					</tbody>
 				</table>
 			</div>
