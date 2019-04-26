@@ -13,33 +13,7 @@
 	<script type="text/javascript">
 	
 		function goPage(pages, pageLine) {
-			
-			$("#subLayer").empty();
-			$("#popLayer").modal("show");
-
-			$.ajax({
-				type : "GET",
-				url : "/vendorLedger?page=" + pages + "&pageLine=" + pageLine,
-				dataType : "html",
-				traditional : true,
-				success : function(args) {
-					$("#subLayer").html(args);
-				},
-				error : function(xhr, status, e) {
-
-				}
-			});
-			
-			
-			var url = "/";
-			if (url.indexOf('?') > -1) {
-				url += "&";
-			} else {
-				url += "?";
-			}
-			url += "page=" + pages + "&pageLine=" + pageLine + "&deptno="
-					+ $("#deptno option:selected").val();
-			location.href = url;
+			location.href="/vendorLedger?page=" + pages + "&pageLine=" + pageLine +"&pgYN=Y";
 		}
 		
 		var ajaxFlag = false;
@@ -51,6 +25,11 @@
 		})
 		
 		$(document).ready(function(){
+			if("${pgYN}"=="Y"){
+				$("#vdSearchLayer").modal("show");
+			}
+			
+			
 			$("#vendorNm").click(function(){
 				$("#vdSearchLayer").modal("show");
 			});
@@ -96,7 +75,7 @@
 			<div class="col">
 				<div class="container-fluid border" style="padding: 5px;">
 					<div class="row" style="padding: 5px 0px;">
-						<div class="col-12 col-sm-2"><span class="align-middle">거래처명1</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">거래처명</span></div>
 						<div class="col-12 col-sm-2">
 							<input type="text"  name="vendorNm" id="vendorNm" class="form-control" readonly value="${vendor_nm}" autocomplete="off"/>
 							<input type="hidden" name="vendorId" id="vendorId" class="form-control" value="${vendor_no}"/>

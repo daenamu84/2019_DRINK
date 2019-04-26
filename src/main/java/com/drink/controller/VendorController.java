@@ -669,6 +669,7 @@ public class VendorController {
 		mav.addObject("dropdown03","active");
 		mav.addObject("vendor_no",vendor_no);
 		mav.addObject("vendor_nm",vendor_nm);
+		mav.addObject("pgYN",rtMap.getString("pgYN"));
 		mav.setViewName("vendor/vendorLedger");
 		return mav;
 	}
