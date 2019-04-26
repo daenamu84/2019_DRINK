@@ -242,7 +242,7 @@ public class VendorController {
 			List<DataMap> rtnMap = vendorService.getDeptEmpList(rtMap);
 
 			mav.addObject("EmpList", rtnMap);
-			mav.addObject("emp_no", loginSession.getEmp_no());
+			mav.addObject("emp_no", rtMap.get("empno"));  // 2019.04.26 modify
 			mav.setViewName("nobody/vendor/vendorTeamList");
 			return mav;
 		}catch (Exception e) {
