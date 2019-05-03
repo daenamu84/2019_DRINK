@@ -131,15 +131,27 @@ public class ProdMenuController {
 	@RequestMapping(value = "/ProdMenuList")
 	public ModelAndView prodMenuList(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
+		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
 		if(loginSession == null || (loginSession.getLgin_id()== null)){
 			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
 		
+
+		
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
+		
+
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		
 		
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
@@ -153,8 +165,25 @@ public class ProdMenuController {
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
+		paramMap.put("vendor_nm", rtMap.getString("vendorNm"));
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
 		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 		mav.addObject("vendorList", vendorList);
+		
+		int totalCnt = paramMap.getInt("TotalCnt");
+
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("staDt", rtMap.getString("staDt"));
+		mav.addObject("endDt", rtMap.getString("endDt"));
+		mav.addObject("scY", rtMap.getString("scY"));
+		mav.addObject("dept_no", rtMap.getString("dept_no"));
+		mav.addObject("pEmpno", rtMap.getString("pEmpno"));
 		
 		mav.setViewName("prodmenu/menuList");
 		return mav;

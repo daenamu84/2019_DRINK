@@ -20,14 +20,24 @@ var ajaxFlag = false;
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
 			$(this).val(picker.endDate.format('YYYYMMDD'));
 		});
-		
-		$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
-		$('#_pStaDt').data('daterangepicker').setEndDate(moment().add(-30,'days').format("YYYYMMDD"));
+
+		if("${staDt}" == ""){
+			$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
+		}
+		if("${endDt}"==""){
+			$('#_pStaDt').data('daterangepicker').setEndDate(moment().add(-30,'days').format("YYYYMMDD"));
+		}
+		if("${scY}"=="Y"){
+			$("#vdSearchLayer").modal("show");
+		}
+		if("${dept_no}"!=""){
+			$("#deptno").trigger("change");
+		}
 	});	
 
 	$(document).ready(function(){
 	
-		$("#deptno").val("");
+		//$("#deptno").val("");
 		$("#vendorNm").click(function(){
 			$("#vdSearchLayer").modal("show");
 		});
@@ -86,19 +96,9 @@ var ajaxFlag = false;
 		$("#vendorSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
-			$.ajax({      
-			    type:"GET",  
-			    url:"/vendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
-			    dataType:"html",
-			    traditional:true,
-			    success:function(args){   
-			    	$("#vendorSeachLayer").html(args);
-			        ajaxFlag=false;
-			    },   
-			    error:function(xhr, status, e){  
-			        ajaxFlag=false;
-			    }  
-			});
+
+			location.href="/ProdMenuList?scY=Y&dept_no="+$("#deptno").val()+"&staDt="+$("#_pStaDt").val()+"&endDt="+$("#_pEndDt").val()+"&vendorNm="+$("#_sVendorNm").val();
+		
 		});
 		
 		$("#prodSearch").click(function(){
@@ -229,14 +229,14 @@ var ajaxFlag = false;
 	}
 	
 	
-	function goPage(){
+	function goPage(pages, pageLine){
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		
 		$.ajax({      
 		    type:"GET",  
 		    url:"/prodSearchList?="+$("#_sVendorNm").val(),
-		    data: {"deptNo":$("#_pgDeptNo").val(),"empNo":$("#_pgEmpNo").val(),"staDt":$("#_pgStaDt").val(),"endDt":$("#_pgEndDt").val(),"vendorId":$("#_pgVendorId").val()},
+		    data: {"deptNo":$("#_pgDeptNo").val(),"empNo":$("#_pgEmpNo").val(),"staDt":$("#_pgStaDt").val(),"endDt":$("#_pgEndDt").val(),"vendorId":$("#_pgVendorId").val(),"page":pages,"pageLine":pageLine},
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
@@ -248,6 +248,13 @@ var ajaxFlag = false;
 		    }  
 		});
 		
+	}
+	
+	function goPopPage(pages, pageLine){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		location.href="/ProdMenuList?scY=Y&dept_no="+$("#deptno").val()+"&staDt="+$("#_pStaDt").val()+"&endDt="+$("#_pEndDt").val()+"&page="+pages+"&pageLine="+pageLine;
 		
 	}
 </script>
@@ -264,7 +271,7 @@ var ajaxFlag = false;
 							<select name="deptno" class="form-control" id="deptno">
 								<option value="">선택하세요</option>
 								<c:forEach items="${teamList}" var="c">
-								<option value="${c.DEPT_NO}" >${c.TEAMNM} </option>
+								<option value="${c.DEPT_NO}" <c:if test="${c.DEPT_NO eq dept_no }">selected="selected"</c:if>   >${c.TEAMNM} </option>
 								</c:forEach>
 							</select>
 						</div>
@@ -279,11 +286,11 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">기간</span></div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="${staDt}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-1">~</div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="${endDt}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-3">
 							<input class="btn btn-primary" type="button" id="prodSearch" value="조회">
@@ -353,6 +360,16 @@ var ajaxFlag = false;
 										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
 								</tr>
 							</c:forEach>
+								<tr>
+						  			<td colspan="11">
+						  				<div class="col-xs-3">
+										<paging:paging var="skw3" currentPageNo="${paging.page}"
+											recordsPerPage="${paging.pageLine}"
+											numberOfRecords="${paging.totalCnt}" jsFunc="goPopPage" />
+										${skw3.printBtPaging()}
+										</div>
+						  			</td>
+						  		</tr>
 						</tbody>
 					</table>
 				</div>
