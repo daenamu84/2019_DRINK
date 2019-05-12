@@ -206,7 +206,7 @@ var ajaxFlag = false;
 </script>
 
 <div class="">
-	<div class="title"> ◈  거래처 등록</div> 
+	<div class="title"> ◈  거래처 Distribution 등록</div> 
 	<div class="container-fluid">
 		<div class="row">			
 			<div class="col">
