@@ -189,4 +189,15 @@ public class ProductService {
 		
 		return param;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List prodBrandSearchList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Product.prodBrandSearchList",map.getMap());
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Brand.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+		}
+		return param;
+	}
 }
