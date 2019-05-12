@@ -642,6 +642,7 @@ public class VendorController {
 			vendor_no = vendorView.getString("VENDOR_NO");
 			vendor_nm = vendorView.getString("VENDOR_NM");
 		}
+			
 		
 		RequestMap paramMap = new RequestMap();
 		paramMap = new RequestMap();
@@ -650,7 +651,10 @@ public class VendorController {
 		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
 		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 		paramMap.put("perPageNum", paging.getRecordsPerPage());
-		
+		//2019.05.12 modal search
+		if(rtMap.getString("pgYN").equals("Y")) {
+			paramMap.put("vendor_nm", rtMap.getString("vendorNm"));
+		}
 		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
@@ -668,7 +672,12 @@ public class VendorController {
 		mav.addObject("vendorList", vendorList);
 		mav.addObject("dropdown03","active");
 		mav.addObject("vendor_no",vendor_no);
-		mav.addObject("vendor_nm",vendor_nm);
+		//2019.05.12 
+		if(rtMap.getString("pgYN").equals("Y")) {
+			mav.addObject("_sVendorNm", rtMap.getString("vendorNm"));
+		}
+		mav.addObject("vendor_nm",vendor_nm);	
+		
 		mav.addObject("pgYN",rtMap.getString("pgYN"));
 		mav.setViewName("vendor/vendorLedger");
 		return mav;
