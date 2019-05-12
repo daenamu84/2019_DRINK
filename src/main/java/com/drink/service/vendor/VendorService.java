@@ -183,11 +183,11 @@ public class VendorService {
 				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd5"));
 				gdi.update("Vendor.fileInsert", map.getMap());
 			}
-			if(!map.getString("apnd_file_divs_cd6").equals("")) {
-				map.put("apnd_file_divs_cd" ,"0006");
-				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd6"));
-				gdi.update("Vendor.fileInsert", map.getMap());
-			}
+//			if(!map.getString("apnd_file_divs_cd6").equals("")) {
+//				map.put("apnd_file_divs_cd" ,"0006");
+//				map.put("reg_file_nm" , map.getString("apnd_file_divs_cd6"));
+//				gdi.update("Vendor.fileInsert", map.getMap());
+//			}
 			
 		
 			

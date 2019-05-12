@@ -573,7 +573,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">신분증</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">명함</label>
                                     <div class="col-md-6">
                                     	<input type="file" id="file3" class="fileDrop" name="file3" onchange="fileUpload(this,3);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd3" class="form-control" name="apnd_file_divs_cd3" style="width:50%;display:initial;" value="${apnd_file_divs_cd3}">
@@ -581,7 +581,7 @@
                                     </div>
                                 </div>
                                  <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">명함</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">메뉴사진</label>
                                     <div class="col-md-6">
                                     	<input type="file" id="file4" class="fileDrop" name="file4" onchange="fileUpload(this,4);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd4" class="form-control" name="apnd_file_divs_cd4" style="width:50%;display:initial;" value="${apnd_file_divs_cd4}">
@@ -589,19 +589,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">메뉴사진</label>
+                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">개인정보수집 및 활용 동의서</label>
                                     <div class="col-md-6">
                                     	<input type="file" id="file5" class="fileDrop" name="file5" onchange="fileUpload(this,5);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd5" class="form-control" name="apnd_file_divs_cd5" style="width:50%;display:initial;" value="${apnd_file_divs_cd5}">
                                     	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(5)">&nbsp;<a href="/upload/${apnd_file_divs_cd5}" target="_blank">파일받기</a>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="bank_nm" class="col-md-3 col-form-label text-md-left">개인정보수집 및 활용 동의서</label>
-                                    <div class="col-md-6">
-                                    	<input type="file" id="file6" class="fileDrop" name="file6" onchange="fileUpload(this,6);" style="width:60%;display:none;">
-                                    	<input type="text" id="apnd_file_divs_cd6" class="form-control" name="apnd_file_divs_cd6" style="width:50%;display:initial;" value="${apnd_file_divs_cd6}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(6)">&nbsp;<a href="/upload/${apnd_file_divs_cd6}" target="_blank">파일받기</a>
                                     </div>
                                 </div>
 							</div>
