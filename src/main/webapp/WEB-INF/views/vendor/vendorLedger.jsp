@@ -69,7 +69,7 @@
 
 	</script>
 <div class="">	
-	<div class="title"> ◈  거래처원장</div> 
+	<div class="title"> ◈  Activation</div> 
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col">
