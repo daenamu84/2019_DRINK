@@ -543,7 +543,7 @@
 										</c:if>
 										<div class="col-sm-2  text-truncate">
 											<label>
-												<input type="checkbox" name="brandChk" value="${z.BRAND_ID}" <c:if test="${fn:indexOf(data.BRAND_ID, z.BRAND_ID) != -1}">checked="checked"</c:if>/>${z.BRAND_NM}</label>
+												<input type="checkbox" name="brandChk" value="${z.BRAND_ID}" <c:if test="${z.BRAND_ID eq z.CHK_BRAND_ID}">checked="checked"</c:if>/>${z.BRAND_NM}</label>
 										</div>
 										<c:if test="${status.last || (status.index%5) eq 4}">
 										</c:if>

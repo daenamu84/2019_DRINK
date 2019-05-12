@@ -137,4 +137,11 @@ public class BrandService {
 		return param;
 	}
 	
+	public List getVendorBrandMasterList(RequestMap map) throws DrinkException{
+		logger.debug("map==", map.toString());
+		List<DataMap> param = new ArrayList<>();
+		param = gdi.selectList("Brand.getVendorBrandMasterList",map.getMap());
+		return param;
+	}
+	
 }

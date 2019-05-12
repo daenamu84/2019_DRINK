@@ -166,4 +166,16 @@
        	]]>
     </select>
     
+    <select id="getVendorBrandMasterList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				 TBM.BRAND_ID, TBM.BRAND_NM, 
+         		(SELECT TVBD.BRAND_ID FROM T_VENDOR_BRAND_D TVBD WHERE TVBD.BRAND_ID = TBM.BRAND_ID AND TVBD.VENDOR_NO= #{vendor_no} ) AS CHK_BRAND_ID
+			 FROM T_BRAND_M TBM
+			 WHERE TBM.USE_YN ='Y'
+			 ORDER BY BRAND_NM
+       	]]>
+    </select>
+       
+    
 </mapper>

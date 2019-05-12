@@ -356,9 +356,10 @@ public class VendorController {
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
-		List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+		List<DataMap> brandList = brandService.getVendorBrandMasterList(rtMap);
 		
 		mav.addObject("brandList", brandList);
+		
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
 		
