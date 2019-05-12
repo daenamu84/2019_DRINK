@@ -14,19 +14,13 @@ var ajaxFlag = false;
 	$(function() {
 		dataRangeOptions.locale.format="YYYYMMDD";
 		dataRangeOptions.singleDatePicker =  true;
-		dataRangeOptions.autoUpdateInput = true;
+		dataRangeOptions.autoUpdateInput = false;
 			
 		$("._pDateRange").daterangepicker(dataRangeOptions);
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
 			$(this).val(picker.endDate.format('YYYYMMDD'));
 		});
-
-		if("${staDt}" == ""){
-			$('#_pStaDt').data('daterangepicker').setStartDate(moment().add(-30,'days').format("YYYYMMDD"));
-		}
-		if("${endDt}"==""){
-			$('#_pStaDt').data('daterangepicker').setEndDate(moment().add(-30,'days').format("YYYYMMDD"));
-		}
+		
 		if("${scY}"=="Y"){
 			$("#vdSearchLayer").modal("show");
 		}
@@ -117,17 +111,21 @@ var ajaxFlag = false;
 				return;
 			}
 			var _pStaDt = $("#_pStaDt").val();
+			/* 2019.05.12 주석처리
 			if(_pStaDt =="" || _pStaDt == undefined){
 				alert("시작일자를 선택하세요.");
 				ajaxFlag=false;
 				return;
 			}
+			*/
 			var _pEndDt = $("#_pEndDt").val();
+			/* 2019.05.12 주석처리
 			if(_pEndDt =="" || _pEndDt == undefined){
 				alert("종료일자를 선택하세요.");
 				ajaxFlag=false;
 				return;
 			}
+			*/
 			var _pVendorId = $("#vendorId").val();
 			if(_pVendorId =="" || _pVendorId == undefined){
 				alert("업소를 검색하세요.");
