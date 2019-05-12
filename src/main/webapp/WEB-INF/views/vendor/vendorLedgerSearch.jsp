@@ -70,7 +70,7 @@
 	    <tr class="">
 	       	 <th class="border text-center" scope="col" width="40%">제품명(제안수량)</th>
 		     <th class="border text-center" scope="col" width="15%">출고월</th>
-		     <th class="border text-center" scope="col" width="15%">CASE 출고계획수량</th>
+		     <th class="border text-center" scope="col" width="15%">BTL(병) 출고계획수량</th>
 		     <th class="border text-center" scope="col" width="15%">실출고수량</th>
 		     <th class="border text-center" scope="col" width="15%">비고</th>
 	    </tr>
