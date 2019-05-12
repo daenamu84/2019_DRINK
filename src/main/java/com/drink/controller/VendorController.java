@@ -714,10 +714,10 @@ public class VendorController {
 				
 				for(int i=0; i<listStep03.size(); i++){
 					DataMap dm = listStep03.get(i);
-					cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
 					List<Object> dateList = new ArrayList<>();
 					
 					for(int x=0; x<=dm.getInt("monthCnt");x++){
+						cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
 						cal.add(Calendar.MONTH, x);
 						DataMap paramDm = new DataMap();
 						paramDm.put("prpsId", dm.getString("PRPS_ID"));
