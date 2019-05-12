@@ -119,10 +119,27 @@
 			AND E.EMP_NO = D.EMP_NO
 			AND D.EFF_END_DT = '99991231' 
 	        AND V.VENDOR_NO = #{vendorId}
-	        AND V.SALE_STA_DT >= #{staDt} 
-      		AND V.SALE_END_DT <= #{endDt}
-      		AND E.DEPT_NO = #{deptNo}
-            AND E.EMP_NO =  #{empNo}
+	       
+ 		]]> 
+ 			<if test="staDt !=null and staDt !='' and endDt !=null and endDt!=''">
+ 			<![CDATA[
+				AND V.SALE_STA_DT >= #{staDt} 
+      			AND V.SALE_END_DT <= #{endDt}
+			]]> 
+ 			</if>     		
+      		<if test="deptno != null  and emp_grd_cd != '0001' and emp_grd_cd != '0002'">
+			<![CDATA[
+				AND E.DEPT_NO = #{deptNo}
+			]]> 
+			</if>
+			<if test="empno != null and empno != '' and  emp_grd_cd != '0001' and emp_grd_cd != '0002' and emp_grd_cd != '0003' ">
+			<![CDATA[
+				AND E.EMP_NO =  #{empNo}
+			]]> 
+			</if>
+      	<![CDATA[
+      		
+            
              LIMIT #{pageStart}, #{perPageNum}
        	]]>
        	
