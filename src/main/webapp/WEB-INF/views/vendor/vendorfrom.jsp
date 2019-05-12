@@ -535,6 +535,21 @@
                                     </div>
                                 </div>
 							</div>
+							<div class="container" style="padding: 15px;">◈  자사 브랜드 등록 </div>
+                            <div class="container border" style="padding: 15px;">
+                            	<div class="row">
+									<c:forEach items="${brandList}" var="z" varStatus="status">
+										<c:if test="${status.index eq 0 || (status.index%5) eq 0}">
+										</c:if>
+										<div class="col-sm-2  text-truncate">
+											<label>
+												<input type="checkbox" name="brandChk" value="${z.BRAND_ID}" <c:if test="${fn:indexOf(data.BRAND_ID, z.BRAND_ID) != -1}">checked="checked"</c:if>/>${z.BRAND_NM}</label>
+										</div>
+										<c:if test="${status.last || (status.index%5) eq 4}">
+										</c:if>
+									</c:forEach>
+								</div>
+                            </div>
                             <div class="container" style="padding: 15px;">◈  거래처 은행 정보</div>
                             <div class="container border" style="padding: 15px;">
 								<div class="form-group row">

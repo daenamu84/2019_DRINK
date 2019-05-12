@@ -156,6 +156,17 @@ public class VendorService {
 				}
 			}
 			
+			String[] brandChk = (String[]) map.get("brandChk");
+			if(brandChk.length > 0) {
+				for(int l=0; l< brandChk.length ; l++) {
+					if(brandChk[l] != "") {
+						map.put("brand_id", brandChk[l]);
+						gdi.update("Vendor.vendor_brandInsert", map.getMap());
+					}
+				}
+			}
+			
+			
 			map.put("reg_folder_nm" ,"/resources/fileimg");
 			
 			if(!map.getString("apnd_file_divs_cd1").equals("")) {
@@ -245,12 +256,8 @@ public class VendorService {
 			
 			
 			gdi.update("Vendor.vendor_userdelete", map.getMap());
-			logger.debug("111");
+			logger.debug("Vendor.vendor_userdelete completed");
 			
-			
-			
-			logger.debug("2222");
-			System.out.println(1);
 			HttpServletRequest rq = map.getRequest();
 			String[] relr_divs_cd =  rq.getParameterValues("relr_divs_cd");
 			String[] relr_nm =  rq.getParameterValues("relr_nm");
@@ -275,6 +282,19 @@ public class VendorService {
 							map.put("etc", etc[k]);
 							gdi.update("Vendor.vendor_userInsert", map.getMap());
 						}
+					}
+				}
+			}
+			
+			gdi.update("Vendor.vendor_branddelete", map.getMap());
+			logger.debug("Vendor.vendor_branddelete completed");
+			
+			String[] brandChk =  rq.getParameterValues("brandChk");
+			if(brandChk.length > 0) {
+				for(int l=0; l< brandChk.length ; l++) {
+					if(brandChk[l] != "") {
+						map.put("brand_id", brandChk[l]);
+						gdi.update("Vendor.vendor_brandInsert", map.getMap());
 					}
 				}
 			}

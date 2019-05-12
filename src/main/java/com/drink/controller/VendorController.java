@@ -40,6 +40,7 @@ import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
+import com.drink.service.brand.BrandService;
 import com.drink.service.proposal.ProposalService;
 import com.drink.service.vendor.VendorService;
 
@@ -71,6 +72,9 @@ public class VendorController {
 	
 	@Autowired
 	private ProposalService proposalService;
+	
+	@Autowired 
+	private BrandService brandService;
 	
 	@Autowired
 	private SessionUtils sessionUtils;
@@ -173,6 +177,10 @@ public class VendorController {
 		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
 		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
 		
+		List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+		
+		mav.addObject("brandList", brandList);
+		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
 		
@@ -270,6 +278,7 @@ public class VendorController {
 		String relr_email[] = req.getParameterValues("relr_email");
 		String relr_anvs_dt[] = req.getParameterValues("relr_anvs_dt");
 		String etc[] = req.getParameterValues("etc");
+		String[] brandChk = req.getParameterValues("brandChk");
 		
 		rtMap.put("wholesale_cd", rtMap.getString("wholesale_cd"));
 		
@@ -280,6 +289,7 @@ public class VendorController {
 		rtMap.put("relr_tel_no", relr_tel_no);
 		rtMap.put("relr_email", relr_email);
 		rtMap.put("relr_anvs_dt", relr_anvs_dt);
+		rtMap.put("brandChk", brandChk);		
 		rtMap.put("etc", etc);
 		vendorService.VendorInsert(rtMap);
 		
@@ -346,6 +356,9 @@ public class VendorController {
 		
 		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
 		
+		List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+		
+		mav.addObject("brandList", brandList);
 		
 		DataMap vendorView =  vendorService.vendorView(rtMap);
 		
