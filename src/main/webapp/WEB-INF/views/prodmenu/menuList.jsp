@@ -151,6 +151,32 @@ var ajaxFlag = false;
 		
 	});
 	
+	function getBrandList() {
+		if (ajaxFlag)
+			return;
+		ajaxFlag = true;
+		var deptno = "";
+		var gubun = "search";
+		
+		_brandid = $("#brandid option:selected").val();
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/prodBrandSearchList",
+		    data: {"brandID":_brandid},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#productList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+	}
+	
+	
 	$(document).on("click","i[name='_pDateRangeIcon']",function() {
 	      $(this).parent().find("._pDateRange").click();
 	});
@@ -248,6 +274,29 @@ var ajaxFlag = false;
 		
 	}
 	
+	function goBrandPage(pages, pageLine){
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		_brandid = $("#brandid option:selected").val();
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/prodBrandSearchList",
+		    data: {"brandID":_brandid,"page":pages,"pageLine":pageLine},
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#productList").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+	}
+	
+	
 	function goPopPage(pages, pageLine){
 		if(ajaxFlag)return;
 		ajaxFlag=true;
@@ -290,6 +339,19 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-3">
 							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="${endDt}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
+					</div>
+					<div class="row" style="padding: 5px 0px;">
+						<div class="col-12 col-sm-2"><span class="align-middle">브랜드</span></div>
+						<div class="col-12 col-sm-7">
+							<select name="brandid" class="form-control" id="brandid"  onchange="getBrandList();">
+								<option value="">선택하세요</option>
+								<c:forEach items="${brandList}" var="d">
+								<option value="${d.BRAND_ID}" >${d.BRAND_NM} </option>
+								</c:forEach>
+							</select>
+							* 브랜드 조회 시 팀 /팀원 /업소/기간  조회 조건은 무시 됩니다.<br>
+							* 브랜드 조회 시 해당 브랜드메뉴가 등록된 모든 업소가 조회 됩니다. 
+						</div>
 						<div class="col-12 col-sm-3">
 							<input class="btn btn-primary" type="button" id="prodSearch" value="조회">
 							<input class="btn btn-primary" type="button" id="prodInsert" value="등록">
@@ -302,6 +364,7 @@ var ajaxFlag = false;
 			<table class="table">
 			  <thead>
 			    <tr>
+				  <th scope="col">거래처</th>
 			      <th scope="col">브랜드</th>
 			      <th scope="col">서브브랜드</th>
 			      <th scope="col">용량</th>
@@ -311,7 +374,7 @@ var ajaxFlag = false;
 			      <th scope="col">종료일</th>
 			      <th scope="col">자사메뉴여부</th>
 			      <th scope="col">관리</th>
-			    </tr>
+			     </tr>
 			  </thead>
 			  <tbody id="productList">
 			  </tbody>
