@@ -37,7 +37,7 @@
 				<a class="nav-link dropdown-toggle" href="/proPosalList" id="dropdown01" aria-haspopup="true" aria-expanded="false">프로모션 관리</a>
 			</li>
 			<li class="nav-item ${dropdown02} dropdown">
-				<a class="nav-link dropdown-toggle" href="/callList" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업무조회</a>
+				<a class="nav-link dropdown-toggle" href="/callList" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">콜조회</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown02">
 					<a class="dropdown-item" href="/callList">콜 목록</a> 
 					<a class="dropdown-item" href="/callCalendar">콜 (Calendar)</a>
