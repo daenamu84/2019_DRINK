@@ -194,6 +194,14 @@
     	]]>
     </update>
     
+    <update id="vendor_brandInsert">
+    	<![CDATA[
+    	INSERT INTO T_VENDOR_BRAND_D
+			( VENDOR_NO, BRAND_ID, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES ( #{vendor_no}, #{brand_id}, now(), #{login_id}, now(),#{login_id})
+    	]]>
+    </update>
+    
     <update id="fileInsert">
     	<![CDATA[
     	INSERT INTO T_VENDOR_APND_FILE_D
