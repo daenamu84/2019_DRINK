@@ -38,6 +38,7 @@ import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
+import com.drink.service.brand.BrandService;
 import com.drink.service.product.ProductService;
 import com.drink.service.vendor.VendorService;
 import com.google.gson.Gson;
@@ -68,6 +69,9 @@ public class ProdMenuController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired 
+	private BrandService brandService;
 	
 	@Autowired
 	private SessionUtils sessionUtils;
@@ -159,6 +163,10 @@ public class ProdMenuController {
 		List<DataMap> teamList = vendorService.getMngTeamList(paramMap);
 		
 		mav.addObject("teamList", teamList);
+		
+		List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+		
+		mav.addObject("brandList", brandList);
 		
 		
 		paramMap = new RequestMap();
@@ -356,6 +364,54 @@ public class ProdMenuController {
 			mav.setViewName("nobody/prodmenu/prodSubBrandSearch");
 			return mav;
 			
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+		}
+	}
+	
+	@RequestMapping(value = "/prodBrandSearchList")
+	public ModelAndView prodBrandSearchList(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		String page = (String) param.get("page");
+		String pageLine = (String) param.get("pageLine");
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		 
+		param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		param.put("perPageNum", paging.getRecordsPerPage());
+		param.put("emp_grd_cd", loginSession.getEmp_grd_cd());  // 2019.05.12 add
+		
+		List<DataMap> rtnMap = productService.prodBrandSearchList(param);
+		int totalCnt = param.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+
+		mav.addObject("_pgVendorId", param.getString("vendorId"));
+		mav.addObject("_pgStaDt", param.getString("staDt"));
+		mav.addObject("_pgEndDt", param.getString("endDt"));
+		mav.addObject("_pgDeptNo", param.getString("deptNo"));
+		mav.addObject("_pgEmpNo", param.getString("empNo"));
+		
+		mav.addObject("prodBrandVendorList", rtnMap);
+		
+		mav.setViewName("nobody/prodmenu/prodBrandSearchList");
+		return mav;
+		
 		} catch (Exception e) {
 			logger.debug("brandSubList err :: " + e);
 			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
