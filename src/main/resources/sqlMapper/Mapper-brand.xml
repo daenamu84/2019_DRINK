@@ -156,4 +156,14 @@
        	]]>
     </select>
     
+    <select id="getBrandMasterList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT 
+				 BRAND_ID, BRAND_NM, ORCO_BRAND_YN, SORT_ORD, USE_YN
+			 FROM T_BRAND_M
+			 WHERE USE_YN ='Y'
+			 ORDER BY SORT_ORD
+       	]]>
+    </select>
+    
 </mapper>
