@@ -103,19 +103,21 @@ var nowUrl = "/proPosalList";
 		$("#proposalInsert").click(function(){
 			location.href="/proPosalForm";
 		});
+		
+		$("#proposalClean").click(function(){
+			
+			$("#vendor_nm").val("");
+			$("#outlet_no").val("");
+			$("#deptno option:eq(0)").prop("selected", true);
+			$("#prps_purpose_cd option:eq(0)").prop("selected", true);
+			$("#prsp_status option:eq(0)").prop("selected", true);
+			$("#prps_str_dt").val("");
+			$("#prps_end_dt").val("");
+			
+		});
 	});
 	
-	$("#proposalClean").click(function(){
-		$("#vendor_nm").val("");
-		$("#outlet_no").val("");
-		$("#deptno option:eq(0)").prop("selected", true);
-		$("#prps_purpose_cd option:eq(0)").prop("selected", true);
-		$("#prsp_status option:eq(0)").prop("selected", true);
-		$("#prps_str_dt").val("");
-		$("#prps_end_dt").val("");
-		
-		
-	});
+	
 	
 	function getTeamList() {
 		if (ajaxFlag)
