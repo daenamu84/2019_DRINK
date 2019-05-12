@@ -47,8 +47,8 @@
 				<a class="nav-link dropdown-toggle" href="/vendorList" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">업소관리</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown03">
 					<a class="dropdown-item" href="/vendorList">거래처목록</a> 
-					<a class="dropdown-item" href="/ProdMenuList">거래처메뉴</a> 
-					<a class="dropdown-item" href="/vendorLedger">거래처 원장</a>
+					<a class="dropdown-item" href="/ProdMenuList">Distribution</a> 
+					<a class="dropdown-item" href="/vendorLedger">Activation</a>
 				</div>
 			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">

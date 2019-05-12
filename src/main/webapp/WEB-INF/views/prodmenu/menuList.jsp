@@ -260,7 +260,7 @@ var ajaxFlag = false;
 </script>
 
 <div class="">
-	<div class="title"> ◈  거래처 메뉴</div> 
+	<div class="title"> ◈   Distribution</div> 
 	<div class="container-fluid">
 		<div class="row">			
 			<div class="col">
