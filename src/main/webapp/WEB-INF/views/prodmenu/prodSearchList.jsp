@@ -8,6 +8,7 @@
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <c:forEach items="${prodVendorList}" var="i" varStatus="status">
 	<tr>
+		<td>${i.VENDOR_NM}</td>
 		<td>${i.BRAND_NM}<input type="hidden" name="_oVendorNo" value="${i.VENDOR_NO}"/> <input type="hidden" name="_oProdNo" value="${i.PROD_NO}"/><input type="hidden" name="_oBrandId" value="${i.BRAND_ID}"/><input type="hidden" name="_oSubBrandId" value="${i.SUB_BRAND_ID}"/></td> 
 		<td>${i.SUB_BRAND_NM}</td>
 		<td>${i.PROD_ML_NM}</td>
@@ -25,7 +26,7 @@
 	</tr>
 </c:forEach>
 <tr>
-	<td colspan="9" style="text-align: center">
+	<td colspan="10" style="text-align: center">
 		<div>
 			<paging:paging var="skw3" currentPageNo="${paging.page}"
 				recordsPerPage="${paging.pageLine}"
