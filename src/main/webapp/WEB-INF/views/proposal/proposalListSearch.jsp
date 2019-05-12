@@ -12,7 +12,7 @@
 		<td>${i.TEAMNM}</td>
 		<td>${i.EMP_NM}</td>
 		<td>${i.PRPS_STR_DT}~${i.PRPS_END_DT}</td>
-		<td>${i.PRPS_NM}</td>
+		<td><a href="javascript:setView('${i.PRPS_ID}','update')">${i.PRPS_NM}</a></td>
 		<td>${i.VD_NM}</td>
 		<td>${i.ACT_PLAN_CD_NM}</td>
 		<td>${i.PRPS_STUS_CD_NM}</td>
