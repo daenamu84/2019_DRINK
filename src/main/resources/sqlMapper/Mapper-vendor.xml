@@ -271,6 +271,13 @@
     	]]>
     </update>
     
+    <update id="vendor_branddelete">
+    	<![CDATA[
+    		DELETE FROM T_VENDOR_BRAND_D
+    		WHERE VENDOR_NO = #{vendor_no}			
+    	]]>
+    </update>
+    
     <update id="vendor_userUpdate">
     	<![CDATA[
     		UPDATE T_VENDOR_USER_D
