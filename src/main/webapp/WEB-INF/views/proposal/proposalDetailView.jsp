@@ -416,7 +416,7 @@ var ajaxFlag = false;
 				<div class="float-right">
 					<c:if test="${'0001' eq data.PRPS_STUS_CD}">
 					<c:if test="${'0' ne d_cnt}">
-						<input type="button" class="btn btn-secondary btn-sm" value="등록" onClick="viewStep('${data.PRPS_ID}','04','')"/>
+						<input type="button" class="btn btn-secondary btn-sm" value="수정" onClick="viewStep('${data.PRPS_ID}','04','')"/>
 					</c:if>
 					</c:if>
 					<button type="button" name="goToTop" id="goToTop"  class="btn btn-secondary btn-sm float-right">TOP</button>
