@@ -7,14 +7,27 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<link type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	
 	<script type="text/javascript">
 	
-		function goPage(pages, pageLine) {
-			location.href="/vendorLedger?page=" + pages + "&pageLine=" + pageLine +"&pgYN=Y";
+		
+		function goPopPage(pages, pageLine){
+			
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			
+			location.href="/vendorLedger?pgYN=Y&vendorNm=${_sVendorNm}&page="+pages+"&pageLine="+pageLine;
+			
 		}
+		
+		$(document).on("click","i[name='dateRangeIcon']",function() {
+		    $(this).parent().find("._pDateRange").click();
+		});
+		
 		
 		var ajaxFlag = false;
 		// 한글입력막기 스크립트
@@ -24,7 +37,20 @@
 			});
 		})
 		
+		//달력
+		$(function() {
+			dataRangeOptions.locale.format="YYYYMMDD";
+			dataRangeOptions.singleDatePicker =  true;
+			dataRangeOptions.autoUpdateInput = false;
+				
+			$("._pDateRange").daterangepicker(dataRangeOptions);
+			$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
+				$(this).val(picker.endDate.format('YYYYMMDD'));
+			});
+		});
+		
 		$(document).ready(function(){
+			
 			if("${pgYN}"=="Y"){
 				$("#vdSearchLayer").modal("show");
 			}
@@ -33,6 +59,16 @@
 			$("#vendorNm").click(function(){
 				$("#vdSearchLayer").modal("show");
 			});
+			
+			//modal search
+			$("#vendorSearch").click(function(){
+				if(ajaxFlag)return;
+				ajaxFlag=true;
+
+				location.href="/vendorLedger?pgYN=Y&vendorNm="+$("#_sVendorNm").val();
+			
+			});
+			
 			
 			$("#legderSearch").click(function(){
 				if(ajaxFlag)return;
@@ -107,7 +143,7 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">거래처 조회1</h5>
+				<h5 class="modal-title" id="exampleModalLabel">거래처 조회</h5>
 				<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 			</div>
 			<div class="modal-body">
@@ -115,7 +151,7 @@
 					<div class="row">
 						<div class="col-sm-2"><span class="align-middle">업소</span></div>
 						<div class="col-sm-3">
-							<input type="text"  id="_sVendorNm" class="form-control" />
+							<input type="text"  id="_sVendorNm" class="form-control"  value="${_sVendorNm}"/>
 						</div>
 						<div class="col-sm-5">
 							<input class="btn btn-primary" type="button" id="vendorSearch" value="조회">
@@ -143,7 +179,7 @@
 						<tr><td colspan="2">
 							<paging:paging var="skw3" currentPageNo="${paging.page}"
 									recordsPerPage="${paging.pageLine}"
-									numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+									numberOfRecords="${paging.totalCnt}" jsFunc="goPopPage" />
 								${skw3.printBtPaging()}
 								</td></tr>
 					</tbody>
