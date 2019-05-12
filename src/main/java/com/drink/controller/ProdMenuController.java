@@ -208,6 +208,7 @@ public class ProdMenuController {
 		 
 		param.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
 		param.put("perPageNum", paging.getRecordsPerPage());
+		param.put("emp_grd_cd", loginSession.getEmp_grd_cd());  // 2019.05.12 add
 		
 		List<DataMap> rtnMap = productService.prdSearchView(param);
 		int totalCnt = param.getInt("TotalCnt");
