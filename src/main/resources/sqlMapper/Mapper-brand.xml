@@ -162,7 +162,7 @@
 				 BRAND_ID, BRAND_NM, ORCO_BRAND_YN, SORT_ORD, USE_YN
 			 FROM T_BRAND_M
 			 WHERE USE_YN ='Y'
-			 ORDER BY SORT_ORD
+			 ORDER BY BRAND_NM
        	]]>
     </select>
     
