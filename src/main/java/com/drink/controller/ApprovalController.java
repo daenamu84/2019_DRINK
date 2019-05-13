@@ -83,4 +83,42 @@ public class ApprovalController {
 		
 		return mav;
 	}
+
+	@RequestMapping(value = "/ApprovalConfirm")
+	public ModelAndView approvalConfirm(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		mav.setViewName("approval/confirmList");
+		
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/ApprovalSend")
+	public ModelAndView approvalSend(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		mav.setViewName("approval/approvalSend");
+		
+		
+		return mav;
+	}
 }

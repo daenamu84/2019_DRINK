@@ -6,20 +6,31 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script src="${pageContext.request.contextPath}/resources/js/common/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/common/bootstrap-datepicker.kr.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-datepicker3.min.css" rel="stylesheet">
 <script>
 var ajaxFlag = false;
 
 	$(function() {
-		dataRangeOptions.locale.format="YYYYMMDD";
+		/* dataRangeOptions.locale.format="YYYYMM";
 		dataRangeOptions.singleDatePicker =  true;
 		dataRangeOptions.autoUpdateInput = false;
 			
 		$("._pDateRange").daterangepicker(dataRangeOptions);
 		$('._pDateRange').on('apply.daterangepicker', function(ev, picker) {
-			$(this).val(picker.endDate.format('YYYYMMDD'));
-		});
+			$(this).val(picker.endDate.format('YYYYMM'));
+		}); */
+		
+		$('._pDateRange').datepicker({
+			 startView: 1,
+			    minViewMode: 1,
+			    maxViewMode: 2,
+			    language: "kr",
+			    format: "yyyymm",
+			    autoclose: true
+		     });
 		
 		if("${scY}"=="Y"){
 			$("#vdSearchLayer").modal("show");
@@ -56,21 +67,29 @@ var ajaxFlag = false;
 				return;
 			}
 			
+			var _uStaDt = _uSaleStaDt[0].value;
+			if(_uStaDt  != ""){
+				_uStaDt  = moment(_uStaDt,'YYYYMM').format("YYYYMMDD");
+			}
+			var _uEndDt = _uSaleEndDt[0].value;
+			if(_uEndDt != ""){
+				_uEndDt = moment(_uEndDt,'YYYYMM').add(1,"month").add(-1,"day").format("YYYYMMDD");
+			}
 			
 			$.ajax({      
 			    type:"POST",  
 			    url:"/prodMenuDetailUpdate",
-			    data: JSON.stringify({"vendorNo":_uVendorNo[0].value,"prodNo":_uProdNo[0].value,"salePrice":_uSalePrice[0].value,"saleStaDt":_uSaleStaDt[0].value,"saleEndDt":_uSaleEndDt[0].value}),
+			    data: JSON.stringify({"vendorNo":_uVendorNo[0].value,"prodNo":_uProdNo[0].value,"salePrice":_uSalePrice[0].value,"saleStaDt":_uStaDt,"saleEndDt":_uEndDt}),
 			    dataType:"json",
 			    contentType:"application/json;charset=UTF-8",
 			    traditional:true,
 			    success:function(args){   
 			        if(args.returnCode == "0000"){
 			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.reload();
+			        	location.href="/ProdMenuList";
 			        }else{
 			        	alert(args.message.replace(/<br>/gi,"\n"));
-			        	location.reload();
+			        	location.href="/ProdMenuList";
 			        }
 			        ajaxFlag=false;
 			    },   
@@ -80,7 +99,7 @@ var ajaxFlag = false;
 			        	location.replace("/logIn");
 			        }else{
 			        	alert("처리중 에러가 발생 하였습니다.");
-			        	location.reload();
+			        	location.href="/ProdMenuList";
 			        }
 			        ajaxFlag=false;
 			    }   
@@ -111,6 +130,9 @@ var ajaxFlag = false;
 				return;
 			}
 			var _pStaDt = $("#_pStaDt").val();
+			if(_pStaDt  != ""){
+				_pStaDt  = moment(_pStaDt,'YYYYMM').format("YYYYMMDD");
+			}
 			/* 2019.05.12 주석처리
 			if(_pStaDt =="" || _pStaDt == undefined){
 				alert("시작일자를 선택하세요.");
@@ -119,6 +141,9 @@ var ajaxFlag = false;
 			}
 			*/
 			var _pEndDt = $("#_pEndDt").val();
+			if(_pEndDt != ""){
+				_pEndDt = moment(_pEndDt,'YYYYMM').add(1,"month").add(-1,"day").format("YYYYMMDD");
+			}
 			/* 2019.05.12 주석처리
 			if(_pEndDt =="" || _pEndDt == undefined){
 				alert("종료일자를 선택하세요.");
@@ -178,11 +203,11 @@ var ajaxFlag = false;
 	
 	
 	$(document).on("click","i[name='_pDateRangeIcon']",function() {
-	      $(this).parent().find("._pDateRange").click();
+		  $(this).parent().find("._pDateRange").datepicker("show");
 	});
 	
 	$(document).on("click","i[name='_uDateRangeIcon']",function() {
-	      $(this).parent().find("._uDateRange").click();
+	      $(this).parent().find("._uDateRange").datepicker("show");
 	});
 	
 	function setVendorId(vendorId, vendorNm){
@@ -257,10 +282,19 @@ var ajaxFlag = false;
 		if(ajaxFlag)return;
 		ajaxFlag=true;
 		
+		var _pStaDt = $("#_pStaDt").val();
+		if(_pStaDt  != ""){
+			_pStaDt  = moment(_pStaDt,'YYYYMM').format("YYYYMMDD");
+		}
+		var _pEndDt = $("#_pEndDt").val();
+		if(_pEndDt != ""){
+			_pEndDt = moment(_pEndDt,'YYYYMM').add(1,"month").add(-1,"day").format("YYYYMMDD");
+		}
+		
 		$.ajax({      
 		    type:"GET",  
 		    url:"/prodSearchList?="+$("#_sVendorNm").val(),
-		    data: {"deptNo":$("#_pgDeptNo").val(),"empNo":$("#_pgEmpNo").val(),"staDt":$("#_pgStaDt").val(),"endDt":$("#_pgEndDt").val(),"vendorId":$("#_pgVendorId").val(),"page":pages,"pageLine":pageLine},
+		    data: {"deptNo":$("#_pgDeptNo").val(),"empNo":$("#_pgEmpNo").val(),"staDt":_pStaDt,"endDt":_pEndDt,"vendorId":$("#_pgVendorId").val(),"page":pages,"pageLine":pageLine},
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
@@ -333,11 +367,11 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">기간</span></div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="${staDt}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pStaDt" value="${fn:substring(staDt,0,6)}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 						<div class="col-12 col-sm-1">~</div>
 						<div class="col-12 col-sm-3">
-							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="${endDt}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
+							<input type="text" class="_pDateRange form-control bg-white" id="_pEndDt" value="${fn:substring(endDt,0,6)}" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="_pDateRangeIcon" class="fas fa-calendar-alt"></i>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
