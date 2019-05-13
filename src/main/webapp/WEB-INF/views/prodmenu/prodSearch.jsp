@@ -12,22 +12,35 @@
 		<td>${i.SUB_BRAND_NM}</td>
 		<td>${i.PROD_ML_NM}</td>
 		<td><input type="number" min="0" name="_oSalePrice" value="" autocomplete="off"/></td>
-		<td><input type="text" class="dateRange form-control bg-white" name="_oSaleStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
-		<td><input type="text" class="dateRange form-control bg-white" name="_oSaleEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="dateRangeIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="_pDateRange form-control bg-white" name="_oSaleStaDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="datePicMonthIcon" class="fas fa-calendar-alt"></i></td>
+		<td><input type="text" class="_pDateRange form-control bg-white" name="_oSaleEndDt" value="" style="width: 90%;display: inline-block;" readonly autocomplete="off"/><i name="datePicMonthIcon" class="fas fa-calendar-alt"></i></td>
 	</tr>
 </c:forEach>
 <script>
 //조회화면에 추가 하자 
 $(function() {
-	dataRangeOptions.singleDatePicker =  true;
+	/* dataRangeOptions.singleDatePicker =  true;
 	dataRangeOptions.autoUpdateInput = false;
 	dataRangeOptions.locale.format="YYYYMMDD";
 	
 	$(".dateRange").daterangepicker(dataRangeOptions);
 	$('.dateRange').on('apply.daterangepicker', function(ev, picker) {
 		$(this).val(picker.endDate.format('YYYYMMDD'));
-	});
+	}); */
 	
+	$('._pDateRange').datepicker({
+		 startView: 1,
+		    minViewMode: 1,
+		    maxViewMode: 2,
+		    language: "kr",
+		    format: "yyyymm",
+		    autoclose: true
+	     });
 });
+
+$(document).on("click","i[name='datePicMonthIcon']",function() {
+    $(this).parent().find("._pDateRange").datepicker("show");
+});
+
 </script>
 <input type="hidden" name="_oVendorId" id="_oVendorId" class="form-control" value="${vendorId}" />

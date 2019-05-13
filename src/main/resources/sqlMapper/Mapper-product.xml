@@ -129,6 +129,11 @@
       			AND V.SALE_END_DT <= #{endDt}
 			]]> 
  			</if>     		
+ 			<if test="staDt !=null and staDt !='' and (endDt ==null or endDt =='')">
+ 			<![CDATA[
+				AND V.SALE_STA_DT >= #{staDt} 
+			]]> 
+ 			</if>     		
       		<if test="deptno != null  and emp_grd_cd != '0001' and emp_grd_cd != '0002'">
 			<![CDATA[
 				AND E.DEPT_NO = #{deptNo}

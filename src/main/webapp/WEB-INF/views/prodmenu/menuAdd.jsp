@@ -6,7 +6,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-
+<script src="${pageContext.request.contextPath}/resources/js/common/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/common/bootstrap-datepicker.kr.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap-datepicker3.min.css" rel="stylesheet">
 
 <script>
 var ajaxFlag = false;
@@ -83,17 +85,30 @@ var ajaxFlag = false;
 			var _oSaleEndDt = $("input[name='_oSaleEndDt']");
 			
 			var _addParam = [];
+			var _pSaleStdDt = "";
+			var _pSaleEndDt = "";
 			
 			for (var i = 0; i < _oProdNo.length; i++) {
-				if(_oProdNo[i].value =="" || _oBrandId[i].value =="" || _oSubBrandId[i].value =="" || _oSalePrice[i].value =="" || _oSaleStdDt[i].value =="" || _oSaleEndDt[i].value =="" ){
+				if(_oProdNo[i].value =="" || _oBrandId[i].value =="" || _oSubBrandId[i].value =="" || _oSalePrice[i].value =="" || _oSaleStdDt[i].value ==""  ){
 					continue;
 				}
-				if( (_oSaleStdDt[i].value != "" &&  _oSaleEndDt[i].value != "" ) && _oSaleStdDt[i].value > _oSaleEndDt[i].value ){
-					alert("시작일은 종료일보다 클수 없습니다.");
+				if( _oSalePrice[i].value =="" ){
+					alert("가격은 필수 값 입니다..");
 					ajaxFlag=false;
 					return;
 				}
-				_addParam.push({"prodNo":_oProdNo[i].value,"brandId":_oBrandId[i].value,"subBrandId":_oSubBrandId[i].value,"salePrice":_oSalePrice[i].value,"saleStdDt":_oSaleStdDt[i].value,"saleEndDt":_oSaleEndDt[i].value});
+				if( _oSaleStdDt[i].value == "" ){
+					alert("시작일은 필수 값 입니다..");
+					ajaxFlag=false;
+					return;
+				}
+				_pSaleStdDt = moment(_oSaleStdDt[i].value,'YYYYMM').format("YYYYMMDD");
+				if(_oSaleEndDt[i].value != ""){
+					_pSaleEndDt = moment(_oSaleEndDt[i].value,'YYYYMM').add(1,"month").add(-1,"day").format("YYYYMMDD");
+				}else{
+					_pSaleEndDt = "99991231";
+				}
+				_addParam.push({"prodNo":_oProdNo[i].value,"brandId":_oBrandId[i].value,"subBrandId":_oSubBrandId[i].value,"salePrice":_oSalePrice[i].value,"saleStdDt":_pSaleStdDt,"saleEndDt":_pSaleEndDt});
 			}
 
 			if(_addParam.length < 1){
