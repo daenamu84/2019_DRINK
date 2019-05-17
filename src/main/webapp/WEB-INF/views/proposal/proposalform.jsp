@@ -236,7 +236,7 @@
 											<input type="hidden" id="prps_stus_cd" class="form-control" name="prps_stus_cd" value="${data.PRPS_STUS_CD}">
 											${data.PRPS_STUS_CD_NM}
 										</c:if>
-										<c:if test="${loginSession.emp_grd_cd eq '0001'}">
+										<c:if test="${loginSession.emp_grd_cd eq '0001' or ${loginSession.emp_grd_cd eq '0002'}">
 											<select name="prps_stus_cd" class="form-control" id="prps_stus_cd">
 												<option value="">선택하세요</option>
 												<c:forEach items="${p_stusList}" var="a">
