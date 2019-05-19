@@ -576,7 +576,10 @@
                                     <div class="col-md-6">
                                     	<input type="file" id="file1" class="fileDrop" name="file1" onchange="fileUpload(this,1);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd1" class="form-control" name="apnd_file_divs_cd1" style="width:50%;display:initial;" value="${apnd_file_divs_cd1}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(1)">&nbsp;<a href="/upload/${apnd_file_divs_cd1}" target="_blank">파일받기</a>
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(1)">&nbsp;
+                                    	<c:if test="${gubun eq 'update'}"> 
+                                    	<a href="/upload/${apnd_file_divs_cd1}" target="_blank">파일받기</a>
+                                    	</c:if>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -584,7 +587,10 @@
                                     <div class="col-md-6">
                                     	<input type="file" id="file2" class="fileDrop" name="file2" onchange="fileUpload(this,2);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd2" class="form-control" name="apnd_file_divs_cd2" style="width:50%;display:initial;" value="${apnd_file_divs_cd2}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(2)">&nbsp;<a href="/upload/${apnd_file_divs_cd2}" target="_blank">파일받기</a>
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(2)">&nbsp;
+                                    	<c:if test="${gubun eq 'update'}">
+                                    	<a href="/upload/${apnd_file_divs_cd2}" target="_blank">파일받기</a>
+                                    	</c:if>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -592,7 +598,10 @@
                                     <div class="col-md-6">
                                     	<input type="file" id="file3" class="fileDrop" name="file3" onchange="fileUpload(this,3);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd3" class="form-control" name="apnd_file_divs_cd3" style="width:50%;display:initial;" value="${apnd_file_divs_cd3}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(3)">&nbsp;<a href="/upload/${apnd_file_divs_cd3}" target="_blank">파일받기</a>
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(3)">&nbsp;
+                                    	<c:if test="${gubun eq 'update'}">
+                                    	<a href="/upload/${apnd_file_divs_cd3}" target="_blank">파일받기</a>
+                                    	</c:if>
                                     </div>
                                 </div>
                                  <div class="form-group row">
@@ -600,7 +609,10 @@
                                     <div class="col-md-6">
                                     	<input type="file" id="file4" class="fileDrop" name="file4" onchange="fileUpload(this,4);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd4" class="form-control" name="apnd_file_divs_cd4" style="width:50%;display:initial;" value="${apnd_file_divs_cd4}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(4)">&nbsp;<a href="/upload/${apnd_file_divs_cd4}" target="_blank">파일받기</a>
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(4)">&nbsp;
+                                    	<c:if test="${gubun eq 'update'}">
+                                    	<a href="/upload/${apnd_file_divs_cd4}" target="_blank">파일받기</a>
+                                    	</c:if>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -608,7 +620,10 @@
                                     <div class="col-md-6">
                                     	<input type="file" id="file5" class="fileDrop" name="file5" onchange="fileUpload(this,5);" style="width:60%;display:none;">
                                     	<input type="text" id="apnd_file_divs_cd5" class="form-control" name="apnd_file_divs_cd5" style="width:50%;display:initial;" value="${apnd_file_divs_cd5}">
-                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(5)">&nbsp;<a href="/upload/${apnd_file_divs_cd5}" target="_blank">파일받기</a>
+                                    	<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(5)">&nbsp;
+                                    	<c:if test="${gubun eq 'update'}">
+                                    	<a href="/upload/${apnd_file_divs_cd5}" target="_blank">파일받기</a>
+                                    	</c:if>
                                     </div>
                                 </div>
 							</div>

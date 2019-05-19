@@ -20,17 +20,10 @@ var ajaxFlag = false;
 		
 		$('.summernote').summernote({
 			height: 400,
-			toolbar: [
-			    // [groupName, [list of button]]
-			    ['style', ['bold', 'italic', 'underline', 'clear']],
-			    ['font', ['strikethrough', 'superscript', 'subscript']],
-			    ['fontsize', ['fontsize']],
-			    ['color', ['color']],
-			    ['para', ['ul', 'ol', 'paragraph']],
-			    ['height', ['height']]
-			  ]
+			toolbar: []
 			
 		});
+		$('.summernote').summernote('disable');
 		
 		$("#ckSign").click(function(){
 			var _empList = $("#empList li.active");
@@ -324,46 +317,31 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">기안명</span></div>
 						<div class="col-12 col-sm-10">
-							<input type="text"  name="appr_nm" id="appr_nm" class="form-control" autocomplete="off"/>
+							<input type="text"  name="appr_nm" id="appr_nm" class="form-control" value="${data.APPR_NM}" autocomplete="off" readonly/>
+							<input type="hidden" name="appr_no" id ="appr_no" value="${data.APPR_NO}"/>
 						</div>
 					</div>
 					<div class="row" >
 						<div class="col-12 col-sm-2"><span class="align-middle">결제구분</span></div>
 						<div class="col-12 col-sm-2">
-							<select class="custom-select" name="appr_divs_cd" id="appr_divs_cd" onChange="display_appdoc()">
-								<option value="">선택하세요.</option>
-								<c:forEach items="${C00026}" var="a">
-									<option value="${a.CMM_CD}">${a.CMM_CD_NM}</option>
-								</c:forEach>
-							</select>
+							<input type="text"  name="appr_divs_cd_nm" id="appr_divs_cd_nm" class="form-control" value="${data.APPR_DIVS_CD_NM}" autocomplete="off" readonly/>
 						</div>
 						<div class="col-12 col-sm-2" id="app_doc1"><span class="align-middle">연결문서</span></div>
 						<div class="col-12 col-sm-4" id="app_doc2">
-							<input type="text"  name="appr_ref_nm" id="appr_ref_nm" class="form-control" autocomplete="off"/>
-							<input type="text"  name="appr_ref_no" id="appr_ref_no" class="form-control" autocomplete="off"/>
-						</div>
-						<div class="col-12 col-sm-2" id="app_doc3">
-							<input class="btn btn-primary" style="margin-right:2px;" type="button" id="docSearch" value="검색">
+							<input type="text"  name="appr_ref_nm" id="appr_ref_nm" class="form-control"  value="${data.APPR_REF_NM}" autocomplete="off" readonly/>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">결재자</span></div>
-						<div class="col-12 col-sm-2">
-							<input type="text"  name="appSign" id="appSign1" class="form-control" readonly autocomplete="off"/>
-							<input type="hidden"  name="appSignEmp" id="appSignEmp1" value="39" class="form-control" readonly autocomplete="off"/>
-						</div>
-						<div class="col-12 col-sm-2">
-							<input type="text"  name="appSign" id="appSign2" class="form-control" readonly autocomplete="off"/>
-							<input type="hidden"  name="appSignEmp" id="appSignEmp2" value="33" class="form-control" readonly autocomplete="off"/>
-						</div>
-						<div class="col-12 col-sm-2">
-							<input type="text"  name="appSign" id="appSign3" class="form-control" readonly autocomplete="off"/>
-							<input type="hidden"  name="appSignEmp" id="appSignEmp3" value="34" class="form-control" readonly autocomplete="off"/>
-						</div>
-						<div class="col-12 col-sm-3">
-							<input type="text" id="dept_no"  name="dept_no" value="${deptno}">
-							<input class="btn btn-primary" style="margin-right:2px;" type="button" id="SingSearch" value="선택">
-						</div>
+						<c:forEach items="${approvalSignUser}" var="g" varStatus="status">	
+					  		<div class="col-12 col-sm-2">
+								<input type="text"    name="appSign" value="${g.EMP_NM}" id="appSign1" class="form-control" readonly autocomplete="off"/>
+								<input type="hidden"  name="appSignEmp" id="appSignEmp1" value="${g.APPR_SIGN_EMP_NO}"  class="form-control" readonly autocomplete="off"/>
+							</div>
+							<div>
+								
+							</div>
+					  	</c:forEach>
 					</div>
 				</div>
 			</div>
@@ -371,7 +349,7 @@ var ajaxFlag = false;
 		<div class="row" style="padding-top:10px;">	
 			<div class="col">
 				<div class="container" style="padding:0;">
-					<textarea name="for_appr_cntn" class="summernote"></textarea>
+					<textarea name="for_appr_cntn" class="summernote">${data.FOR_APPR_CNTN}</textarea>
 				</div>
 			</div>
 		</div>
@@ -381,9 +359,7 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">첨부파일</span></div>
 						<div class="col-12 col-sm-10">
-							<input type="file" id="file1" class="fileDrop" name="file1" onchange="fileUpload(this,1);" style="width:60%;display:none;">
-							<input type="text" id="apnd_file_divs_cd1" class="form-control" name="apnd_file_divs_cd1" style="width:50%;display:initial;" value="${apnd_file_divs_cd}">
-							<input class="btn-primary" type="button" value="파일첨부" onClick="FileClick(1)">
+							<a href="/upload/${data1.REG_FILE_NM}" target="_blank">${data1.REG_FILE_NM}</a>
 						</div>
 					</div>
 				</div>

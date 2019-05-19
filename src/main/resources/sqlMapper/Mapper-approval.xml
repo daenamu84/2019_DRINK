@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Approval">
+    
+    <select id="selectTotalRecords" resultType="int">
+        SELECT FOUND_ROWS();
+    </select>
+    
+    <select id="getApprovalList" resultType="DataMap" parameterType="hashmap">
+    	<![CDATA[ 
+    		SELECT SQL_CALC_FOUND_ROWS
+    			 TAM.APPR_NO,
+				 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00026' AND E.CMM_CD = TAM.APPR_DIVS_CD) AS APPR_DIVS_CD_NM,
+				 APPR_NM, TEM.EMP_NM,
+				 (SELECT TEAMNM FROM T_DEPT_M TDM WHERE TDM.DEPT_NO = TEM.DEPT_NO) AS TEAMNM,
+				 DATE_FORMAT(TAM.FOR_APPR_DTM, '%Y.%m.%d %H:%i') AS FOR_APPR_DTM_DT,
+				 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00027' AND E.CMM_CD = TAM.APPR_STUS_CD) AS APPR_STUS_CD_NM
+			FROM T_APPROVAL_M TAM, T_EMP_M TEM
+			WHERE TAM.FOR_APPR_EMP_NO = TEM.EMP_NO
+			AND TEM.EMP_NO =#{emp_no}
+       	]]>
+
+		<if test="appr_divs_cd != null and appr_divs_cd !='ALL'">
+			<![CDATA[
+				AND TAM.APPR_DIVS_CD = #{appr_divs_cd}
+			]]> 
+		</if>
+		<if test="appr_nm != null and appr_nm!=''">
+			<![CDATA[
+				AND TAM.APPR_NM  like  CONCAT('%',#{appr_nm},'%') 
+			]]> 
+		</if>		
+		
+		<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
+    </select>
+    
+    <update id="approvalInsert">
+    	<![CDATA[
+		INSERT INTO T_APPROVAL_M
+			(APPR_DIVS_CD, APPR_REF_NO, APPR_NM, FOR_APPR_EMP_NO,  FOR_APPR_DTM, APPR_STUS_CD, FOR_APPR_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES (#{appr_divs_cd}, #{appr_ref_no}, #{appr_nm}, #{emp_no},  now(), '0001', #{for_appr_cntn},  now(), #{regId}, now(), #{regId})    	
+    	]]>
+    </update>
+    
+    <select id="getAppr_NO" resultType="DataMap">
+    	<![CDATA[
+		  	SELECT APPR_NO
+			FROM T_APPROVAL_M 
+			WHERE APPR_NM =#{appr_nm}
+			AND  APPR_REF_NO  =#{appr_ref_no}
+			AND  FOR_APPR_EMP_NO  = #{emp_no}
+       	]]>
+    </select>
+    
+    <update id="approval_SignInsert">
+    	<![CDATA[
+		INSERT INTO T_APPROVAL_SIGN_D
+			(APPR_NO, APPR_SIGN_SEQ, APPR_SIGN_EMP_NO, APPR_STUS_CD,  APPR_SIGN_DTM, APPR_SIGN_CNTN,  DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			VALUES (#{appr_no}, #{appr_sign_seq}, #{appr_sign_emp_no}, '0001',  now(), '',  now(), #{regId}, now(), #{regId})    	
+    	]]>
+    </update>
+    
+    <update id="approval_FileInsert">
+    	<![CDATA[
+    	INSERT INTO T_APPROVAL_APND_FILE_D
+			(APPR_NO, APND_FILE_DIVS_CD, REG_FOLDER_NM, REG_FILE_NM, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM,DATA_UPD_ID )
+			 VALUES ( #{appr_no}, #{apnd_file_divs_cd}, #{reg_folder_nm}, #{reg_file_nm}, now(), #{login_id}, now(), #{login_id})
+    	]]>
+    </update>
+    
+    <select id="getApproval_SignList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT EMP_NO, EMP_NM
+			FROM T_EMP_M
+			WHERE DEPT_NO= #{dept_no}
+			AND EMP_GRD_CD='0003'
+			UNION ALL
+			SELECT B.EMP_NO, B.EMP_NM
+			FROM T_DEPT_EMP_REL_D A , T_EMP_M B
+			WHERE A.DEPT_NO= #{dept_no}
+			AND A.EMP_NO = B.EMP_NO
+			AND B.EMP_GRD_CD NOT IN ('0003','0004')
+       	]]>
+    </select>
+    
+    <select id="getApprovalView" resultType="DataMap">
+    	<![CDATA[
+		 	SELECT TAM.APPR_NO, TAM.APPR_DIVS_CD,
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00026' AND E.CMM_CD = TAM.APPR_DIVS_CD) AS APPR_DIVS_CD_NM,
+			 CASE
+			    WHEN TAM.APPR_DIVS_CD = '0001'
+			    THEN (SELECT VENDOR_NM FROM T_VENDOR_M WHERE VENDOR_NO = TAM.APPR_REF_NO )
+			    WHEN TAM.APPR_DIVS_CD = '0002'
+			    THEN (SELECT PRPS_NM FROM T_PROPOSAL_M WHERE PRPS_ID = TAM.APPR_REF_NO )
+			    ELSE ''
+			 END AS APPR_REF_NM, APPR_REF_NO, TAM.APPR_NM , TAM.APPR_STUS_CD, TAM.FOR_APPR_CNTN
+			FROM T_APPROVAL_M TAM
+			WHERE TAM.APPR_NO = #{appr_no}
+       	]]>
+    </select>  
+    
+    <select id="approvalSignUser" resultType="DataMap">
+    	<![CDATA[
+			SELECT TAGD.APPR_SIGN_EMP_NO, TEM.EMP_NM ,
+			(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00027' AND E.CMM_CD = TAGD.APPR_STUS_CD) AS APPR_STUTS_CD_NM
+			FROM T_APPROVAL_SIGN_D TAGD , T_EMP_M TEM
+			WHERE TAGD.APPR_NO =#{appr_no}
+			AND TAGD.APPR_SIGN_EMP_NO = TEM.EMP_NO
+			ORDER BY TAGD.APPR_SIGN_SEQ
+       	]]>
+    </select> 
+    
+    <select id="getApprovalFileView" resultType="DataMap">
+    	<![CDATA[
+		SELECT APND_FILE_DIVS_CD, REG_FILE_NM
+		FROM T_APPROVAL_APND_FILE_D TAFD
+		WHERE TAFD.APPR_NO = #{appr_no}
+       	]]>
+    </select>
+    
+</mapper>
