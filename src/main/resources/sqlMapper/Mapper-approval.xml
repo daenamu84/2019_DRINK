@@ -34,12 +34,13 @@
 		
 		<if test="pageStart != null and perPageNum != ''">
 			<![CDATA[
+				 ORDER BY TAM.DATA_REG_DTM DESC
 				 LIMIT #{pageStart}, #{perPageNum}
 			]]> 
 		</if>
     </select>
     
-    <update id="approvalInsert">
+    <update id="approvalInsert" useGeneratedKeys="true" keyProperty="APPR_NO">
     	<![CDATA[
 		INSERT INTO T_APPROVAL_M
 			(APPR_DIVS_CD, APPR_REF_NO, APPR_NM, FOR_APPR_EMP_NO,  FOR_APPR_DTM, APPR_STUS_CD, FOR_APPR_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
@@ -90,7 +91,7 @@
     
     <select id="getApprovalView" resultType="DataMap">
     	<![CDATA[
-		 	SELECT TAM.APPR_NO, TAM.APPR_DIVS_CD,
+		 	SELECT TAM.APPR_NO, TAM.APPR_DIVS_CD, TAM.FOR_APPR_EMP_NO,
 			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00026' AND E.CMM_CD = TAM.APPR_DIVS_CD) AS APPR_DIVS_CD_NM,
 			 CASE
 			    WHEN TAM.APPR_DIVS_CD = '0001'

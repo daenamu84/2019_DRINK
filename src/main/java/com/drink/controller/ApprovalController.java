@@ -42,6 +42,7 @@ import com.drink.dto.model.session.SessionDto;
 import com.drink.dto.model.user.loginDto;
 import com.drink.service.approval.ApprovalService;
 import com.drink.service.login.LoginService;
+import com.drink.service.member.MemberService;
 import com.drink.service.proposal.ProposalService;
 import com.drink.service.vendor.VendorService;
 
@@ -78,7 +79,6 @@ public class ApprovalController {
 	@Autowired
 	private ProposalService proposalService;
 
-	
 	@Autowired
 	private Paging paging;
 
@@ -255,10 +255,14 @@ public class ApprovalController {
 		mav.addObject("C00026", C00026);
 		
 		RequestMap paramMap = new RequestMap();
+		paramMap.put("dept_no", loginSession.getDept_no());
+		paramMap.put("empNo", loginSession.getEmp_no());
+		List<DataMap> empSignList = approvalService.getEmpSignList(paramMap);
 		
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
 		mav.addObject("emp_grd_cd", loginSession.getEmp_grd_cd());
+		mav.addObject("empSignList", empSignList);
 		mav.addObject("dropdown04","active");
 		mav.setViewName("approval/approvalSend");
 		
@@ -339,26 +343,25 @@ public class ApprovalController {
 	
 	@RequestMapping(value = "/approvalInsert")
 	public String ApprovalInsert(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+			SessionDto loginSession = sessionUtils.getLoginSession(req);
+			
+			logger.debug("map :: " + rtMap.toString());
 		
-		SessionDto loginSession = sessionUtils.getLoginSession(req);
-		
-		logger.debug("map :: " + rtMap.toString());
-	
-		
-		rtMap.put("regId", loginSession.getLgin_id());
-		rtMap.put("emp_no", loginSession.getEmp_no());
-		
-		String appSignEmp[] = req.getParameterValues("appSignEmp");
-		rtMap.put("appSignEmp", appSignEmp);
-		approvalService.ApprovalInsert(rtMap);
-		
-		redirectAttributes.addFlashAttribute("returnCode", "0000");
-		
-		HashMap<String, Object> rtnMap = new HashMap<>();
-		rtnMap.put("returnCode", "0000");
-		rtnMap.put("message", "저장 하였습니다.");
-		
-		return "redirect:/ApprovalList";
-		//return rtnMap;
+			
+			rtMap.put("regId", loginSession.getLgin_id());
+			rtMap.put("emp_no", loginSession.getEmp_no());
+			
+			String appSignEmp[] = req.getParameterValues("appSignEmp");
+			rtMap.put("appSignEmp", appSignEmp);
+			approvalService.ApprovalInsert(rtMap);
+			
+			redirectAttributes.addFlashAttribute("returnCode", "0000");
+			
+			HashMap<String, Object> rtnMap = new HashMap<>();
+			rtnMap.put("returnCode", "0000");
+			rtnMap.put("message", "저장 하였습니다.");
+			
+			return "redirect:/ApprovalList";
+			//return rtnMap;
 	}
 }

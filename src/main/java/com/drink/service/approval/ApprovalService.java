@@ -59,7 +59,11 @@ public class ApprovalService {
 	public void ApprovalInsert(RequestMap map) throws DrinkException{
 		logger.debug("service 111111111 :: " + map.toString());
 		
+		if(map.getString("appr_ref_no").equals("")){
+			map.put("appr_ref_no", null);
+		}
 		int rtCnt = gdi.update("Approval.approvalInsert", map.getMap());
+		
 		if(rtCnt < 1){
 			throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
 		}
@@ -67,13 +71,13 @@ public class ApprovalService {
 		DataMap param = new DataMap();
 		int appr_no = 0;
 		
-		param = (DataMap) gdi.selectOne("Approval.getAppr_NO",map.getMap());
+	/*	param = (DataMap) gdi.selectOne("Approval.getAppr_NO",map.getMap());
 		
 		if(param.getString("APPR_NO")!= ""){
 			appr_no = param.getInt("APPR_NO");
-		}
+		}*/
 		
-		map.put("appr_no", appr_no);
+		map.put("appr_no", map.getString("APPR_NO"));
 		
 		String[] appSignEmp =  (String[]) map.get("appSignEmp");
 		
@@ -131,4 +135,13 @@ public class ApprovalService {
 		
 		return param;
 	}
+	
+	public List getEmpSignList(RequestMap map)throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Approval.getApproval_SignList",map.getMap());
+		
+		return param;
+	}
+	
 }

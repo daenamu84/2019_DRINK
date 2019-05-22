@@ -6,8 +6,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
 
 
 <script>
@@ -341,8 +341,10 @@ var ajaxFlag = false;
 							</div>
 					  	</c:forEach>
 					  	<div>
-					  		<input class="btn btn-dark" type="button" value="결재" id="approva_ok">
-					  		<input class="btn btn-dark" type="button" value="반려" id="approva_no">
+					  		<c:if test="${loginSession.emp_grd_cd ne '0004'} and ${data.FOR_APPR_EMP_NO ne loginSession.emp_no }">
+						  		<input class="btn btn-dark" type="button" value="결재" id="approva_ok">
+						  		<input class="btn btn-dark" type="button" value="반려" id="approva_no">
+					  		</c:if>
 					  	</div>
 					</div>
 				</div>
