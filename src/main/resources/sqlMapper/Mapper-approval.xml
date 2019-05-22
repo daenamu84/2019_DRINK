@@ -39,7 +39,7 @@
 		</if>
     </select>
     
-    <update id="approvalInsert">
+    <update id="approvalInsert" useGeneratedKeys="true" keyProperty="APPR_NO">
     	<![CDATA[
 		INSERT INTO T_APPROVAL_M
 			(APPR_DIVS_CD, APPR_REF_NO, APPR_NM, FOR_APPR_EMP_NO,  FOR_APPR_DTM, APPR_STUS_CD, FOR_APPR_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 

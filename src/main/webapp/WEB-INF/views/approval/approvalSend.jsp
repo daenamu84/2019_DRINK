@@ -6,8 +6,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
 
 
 <script>
@@ -44,7 +44,10 @@ var ajaxFlag = false;
 						var tmpHtml = $(_empList[i]).clone().removeClass("active").wrapAll("<div/>").parent().html();
 						_signList.append(tmpHtml);
 						$("#empList li").removeClass("active");
-						$(_empList[i]).remove();
+						//$(_empList[i]).remove();
+					}else{
+						alert("이미 지정된 결재자 입니다.");
+						return false;
 					}
 				}
 			}else{
@@ -101,6 +104,7 @@ var ajaxFlag = false;
 					$("input[name='appSignEmp']")[i].value="";
 				}
 			}
+			$("#popLayer").modal("hide");
 		});
 	});
 	
@@ -294,7 +298,7 @@ var ajaxFlag = false;
 			}
 		}
 		
-		if ($("#appSignEmp1").val() == "") {
+		if ($("input[name='appSignEmp']").filter(function(idx){  return this.value !== ""; }).length ==0) {
 			alert("결제자를 선택하세요");
 			ajaxFlag = false;
 			return;
@@ -361,7 +365,7 @@ var ajaxFlag = false;
 							<input type="hidden"  name="appSignEmp" id="appSignEmp3" value="34" class="form-control" readonly autocomplete="off"/>
 						</div>
 						<div class="col-12 col-sm-3">
-							<input type="text" id="dept_no"  name="dept_no" value="${deptno}">
+							<input type="hidden" id="dept_no"  name="dept_no" value="${deptno}">
 							<input class="btn btn-primary" style="margin-right:2px;" type="button" id="SingSearch" value="선택">
 						</div>
 					</div>
@@ -416,12 +420,7 @@ var ajaxFlag = false;
 				<div class="modal-body">
 					<div class="container" style="padding: 5px;">
 						<div class="row">
-							<div class="col-sm-2"><span class="align-middle">검색</span></div>
-							<div class="col-sm-3">
-								<input type="text"  id="_sVendorNm" class="form-control" />
-							</div>
 							<div class="col-sm-5">
-								<input class="btn btn-primary" type="button" id="empSearch" value="조회">
 								<input class="btn btn-primary" type="button" id="addSign" value="적용">
 							</div>
 						</div>
@@ -434,11 +433,9 @@ var ajaxFlag = false;
 								<div class="row" >	
 									<div class="col-12 col-sm-10" style="padding:0px;">
 										<ul class="list-group" id="empList" style="border: 1px solid rgba(0, 0, 0, 0.125);padding: 0;min-height:300px;">
-											  <li class="list-group-item" data-value="1">홍길동1</li>
-											  <li class="list-group-item" data-value="2">홍길동2</li>
-											  <li class="list-group-item" data-value="3">홍길동3</li>
-											  <li class="list-group-item" data-value="4">홍길동4</li>
-											  <li class="list-group-item" data-value="5">홍길동5</li>
+											<c:forEach items="${empSignList}" var="list">
+												<li class="list-group-item" data-value="${list.EMP_NO}">${list.EMP_NM}</li>
+											</c:forEach>
 										</ul>
 									</div>
 									<div class="col-12 col-sm-2" style="padding-left:2px;">
