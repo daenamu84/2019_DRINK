@@ -118,7 +118,7 @@
 		</div>
 		<div class="row" style="padding-top:10px; ">
 			<div class="col-12">
-				<input class="btn btn-primary  float-right" style="margin-right:2px;" type="button" id="apprSend" value="결제 올리기">
+				<input class="btn btn-primary  float-right" style="margin-right:2px;" type="button" id="apprSend" value="결재 올리기">
 			</div>
 		</div>
 		<div class="row" style="padding-top:10px; overflow-x:auto;">	

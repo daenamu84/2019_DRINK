@@ -116,6 +116,14 @@ public class ApprovalService {
 		return param;
 	}
 	
+	public List approvalComment(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		param = gdi.selectList("Approval.approvalComment", map.getMap());
+		
+		return param;
+	}
+	
 	public DataMap getVendorFileView(RequestMap map) throws DrinkException{
 		DataMap param = new DataMap();
 		

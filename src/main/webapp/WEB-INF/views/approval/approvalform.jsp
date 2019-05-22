@@ -51,7 +51,7 @@ var ajaxFlag = false;
 			var _appr_divs_cd = $("#appr_divs_cd option:selected").val();
 			
 			if(_appr_divs_cd==""){
-				alert("결제구분을 선택하세요");
+				alert("결재구분을 선택하세요");
 				return;
 			}
 			
@@ -74,7 +74,7 @@ var ajaxFlag = false;
 			
 		});
 		
-		//결제자
+		//결재자
 		$("#SingSearch").click(function(){
 			$("#popLayer").modal("show");
 		});
@@ -268,13 +268,13 @@ var ajaxFlag = false;
 		ajaxFlag = true;
 
 		if ($("#appr_nm").val() == "") {
-			alert("결제명명을 입력하세요");
+			alert("결재명명을 입력하세요");
 			ajaxFlag = false;
 			return;
 		}
 
 		if ($("#appr_divs_cd option:selected").val() == "") {
-			alert("결제구분을  선택 하세요");
+			alert("결재구분을  선택 하세요");
 			ajaxFlag = false;
 			return;
 		}
@@ -288,7 +288,7 @@ var ajaxFlag = false;
 		}
 		
 		if ($("#appSignEmp1").val() == "") {
-			alert("결제자를 선택하세요");
+			alert("결재자를 선택하세요");
 			ajaxFlag = false;
 			return;
 		}
@@ -322,7 +322,7 @@ var ajaxFlag = false;
 						</div>
 					</div>
 					<div class="row" >
-						<div class="col-12 col-sm-2"><span class="align-middle">결제구분</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">결재구분</span></div>
 						<div class="col-12 col-sm-2">
 							<input type="text"  name="appr_divs_cd_nm" id="appr_divs_cd_nm" class="form-control" value="${data.APPR_DIVS_CD_NM}" autocomplete="off" readonly/>
 						</div>
@@ -335,13 +335,15 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-2"><span class="align-middle">결재자</span></div>
 						<c:forEach items="${approvalSignUser}" var="g" varStatus="status">	
 					  		<div class="col-12 col-sm-2">
-								<input type="text"    name="appSign" value="${g.EMP_NM}" id="appSign1" class="form-control" readonly autocomplete="off"/>
+								<input type="text"    name="appSign" value="${g.EMP_NM}<c:if test="${g.APPR_STUTS_CD_NM ne '결재중'}">(${g.APPR_STUTS_CD_NM})</c:if>"
+								id="appSign1" class="form-control" readonly autocomplete="off"/>
 								<input type="hidden"  name="appSignEmp" id="appSignEmp1" value="${g.APPR_SIGN_EMP_NO}"  class="form-control" readonly autocomplete="off"/>
 							</div>
-							<div>
-								
-							</div>
 					  	</c:forEach>
+					  	<div>
+					  		<input class="btn btn-dark" type="button" value="결재" id="approva_ok">
+					  		<input class="btn btn-dark" type="button" value="반려" id="approva_no">
+					  	</div>
 					</div>
 				</div>
 			</div>
@@ -365,12 +367,35 @@ var ajaxFlag = false;
 				</div>
 			</div>
 		</div>
+		<div class="row" style="padding-top:10px;">
+			<div class="col">
+				<div class="container" style="padding: 5px;">
+					<table class="table">
+						<thead id="comment_list">
+							<c:forEach items="${approvalComment}" var="z" varStatus="status">
+								<tr>
+									<th scope="col">결재구분</th>
+									<th scope="col">기안명</th>
+								</tr>
+							</c:forEach>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="2">
+									<input type="text" name="comment" id="comment" class="form-control" style="width: 90%;display: inline-block;">
+									<input class="btn btn-secondary" type="button" value="댓글작성" id="comment_write" >
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 		<div class="row" style="padding-top: 10px;">
 			<div class="col">
 				<div class="container " style="padding: 5px;">
 					<div class="text-md-right">
 						<input type="hidden" name="gubun" value="${gubun}" id="gubun">
-						<input class="btn btn-dark" type="button" value="결제올릭기" id="approvalInsert"> 
 						<input class="btn btn-dark" type="button" value="목록" id="approvalList">
 					</div>
 				</div>
@@ -380,97 +405,7 @@ var ajaxFlag = false;
 	</form>
 	</div>
 	
-	<!-- modal start  -->	
-	<div id="popLayer" class="modal fade" role="dialog">
-		<div class="modal-dialog modal-xl">
-			<!-- Modal content-->
-			<div class="modal-content" id="pay_body">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">결제자 지정</h5>
-					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
-				</div>
-				<div class="modal-body">
-					<div class="container" style="padding: 5px;">
-						<div class="row">
-							<div class="col-sm-2"><span class="align-middle">검색</span></div>
-							<div class="col-sm-3">
-								<input type="text"  id="_sVendorNm" class="form-control" />
-							</div>
-							<div class="col-sm-5">
-								<input class="btn btn-primary" type="button" id="empSearch" value="조회">
-								<input class="btn btn-primary" type="button" id="addSign" value="적용">
-							</div>
-						</div>
-					</div>
-				</div>					
-				<div class="modal-body" >
-					<div class="container-fluid">
-						<div class="col-12 col-sm-6 float-left">
-							<div class="container-fluid">
-								<div class="row" >	
-									<div class="col-12 col-sm-10" style="padding:0px;">
-										<ul class="list-group" id="empList" style="border: 1px solid rgba(0, 0, 0, 0.125);padding: 0;min-height:300px;">
-											  <li class="list-group-item" data-value="1">홍길동1</li>
-											  <li class="list-group-item" data-value="2">홍길동2</li>
-											  <li class="list-group-item" data-value="3">홍길동3</li>
-											  <li class="list-group-item" data-value="4">홍길동4</li>
-											  <li class="list-group-item" data-value="5">홍길동5</li>
-										</ul>
-									</div>
-									<div class="col-12 col-sm-2" style="padding-left:2px;">
-										<div class="btn-group-vertical" role="group" aria-label="Basic example">
-										  	<input class="btn btn-primary" type="button" id="ckSign" value="결제">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-12 col-sm-6 float-left">
-							<div class="container-fluid">
-								<div class="row" >	
-									<div class="col-12 col-sm-10" style="padding:0px;">
-										<ul class="list-group" id="signList" style="border: 1px solid rgba(0, 0, 0, 0.125);padding: 0;min-height:300px;">
-										</ul>
-									</div>
-									<div class="col-12 col-sm-2" style="padding-left:2px;">
-										<div class="btn-group-vertical" role="group" aria-label="Basic example">
-										  	<input class="btn btn-primary" type="button" id="siginUp" value="위로">
-											<input class="btn btn-primary" type="button" id="signDown" value="아래로">
-											<input class="btn btn-primary" type="button" id="signDel" value="삭제">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-body">
-				</div>
-			</div>
-		</div>
-	</div>
-<!-- modal  end  -->
-
-	<!-- modal start  -->
-	<div id="apporval_doc" class="modal fade" role="dialog"
-		data-backdrop="static">
-		<div class="modal-dialog modal-xl">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">검색</h5>
-					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span
-						aria-hidden="true">&times;</span></a>
-				</div>
-				<div class="modal-body" id="subLayer"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- modal  end  -->
+	
 
 
 </div>

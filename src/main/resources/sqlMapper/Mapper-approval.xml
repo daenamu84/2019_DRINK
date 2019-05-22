@@ -123,4 +123,15 @@
        	]]>
     </select>
     
+    <select id="approvalComment" resultType="DataMap">
+    	<![CDATA[
+			SELECT TAC.COMMENT, TEM.EMP_NM , TAC.DATA_REG_DTM
+			FROM T_APPROVAL_COMMENT TAC , T_EMP_M TEM
+			WHERE TAC.APPR_NO =#{appr_no}
+			AND TAC.EMP_NO = TEM.EMP_NO
+			ORDER BY TAC.DATA_REG_DTM
+       	]]>
+    </select>
+    
+    
 </mapper>

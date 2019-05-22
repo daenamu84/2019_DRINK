@@ -52,10 +52,10 @@
 				</div>
 			</li>
 			<li class="nav-item ${dropdown04} dropdown">
-				<a class="nav-link dropdown-toggle" href="/ApprovalList" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전자결제함</a>
+				<a class="nav-link dropdown-toggle" href="/ApprovalList" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전자결재함</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown04">
-					<a class="dropdown-item" href="/ApprovalList">전자결제문서</a> 
-					<a class="dropdown-item" href="/ApprovalConfirm">전자결제대기문서</a>
+					<a class="dropdown-item" href="/ApprovalList">전자결재문서</a> 
+					<a class="dropdown-item" href="/ApprovalConfirm">전자결재대기문서</a>
 				</div>
 			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">

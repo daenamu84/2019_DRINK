@@ -202,8 +202,13 @@ public class ApprovalController {
 		
 		DataMap approvalFile =  approvalService.getVendorFileView(rtMap);
 		
+		
+		List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
+		
+		
 		mav.addObject("data",approvalView);
 		mav.addObject("approvalSignUser",approvalSignUser);
+		mav.addObject("approvalComment",approvalComment);
 		mav.addObject("data1",approvalFile);
 		mav.setViewName("approval/approvalform");
 		return mav;

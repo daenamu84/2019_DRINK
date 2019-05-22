@@ -58,7 +58,7 @@ var ajaxFlag = false;
 			var _appr_divs_cd = $("#appr_divs_cd option:selected").val();
 			
 			if(_appr_divs_cd==""){
-				alert("결제구분을 선택하세요");
+				alert("결재구분을 선택하세요");
 				return;
 			}
 			
@@ -81,7 +81,7 @@ var ajaxFlag = false;
 			
 		});
 		
-		//결제자
+		//결재자
 		$("#SingSearch").click(function(){
 			$("#popLayer").modal("show");
 		});
@@ -275,13 +275,13 @@ var ajaxFlag = false;
 		ajaxFlag = true;
 
 		if ($("#appr_nm").val() == "") {
-			alert("결제명명을 입력하세요");
+			alert("결재명명을 입력하세요");
 			ajaxFlag = false;
 			return;
 		}
 
 		if ($("#appr_divs_cd option:selected").val() == "") {
-			alert("결제구분을  선택 하세요");
+			alert("결재구분을  선택 하세요");
 			ajaxFlag = false;
 			return;
 		}
@@ -295,7 +295,7 @@ var ajaxFlag = false;
 		}
 		
 		if ($("#appSignEmp1").val() == "") {
-			alert("결제자를 선택하세요");
+			alert("결재자를 선택하세요");
 			ajaxFlag = false;
 			return;
 		}
@@ -328,7 +328,7 @@ var ajaxFlag = false;
 						</div>
 					</div>
 					<div class="row" >
-						<div class="col-12 col-sm-2"><span class="align-middle">결제구분</span></div>
+						<div class="col-12 col-sm-2"><span class="align-middle">결재구분</span></div>
 						<div class="col-12 col-sm-2">
 							<select class="custom-select" name="appr_divs_cd" id="appr_divs_cd" onChange="display_appdoc()">
 								<option value="">선택하세요.</option>
@@ -394,7 +394,7 @@ var ajaxFlag = false;
 				<div class="container " style="padding: 5px;">
 					<div class="text-md-right">
 						<input type="hidden" name="gubun" value="${gubun}" id="gubun">
-						<input class="btn btn-dark" type="button" value="결제올릭기" id="approvalInsert"> 
+						<input class="btn btn-dark" type="button" value="결재올릭기" id="approvalInsert"> 
 						<input class="btn btn-dark" type="button" value="목록" id="approvalList">
 					</div>
 				</div>
@@ -410,7 +410,7 @@ var ajaxFlag = false;
 			<!-- Modal content-->
 			<div class="modal-content" id="pay_body">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">결제자 지정</h5>
+					<h5 class="modal-title" id="exampleModalLabel">결재자 지정</h5>
 					<a href="#" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
 				</div>
 				<div class="modal-body">
@@ -443,7 +443,7 @@ var ajaxFlag = false;
 									</div>
 									<div class="col-12 col-sm-2" style="padding-left:2px;">
 										<div class="btn-group-vertical" role="group" aria-label="Basic example">
-										  	<input class="btn btn-primary" type="button" id="ckSign" value="결제">
+										  	<input class="btn btn-primary" type="button" id="ckSign" value="결재">
 										</div>
 									</div>
 								</div>
