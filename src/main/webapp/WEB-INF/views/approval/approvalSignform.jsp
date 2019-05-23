@@ -55,9 +55,32 @@ var ajaxFlag = false;
 			    }  
 			});
 		});
-		
 	
 	});
+	
+	
+	function Delete_comment(_comment_no,_c_appr_no){
+		
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		
+		$("#comment").val("");
+		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/approvalCommentDelete?comment_no="+_comment_no+"&appr_no="+_c_appr_no,     
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#comment_list").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
+	}
 	
 	
 	$(document).on("click","#empList li",function() {
@@ -197,7 +220,15 @@ var ajaxFlag = false;
 							<c:forEach items="${approvalComment}" var="z" varStatus="status">
 								<tr>
 									<td>${z.EMP_NM}</td>
-									<td>${z.COMMENT} (${z.DATA_REG_DTM})</td>
+									<td>
+										${z.COMMENT} (${z.DATA_REG_DTM})&nbsp;
+											
+										<c:if test="${loginSession.emp_no eq z.EMP_NO}">	
+											<input class="btn btn-secondary btn-sm float-right" type="button" value="삭제" onClick="Delete_comment('${z.COMMENT_NO}','${z.APPR_NO}')" >
+										</c:if>
+										<input type="hidden"  name="comment_no" id="comment_no" value="${z.COMMENT_NO}"/>
+										<input type="hidden"  name="c_appr_no" id="c_appr_no" value="${z.APPR_NO}"/>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>

@@ -181,4 +181,15 @@ public class ApprovalService {
 		
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void approvalCommentDelete ( RequestMap map ) throws DrinkException{
+		
+		logger.debug("service 111111111 :: " + map.toString());
+		int rtCnt = gdi.update("Approval.approvalCommentDelete",map.getMap());
+		
+
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","삭제에 실패했습니다."});
+		}
+	}
 }

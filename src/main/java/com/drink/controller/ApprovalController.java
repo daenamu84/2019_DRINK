@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +22,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -453,10 +457,44 @@ public class ApprovalController {
 			
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("approvalComment",approvalComment);
+			mav.addObject("emp_no",loginSession.getEmp_no());
 			mav.setViewName("nobody/approval/approvalform_comment_list");
 			
 			
 			return mav;
 			//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/approvalCommentDelete")
+	@ResponseBody
+	public ModelAndView approvalCommentDelete(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		rtMap.put("regId", loginSession.getLgin_id());
+		rtMap.put("emp_no", loginSession.getEmp_no());
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		approvalService.approvalCommentDelete(rtMap);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("message", "삭제 하였습니다.");
+		
+		List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("approvalComment",approvalComment);
+		mav.addObject("emp_no",loginSession.getEmp_no());
+		mav.setViewName("nobody/approval/approvalform_comment_list");
+		
+		
+		return mav;
+		//return rtnMap;
 	}
 }

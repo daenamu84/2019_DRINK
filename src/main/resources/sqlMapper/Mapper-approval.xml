@@ -178,7 +178,7 @@
     
     <select id="approvalComment" resultType="DataMap">
     	<![CDATA[
-			SELECT TAC.COMMENT_NO, TAC.COMMENT, TEM.EMP_NM , DATE_FORMAT(TAC.DATA_REG_DTM, '%Y.%m.%d %H:%i') DATA_REG_DTM
+			SELECT TAC.COMMENT_NO, TAC.APPR_NO,  TAC.COMMENT, TEM.EMP_NM ,TEM.EMP_NO ,  DATE_FORMAT(TAC.DATA_REG_DTM, '%Y.%m.%d %H:%i') DATA_REG_DTM
 			FROM T_APPROVAL_COMMENT TAC , T_EMP_M TEM
 			WHERE TAC.APPR_NO =#{appr_no}
 			AND TAC.EMP_NO = TEM.EMP_NO
@@ -193,5 +193,12 @@
 		 VALUES ( #{appr_no}, #{emp_no}, #{comment}, now(), #{login_id}, now(), #{login_id})
     	]]>
     </update>
+    
+    <update id="approvalCommentDelete">
+    	<![CDATA[
+    		DELETE FROM T_APPROVAL_COMMENT WHERE COMMENT_NO = #{comment_no} AND APPR_NO = #{appr_no}
+    	]]>
+    </update>
+    
     
 </mapper>
