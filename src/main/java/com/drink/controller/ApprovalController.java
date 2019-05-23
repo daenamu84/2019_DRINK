@@ -10,6 +10,9 @@ package com.drink.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +48,7 @@ import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
 import com.drink.dto.model.user.loginDto;
 import com.drink.service.approval.ApprovalService;
+import com.drink.service.brand.BrandService;
 import com.drink.service.login.LoginService;
 import com.drink.service.member.MemberService;
 import com.drink.service.proposal.ProposalService;
@@ -82,6 +86,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private ProposalService proposalService;
+	
+	@Autowired 
+	private BrandService brandService;
 
 	@Autowired
 	private Paging paging;
@@ -497,4 +504,188 @@ public class ApprovalController {
 		return mav;
 		//return rtnMap;
 	}
+	
+	
+	@RequestMapping(value = "/AppVendorView", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView vendorView(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("map :: " + rtMap.toString());
+		logger.debug("map2 :: " + model.toString());
+		
+		
+//		logger.debug("rtMap.vendorno:" + rtMap.get("vendor_no"));
+//		if(rtMap.get("vendor_no")==null) {
+//			rtMap.put("vendor_no", model.get("vendor_no"));
+//			rtMap.put("gubun", model.get("gubun"));
+//			rtMap.put("returnCode", model.get("returnCode"));
+//		}
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00005"); // 마켓코드
+		List<DataMap> marketMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00006"); // 거래처세크먼크구분코드
+		List<DataMap> sgmtMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00008"); // 관계자 구분코드
+		List<DataMap> relrdivscdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00009"); // 거래처 지역 코드
+		List<DataMap> vendorareacdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00010"); // 거래처 등급 코드
+		List<DataMap> vendorgrdcdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00001"); // 거래처 상태 코드
+		List<DataMap> vendorstatcdMap = vendorService.getCommonCode(paramMap);
+		
+		paramMap.clear();
+		paramMap.put("cmm_cd_grp_id", "00024"); // 	행정구역 시도 구분
+		List<DataMap> vendorarea2cdMap = vendorService.getCommonCode(paramMap);
+
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
+		
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		
+		List<DataMap> rtnMngMap = vendorService.getMngTeamList(paramMap);
+		
+		List<DataMap> brandList = brandService.getVendorBrandMasterList(rtMap);
+		
+		mav.addObject("brandList", brandList);
+		
+		
+		DataMap vendorView =  vendorService.vendorView(rtMap);
+		
+		List<DataMap> vendorViewUser  = vendorService.vendorViewUser(rtMap);
+		
+		List<DataMap> rtnFileMap  = vendorService.getVendorFileView(rtMap);
+		
+		if(rtnFileMap.size()>0) {
+			for(int i=0; i<rtnFileMap.size();i++) {
+				DataMap  filemap = rtnFileMap.get(i);
+				
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0001")) {
+					mav.addObject("apnd_file_divs_cd1", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0002")) {
+					mav.addObject("apnd_file_divs_cd2", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0003")) {
+					mav.addObject("apnd_file_divs_cd3", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0004")) {
+					mav.addObject("apnd_file_divs_cd4", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0005")) {
+					mav.addObject("apnd_file_divs_cd5", filemap.getString("REG_FILE_NM"));
+				}
+				if(filemap.getString("APND_FILE_DIVS_CD").equals("0006")) {
+					mav.addObject("apnd_file_divs_cd6", filemap.getString("REG_FILE_NM"));
+				}
+			}
+		}
+		
+		mav.addObject("data",vendorView);
+		mav.addObject("marketMap", marketMap);
+		mav.addObject("sgmtMap", sgmtMap);
+		mav.addObject("vendorarea2cdMap", vendorarea2cdMap);
+		mav.addObject("relrdivscdMap", relrdivscdMap);
+		mav.addObject("vendorareacdMap", vendorareacdMap);
+		mav.addObject("deptMngList", rtnMngMap);
+		mav.addObject("vendorstatList", vendorstatcdMap);
+		mav.addObject("vendorgrdcdList", vendorgrdcdMap);
+		mav.addObject("gubun",rtMap.get("gubun"));
+		mav.addObject("vendorViewUser",vendorViewUser);
+		mav.addObject("returnCode",rtMap.get("returnCode"));
+		mav.setViewName("nobodyView/approval/approval_vendorfrom");
+		return mav;
+		
+	}
+	
+	
+	@RequestMapping(value = "/AppProPosalView")
+	public ModelAndView proPosalView(Locale locale, Model model , RequestMap rtMap, HttpServletRequest req) throws DrinkException {
+		
+		logger.debug("rtMap :: " + rtMap.toString());
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		// STEP 1
+		DataMap proPosalView =  proposalService.proposalView(rtMap);
+		
+		//STEMP2 인센티브
+		List<DataMap> rtnProPosalIMap = proposalService.ProPosalProdD_DViewI(rtMap);
+		DataMap rtnProPosalISumMap =  proposalService.ProPosalProdD_DViewI_Sum(rtMap);
+		
+		//STEP2 A&P
+		List<DataMap> rtnProPosalAMap = proposalService.ProPosalProdD_DViewA(rtMap);
+		DataMap rtnProPosalASumMap =  proposalService.ProPosalProdD_DViewA_Sum(rtMap);
+		
+		DataMap rtnProPosalTTL_AMOUNTMap =  proposalService.ProPosalProdD_TTL_AMOUNT(rtMap);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+		Calendar cal = Calendar.getInstance();
+		
+		rtMap.put("prps_id", rtMap.getString("prps_id"));
+		int j =  1;
+		List<DataMap> listStep03 = proposalService.getProPosal03List(rtMap);
+		try {
+			
+			for(int i=0; i<listStep03.size(); i++){
+				DataMap dm = listStep03.get(i);
+				List<Object> dateList = new ArrayList<>();
+				
+				for(int x=0; x<=dm.getInt("monthCnt");x++){
+					cal.setTime(sdf1.parse(dm.getString("PRPS_STR_DT")));
+					cal.add(Calendar.MONTH, x);
+					DataMap paramDm = new DataMap();
+					paramDm.put("prpsId", dm.getString("PRPS_ID"));
+					paramDm.put("prodSitemDivsCd", dm.getString("PROD_SITEM_DIVS_CD"));
+					paramDm.put("prodNoSitemNm", dm.getString("PROD_NO_SITEM_NM"));
+					paramDm.put("deliDate", sdf.format(cal.getTime()));
+					DataMap dtList =  proposalService.proposalProdMonD(paramDm);
+					if(dtList==null) {
+						dtList = new DataMap();
+						j = 0;
+					}
+					dtList.put("deliDate", sdf.format(cal.getTime()));
+					dateList.add(dtList);
+					
+				}
+				
+				dm.put("dateList", dateList);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
+		}
+		mav.addObject("d_cnt", j);
+		mav.addObject("data",proPosalView);
+		mav.addObject("ProPosalIList", rtnProPosalIMap);
+		mav.addObject("ProPosalISum", rtnProPosalISumMap);
+		mav.addObject("ProPosalAList", rtnProPosalAMap);
+		mav.addObject("ProPosalASum", rtnProPosalASumMap);
+		mav.addObject("ProPosalTTLSum", rtnProPosalTTL_AMOUNTMap);
+		mav.addObject("listStep03", listStep03);
+		mav.setViewName("nobodyView/approval/approval_proposalDetailView");
+		
+		return mav;
+	}
+	
 }
