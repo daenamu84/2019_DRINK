@@ -9,7 +9,7 @@
 
 
 <script>
-var ajaxFlag = false;
+	var ajaxFlag = false;
 
 	$(function() {
 	});	
@@ -19,10 +19,18 @@ var ajaxFlag = false;
 		
 	});
 	
+	function approvalView(appr_no, gubun){
+		document.viewForm.appr_no.value=appr_no;
+		document.viewForm.gubun.value=gubun;
+		
+		document.viewForm.action="/ApprovalSignView";
+		document.viewForm.submit();
+	}
+	
 </script>
 
 <div class="">
-	<div class="title"> ◈  전자결재함</div> 
+	<div class="title"> ◈  전자결재대기문서</div> 
 	<div class="container-fluid">
 		<div class="row">			
 			<div class="col">
@@ -30,16 +38,16 @@ var ajaxFlag = false;
 					<div class="row" style="padding: 5px 0px;">
 						<div class="col-12 col-sm-2"><span class="align-middle">결재구분</span></div>
 						<div class="col-12 col-sm-2">
-							<select name="deptno" class="form-control" id="deptno">
-								<option value="">선택하세요</option>
-								<c:forEach items="${teamList}" var="c">
-								<option value="${c.DEPT_NO}" <c:if test="${c.DEPT_NO eq dept_no }">selected="selected"</c:if>   >${c.TEAMNM} </option>
+							<select class="custom-select" name="appr_divs_cd" id="appr_divs_cd">
+								<option value="ALL">전체</option>
+								<c:forEach items="${C00026}" var="a">
+									<option value="${a.CMM_CD}">${a.CMM_CD_NM}</option>
 								</c:forEach>
 							</select>
 						</div>
 						<div class="col-12 col-sm-2"><span class="align-middle">기안명</span></div>
 						<div class="col-12 col-sm-4">
-							<input type="text"  name="appTitle" id="appTitle" class="form-control" autocomplete="off"/>
+							<input type="text"  name="appr_nm" id="appr_nm" class="form-control" autocomplete="off"/>
 						</div>
 						<div class="col-12 col-sm-2">
 							<input class="btn btn-primary" style="margin-right:2px;" type="button" id="apprSearch" value="검색">
@@ -60,10 +68,33 @@ var ajaxFlag = false;
 			      <th scope="col">결재상태</th>
 			    </tr>
 			  </thead>
-			  <tbody id="productList">
-			  </tbody>
+			 <tbody id="approvalList">
+					<c:forEach items="${ApprovalList}" var="f" varStatus="status">
+						<tr>
+							<td>${f.APPR_DIVS_CD_NM}</td>
+							<td><a href="javascript:approvalView('${f.APPR_NO}','update')">${f.APPR_NM}</a></td>
+							<td>${f.EMP_NM}</td>
+							<td>${f.TEAMNM}</td>
+							<td>${f.FOR_APPR_DTM_DT}</td>
+							<td>${f.APPR_STUS_CD_NM}</td>
+						</tr>
+					</c:forEach>
+					<tr>
+						<td colspan="6">
+							<div class="col-xs-3">
+								<paging:paging var="skw3" currentPageNo="${paging.page}"
+									recordsPerPage="${paging.pageLine}"
+									numberOfRecords="${paging.totalCnt}" jsFunc="goPage" />
+								${skw3.printBtPaging()}
+							</div>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
-	
+	<form name="viewForm" method="post">
+		<input type="hidden" name="appr_no"/>
+		<input type="hidden" name="gubun"/> 
+	</form>
 </div>

@@ -89,7 +89,7 @@
 </script>
 
 <div class="">
-	<div class="title"> ◈  전자결재함</div> 
+	<div class="title"> ◈  전자결재문서</div> 
 	<div class="container-fluid">
 		<div class="row">			
 			<div class="col">

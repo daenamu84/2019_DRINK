@@ -40,6 +40,40 @@
 		</if>
     </select>
     
+    <select id="getApprovalSignList" resultType="DataMap" parameterType="hashmap">
+    	<![CDATA[ 
+    		SELECT SQL_CALC_FOUND_ROWS
+    			 TAM.APPR_NO,
+				 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00026' AND E.CMM_CD = TAM.APPR_DIVS_CD) AS APPR_DIVS_CD_NM,
+				 APPR_NM, 
+         		(SELECT EMP_NM FROM T_EMP_M WHERE EMP_NO = TAM.FOR_APPR_EMP_NO) EMP_NM,
+				 (SELECT TEAMNM FROM T_DEPT_M TDM WHERE TDM.DEPT_NO = (SELECT DEPT_NO FROM T_EMP_M WHERE EMP_NO = TAM.FOR_APPR_EMP_NO)) AS TEAMNM,
+				 DATE_FORMAT(TAM.FOR_APPR_DTM, '%Y.%m.%d %H:%i') AS FOR_APPR_DTM_DT,
+				 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00027' AND E.CMM_CD = TAM.APPR_STUS_CD) AS APPR_STUS_CD_NM
+			FROM T_APPROVAL_M TAM, T_APPROVAL_SIGN_D TAD
+			WHERE TAM.APPR_NO = TAD.APPR_NO
+			AND TAD.APPR_SIGN_EMP_NO = #{emp_no}
+       	]]>
+
+		<if test="appr_divs_cd != null and appr_divs_cd !='ALL'">
+			<![CDATA[
+				AND TAM.APPR_DIVS_CD = #{appr_divs_cd}
+			]]> 
+		</if>
+		<if test="appr_nm != null and appr_nm!=''">
+			<![CDATA[
+				AND TAM.APPR_NM  like  CONCAT('%',#{appr_nm},'%') 
+			]]> 
+		</if>		
+		
+		<if test="pageStart != null and perPageNum != ''">
+			<![CDATA[
+				 ORDER BY TAM.DATA_REG_DTM DESC
+				 LIMIT #{pageStart}, #{perPageNum}
+			]]> 
+		</if>
+    </select>
+    
     <update id="approvalInsert" useGeneratedKeys="true" keyProperty="APPR_NO">
     	<![CDATA[
 		INSERT INTO T_APPROVAL_M
@@ -105,6 +139,24 @@
        	]]>
     </select>  
     
+    <select id="getApprovalSignView" resultType="DataMap">
+    	<![CDATA[
+		 	SELECT TAM.APPR_NO, TAM.APPR_DIVS_CD, TAM.FOR_APPR_EMP_NO,
+			 (SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00026' AND E.CMM_CD = TAM.APPR_DIVS_CD) AS APPR_DIVS_CD_NM,
+			 CASE
+			    WHEN TAM.APPR_DIVS_CD = '0001'
+			    THEN (SELECT VENDOR_NM FROM T_VENDOR_M WHERE VENDOR_NO = TAM.APPR_REF_NO )
+			    WHEN TAM.APPR_DIVS_CD = '0002'
+			    THEN (SELECT PRPS_NM FROM T_PROPOSAL_M WHERE PRPS_ID = TAM.APPR_REF_NO )
+			    ELSE ''
+			 END AS APPR_REF_NM, APPR_REF_NO, TAM.APPR_NM , TAM.APPR_STUS_CD,
+			 (SELECT APPR_STUS_CD FROM T_APPROVAL_SIGN_D WHERE APPR_NO = TAM.APPR_NO AND APPR_SIGN_EMP_NO= #{emp_no}) AS D_APPR_STUS_CD, 
+			 TAM.FOR_APPR_CNTN
+			FROM T_APPROVAL_M TAM
+			WHERE TAM.APPR_NO = #{appr_no}
+       	]]>
+    </select>  
+    
     <select id="approvalSignUser" resultType="DataMap">
     	<![CDATA[
 			SELECT TAGD.APPR_SIGN_EMP_NO, TEM.EMP_NM ,
@@ -126,7 +178,7 @@
     
     <select id="approvalComment" resultType="DataMap">
     	<![CDATA[
-			SELECT TAC.COMMENT, TEM.EMP_NM , TAC.DATA_REG_DTM
+			SELECT TAC.COMMENT_NO, TAC.COMMENT, TEM.EMP_NM , DATE_FORMAT(TAC.DATA_REG_DTM, '%Y.%m.%d %H:%i') DATA_REG_DTM
 			FROM T_APPROVAL_COMMENT TAC , T_EMP_M TEM
 			WHERE TAC.APPR_NO =#{appr_no}
 			AND TAC.EMP_NO = TEM.EMP_NO
@@ -134,5 +186,12 @@
        	]]>
     </select>
     
+    <update id="approvalCommentInsert">
+    	<![CDATA[
+    	INSERT INTO T_APPROVAL_COMMENT
+    	 (APPR_NO, EMP_NO, COMMENT ,DATA_REG_DTM,DATA_REG_ID,DATA_UPD_DTM, DATA_UPD_ID)
+		 VALUES ( #{appr_no}, #{emp_no}, #{comment}, now(), #{login_id}, now(), #{login_id})
+    	]]>
+    </update>
     
 </mapper>

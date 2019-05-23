@@ -215,10 +215,50 @@ public class ApprovalController {
 		
 	}
 	
+	@RequestMapping(value = "/ApprovalSignView", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView approvalSignView(Locale locale, ModelMap model, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		logger.debug("map :: " + rtMap.toString());
+		logger.debug("map2 :: " + model.toString());
+
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		paramMap.put("cmm_cd_grp_id", "00026"); // 결제코드
+		List<DataMap> C00026 = vendorService.getCommonCode(paramMap);
+		mav.addObject("C00026", C00026);
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getDept_no() + "/" + loginSession.getEmp_grd_cd()+ "/" + loginSession.getEmp_no());
+		
+		rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		rtMap.put("emp_no", loginSession.getEmp_no());
+		
+		
+		DataMap approvalView =  approvalService.approvalSignView(rtMap);
+		
+		List<DataMap> approvalSignUser  = approvalService.approvalSignUser(rtMap);
+		
+		DataMap approvalFile =  approvalService.getVendorFileView(rtMap);
+		
+		
+		List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
+		
+		
+		mav.addObject("data",approvalView);
+		mav.addObject("approvalSignUser",approvalSignUser);
+		mav.addObject("approvalComment",approvalComment);
+		mav.addObject("data1",approvalFile);
+		mav.setViewName("approval/approvalSignform");
+		return mav;
+		
+	}
+	
 	
 
 	@RequestMapping(value = "/ApprovalConfirm")
 	public ModelAndView approvalConfirm(Locale locale, Model model, HttpServletRequest req,  RequestMap rtMap) throws DrinkException {
+		
 		
 		SessionDto loginSession = sessionUtils.getLoginSession(req);
 		logger.debug("==loginSession=" + loginSession.getLgin_id());
@@ -228,10 +268,41 @@ public class ApprovalController {
 		
 		ModelAndView mav = new ModelAndView();
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
+		
+		RequestMap map = new RequestMap();
+				
+		
+		map.put("cmm_cd_grp_id", "00026"); // 결제코드
+		List<DataMap> C00026 = vendorService.getCommonCode(map);
+		mav.addObject("C00026", C00026);
+		
 		RequestMap paramMap = new RequestMap();
+		paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		paramMap.put("emp_no", loginSession.getEmp_no());
+		paramMap.put("deptno", loginSession.getDept_no());
+		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		
+		List<DataMap> rtnApprovalMap = approvalService.getApprovalSignList(paramMap);
+		
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		mav.addObject("ApprovalList", rtnApprovalMap);
+		mav.addObject("dropdown04","active");
 		
 		mav.setViewName("approval/confirmList");
-		
 		
 		return mav;
 	}
@@ -342,7 +413,7 @@ public class ApprovalController {
 	}
 	
 	@RequestMapping(value = "/approvalInsert")
-	public String ApprovalInsert(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+	public String approvalInsert(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
 			SessionDto loginSession = sessionUtils.getLoginSession(req);
 			
 			logger.debug("map :: " + rtMap.toString());
@@ -353,7 +424,7 @@ public class ApprovalController {
 			
 			String appSignEmp[] = req.getParameterValues("appSignEmp");
 			rtMap.put("appSignEmp", appSignEmp);
-			approvalService.ApprovalInsert(rtMap);
+			approvalService.approvalInsert(rtMap);
 			
 			redirectAttributes.addFlashAttribute("returnCode", "0000");
 			
@@ -362,6 +433,30 @@ public class ApprovalController {
 			rtnMap.put("message", "저장 하였습니다.");
 			
 			return "redirect:/ApprovalList";
+			//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/approvalCommentInsert")
+	public ModelAndView approvalCommentInsert(Locale locale,  ModelMap model, RedirectAttributes  redirectAttributes, RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+			SessionDto loginSession = sessionUtils.getLoginSession(req);
+			
+			logger.debug("map :: " + rtMap.toString());
+		
+			
+			rtMap.put("regId", loginSession.getLgin_id());
+			rtMap.put("emp_no", loginSession.getEmp_no());
+			
+			
+			approvalService.approvalCommentInsert(rtMap);
+			
+			List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
+			
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("approvalComment",approvalComment);
+			mav.setViewName("nobody/approval/approvalform_comment_list");
+			
+			
+			return mav;
 			//return rtnMap;
 	}
 }

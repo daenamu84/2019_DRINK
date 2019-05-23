@@ -161,7 +161,7 @@ var ajaxFlag = false;
 							</div>
 					  	</c:forEach>
 					  	<div>
-					  		<c:if test="${loginSession.emp_grd_cd ne '0004'}">
+					  		<c:if test="${loginSession.emp_grd_cd ne '0004' and data.D_APPR_STUS_CD eq '0001'}">
 						  		<input class="btn btn-dark" type="button" value="결재" id="approva_ok">
 						  		<input class="btn btn-dark" type="button" value="반려" id="approva_no">
 					  		</c:if>

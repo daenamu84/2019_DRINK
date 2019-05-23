@@ -54,9 +54,23 @@ public class ApprovalService {
 		return param;
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List getApprovalSignList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		param = gdi.selectList("Approval.getApprovalSignList",map.getMap());
+		
+		if(map.getInt("perPageNum") !=0 && map.getInt("perPageNum") !=0){
+			int TotalCnt = (int) gdi.selectOne("Team.selectTotalRecords");
+			map.put("TotalCnt", TotalCnt);		
+		}
+		
+		return param;
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void ApprovalInsert(RequestMap map) throws DrinkException{
+	public void approvalInsert(RequestMap map) throws DrinkException{
 		logger.debug("service 111111111 :: " + map.toString());
 		
 		if(map.getString("appr_ref_no").equals("")){
@@ -112,6 +126,14 @@ public class ApprovalService {
 		return param;
 	}
 	
+	public DataMap approvalSignView(RequestMap map) throws DrinkException{
+		DataMap param = new DataMap();
+		
+		param = (DataMap) gdi.selectOne("Approval.getApprovalSignView",map.getMap());
+		
+		return param;
+	}
+	
 	public List approvalSignUser(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
 		
@@ -142,6 +164,21 @@ public class ApprovalService {
 		param = gdi.selectList("Approval.getApproval_SignList",map.getMap());
 		
 		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void approvalCommentInsert(RequestMap map) throws DrinkException{
+		logger.debug("service 111111111 :: " + map.toString());
+		
+		if(map.getString("appr_ref_no").equals("")){
+			map.put("appr_ref_no", null);
+		}
+		int rtCnt = gdi.update("Approval.approvalCommentInsert", map.getMap());
+		
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+		}
+		
 	}
 	
 }
