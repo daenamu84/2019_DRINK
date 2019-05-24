@@ -200,5 +200,48 @@
     	]]>
     </update>
     
+    <select id="getAppSingCheck" resultType="DataMap">
+    	<![CDATA[
+			SELECT APPR_NO, APPR_SIGN_SEQ, APPR_STUS_CD,
+						(SELECT MAX(APPR_SIGN_SEQ) FROM T_APPROVAL_SIGN_D WHERE APPR_NO = D.APPR_NO ) MX_SIGN_SEQ,
+						CASE 
+						  WHEN  D.APPR_SIGN_SEQ = 1  THEN  IF(D.APPR_STUS_CD = '0001', 'Y', 'N')
+						ELSE
+						    IFNULL(
+						    	( SELECT IF(APPR_STUS_CD ='0002','Y','N') FROM T_APPROVAL_SIGN_D  
+						    		WHERE APPR_NO = D.APPR_NO  AND APPR_SIGN_SEQ < D.APPR_SIGN_SEQ ORDER BY APPR_SIGN_SEQ DESC LIMIT 1)
+						    ,'N')
+						END  BF_SIGN_YN
+			FROM T_APPROVAL_SIGN_D D
+			WHERE 1=1
+			AND D.APPR_NO = #{_apprNo}
+			AND D.APPR_STUS_CD = '0001'
+			AND D.APPR_SIGN_EMP_NO = #{emp_no}
+			LIMIT 1
+    	]]>
+    </select>
+    
+    <update id="setAppSingIn">
+    	<![CDATA[
+    		UPDATE T_APPROVAL_SIGN_D
+			  SET APPR_STUS_CD = #{signStus},
+			      APPR_SIGN_DTM = now(),
+			     DATA_UPD_DTM = now(),
+			     DATA_UPD_ID = #{regId}
+			WHERE APPR_NO = #{_apprNo}
+			AND APPR_SIGN_SEQ = #{signSeq}
+			AND APPR_SIGN_EMP_NO = #{emp_no} 
+    	]]>
+    </update>
+    
+    <update id="setAppSingEnd">
+    	<![CDATA[
+    		UPDATE T_APPROVAL_M
+			  SET APPR_STUS_CD = #{signStus},
+			     DATA_UPD_ID =   #{regId},
+			     DATA_UPD_DTM = now()
+			WHERE APPR_NO =#{_apprNo}
+    	]]>
+    </update>
     
 </mapper>

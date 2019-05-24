@@ -55,10 +55,53 @@ var ajaxFlag = false;
 			    }  
 			});
 		});
+	
+		$("#approva_ok").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			
+			apSingIn($("#appr_no").val(),"01");
+		});
 		
+		$("#approva_no").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			
+			apSingIn($("#appr_no").val(),"02");
+		});
 	
 	});
 	
+	function apSingIn(_apprNo, _type){
+		$.ajax({      
+		    type:"POST",  
+		    url:"/ApprovalSingIn",
+		    data: JSON.stringify({"_apprNo":_apprNo,"_type":_type}),
+		    dataType:"json",
+		    contentType:"application/json;charset=UTF-8",
+		    traditional:true,
+		    success:function(args){   
+		        if(args.returnCode == "0000"){
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.href="/ApprovalList";
+		        }else{
+		        	alert(args.message.replace(/<br>/gi,"\n"));
+		        	location.href="/ApprovalList";
+		        }
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        if(xhr.status == 403){
+		        	alert("로그인이 필요한 메뉴 입니다.");
+		        	location.replace("/logIn");
+		        }else{
+		        	alert("처리중 에러가 발생 하였습니다.");
+		        	location.reload();
+		        }
+		        ajaxFlag=false;
+		    }   
+		});
+	}
 	
 	function Delete_comment(_comment_no,_c_appr_no){
 	
@@ -184,7 +227,7 @@ var ajaxFlag = false;
 							</div>
 					  	</c:forEach>
 					  	<div>
-					  		<c:if test="${loginSession.emp_grd_cd ne '0004'}">
+					  		<c:if test="${loginSession.emp_grd_cd ne '0004' and data.APPR_STUS_CD eq '0001' and data.D_APPR_STUS_CD eq '0001'}">
 						  		<input class="btn btn-dark" type="button" value="결재" id="approva_ok">
 						  		<input class="btn btn-dark" type="button" value="반려" id="approva_no">
 					  		</c:if>

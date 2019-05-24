@@ -192,4 +192,45 @@ public class ApprovalService {
 			throw new DrinkException(new String[]{"messageError","삭제에 실패했습니다."});
 		}
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void ApprovalSingIn( Map<String, Object> map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		String apprNo = (String) map.get("_apprNo");
+		if(apprNo == null || "".equals(apprNo)){
+			throw new DrinkException(new String[]{"messageError","결재문서가 선택 되지 않았습니다."});
+		}
+		String signType = (String)map.get("_type");
+		if(signType == null || !("01".equals(signType) || "02".equals(signType)) ){
+			throw new DrinkException(new String[]{"messageError","결재 구분이 선택 되지 않았습니다."});
+		}
+		
+		DataMap dm = new DataMap();
+		
+		dm =  (DataMap) gdi.selectOne("Approval.getAppSingCheck", map);
+		
+		if(dm == null || dm.getString("BF_SIGN_YN").equals("N")){
+			throw new DrinkException(new String[]{"messageError","이전 결재가 처리 되지 않았습니다."});
+		}else{
+			logger.info("ssss ::: " + dm.getString("APPR_SIGN_SEQ"));
+			map.put("signSeq", dm.getString("APPR_SIGN_SEQ"));
+			if("01".equals(signType)){
+				map.put("signStus", "0002");
+			}else{
+				map.put("signStus", "0003");
+			}
+			gdi.update("Approval.setAppSingIn",map);
+			
+			if("02".equals(signType)){
+				// 결재 마스터 반려 상태 처리
+				gdi.update("Approval.setAppSingEnd",map);
+			}else if("01".equals(signType) && dm.getString("APPR_SIGN_SEQ").equals(dm.getString("MX_SIGN_SEQ"))){
+				gdi.update("Approval.setAppSingEnd",map);
+			}
+			
+		}
+		
+		
+	}
 }

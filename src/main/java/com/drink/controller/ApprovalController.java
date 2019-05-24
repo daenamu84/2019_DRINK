@@ -206,7 +206,6 @@ public class ApprovalController {
 		
 		DataMap approvalFile =  approvalService.getVendorFileView(rtMap);
 		
-		
 		List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
 		
 		
@@ -244,8 +243,7 @@ public class ApprovalController {
 		List<DataMap> approvalSignUser  = approvalService.approvalSignUser(rtMap);
 		
 		DataMap approvalFile =  approvalService.getVendorFileView(rtMap);
-		
-		
+
 		List<DataMap> approvalComment  = approvalService.approvalComment(rtMap);
 		
 		
@@ -496,5 +494,30 @@ public class ApprovalController {
 		
 		return mav;
 		//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/ApprovalSingIn", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> ApprovalSingIn(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		vts.put("emp_no", loginSession.getEmp_no());
+		vts.put("regId", loginSession.getLgin_id());
+		approvalService.ApprovalSingIn(vts);
+
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		if("02".equals(vts.get("_type"))){
+			rtnMap.put("message", "반려 처리 되었습니다.");
+		}else{
+			rtnMap.put("message", "승인 처리 되었습니다.");
+		}
+		
+		return rtnMap;
 	}
 }
