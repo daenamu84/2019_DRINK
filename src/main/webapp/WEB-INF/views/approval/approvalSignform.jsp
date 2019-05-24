@@ -127,6 +127,17 @@ var ajaxFlag = false;
 		});
 	}
 	
+	function Viewapp_Doc(appr_divs_cd, appr_ref_no){
+		if(appr_divs_cd == "0001"){
+			var url= "/AppVendorView?vendor_no="+appr_ref_no+"&gubun=update";
+			window.open(url, 'AppVendorView','width=1024, height=800, menubar=no, status=no, toolbar=no');
+		}else if(appr_divs_cd == "0002"){
+			var url= "/AppProPosalView?prps_id="+appr_ref_no+"&gubun=update";
+			window.open(url, 'AppproPosalView','width=1024, height=800, menubar=no, status=no, toolbar=no');
+		}
+			
+		
+	}
 	
 	$(document).on("click","#empList li",function() {
 		$("#empList li").removeClass("active");
@@ -216,7 +227,7 @@ var ajaxFlag = false;
 						</div>
 						<div class="col-12 col-sm-2" id="app_doc1"><span class="align-middle">연결문서</span></div>
 						<div class="col-12 col-sm-4" id="app_doc2">
-							<input type="text"  name="appr_ref_nm" id="appr_ref_nm" class="form-control"  value="${data.APPR_REF_NM}" autocomplete="off" readonly/>
+							<input type="text"  name="appr_ref_nm" id="appr_ref_nm" class="form-control"  value="${data.APPR_REF_NM}" autocomplete="off" readonly onClick="Viewapp_Doc('${data.APPR_DIVS_CD}','${data.APPR_REF_NO}')"/>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px;">
