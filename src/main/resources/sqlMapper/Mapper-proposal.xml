@@ -51,9 +51,7 @@
 				AND A.PRPS_STUS_CD = #{prps_stus_cd}
 			]]> 
 		</if>
-		<if test="apporval_doc == '0002'">
-				AND A.PRPS_STUS_CD  ='0003'
-		</if>
+		
 		<if test="vendor_nm != null">
 			<![CDATA[
 				AND D.VENDOR_NM like  CONCAT('%',#{vendor_nm},'%')

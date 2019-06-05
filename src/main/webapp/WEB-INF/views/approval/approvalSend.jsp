@@ -345,7 +345,7 @@ var ajaxFlag = false;
 						<div class="col-12 col-sm-2" id="app_doc1"><span class="align-middle">연결문서</span></div>
 						<div class="col-12 col-sm-4" id="app_doc2">
 							<input type="text"  name="appr_ref_nm" id="appr_ref_nm" class="form-control" autocomplete="off"/>
-							<input type="text"  name="appr_ref_no" id="appr_ref_no" class="form-control" autocomplete="off"/>
+							<input type="hidden"  name="appr_ref_no" id="appr_ref_no" class="form-control" autocomplete="off"/>
 						</div>
 						<div class="col-12 col-sm-2" id="app_doc3">
 							<input class="btn btn-primary" style="margin-right:2px;" type="button" id="docSearch" value="검색">
@@ -476,8 +476,8 @@ var ajaxFlag = false;
 
 	<!-- modal start  -->
 	<div id="apporval_doc" class="modal fade" role="dialog"
-		data-backdrop="static">
-		<div class="modal-dialog modal-xl">
+		data-backdrop="static" >
+		<div class="modal-dialog modal-xl" style="max-width: 90%">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">

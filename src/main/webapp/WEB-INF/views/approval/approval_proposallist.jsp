@@ -21,8 +21,16 @@
 	</div>
 </div>
 <div class="row" style="padding-top: 10px; overflow-x: auto;">
-	<table class="table">
+	<table class="table" style="width:100%">
 		<thead>
+			<colgroup>
+				<col style="width:10%;" />
+				<col style="width:20%;" />
+				<col/>
+				<col style="width:10%;" />
+				<col style="width:10%;" />
+				<col style="width:10%;" />
+			</colgroup>
 			<tr>
 				<th scope="col">담당자</th>
 				<th scope="col">제안기간</th>
