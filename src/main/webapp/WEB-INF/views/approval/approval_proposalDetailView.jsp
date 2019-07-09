@@ -249,7 +249,7 @@ var ajaxFlag = false;
 											</c:forEach>
 											<c:set var="aTotIncentiveAmt"  value="${aTotIncentiveAmt+j.INCENTIVE_AMT}" ></c:set>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.INCENTIVE_AMT}"  pattern="#,###" />원</td>
-											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE9L}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE9L}" /></td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${i.INCENTIVE_AMT}"  pattern="#,###" />원</td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE_RATE}"  pattern="#,###" />원</td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.VS_STD}"  pattern="#,###" />원</td>
@@ -305,7 +305,7 @@ var ajaxFlag = false;
 				</div>		
 			</div>
 			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title"><b>STEP03. PROPOSAL 인센티브 출고계획 등록</b></div> 
+				<div class="title"><b>STEP03. PROPOSAL 인센티브 출고계획 등록1</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">

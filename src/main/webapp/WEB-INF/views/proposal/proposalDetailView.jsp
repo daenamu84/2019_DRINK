@@ -249,7 +249,7 @@ var ajaxFlag = false;
 											</c:forEach>
 											<c:set var="aTotIncentiveAmt"  value="${aTotIncentiveAmt+j.INCENTIVE_AMT}" ></c:set>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.INCENTIVE_AMT}"  pattern="#,###" />원</td>
-											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE9L}"  pattern="#,###" />원</td>
+											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE9L}"  /></td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${i.INCENTIVE_AMT}"  pattern="#,###" />원</td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.CASE_RATE}"  pattern="#,###" />원</td>
 											<td rowspan="${aRowspan}"  class="align-middle"><fmt:formatNumber value="${j.VS_STD}"  pattern="#,###" />원</td>
