@@ -21,7 +21,14 @@
 		});
 	})
 	
-	
+	function goPopPage(pages, pageLine){
+		
+		if(ajaxFlag)return;
+		ajaxFlag=true;
+		
+		location.href="/proPosalForm?pgYN=Y&vendorNm=${_sVendorNm}&page="+pages+"&pageLine="+pageLine;
+		
+	}
 	
 	var ajaxFlag = false;
 	
@@ -45,8 +52,31 @@
 		      $(this).parent().find(".dateRange").click();
 		});
 		
+		if("${pgYN}"=="Y"){
+			$("#popLayer").modal("show");
+		}
+		
 		$("#vendor_nm").click(function(){
 			$("#popLayer").modal("show");
+		});
+		
+		//modal search
+		$("#vendorSearch").click(function(){
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/ProvendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#vendorSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
 		});
 		
 		$("#proPosalList").click(function(){
@@ -58,8 +88,6 @@
 			document.viewForm.action="/proPosalView";
 			document.viewForm.submit();
 		});
-		
-		
 		
 		function  goStep02(prps_id){
 			$("#prps_id").val(prps_id);
@@ -275,6 +303,7 @@
                                     <label for="act_plan_cd" class="col-md-2 col-form-label text-md-left">거래처</label>
                                     <div class="col-md-4">
                                     	<input type="text" id="vendor_nm" class="form-control" name="vendor_nm" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VD_NM}">
+                                    	<input type="hidden" name="vendorId" id="vendorId" class="form-control" value="${data.OUTLET_NO}"/>
                                     	<input type="hidden" id="outlet_no"  name="outlet_no" value="${data.OUTLET_NO}"/>
                                     	<input type="hidden" id="market_divs_cd"  name="market_divs_cd" value="${data.MARKET_DIVS_CD}"/>
                                     	<input type="hidden" id="vendor_sgmt_divs_cd"  name="vendor_sgmt_divs_cd" value="${data.VENDOR_SGMT_DIVS_CD}"/>
@@ -357,7 +386,14 @@
 									<td><a
 										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}','${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
 								</tr>
+								
 							</c:forEach>
+							<tr><td colspan="2">
+							<paging:paging var="skw3" currentPageNo="${paging.page}"
+									recordsPerPage="${paging.pageLine}"
+									numberOfRecords="${paging.totalCnt}" jsFunc="goPopPage" />
+								${skw3.printBtPaging()}
+								</td></tr>
 						</tbody>
 					</table>
 				</div>

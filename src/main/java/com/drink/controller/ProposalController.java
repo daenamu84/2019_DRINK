@@ -95,6 +95,9 @@ public class ProposalController {
 			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
 		}
 		
+		String page = (String) rtMap.get("page");
+		String pageLine = (String) rtMap.get("pageLine");
+		
 		ModelAndView mav = new ModelAndView();
 		
 		RequestMap paramMap = new RequestMap();
@@ -116,8 +119,24 @@ public class ProposalController {
 		paramMap.put("emp_no", loginSession.getEmp_no());
 		paramMap.put("deptno", loginSession.getDept_no());
 		
+		paging.setCurrentPageNo((page != null) ? Integer.valueOf(page) : CommonConfig.Paging.CURRENTPAGENO.getValue()); // 호출 page
+		paging.setRecordsPerPage((pageLine != null) ? Integer.valueOf(pageLine) : CommonConfig.Paging.RECORDSPERPAGE.getValue()); // 레코드 수
+		paramMap.put("pageStart", (paging.getCurrentPageNo()-1) * paging.getRecordsPerPage());
+		paramMap.put("perPageNum", paging.getRecordsPerPage());
+		if(rtMap.getString("pgYN").equals("Y")) {
+			paramMap.put("vendor_nm", rtMap.getString("vendorNm"));
+		}
 		List<DataMap> vendorList = vendorService.getVendorList(paramMap);
 		mav.addObject("vendorList", vendorList);
+		int totalCnt = paramMap.getInt("TotalCnt");
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		pagingMap.put("page", page);
+		pagingMap.put("pageLine", paging.getRecordsPerPage());
+		pagingMap.put("totalCnt", totalCnt);
+		mav.addObject("paging", pagingMap);
+		
 		
 		if(rtMap.getString("gubun").equals("update")) {
 			DataMap proPosalView =  proposalService.proposalView(rtMap);
@@ -130,6 +149,7 @@ public class ProposalController {
 		mav.addObject("p_stusList", p_stusMap);
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
+		mav.addObject("pgYN",rtMap.getString("pgYN"));
 		mav.setViewName("proposal/proposalform");
 		return mav;
 	}
@@ -769,5 +789,36 @@ public class ProposalController {
 		
 		return rtnMap;
 		//return rtnMap;
+	}
+	
+	@RequestMapping(value = "/ProvendorSearchPop")
+	public ModelAndView ProvendorSearchPop(Locale locale, Model model, HttpServletRequest req, RequestMap param) throws DrinkException {
+		
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		try {
+			ModelAndView mav = new ModelAndView();
+			
+			RequestMap paramMap = new RequestMap();
+			paramMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+			paramMap.put("emp_no", loginSession.getEmp_no());
+			paramMap.put("deptno", loginSession.getDept_no());
+			paramMap.put("vendor_nm", param.getString("vendorNm"));
+			List<DataMap> vendorList = vendorService.getVendorList(paramMap);
+			
+			mav.addObject("vendorList", vendorList);
+			mav.setViewName("nobody/proposal/proposalpopVendorList");
+
+			return mav;
+			
+			} catch (Exception e) {
+				logger.debug("ProvendorSearchPop err :: " + e);
+				throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+			}
 	}
 }
