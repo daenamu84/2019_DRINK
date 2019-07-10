@@ -72,6 +72,11 @@
 						return;
 					}
 					*/
+					if(planIdx.value==""){
+						alert("실출고 수량은 입력 해야 합니다.\n 0으로 세팅 후 후에 수정가능 ");
+						ajaxFlag=false;
+						return;
+					};
 					tCnt = $(planIdx).data("deliverycnt");
 					sumCnt = Number(sumCnt) + Number(planIdx.value);
 					_addParam.push({"prpsId":$("input[name='prpsId']")[i].value,"prodSitemDivsCd":$("input[name='prodSitemDivsCd']")[i].value,"prodNoSitemNm":$("input[name='prodNoSitemNm']")[i].value,"deliDate":$("input[name='deliDate']")[j].value,"planCnt":planCntObj[j].value,"real_delivery_cnt":planIdx.value,"real_delivery_cntn":real_deliveryCntnObj[j].value});
