@@ -23,11 +23,23 @@
 	
 	function goPopPage(pages, pageLine){
 		
+		
+		$("#popLayer").modal("show");
 		if(ajaxFlag)return;
 		ajaxFlag=true;
-		
-		location.href="/proPosalForm?pgYN=Y&vendorNm=${_sVendorNm}&page="+pages+"&pageLine="+pageLine;
-		
+		$.ajax({      
+		    type:"GET",  
+		    url:"/ProvendorSearchPop?vendorNm="+$("#_sVendorNm").val()+"&page=" + pages + "&pageLine=" + pageLine,      
+		    dataType:"html",
+		    traditional:true,
+		    success:function(args){   
+		    	$("#vendorSeachLayer").html(args);
+		        ajaxFlag=false;
+		    },   
+		    error:function(xhr, status, e){  
+		        ajaxFlag=false;
+		    }  
+		});
 	}
 	
 	var ajaxFlag = false;
@@ -52,12 +64,25 @@
 		      $(this).parent().find(".dateRange").click();
 		});
 		
-		if("${pgYN}"=="Y"){
-			$("#popLayer").modal("show");
-		}
+	
 		
 		$("#vendor_nm").click(function(){
 			$("#popLayer").modal("show");
+			if(ajaxFlag)return;
+			ajaxFlag=true;
+			$.ajax({      
+			    type:"GET",  
+			    url:"/ProvendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
+			    dataType:"html",
+			    traditional:true,
+			    success:function(args){   
+			    	$("#vendorSeachLayer").html(args);
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
 		});
 		
 		//modal search
@@ -379,21 +404,7 @@
 							</tr>
 						</thead>
 						<tbody id="vendorSeachLayer">
-							<c:forEach items="${vendorList}" var="i" varStatus="status">
-								<tr>
-									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD},'${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NO}</a></td>
-									<td><a
-										href="javascript:setVendorId('${i.VENDOR_NO}','${i.VENDOR_NM}','${i.MARKET_DIVS_CD}','${i.VENDOR_SGMT_DIVS_CD}','${i.MARKGET_NM}','${i.SGMT_NM}');" class="text-decoration-none">${i.VENDOR_NM}</a></td>
-								</tr>
-								
-							</c:forEach>
-							<tr><td colspan="2">
-							<paging:paging var="skw3" currentPageNo="${paging.page}"
-									recordsPerPage="${paging.pageLine}"
-									numberOfRecords="${paging.totalCnt}" jsFunc="goPopPage" />
-								${skw3.printBtPaging()}
-								</td></tr>
+							
 						</tbody>
 					</table>
 				</div>

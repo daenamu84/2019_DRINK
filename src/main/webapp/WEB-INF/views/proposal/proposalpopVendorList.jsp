@@ -15,3 +15,9 @@
 	</tr>
 </c:forEach>
 
+<tr>
+	<td colspan="2"><paging:paging var="skw3"
+			currentPageNo="${paging.page}" recordsPerPage="${paging.pageLine}"
+			numberOfRecords="${paging.totalCnt}" jsFunc="goPopPage" />
+		${skw3.printBtPaging()}</td>
+</tr>
