@@ -28,7 +28,8 @@
 		ajaxFlag=true;
 		$.ajax({      
 		    type:"GET",  
-		    url:"/ProvendorSearchPop?vendorNm="+$("#_sVendorNm").val()+"&page=" + pages + "&pageLine=" + pageLine,      
+		    url:"/ProvendorSearchPop",
+		    data:{"vendorNm":$("#_sVendorNm").val(), "page": pages , "pageLine": pageLine },		    		
 		    dataType:"html",
 		    traditional:true,
 		    success:function(args){   
