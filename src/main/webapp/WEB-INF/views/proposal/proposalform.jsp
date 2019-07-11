@@ -10,7 +10,6 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
-
 	
 	<script type="text/javascript">
 	
@@ -89,9 +88,11 @@
 		$("#vendorSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
+			console.log("11="+$("#_sVendorNm").val());
 			$.ajax({      
-			    type:"GET",  
-			    url:"/ProvendorSearchPop?vendorNm="+$("#_sVendorNm").val(),      
+			    type:"POST",  
+			    url:"/ProvendorSearchPop",
+			    data:{"vendorNm":$("#_sVendorNm").val()},
 			    dataType:"html",
 			    traditional:true,
 			    success:function(args){   
