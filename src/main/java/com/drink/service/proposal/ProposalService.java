@@ -338,4 +338,24 @@ public class ProposalService {
 		
 		return param;
 	}
+	
+	public DataMap getApproval_PropsalCnt(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		logger.debug("map---"+ map.getMap());
+		
+		DataMap countMap =   (DataMap)gdi.selectOne("Proposal.getapproval_PropsalCnt",  map.getMap());
+		logger.debug("countMap---"+ countMap);
+		return countMap;
+	}
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void PropsalDelete(RequestMap map) throws DrinkException{
+		
+		logger.debug("map---"+ map.getMap());
+		int rtCnt = gdi.update("Proposal.getapproval_PropsalDelete", map.getMap());
+		if(rtCnt < 1){
+			throw new DrinkException(new String[]{"messageError","저장된 데이터가 없습니다."});
+		}
+		
+	}
 }

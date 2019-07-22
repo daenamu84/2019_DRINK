@@ -140,9 +140,12 @@ public class VendorService {
 			String[] relr_anvs_dt =  (String[]) map.get("relr_anvs_dt");
 			String[] etc =  (String[]) map.get("etc");
 			
+			
+			
 			if(relr_nm.length > 0) {
 				for(int k=0; k< relr_nm.length ; k++) {
 					if(relr_nm[k] != "") {
+						logger.debug("222="+relr_nm[k]);
 						map.put("relr_divs_cd", relr_divs_cd[k]);
 						map.put("relr_nm", relr_nm[k]);
 						map.put("relr_postion_nm", relr_postion_nm[k]);
@@ -157,11 +160,16 @@ public class VendorService {
 			}
 			
 			String[] brandChk = (String[]) map.get("brandChk");
-			if(brandChk.length > 0) {
-				for(int l=0; l< brandChk.length ; l++) {
-					if(brandChk[l] != "") {
-						map.put("brand_id", brandChk[l]);
-						gdi.update("Vendor.vendor_brandInsert", map.getMap());
+			
+			
+			if(brandChk!=null) {
+				if(brandChk.length > 0) {
+					logger.debug("11115");				
+					for(int l=0; l< brandChk.length ; l++) {
+						if(brandChk[l] != "") {
+							map.put("brand_id", brandChk[l]);
+							gdi.update("Vendor.vendor_brandInsert", map.getMap());
+						}
 					}
 				}
 			}
@@ -200,7 +208,7 @@ public class VendorService {
 //				gdi.update("Vendor.fileInsert", map.getMap());
 //			}
 			
-		
+		logger.debug("1111");
 			
 		}else{
 			int rtCnt = gdi.update("Vendor.masterUpdate", map.getMap());

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.drink.commonHandler.Exception.DrinkException;
 import com.drink.commonHandler.bind.RequestMap;
@@ -481,6 +482,16 @@ public class ProposalController {
 			e.printStackTrace();
 			throw new DrinkException(new String[]{"messageError","조회중 오류가 발생 하였습니다."});
 		}
+		
+		
+		rtMap.put("emp_grd_cd", loginSession.getEmp_grd_cd());
+		rtMap.put("emp_no", loginSession.getEmp_no());
+		rtMap.put("deptno", loginSession.getDept_no());
+				
+		DataMap cnt = proposalService.getApproval_PropsalCnt(rtMap); 
+		logger.debug("==cbt=" + cnt.getString("CNT"));
+		mav.addObject("prps_id", rtMap.getString("prps_id"));
+		mav.addObject("delete_check", cnt.getString("CNT"));
 		mav.addObject("d_cnt", j);
 		mav.addObject("data",proPosalView);
 		mav.addObject("ProPosalIList", rtnProPosalIMap);
@@ -824,4 +835,36 @@ public class ProposalController {
 				throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
 			}
 	}
+	
+	
+	
+	@RequestMapping(value = "/proPosalDelete", method = RequestMethod.POST,  produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public HashMap<String, Object> proPosalDelete(Locale locale, @RequestBody Map<String, Object> vts,  ModelMap model,  RequestMap rtMap, HttpServletRequest req, HttpServletResponse res) throws DrinkException{
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==loginSession=" + loginSession.getLgin_id());
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			 throw new DrinkException(new String[]{"messageError","로그인이 필요한 메뉴 입니다."});
+		}
+		
+		
+		logger.debug("map :: " + rtMap.toString());
+		logger.debug("vts :: " + vts.toString());
+		rtMap.put("prps_id", vts.get("appr_no") );
+		rtMap.put("regId", loginSession.getLgin_id());
+		rtMap.put("dept_no", loginSession.getDept_no());
+		rtMap.put("emp_no", loginSession.getEmp_no());
+		
+		proposalService.PropsalDelete(rtMap);
+		
+		HashMap<String, Object> rtnMap = new HashMap<>();
+		rtnMap.put("returnCode", "0000");
+		rtnMap.put("retgubun", "delete");
+		rtnMap.put("message", "삭제 하였습니다.");
+		
+		return rtnMap;
+		
+	}
+	
 }

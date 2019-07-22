@@ -32,6 +32,33 @@ var ajaxFlag = false;
 		$("#proPosalList").click(function(){
 			location.href="/proPosalList";
 		});
+		
+		$("#proPosalDelete").click(function(){
+			
+			var prps_id = $("#d_prps_id").val()
+			$.ajax({      
+			    type:"POST",  
+			    url:"/proPosalDelete",
+			    
+			    data: JSON.stringify({"appr_no":prps_id}),
+			    dataType:"json",
+			    contentType:"application/json;charset=UTF-8",
+			    traditional:true,
+			    success:function(args){   
+			    	
+			    	console.log("args="+args);
+			    	if(args.returnCode == "0000"){
+			    		alert(args.message.replace(/<br>/gi,"\n"));
+			    		location.replace("/proPosalList");
+			    	}
+			        ajaxFlag=false;
+			    },   
+			    error:function(xhr, status, e){  
+			        ajaxFlag=false;
+			    }  
+			});
+		});
+		
 	});
 	
 	function viewStep(prps_id, step, gubun){
@@ -427,6 +454,10 @@ var ajaxFlag = false;
 		<div class="row" style="padding: 5px 0px;">
 			<div class="col-12 col-sm-6 text-left">
 				<input class="btn btn-light" type="button" id="proPosalList" value="목록으로">
+				<c:if test="${'1' ne delete_check}">
+				<input type="hidden" name="d_prps_id" id="d_prps_id" value="${prps_id}"/>
+				<input class="btn btn-light" type="button" id="proPosalDelete" value="삭제">
+				</c:if>
 			</div>
 		</div>
 	</div>

@@ -214,12 +214,12 @@
 			}
 			
 			
-			if ($("#gov_rel_d option:selected").val() == "") {
+			/*if ($("#gov_rel_d option:selected").val() == "") {
 				alert("공직자관련여부  선택 하세요");
 				ajaxFlag = false;
 				return;
 			}
-
+			*/
 			var gubun = $("#gubun").val();
 
 			if (gubun == "") {
@@ -518,6 +518,7 @@
                                     	<input type="text" id="wholesale_cd_nm" class="form-control" readonly name="wholesale_cd_nm"  value="${data.WHOLESALE_CD_NM}" >
                                     </div>
                                 </div>
+                                <!-- 
                                  <div class="form-group row">
                                     <label for="gov_rel_d" class="col-md-2 col-form-label text-md-left"><font color="red">*</font> 공직자관련여부</label>
                                     <div class="col-md-6">
@@ -528,9 +529,11 @@
                                     	</select>
                                     </div>
                                 </div>
+                                 -->
                                 <div class="form-group row">
                                     <label for="gov_rel_cntn" class="col-md-2 col-form-label text-md-left">관계내용</label>
                                     <div class="col-md-6">
+                                    	<input type="hidden"  name="gov_rel_d" id="gov_rel_d" value="Y"/>
                                     	<input type="text" id="gov_rel_cntn" class="form-control" name="gov_rel_cntn"   value="${data.GOV_REL_CNTN}">
                                     </div>
                                 </div>

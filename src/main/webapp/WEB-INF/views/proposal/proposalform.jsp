@@ -89,7 +89,7 @@
 		$("#vendorSearch").click(function(){
 			if(ajaxFlag)return;
 			ajaxFlag=true;
-			console.log("11="+$("#_sVendorNm").val());
+			
 			$.ajax({      
 			    type:"POST",  
 			    url:"/ProvendorSearchPop",
