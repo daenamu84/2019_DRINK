@@ -566,10 +566,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SUN")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("SUN")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("SUN")+"ACUTP", dayASet);
 			}
 			if(dm.get("MON") !=null){
 				logger.debug("2  :: "+ paramMap.getString("yearDt")+dm.get("MON"));
@@ -598,10 +598,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("MON")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("MON")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("MON")+"ACUTP", dayASet);
 			}
 			if(dm.get("TUE") !=null){
 				logger.debug("3  :: "+ paramMap.getString("yearDt")+dm.get("TUE"));
@@ -630,10 +630,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("TUE")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("TUE")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("TUE")+"ACUTP", dayASet);
 			}
 			if(dm.get("WED") !=null){
 				logger.debug("4  :: "+ paramMap.getString("yearDt")+dm.get("WED"));
@@ -662,10 +662,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("WED")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("WED")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("WED")+"ACUTP", dayASet);
 			}
 			if(dm.get("THU") !=null){
 				logger.debug("5  :: "+ paramMap.getString("yearDt")+dm.get("THU"));
@@ -694,10 +694,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("THU")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("THU")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("THU")+"ACUTP", dayASet);
 			}
 			if(dm.get("FRI") !=null){
 				logger.debug("6  :: "+ paramMap.getString("yearDt")+dm.get("FRI"));
@@ -726,10 +726,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("FRI")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("FRI")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("FRI")+"ACUTP", dayASet);
 			}
 			if(dm.get("SAT") !=null){
 				logger.debug("7  :: "+ paramMap.getString("yearDt")+dm.get("SAT"));
@@ -758,10 +758,10 @@ public class CallController {
 				List<DataMap> dayAView = callService.callCalenDay(dayParam);
 				dm.put(dm.get("YM")+""+dm.get("SAT")+"ACUT", dayAView);
 				Set<String> dayASet = new HashSet<>();
-				for(int x= 0; x<dayPView.size();x++){
-					dayASet.add(((DataMap)dayPView.get(x)).getString("SCALL_PURPOSE_NM"));
+				for(int x= 0; x<dayAView.size();x++){
+					dayASet.add(((DataMap)dayAView.get(x)).getString("SCALL_PURPOSE_NM"));
 				}
-				dm.put(dm.get("YM")+""+dm.get("SAT")+"PLANP", dayASet);
+				dm.put(dm.get("YM")+""+dm.get("SAT")+"ACUTP", dayASet);
 			}
 			logger.debug("DM  :: "+dm);
 			
