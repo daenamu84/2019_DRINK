@@ -218,6 +218,7 @@
     	<![CDATA[
     		UPDATE T_VENDOR_M
     			SET VENDOR_NM =   #{vendor_nm}
+    				,VENDOR_BRNO = #{vendor_brno}
     				,VENDOR_STAT_CD =   #{vendor_stat_cd}
     				,VENDOR_GRD_CD =  #{vendor_grd_cd}
   					,VENDOR_AREA_CD =  #{vendor_area_cd}

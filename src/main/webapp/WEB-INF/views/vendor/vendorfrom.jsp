@@ -445,7 +445,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="vendor_brno" class="col-md-2 col-form-label text-md-left">사업자등록번호</label>
-                                    <div class="col-md-6"><input type="text" id="vendor_brno" class="form-control" name="vendor_brno" <%if(request.getParameter("gubun")!=null){ %>readonly <%} %>  value="${data.VENDOR_BRNO}"></div>
+                                    <div class="col-md-6"><input type="text" id="vendor_brno" class="form-control" name="vendor_brno"  value="${data.VENDOR_BRNO}"></div>
                                 </div>
                                 <div id="wrap4" style="display:none; border:1px solid; width:570px; height:440px; margin:50px 0px 0px 73px; position:absolute; z-index:10;">
 									<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldPostcode('4')" alt="접기 버튼">
