@@ -93,9 +93,9 @@
    <update id="masterInsert">
     	<![CDATA[
     	INSERT INTO T_SALES_CALL_M
-			(SCALL_DT, SCALL_GBN_NM, VENDOR_NO, EMP_NO, SCALL_PURPOSE_CD, SCALL_RSLT_CD, SCALL_PFR_NM, SCALL_SALE_CNTN, SCALL_CPRT_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID) 
+			(SCALL_DT, SCALL_GBN_NM, VENDOR_NO, EMP_NO, SCALL_PURPOSE_CD, SCALL_RSLT_CD, SCALL_PFR_NM, SCALL_SALE_CNTN, SCALL_CPRT_CNTN, DATA_REG_DTM, DATA_REG_ID, DATA_UPD_DTM, DATA_UPD_ID, BRAND_ID) 
 			VALUES 
-			( #{scall_dt}, #{scall_gbn_nm}, #{vendor_no}, #{emp_no}, #{scall_purpose_cd}, #{scall_rslt_cd}, #{scall_pfr_nm}, #{scall_sale_cntn}, #{scall_cprt_cntn}, now(), #{login_id}, now(), #{login_id})
+			( #{scall_dt}, #{scall_gbn_nm}, #{vendor_no}, #{emp_no}, #{scall_purpose_cd}, #{scall_rslt_cd}, #{scall_pfr_nm}, #{scall_sale_cntn}, #{scall_cprt_cntn}, now(), #{login_id}, now(), #{login_id}, #{scall_brand_id})
     	]]>
     </update>
     
@@ -109,6 +109,7 @@
 			  ,SCALL_CPRT_CNTN  = #{scall_cprt_cntn}
 			  ,DATA_UPD_DTM = now()
 			  ,DATA_UPD_ID = #{login_id}
+			  ,BRAND_ID= #{scall_brand_id}
     	    WHERE SCALL_NO = #{scall_no}
     	]]>
     </update>
@@ -126,7 +127,7 @@
 				, A.SCALL_GBN_NM , C.VENDOR_NM
 				, (SELECT C.TEAMNM FROM   T_DEPT_M C WHERE  C.DEPT_NO = B.DEPT_NO) AS TEAMNM 
 				, B.EMP_NM, A.SCALL_PURPOSE_CD , A.SCALL_PFR_NM, A.SCALL_SALE_CNTN, A.SCALL_CPRT_CNTN
-				, A.SCALL_RSLT_CD
+				, A.SCALL_RSLT_CD, A.BRAND_ID
 			FROM T_SALES_CALL_M A , T_EMP_M B , T_VENDOR_M  C ,  T_VENDOR_EMP_D D
 			WHERE A.SCALL_NO =  #{scall_no}
 			AND A.EMP_NO = B.EMP_NO

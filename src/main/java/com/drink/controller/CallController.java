@@ -43,6 +43,7 @@ import com.drink.commonHandler.util.DataMap;
 import com.drink.commonHandler.util.Paging;
 import com.drink.commonHandler.util.SessionUtils;
 import com.drink.dto.model.session.SessionDto;
+import com.drink.service.brand.BrandService;
 import com.drink.service.call.CallService;
 import com.drink.service.login.LoginService;
 import com.drink.service.vendor.VendorService;
@@ -78,6 +79,9 @@ public class CallController {
 	
 	@Autowired
 	private VendorService vendorService;
+	
+	@Autowired 
+	private BrandService brandService;
 	
 	@Autowired
 	private SessionUtils sessionUtils;
@@ -204,6 +208,11 @@ public class CallController {
 		mav.addObject("scallpfrNmList", scallpfrNmMap);
 		mav.addObject("deptno", loginSession.getDept_no());
 		mav.addObject("emp_no", loginSession.getEmp_no());
+		
+		List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+		
+		mav.addObject("brandList", brandList);
+		
 		if(mobile_connect.equals("No")) {
 			mav.setViewName("call/callfrom");
 		}else {
@@ -451,6 +460,10 @@ public class CallController {
 			mav.addObject("scallpfrNmList", scallpfrNmMap);
 			mav.addObject("scallrsltcdList", scallrsltcdMap);
 			
+			List<DataMap> brandList = brandService.BrandMasterList(paramMap);
+			
+			mav.addObject("brandList", brandList);
+			
 			mav.setViewName("nobody/call/callView");
 			return mav;
 			
@@ -479,6 +492,7 @@ public class CallController {
 		dt.put("scall_no", vts.get("scall_no"));
 		dt.put("scall_purpose_cd", vts.get("scall_purpose_cd_u"));
 		dt.put("scall_pfr_nm", vts.get("scall_pfr_nm_u"));
+		dt.put("scall_brand_id", vts.get("scall_brand_id_u"));
 		dt.put("scall_rslt_cd", vts.get("scall_rslt_cd_u"));
 		dt.put("scall_sale_cntn", vts.get("scall_sale_cntn_u"));
 		dt.put("scall_cprt_cntn", vts.get("scall_cprt_cntn_u"));

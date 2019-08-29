@@ -143,6 +143,7 @@
 		var scall_purpose_cd = $("select[name='scall_purpose_cd']");
 		var scall_rslt_cd = $("input[name='scall_rslt_cd']");
 		var scall_pfr_nm = $("select[name='scall_pfr_nm']");
+		var scall_brand_id = $("select[name='scall_brand_id']");		
 		var scall_sale_cntn = $("input[name='scall_sale_cntn']");
 		var scall_cprt_cntn = $("input[name='scall_cprt_cntn']");
 
@@ -154,7 +155,7 @@
 				continue;
 			}
 			
-			_addParam.push({"scall_gbn_nm":scall_gbn_nm[i].value,"vendor_no":vendor_no[i].value,"scall_purpose_cd":scall_purpose_cd[i].value,"scall_rslt_cd":scall_rslt_cd[i].value,"scall_pfr_nm":scall_pfr_nm[i].value,"scall_sale_cntn":scall_sale_cntn[i].value,"scall_cprt_cntn":scall_cprt_cntn[i].value});
+			_addParam.push({"scall_gbn_nm":scall_gbn_nm[i].value,"vendor_no":vendor_no[i].value,"scall_purpose_cd":scall_purpose_cd[i].value,"scall_rslt_cd":scall_rslt_cd[i].value,"scall_pfr_nm":scall_pfr_nm[i].value,"scall_sale_cntn":scall_sale_cntn[i].value,"scall_cprt_cntn":scall_cprt_cntn[i].value,"scall_brand_id":scall_brand_id[i].value});
 		}
 		if(_addParam.length==0){
 			alert("거래처를  입력하세요");
@@ -276,6 +277,16 @@
 										<select name="scall_pfr_nm" class="form-control" id="scall_pfr_nm" >
 											<c:forEach items="${scallpfrNmList}" var="e">
 												<option value="${e.CMM_CD}">${e.CMM_CD_NM} </option>
+											</c:forEach>
+										</select>
+									</div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="scall_brand_id" class="col-md-2 col-form-label text-md-left">브랜드</label>
+                                    <div class="col-md-6">
+										<select name="scall_brand_id" class="form-control" id="scall_brand_id" >
+											<c:forEach items="${brandList}" var="z">
+												<option value="${z.BRAND_ID}">${z.BRAND_NM} </option>
 											</c:forEach>
 										</select>
 									</div>

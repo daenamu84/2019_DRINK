@@ -24,13 +24,14 @@
 		var scall_purpose_cd_u 	= $("#scall_purpose_cd_u option:selected").val();
 		var scall_pfr_nm_u		= $("#scall_pfr_nm_u option:selected").val();
 		var scall_rslt_cd_u		= $("#scall_rslt_cd_u option:selected").val();
+		var scall_brand_id_u	= $("#scall_brand_id_u option:selected").val();
 		var scall_sale_cntn_u = $("#scall_sale_cntn_u").val();
 		var scall_cprt_cntn_u = $("#scall_cprt_cntn_u").val();
 		
 		$.ajax({      
 		    type:"POST",  
 		    url:"/callUpdate",      
-		    data: JSON.stringify({"scall_no":scall_no,"scall_purpose_cd_u":scall_purpose_cd_u,"scall_pfr_nm_u":scall_pfr_nm_u,"scall_rslt_cd_u":scall_rslt_cd_u,"scall_sale_cntn_u" :scall_sale_cntn_u,"scall_cprt_cntn_u" :scall_cprt_cntn_u  }),
+		    data: JSON.stringify({"scall_no":scall_no,"scall_purpose_cd_u":scall_purpose_cd_u,"scall_pfr_nm_u":scall_pfr_nm_u,"scall_rslt_cd_u":scall_rslt_cd_u,"scall_sale_cntn_u" :scall_sale_cntn_u,"scall_cprt_cntn_u" :scall_cprt_cntn_u,"scall_brand_id_u":scall_brand_id_u }),
 		    dataType:"json",
 		    contentType:"application/json;charset=UTF-8",
 		    traditional:true,

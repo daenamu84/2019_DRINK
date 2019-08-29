@@ -53,6 +53,16 @@
 				</td>
 			</tr>
 			<tr>
+				<td>브랜드</td>
+				<td colspan="3">
+					<select name="scall_brand_id_u" class="form-control" id="scall_brand_id_u" >
+						<c:forEach items="${brandList}" var="f">
+							<option value="${f.BRAND_ID}"  <c:if test="${f.BRAND_ID eq data.BRAND_ID}">selected</c:if>>${f.BRAND_NM} </option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td>상담내용</td>
 				<td colspan="3">
 					<input type="text" class="form-control" name="scall_sale_cntn_u" id="scall_sale_cntn_u" value="${data.SCALL_SALE_CNTN}"/>
