@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="paging" uri="/WEB-INF/tlds/page-taglib.tld"%>
 
-<div class="container-mp">
-	<div>  메인 페이지 입니다.</div> 
-		
+
+<div style="background-image:URL(${pageContext.request.contextPath}/resources/image/tb_web_03.jpg);display: block;width: 100%;height: 1000px; background-size: contain;background-repeat: no-repeat;background-position: center; background-position-y: -82px" >
+
 </div>

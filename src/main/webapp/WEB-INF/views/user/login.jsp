@@ -20,6 +20,7 @@
 <style>
 	body {
 		font-family: "Lato", sans-serif;
+		background-color:#104d8c;
 	}
 	
 	.main-head {
@@ -87,13 +88,15 @@
 		color: #fff;
 	}
 </style>
-<div class="container">
-	<div class="sidenav" style="background-image:URL(${pageContext.request.contextPath}/resources/image/TB_LOGO1.png);background-repeat: no-repeat;">
+<div class="container" style="width:100%;height:100%">
+	<div class="sidenav" style="background-image:URL(${pageContext.request.contextPath}/resources/image/tb_web_02_1024.jpg);background-repeat: no-repeat;height:52%">
+	</div>
+	<!-- div class="sidenav" style="background-image:URL(${pageContext.request.contextPath}/resources/image/tb_web_02.jpg);width:100%">
 		<div class="login-main-text">
 			Login from here to access.
 		</div>
-	</div>
-	<div class="main">
+	</div-->
+	<div class="main" >
 		<div class="col-md-6 col-sm-12">
 			<div class="login-form">
 				<form name="loginForm" method="post"  action="/logInProcess">
@@ -123,6 +126,8 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div style="background-image:URL(${pageContext.request.contextPath}/resources/image/tb_web_02_1024.jpg);height: 289px;background-position-y: 1067px;width:100%;bottom:0;position:fixed">
 </div>
 <script>
 	function goLogin() {
