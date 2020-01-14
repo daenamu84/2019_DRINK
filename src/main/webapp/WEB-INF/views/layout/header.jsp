@@ -60,6 +60,16 @@
 					</c:if>
 				</div>
 			</li>
+			<li class="nav-item ${dropdown06} dropdown">
+				<a class="nav-link dropdown-toggle" href="/ApprovalList" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">통계</a>
+				<div class="dropdown-menu" aria-labelledby="dropdown04">
+					<a class="dropdown-item" href="/prod_sumList">제품리스트통계</a>
+					<a class="dropdown-item" href="/ApprovalList">Distrubution Account</a>
+					<a class="dropdown-item" href="/ApprovalList">Distrubution</a>
+					<a class="dropdown-item" href="/ApprovalList">Acctivation Account</a>
+					<a class="dropdown-item" href="/ApprovalList">Activation</a>
+				</div>
+			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">
 			<li class="nav-item ${dropdown05} dropdown">
 				<a class="nav-link dropdown-toggle" href="/teamList" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">시스템관리

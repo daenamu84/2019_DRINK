@@ -202,7 +202,7 @@
 												<td style="padding-left:20px;" colspan="2" class="text-right">
 													<input class="btn btn-dark" type="button" value="검색" id="vendorSearch"/>
 													<input class="btn btn-dark" type="button" value="등록" id="vendorForm"/>
-													<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadExcel"/>
+													<!-- input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadExcel"/-->
 												</td>
 											</tr>
 											

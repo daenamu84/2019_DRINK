@@ -332,7 +332,7 @@
 										<input class="btn btn-dark" type="button" value="삭제" id="calldelete"/>
 										<input class="btn btn-dark" type="button" value="검색" id="callSearch"/>
 										<input class="btn btn-dark" type="button" value="등록" id="callForm"/>
-										<input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadCallExcel"/>
+										<!-- input class="btn btn-dark" type="button" value="엑셀다운로드" id="downloadCallExcel"/-->
 									</div>
 								</div>
 								</form>
