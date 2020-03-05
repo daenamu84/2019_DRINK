@@ -65,9 +65,9 @@
 				<div class="dropdown-menu" aria-labelledby="dropdown04">
 					<a class="dropdown-item" href="/prod_sumList">제품리스트통계(사원)</a>				
 					<a class="dropdown-item" href="/prod_DeptsumList">제품리스트통계(부서)</a>
-					<a class="dropdown-item" href="/ApprovalList">Distrubution Account</a>
+					<a class="dropdown-item" href="/prod_DisAccountsumList">Distrubution Account</a>
 					<a class="dropdown-item" href="/ApprovalList">Distrubution</a>
-					<a class="dropdown-item" href="/ApprovalList">Acctivation Account</a>
+					<!-- a class="dropdown-item" href="/ApprovalList">Acctivation Account</a -->
 					<a class="dropdown-item" href="/ApprovalList">Activation</a>
 				</div>
 			</li>

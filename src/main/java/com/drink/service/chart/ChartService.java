@@ -52,6 +52,16 @@ public class ChartService {
 		return param;
 	}
 	
+	
+	public List getBrandList(RequestMap map) throws DrinkException {
+		
+		List<DataMap> param = new ArrayList<>();
+		logger.debug("map===" + map.getMap());
+		param = gdi.selectList("Chart.getBrandList",map.getMap());
+		
+		return param;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List pord_sumSearchList(RequestMap map) throws DrinkException{
 		List<DataMap> param = new ArrayList<>();
@@ -74,4 +84,14 @@ public class ChartService {
 		return param;
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List prod_DisAccountsumSearchList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		int rtCnt = gdi.update("Chart.chart02_temp_delete",map.getMap());
+		gdi.update("Chart.chart02_temp_insert",map.getMap());
+		param = gdi.selectList("Chart.prod_DisAccountsumSearchList",map.getMap());
+		
+		return param;
+	}
 }

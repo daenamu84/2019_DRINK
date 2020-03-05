@@ -114,7 +114,7 @@ public class ChartController {
 		
 		} catch (Exception e) {
 			logger.debug("brandSubList err :: " + e);
-			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+			throw new DrinkException(new String[]{"nobody/common/error"," 조회중 에러가 발생 하였습니다."});
 		}
 	}
 	
@@ -167,7 +167,61 @@ public class ChartController {
 		
 		} catch (Exception e) {
 			logger.debug("brandSubList err :: " + e);
-			throw new DrinkException(new String[]{"nobody/common/error","거래처메뉴 조회중 에러가 발생 하였습니다."});
+			throw new DrinkException(new String[]{"nobody/common/error","조회중 에러가 발생 하였습니다."});
 		}
 	}
+	
+	
+	@RequestMapping(value = "/prod_DisAccountsumList")
+	public ModelAndView prod_DisAccountsumList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		
+		RequestMap paramMap = new RequestMap();
+		ModelAndView mav = new ModelAndView();
+		
+		//int totalCnt = teamService.GetTotalCnt(paramMap);
+		List<DataMap> rtnMap = chartService.getBrandList(paramMap);
+		
+		logger.debug("rtnMap :: " + rtnMap);
+		
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		mav.addObject("BrandList", rtnMap);
+		mav.addObject("dropdown06","active");
+		mav.setViewName("chart/prod_DisAccountsumList");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/prod_DisAccountsumSearchList")
+	public ModelAndView prod_DisAccountsumSearchList(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==param=" + param);
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		List<DataMap> rtnMap = chartService.prod_DisAccountsumSearchList(param);
+		
+		mav.addObject("_pgStaDt", param.getString("staDt"));
+		
+		mav.addObject("pord_deptsumSearchList", rtnMap);
+		
+		mav.setViewName("nobody/chart/prod_DisAccountsumSearchList");
+		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","조회중 에러가 발생 하였습니다."});
+		}
+	}
+	
 }
