@@ -63,7 +63,8 @@
 			<li class="nav-item ${dropdown06} dropdown">
 				<a class="nav-link dropdown-toggle" href="/ApprovalList" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">통계</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown04">
-					<a class="dropdown-item" href="/prod_sumList">제품리스트통계</a>
+					<a class="dropdown-item" href="/prod_sumList">제품리스트통계(사원)</a>				
+					<a class="dropdown-item" href="/prod_DeptsumList">제품리스트통계(부서)</a>
 					<a class="dropdown-item" href="/ApprovalList">Distrubution Account</a>
 					<a class="dropdown-item" href="/ApprovalList">Distrubution</a>
 					<a class="dropdown-item" href="/ApprovalList">Acctivation Account</a>

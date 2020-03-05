@@ -17,11 +17,24 @@
        	
     </select>
     
+    <select id="getDeptList" resultType="DataMap" parameterType="hashmap">
+    	
+    	<![CDATA[
+    		SELECT DEPT_NO, TEAMNM
+			FROM T_DEPT_M
+			WHERE USE_YN ='Y'
+      		AND DEPT_NO IN (8,9,12,13,14,15)
+			ORDER BY SORT_ORD
+		]]>
+       	
+    </select>
+    
     <update id="chart06_temp_delete">
     	<![CDATA[
     		TRUNCATE TABLE T_STAT_TMP_06
     	]]>
     </update>
+    
     
     <update id="chart06_temp_insert">
     	<![CDATA[
@@ -85,24 +98,24 @@
 				결과만큰 LOOP를 돌면서 아래 CASE WHEN 문 생성해서 전체 SQL을 가변적으로 만들어 준 후 실행 필요
 				*/
 				/* LOOP START */
-				,CASE WHEN EMP_NO=35 THEN SUM(ACT_SUM)  ELSE 0 END "alex.lee"
-			    ,CASE WHEN EMP_NO=36 THEN SUM(ACT_SUM)  ELSE 0 END "sabrina.ryu"
-			    ,CASE WHEN EMP_NO=37 THEN SUM(ACT_SUM)  ELSE 0 END "ws.shim"
-			    ,CASE WHEN EMP_NO=38 THEN SUM(ACT_SUM)  ELSE 0 END "jw.jang"
-			    ,CASE WHEN EMP_NO=39 THEN SUM(ACT_SUM)  ELSE 0 END "herry.lee"
-			    ,CASE WHEN EMP_NO=40 THEN SUM(ACT_SUM)  ELSE 0 END "brian.park"
-			    ,CASE WHEN EMP_NO=41 THEN SUM(ACT_SUM)  ELSE 0 END "bk.hwang"
-			    ,CASE WHEN EMP_NO=42 THEN SUM(ACT_SUM)  ELSE 0 END "jh.yoon"
-			    ,CASE WHEN EMP_NO=43 THEN SUM(ACT_SUM)  ELSE 0 END "s.han"
-			    ,CASE WHEN EMP_NO=44 THEN SUM(ACT_SUM)  ELSE 0 END "sw.seo"
-			    ,CASE WHEN EMP_NO=45 THEN SUM(ACT_SUM)  ELSE 0 END "jw.seo"
-			    ,CASE WHEN EMP_NO=46 THEN SUM(ACT_SUM)  ELSE 0 END "js.bae"
-			    ,CASE WHEN EMP_NO=47 THEN SUM(ACT_SUM)  ELSE 0 END "hy.shin"
-			    ,CASE WHEN EMP_NO=48 THEN SUM(ACT_SUM)  ELSE 0 END "sunny.lim"
-			    ,CASE WHEN EMP_NO=49 THEN SUM(ACT_SUM)  ELSE 0 END "emma.choi"
-			    ,CASE WHEN EMP_NO=50 THEN SUM(ACT_SUM)  ELSE 0 END "kyungeun.jun"
-			    ,CASE WHEN EMP_NO=51 THEN SUM(ACT_SUM)  ELSE 0 END "hj.ryu"
-			    ,CASE WHEN EMP_NO=53 THEN SUM(ACT_SUM)  ELSE 0 END "jp.lee"
+				 ,SUM(CASE WHEN EMP_NO=35 THEN ACT_SUM  ELSE 0 END) "alex.lee"
+			    ,SUM(CASE WHEN EMP_NO=36 THEN ACT_SUM  ELSE 0 END) "sabrina.ryu"
+			    ,SUM(CASE WHEN EMP_NO=37 THEN ACT_SUM  ELSE 0 END) "ws.shim"
+			    ,SUM(CASE WHEN EMP_NO=38 THEN ACT_SUM  ELSE 0 END) "jw.jang"
+			    ,SUM(CASE WHEN EMP_NO=39 THEN ACT_SUM  ELSE 0 END) "herry.lee"
+			    ,SUM(CASE WHEN EMP_NO=40 THEN ACT_SUM  ELSE 0 END) "brian.park"
+			    ,SUM(CASE WHEN EMP_NO=41 THEN ACT_SUM  ELSE 0 END) "bk.hwang"
+			    ,SUM(CASE WHEN EMP_NO=42 THEN ACT_SUM  ELSE 0 END) "jh.yoon"
+			    ,SUM(CASE WHEN EMP_NO=43 THEN ACT_SUM  ELSE 0 END) "s.han"
+			    ,SUM(CASE WHEN EMP_NO=44 THEN ACT_SUM  ELSE 0 END) "sw.seo"
+			    ,SUM(CASE WHEN EMP_NO=45 THEN ACT_SUM  ELSE 0 END) "jw.seo"
+			    ,SUM(CASE WHEN EMP_NO=46 THEN ACT_SUM  ELSE 0 END) "js.bae"
+			    ,SUM(CASE WHEN EMP_NO=47 THEN ACT_SUM  ELSE 0 END) "hy.shin"
+			    ,SUM(CASE WHEN EMP_NO=48 THEN ACT_SUM  ELSE 0 END) "sunny.lim"
+			    ,SUM(CASE WHEN EMP_NO=49 THEN ACT_SUM  ELSE 0 END) "emma.choi"
+			    ,SUM(CASE WHEN EMP_NO=50 THEN ACT_SUM  ELSE 0 END) "kyungeun.jun"
+			    ,SUM(CASE WHEN EMP_NO=51 THEN ACT_SUM  ELSE 0 END) "hj.ryu"
+			    ,SUM(CASE WHEN EMP_NO=53 THEN ACT_SUM  ELSE 0 END) "jp.lee"
 				/* LOOP END */
 		        , SUM(ACT_SUM) "합계"
 		FROM  T_STAT_TMP_06
@@ -113,4 +126,79 @@
        	
     </select>
     
+	<update id="chart01_temp_delete">
+    	<![CDATA[
+    		TRUNCATE TABLE T_STAT_TMP_01
+    	]]>
+    </update>
+    
+    
+    <update id="chart01_temp_insert">
+    	<![CDATA[
+    		INSERT INTO T_STAT_TMP_01
+    		SELECT	  CASE WHEN BRAND_ID IS NULL THEN '총계' ELSE BRAND_ID END	BRAND_ID
+			        , CASE WHEN BRAND_ID IS NULL THEN '' ELSE MAX(BRAND_NM) END	BRAND_NM
+					, CASE WHEN SUB_BRAND_ID IS NULL THEN '소계' ELSE SUB_BRAND_ID  END SUB_BRAND_ID
+			        , CASE WHEN SUB_BRAND_ID IS NULL THEN '' ELSE MAX(SUB_BRAND_NM) END SUB_BRAND_NM
+			        , CASE WHEN SUB_CAPACITY IS NULL THEN '' ELSE MAX(SUB_CAPACITY) END SUB_CAPACITY
+					, DEPT_NO
+					, IFNULL(SUM(PLAN_DELIVERY_CNT),0) SUM_01  /* 계획 수량 */
+					, IFNULL(SUM(REAL_DELIVERY_CNT),0) SUM_02   /* 실제 출고 수량 */
+					, CASE WHEN BRAND_ID IS NULL THEN 99
+      			   WHEN SUB_BRAND_ID IS NULL  AND TRIM(DEPT_NO) IS NULL THEN 3
+      			   WHEN DEPT_NO IS NULL THEN 2
+      			   ELSE 1
+      		  END SORT_SEQ
+			FROM	(
+					SELECT  B.PROD_NO, B.BRAND_ID, B.SUB_BRAND_ID, A.DELIVERY_MON, A.PLAN_DELIVERY_CNT, A.REAL_DELIVERY_CNT 
+							,(SELECT E.CMM_CD_NM FROM T_CMM_CD_M E WHERE E.CMM_CD_GRP_ID='00017' AND E.CMM_CD = B.PROD_ML_CD) SUB_CAPACITY 
+							,C.SUB_BRAND_NM, D.BRAND_NM, F.DEPT_NO, H.TEAMNM
+					FROM    T_PROPOSAL_PROD_MON_D A
+							INNER JOIN T_PROD_M B 
+								ON  (
+									A.PROD_NO_SITEM_NM = B.PROD_NO 
+									)
+							INNER JOIN T_SUB_BRAND_M C 
+								ON  (
+									C.SUB_BRAND_ID = B.SUB_BRAND_ID 
+									AND C.BRAND_ID = B.BRAND_ID						
+									)
+							INNER JOIN T_BRAND_M D 
+								ON  (
+									D.BRAND_ID = B.BRAND_ID 
+									)
+							INNER JOIN T_PROPOSAL_M F 
+								ON	(
+									A.PRPS_ID = F.PRPS_ID 
+									)
+							INNER JOIN T_DEPT_M H
+    					ON	(
+    						F.DEPT_NO = H.DEPT_NO 
+    						)
+					WHERE A.DELIVERY_MON = #{staDt}  /* 통계 기준 월 */
+					AND   A.PROD_SITEM_DIVS_CD = '01'  /* TB 제품 */
+					) AA
+			GROUP BY BRAND_ID,SUB_BRAND_ID,DEPT_NO WITH ROLLUP
+    	]]>
+    </update>
+    
+    
+    <select id="pord_DeptsumSearchList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT  BRAND_ID,BRAND_NM, SUB_BRAND_ID, SUB_BRAND_NM,
+    			CONCAT(BRAND_NM,'-',SUB_BRAND_NM,'-',SUB_CAPACITY) AS BRAND_T_NM
+				, SUM(CASE WHEN DEPT_NO = 8 THEN ACT_SUM ELSE 0 END) "Whole_Sales"
+		        , SUM(CASE WHEN DEPT_NO = 9 THEN ACT_SUM ELSE 0 END) "Mot_1"
+		        , SUM(CASE WHEN DEPT_NO = 12 THEN ACT_SUM ELSE 0 END) "Mot_2"
+		        , SUM(CASE WHEN DEPT_NO = 13 THEN ACT_SUM ELSE 0 END) "OFF"
+		        , SUM(CASE WHEN DEPT_NO = 14 THEN ACT_SUM ELSE 0 END) "Local_1_Busan"
+		        , SUM(CASE WHEN DEPT_NO = 15 THEN ACT_SUM ELSE 0 END) "Local_2_Deagu"
+		        , SUM(ACT_SUM) "합계"
+		FROM  T_STAT_TMP_01
+		WHERE SORT_SEQ = 1
+		GROUP BY BRAND_ID,BRAND_NM, SUB_BRAND_ID, SUB_BRAND_NM
+		ORDER BY BRAND_T_NM
+       	]]>
+       	
+    </select>
 </mapper>

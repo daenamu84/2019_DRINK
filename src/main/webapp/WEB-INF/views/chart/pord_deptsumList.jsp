@@ -60,7 +60,7 @@
 			
 			$.ajax({
 				type:"GET",  
-			    url:"/pord_sumSearchList",
+			    url:"/pord_deptsumSearchList",
 			    data: {"staDt":_pStaDt},
 			    dataType:"html",
 			    traditional:true,
@@ -75,7 +75,7 @@
 		});
 	});
 	</script>
-	<div class="title"> ◈  제품리스트  통계 (사원)  (브랜드+서브브랜드+용량)_프로포잘_등록한 실 출고수량 sum (해당월)</div>
+	<div class="title"> ◈  제품리스트  통계 (부서)(브랜드+서브브랜드+용량)_프로포잘_등록한 실 출고수량 sum (해당월)</div>
 	<div class="container" style="max-width:100%;">
 		<div class="row">
 			<div class="col">
@@ -101,8 +101,8 @@
 						  <thead>
 						    <tr>
 						      <th scope="col"></th>
-						      <c:forEach items="${empList}" var="i" varStatus="status">
-						      <th scope="col">${i.EMP_NM}</th>
+						      <c:forEach items="${DeptList}" var="i" varStatus="status">
+						      <th scope="col">${i.TEAMNM}</th>
 						      </c:forEach>
 						      
 						    </tr>
