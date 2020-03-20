@@ -242,9 +242,9 @@
 			      FROM T_VENDOR_M A, T_VENDOR_EMP_D B
 			      WHERE A.VENDOR_NO = B.VENDOR_NO
 			      	AND B.EFF_END_DT='99991231' 
-					AND A.DATA_REG_DTM LIKE CONCAT(#{staDt},'%') 
 			  ) C
 			  WHERE D.VENDOR_NO =C.VENDOR_NO
+			  AND D.DATA_REG_DTM LIKE CONCAT(#{staDt},'%')			  
 			) GG
 			GROUP BY EMP_NO, EMP_NM, BRAND_ID  
     	]]>
@@ -291,6 +291,91 @@
 						ON ( A.BRAND_ID = B.BRAND_ID )
 		WHERE SORT_SEQ = 1
 		GROUP BY A.EMP_NO,A.EMP_NM
+       	]]>
+    </select>
+    
+    <update id="chart04_temp_delete">
+    	<![CDATA[
+    		TRUNCATE TABLE T_STAT_TMP_04
+    	]]>
+    </update>
+    
+    <update id="chart04_temp_insert">
+    	<![CDATA[
+    		INSERT INTO T_STAT_TMP_04
+			SELECT 	  A.BRAND_ID, D.BRAND_NM   /* 브랜드정보 */
+					, A.VENDOR_NO, F.VENDOR_NM /* 거래처정보 */
+					, H.EMP_NO, I.EMP_NM  /* 담당사원 정보 */
+					, G.DEPT_NO, G.TEAMNM /* 부서정보 */
+					, DATE_FORMAT(A.DATA_REG_DTM,'%Y%m')  /* 등록월 */
+			FROM    T_VENDOR_BRAND_D A
+					INNER JOIN T_VENDOR_M F
+						ON	(
+							A.VENDOR_NO = F.VENDOR_NO
+							AND	F.VENDOR_STAT_CD IN ('02','03','04')  /* 거래처상태 승인완료/기획/행사중 인 거래처만 */
+							)
+					INNER JOIN T_BRAND_M D
+						ON  (
+							A.BRAND_ID = D.BRAND_ID
+							)
+					INNER JOIN T_VENDOR_EMP_D H
+						ON	(
+							A.VENDOR_NO = H.VENDOR_NO
+							AND H.EFF_END_DT = '99991231' /* 현재 유효한 */
+							AND H.MNGR_DIVS_CD = '0001' /* 정관리자 만  부관리자도 포함할 경우 해당 조건을 삭제처리해야 함*/
+							)
+					INNER JOIN T_EMP_M I
+						ON 	(
+							H.EMP_NO = I.EMP_NO
+							)
+					INNER JOIN T_DEPT_EMP_REL_D E
+						ON 	(
+							H.EMP_NO = E.EMP_NO
+							AND	E.EMP_DEPT_REL_GBN_CD = '0001'
+							AND E.EFF_END_DT = '99991231'
+							)
+					INNER JOIN T_DEPT_M G
+						ON 	(
+							E.DEPT_NO = G.DEPT_NO
+							)
+    	]]>
+    </update>
+    
+    <select id="prod_DistrubutionSearchList" resultType="DataMap">
+    	<![CDATA[
+    		SELECT  DEPT_NO,DEPT_NM, EMP_NO, EMP_NM, VENDOR_NO,VENDOR_NM
+				/* 브랜드 고정 리스트 - 브랜드 변경시 변경 필요 */
+				/* LOOP START */
+				,SUM(CASE WHEN A.BRAND_ID=9  THEN 1 ELSE 0 END) "American_Honey"
+				,SUM(CASE WHEN A.BRAND_ID=11  THEN 1 ELSE 0 END) "Aperol"
+				,SUM(CASE WHEN A.BRAND_ID=7  THEN 1 ELSE 0 END) "Appleton"
+				,SUM(CASE WHEN A.BRAND_ID=16  THEN 1 ELSE 0 END) "Averna"
+				,SUM(CASE WHEN A.BRAND_ID=24  THEN 1 ELSE 0 END) "BB_R"
+				,SUM(CASE WHEN A.BRAND_ID=17  THEN 1 ELSE 0 END) "Beluga"
+				,SUM(CASE WHEN A.BRAND_ID=5  THEN 1 ELSE 0 END) "Bulldog"
+				,SUM(CASE WHEN A.BRAND_ID=1  THEN 1 ELSE 0 END) "Campari"
+				,SUM(CASE WHEN A.BRAND_ID=14  THEN 1 ELSE 0 END) "Cinzano"
+				,SUM(CASE WHEN A.BRAND_ID=15  THEN 1 ELSE 0 END) "Cynar"
+				,SUM(CASE WHEN A.BRAND_ID=4  THEN 1 ELSE 0 END) "Espolon"
+				,SUM(CASE WHEN A.BRAND_ID=13  THEN 1 ELSE 0 END) "FRANGELICO"
+				,SUM(CASE WHEN A.BRAND_ID=6  THEN 1 ELSE 0 END) "Glengrant"
+				,SUM(CASE WHEN A.BRAND_ID=12 THEN 1 ELSE 0 END) "Grand_Marnier"
+				,SUM(CASE WHEN A.BRAND_ID=21 THEN 1 ELSE 0 END) "Guojiao"
+				,SUM(CASE WHEN A.BRAND_ID=22 THEN 1 ELSE 0 END) "No_3"
+				,SUM(CASE WHEN A.BRAND_ID=20 THEN 1 ELSE 0 END) "OMAR"
+				,SUM(CASE WHEN A.BRAND_ID=19 THEN 1 ELSE 0 END) "Patron"
+				,SUM(CASE WHEN A.BRAND_ID=10 THEN 1 ELSE 0 END) "Russells"
+				,SUM(CASE WHEN A.BRAND_ID=2 THEN 1 ELSE 0 END) "SKYY"
+				,SUM(CASE WHEN A.BRAND_ID=3 THEN 1 ELSE 0 END) "SKYY_Infusions"
+				,SUM(CASE WHEN A.BRAND_ID=23 THEN 1 ELSE 0 END) "The_Kings_Ginger"
+				,SUM(CASE WHEN A.BRAND_ID=8 THEN 1 ELSE 0 END) "Wild_Turkey"
+				,SUM(CASE WHEN A.BRAND_ID=18 THEN 1 ELSE 0 END) "X_rated"
+				/* LOOP END */
+				, COUNT(BRAND_ID)
+		FROM  	T_STAT_TMP_04 A
+		 WHERE 	A.DATA_REG_DT = #{staDt}  /* 월별 조회 */
+		GROUP BY DEPT_NO,DEPT_NM, EMP_NO, EMP_NM, VENDOR_NO,VENDOR_NM
+		ORDER BY DEPT_NM,EMP_NM,VENDOR_NM
        	]]>
     </select>
 </mapper>

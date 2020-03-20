@@ -224,4 +224,56 @@ public class ChartController {
 		}
 	}
 	
+	@RequestMapping(value = "/prod_DistrubutionList")
+	public ModelAndView prod_DistrubutionList(Locale locale, Model model, RequestMap rtMap) throws DrinkException {
+		
+		logger.debug("map :: " + rtMap.toString());
+		
+		
+		RequestMap paramMap = new RequestMap();
+		ModelAndView mav = new ModelAndView();
+		
+		//int totalCnt = teamService.GetTotalCnt(paramMap);
+		List<DataMap> rtnMap = chartService.getBrandList(paramMap);
+		
+		logger.debug("rtnMap :: " + rtnMap);
+		
+		
+		paging.makePaging();
+		HashMap<String, Object> pagingMap = new HashMap<>();
+		mav.addObject("BrandList", rtnMap);
+		mav.addObject("dropdown06","active");
+		mav.setViewName("chart/prod_DistrubutionList");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/prod_DistrubutionSearchList")
+	public ModelAndView prod_DistrubutionSearchList(Locale locale, Model model, RequestMap param, HttpServletRequest req) throws DrinkException {
+		
+		SessionDto loginSession = sessionUtils.getLoginSession(req);
+		logger.debug("==param=" + param);
+		if(loginSession == null || (loginSession.getLgin_id()== null)){
+			throw new DrinkException(new String[]{"nobody/common/error","로그인이 필요한 메뉴 입니다."});
+		}	
+		try {
+		ModelAndView mav = new ModelAndView();
+		
+		RequestMap paramMap = new RequestMap();
+		
+		
+		List<DataMap> rtnMap = chartService.prod_DistrubutionSearchList(param);
+		
+		mav.addObject("_pgStaDt", param.getString("staDt"));
+		
+		mav.addObject("prod_DistrubutionSearchList", rtnMap);
+		
+		mav.setViewName("nobody/chart/prod_DistrubutionSearchList");
+		return mav;
+		
+		} catch (Exception e) {
+			logger.debug("brandSubList err :: " + e);
+			throw new DrinkException(new String[]{"nobody/common/error","조회중 에러가 발생 하였습니다."});
+		}
+	}
+	
 }

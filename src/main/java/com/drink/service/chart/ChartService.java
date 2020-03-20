@@ -94,4 +94,15 @@ public class ChartService {
 		
 		return param;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List prod_DistrubutionSearchList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		int rtCnt = gdi.update("Chart.chart04_temp_delete",map.getMap());
+		gdi.update("Chart.chart04_temp_insert",map.getMap());
+		param = gdi.selectList("Chart.prod_DistrubutionSearchList",map.getMap());
+		
+		return param;
+	}
 }
