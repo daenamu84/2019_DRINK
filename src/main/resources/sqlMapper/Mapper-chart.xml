@@ -312,7 +312,7 @@
 					INNER JOIN T_VENDOR_M F
 						ON	(
 							A.VENDOR_NO = F.VENDOR_NO
-							AND	F.VENDOR_STAT_CD IN ('02','03','04')  /* 거래처상태 승인완료/기획/행사중 인 거래처만 */
+							/* AND	F.VENDOR_STAT_CD IN ('02','03','04')   거래처상태 승인완료/기획/행사중 인 거래처만 */
 							)
 					INNER JOIN T_BRAND_M D
 						ON  (
