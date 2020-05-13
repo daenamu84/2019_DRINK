@@ -105,4 +105,24 @@ public class ChartService {
 		
 		return param;
 	}
+	
+	public List getBrand_SubBrandList(RequestMap map) throws DrinkException {
+		
+		List<DataMap> param = new ArrayList<>();
+		logger.debug("map2===" + map.getMap());
+		param = gdi.selectList("Chart.getBrand_SubBrandList",map.getMap());
+		
+		return param;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public List prod_ActivationSearchList(RequestMap map) throws DrinkException{
+		List<DataMap> param = new ArrayList<>();
+		
+		int rtCnt = gdi.update("Chart.chart05_temp_delete",map.getMap());
+		gdi.update("Chart.chart05_temp_insert",map.getMap());
+		param = gdi.selectList("Chart.prod_ActivationSearchList",map.getMap());
+		
+		return param;
+	}
 }

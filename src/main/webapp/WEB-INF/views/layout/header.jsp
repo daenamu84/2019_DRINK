@@ -68,7 +68,7 @@
 					<a class="dropdown-item" href="/prod_DisAccountsumList">Distrubution Account</a>
 					<a class="dropdown-item" href="/prod_DistrubutionList">Distrubution</a>
 					<!-- a class="dropdown-item" href="/ApprovalList">Acctivation Account</a -->
-					<a class="dropdown-item" href="/ApprovalList">Activation</a>
+					<a class="dropdown-item" href="/prod_ActivationList">Activation</a>
 				</div>
 			</li>
 			<c:if test="${loginSession.emp_grd_cd eq '0001'}">
