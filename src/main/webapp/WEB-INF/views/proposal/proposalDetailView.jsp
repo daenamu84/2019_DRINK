@@ -149,7 +149,7 @@ var ajaxFlag = false;
 							</div>
 							<div class="form-group row">
 								<label for="prps_purpose_cd"
-									class="col-md-2 col-form-label text-md-left">광고비예산</label>
+									class="col-md-2 col-form-label text-md-left">광고비 예산</label>
 								<div class="col-md-4">
 									<input type="text" id="budg_amt" class="form-control"
 										name="budg_amt" readonly value="${data.BUDG_AMT}">
@@ -163,13 +163,13 @@ var ajaxFlag = false;
 							</div>
 							<div class="form-group row">
 								<label for="prps_purpose_cd"
-									class="col-md-2 col-form-label text-md-left">최종광고비</label>
+									class="col-md-2 col-form-label text-md-left">최종 광고비</label>
 								<div class="col-md-4">
 									<input type="text" id="last_prps_amt" class="form-control"
 										name="last_prps_amt" readonly value="${data.LAST_PRPS_AMT}">
 								</div>
 								<label for="act_plan_cd"
-									class="col-md-2 col-form-label text-md-left">케이스 별 <br>광고비</label>
+									class="col-md-2 col-form-label text-md-left">케이스 별 광고비</label>
 								<div class="col-md-4">
 									<input type="text" id="caserate_amt" class="form-control"
 										name="caserate_amt" readonly value="${data.CASERATE_AMT}">
@@ -201,7 +201,7 @@ var ajaxFlag = false;
 						  <thead>
 						    <tr>
 						      <th scope="col" style="width:auto">제품명</th>
-						      <th scope="col" width="10%">기본광고단가</th>
+						      <th scope="col" width="10%">기본 광고단가</th>
 						      <th scope="col" width="7%">출고수량</th>
 						      <th scope="col" width="5%">CASE(9L)</th>
 						      <th scope="col" width="20%">병당 광고비</th>
@@ -332,7 +332,7 @@ var ajaxFlag = false;
 				</div>		
 			</div>
 			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title"><b>STEP03. PROPOSAL 예상 출고 계획등록</b></div> 
+				<div class="title"><b>STEP03. PROPOSAL 예상 출고 계획 등록</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">
