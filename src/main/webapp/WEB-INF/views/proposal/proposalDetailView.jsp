@@ -109,7 +109,7 @@ var ajaxFlag = false;
 										name="prps_nm" value="${data.PRPS_NM}" readonly>
 								</div>
 								<label for="prps_nm"
-									class="col-md-2 col-form-label text-md-left">결제상태</label>
+									class="col-md-2 col-form-label text-md-left">결재상태</label>
 								<div class="col-md-4">
 									<input type="text" id="prps_nm" class="form-control"
 										name="prps_nm" value="${data.PRPS_STUS_CD_NM}" readonly>
@@ -149,13 +149,13 @@ var ajaxFlag = false;
 							</div>
 							<div class="form-group row">
 								<label for="prps_purpose_cd"
-									class="col-md-2 col-form-label text-md-left">예산금액</label>
+									class="col-md-2 col-form-label text-md-left">광고비예산</label>
 								<div class="col-md-4">
 									<input type="text" id="budg_amt" class="form-control"
 										name="budg_amt" readonly value="${data.BUDG_AMT}">
 								</div>
 								<label for="act_plan_cd"
-									class="col-md-2 col-form-label text-md-left">제안금액</label>
+									class="col-md-2 col-form-label text-md-left">제안 광고비</label>
 								<div class="col-md-4">
 									<input type="text" id="base_prps_amt" class="form-control"
 										name="base_prps_amt" readonly value="${data.BASE_PRPS_AMT}">
@@ -163,13 +163,13 @@ var ajaxFlag = false;
 							</div>
 							<div class="form-group row">
 								<label for="prps_purpose_cd"
-									class="col-md-2 col-form-label text-md-left">최종금액</label>
+									class="col-md-2 col-form-label text-md-left">최종광고비</label>
 								<div class="col-md-4">
 									<input type="text" id="last_prps_amt" class="form-control"
 										name="last_prps_amt" readonly value="${data.LAST_PRPS_AMT}">
 								</div>
 								<label for="act_plan_cd"
-									class="col-md-2 col-form-label text-md-left">CASERATE</label>
+									class="col-md-2 col-form-label text-md-left">케이스 별 <br>광고비</label>
 								<div class="col-md-4">
 									<input type="text" id="caserate_amt" class="form-control"
 										name="caserate_amt" readonly value="${data.CASERATE_AMT}">
@@ -201,13 +201,13 @@ var ajaxFlag = false;
 						  <thead>
 						    <tr>
 						      <th scope="col" style="width:auto">제품명</th>
-						      <th scope="col" width="10%">STD CASE RATE</th>
+						      <th scope="col" width="10%">기본광고단가</th>
 						      <th scope="col" width="7%">출고수량</th>
 						      <th scope="col" width="5%">CASE(9L)</th>
-						      <th scope="col" width="20%">인센티브 병당가격</th>
+						      <th scope="col" width="20%">병당 광고비</th>
 						      <th scope="col" width="10%">인센티브</th>
-						      <th scope="col" width="10%">CASE RATE</th>
-						      <th scope="col" width="10%">VS STD</th>
+						      <th scope="col" width="10%">케이스 별 <br>광고비</th>
+						      <th scope="col" width="10%">추가 상승분</th>
 						    </tr>
 						  </thead>
 						  <tbody>
@@ -247,9 +247,9 @@ var ajaxFlag = false;
 						      <th scope="col"  width="7%">수량</th>
 						      <th scope="col"  width="10%">총금액</th>
 						      <th scope="col"  width="7%">CASE(9L)</th>
-						      <th scope="col"  width="10%">인센티브</th>
-						      <th scope="col"  width="10%">CASE RATE</th>
-						      <th scope="col"  width="10%">VS STD</th>
+						      <th scope="col"  width="10%">총 광고비</th>
+						      <th scope="col"  width="10%">케이스 별<br> 광고비</th>
+						      <th scope="col"  width="10%">광고비 차액</th>
 						      <th scope="col"  width="13%">REMARK</th>
 						    </tr>
 						  </thead>
@@ -307,8 +307,8 @@ var ajaxFlag = false;
 						    <tr>
 						      <th scope="col"  width="30%">TTL AMOUNT</th>
 						      <th scope="col"  width="10%">VOLUME</th>
-						      <th scope="col"  width="10%">인센티브</th>
-						      <th scope="col"  width="20%">A&P</th>
+						      <th scope="col"  width="10%">총 광고비</th>
+						      <th scope="col"  width="20%">기타 광고비</th>
 						      <th scope="col"  width="30%">AVERAGE</th>
 						    </tr>
 						  </thead>
@@ -332,7 +332,7 @@ var ajaxFlag = false;
 				</div>		
 			</div>
 			<div id="monthView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title"><b>STEP03. PROPOSAL 인센티브 출고계획 등록</b></div> 
+				<div class="title"><b>STEP03. PROPOSAL 예상 출고 계획등록</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">
