@@ -216,6 +216,7 @@
 	function setValueDate(arg1, arg2,arg3){
 		
 		var obj = popListObj;
+		console.log(arg2);
 		$(obj).parent().parent().children().find("#prodNoSitemNm").val(arg2);
 		$(obj).parent().parent().find("#prodNoSitemCd").val(arg1);
 		
