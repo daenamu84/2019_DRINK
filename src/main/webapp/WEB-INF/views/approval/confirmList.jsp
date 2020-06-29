@@ -9,6 +9,7 @@
 
 
 <script>
+	var nowUrl = "/ApprovalConfirm";
 	var ajaxFlag = false;
 
 	$(function() {
@@ -98,3 +99,17 @@
 		<input type="hidden" name="gubun"/> 
 	</form>
 </div>
+<script>
+		function goPage(pages, pageLine) {
+			var url = nowUrl;
+			if (url.indexOf('?') > -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "page=" + pages + "&pageLine=" + pageLine;
+			location.href = url;
+		}
+		
+		
+	</script>
