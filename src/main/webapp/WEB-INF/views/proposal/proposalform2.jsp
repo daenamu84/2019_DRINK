@@ -377,13 +377,13 @@
 			  <thead>
 			    <tr>
 			      <th scope="col" style="width:auto">제품명</th>
-			      <th scope="col" width="10%">STD CASE RATE</th>
+			      <th scope="col" width="10%">기본 광고단가</th>
 			      <th scope="col" width="7%">출고수량</th>
 			      <th scope="col" width="10%">CASE(9L)</th>
-			      <th scope="col" width="10%">인센티브 병당가격</th>
+			      <th scope="col" width="10%">병당 광고비</th>
 			      <th scope="col" width="10%">인센티브</th>
-			      <th scope="col" width="10%">CASE RATEE</th>
-			      <th scope="col" width="10%">VS STD</th>
+			      <th scope="col" width="10%">케이스 별 광고비</th>
+			      <th scope="col" width="10%">추가 상승분</th>
 			    </tr>
 			  </thead>
 			  <tbody id="view1">

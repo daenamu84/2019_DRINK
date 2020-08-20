@@ -147,7 +147,7 @@
 <div class="">
 	<div class="container-fluid">
 		<div class="row">			
-			<div class="title col col-12  col-sm-5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 제품/지원목록 출고계획 등록</div> 
+			<div class="title col col-12  col-sm-5" style="padding: 1px 0px;">◈  STEP2. PROPOSAL 예상 출고계획 등록</div> 
 		</div>
 		
 		<div class="row" style="padding: 5px 0px;">

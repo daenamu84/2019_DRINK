@@ -275,9 +275,9 @@
 			      <th scope="col"  width="7%">수량</th>
 			      <th scope="col"  width="10%">총금액</th>
 			      <th scope="col"  width="7%">CASE(9L)</th>
-			      <th scope="col"  width="10%">인센티브</th>
-			      <th scope="col"  width="10%">CASE RATE</th>
-			      <th scope="col"  width="10%">VS STD</th>
+			      <th scope="col"  width="10%">총 광고비</th>
+			      <th scope="col"  width="10%">케이스 별 광고비</th>
+			      <th scope="col"  width="10%">광고비 차액</th>
 			      <th scope="col"  width="13%">REMARK</th>
 			    </tr>
 			  </thead>

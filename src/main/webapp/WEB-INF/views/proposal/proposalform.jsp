@@ -285,7 +285,7 @@
 	                                    <div class="col-md-4">
 	                                    	<input type="text" id="prps_nm" class="form-control" name="prps_nm"   value="${data.PRPS_NM}">
 	                                    </div>
-                                        <label for="prps_nm" class="col-md-2 col-form-label text-md-left">결제상태</label>
+                                        <label for="prps_nm" class="col-md-2 col-form-label text-md-left">결재상태</label>
 	                                    <div class="col-md-4">
 										<c:if test="${loginSession.emp_grd_cd eq '0003' or loginSession.emp_grd_cd eq '0004'}">
 											<input type="hidden" id="prps_stus_cd" class="form-control" name="prps_stus_cd" value="${data.PRPS_STUS_CD}">
