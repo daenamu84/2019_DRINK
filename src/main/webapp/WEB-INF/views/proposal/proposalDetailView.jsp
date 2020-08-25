@@ -196,7 +196,7 @@ var ajaxFlag = false;
 				<div class="title"><b>STEP02. PROPOSAL 제품/지원품목</b></div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
-						인센티브
+						광고비
 						<table class="table border">
 						  <thead>
 						    <tr>
@@ -205,7 +205,7 @@ var ajaxFlag = false;
 						      <th scope="col" width="7%">출고수량</th>
 						      <th scope="col" width="5%">CASE(9L)</th>
 						      <th scope="col" width="20%">병당 광고비</th>
-						      <th scope="col" width="10%">인센티브</th>
+						      <th scope="col" width="10%">광고비</th>
 						      <th scope="col" width="10%">케이스 별 <br>광고비</th>
 						      <th scope="col" width="10%">추가 상승분</th>
 						    </tr>

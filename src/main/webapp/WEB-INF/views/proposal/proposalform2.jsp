@@ -372,7 +372,7 @@
 			</div>
 		</div>
 		<div class="row" style="padding-top:10px; overflow-x:auto; width:90%;text-align: center; margin: 0 auto;" >
-			<div class="title"> 인센티브</div> 
+			<div class="title"> 광고비</div> 
 			<table class="table">
 			  <thead>
 			    <tr>
@@ -381,7 +381,7 @@
 			      <th scope="col" width="7%">출고수량</th>
 			      <th scope="col" width="10%">CASE(9L)</th>
 			      <th scope="col" width="10%">병당 광고비</th>
-			      <th scope="col" width="10%">인센티브</th>
+			      <th scope="col" width="10%">광고비</th>
 			      <th scope="col" width="10%">케이스 별 광고비</th>
 			      <th scope="col" width="10%">추가 상승분</th>
 			    </tr>
