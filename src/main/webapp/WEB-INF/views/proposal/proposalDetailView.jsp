@@ -383,7 +383,7 @@ var ajaxFlag = false;
 				</div>	
 			</div>
 			<div id="monthActualtView" style="padding:10px 0px; overflow-x:auto; width:90%; margin: 0 auto;">
-				<div class="title">PROPOSAL 인센티브 ACTUAL 등록</div> 
+				<div class="title">PROPOSAL 광고비  ACTUAL 등록</div> 
 				<div class="container-fluid border">
 					<div class="row" style="padding: 5px 0px;">
 						<table class="table" style="width:90%;margin:0 auto;">
